@@ -11,16 +11,16 @@
         <div id="usernameDiv">
             <label id="usernameLabel" class="loginLabel" for="username">USERNAME</label>
             <input [(ngModel)]="username" placeholder="username" id="username" class="validatable loginInput"
-                   tpye="text"
+                   tpye="text" (keydown)="clearMessage()" (focus)="clearMessage()"
                    name="username" required minlength="4">
         </div>
         <div id="passwordDiv">
             <label id="passwordLabel" class="loginLabel" for="password">PASSWORD</label>
             <input [(ngModel)]="password" placeholder="password" id="password" class="validatable loginInput"
-                   type="password" name="password" required minlength="4">
+                   type="password" (keydown)="clearMessage()" (focus)="clearMessage()" name="password" required minlength="4">
         </div>
-        <div *ngIf="loginInfo" id="loginInfo">
-            {{loginInfo}}
+        <div *ngIf="message" id="loginInfo">
+            {{message}}
         </div>
         <div id="loginButtonDiv" class="loginPageButtonDiv">
             <button id="loginButton" type="submit" [disabled]="!loginForm.form.valid">OK</button>
