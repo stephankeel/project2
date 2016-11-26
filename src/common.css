@@ -1,0 +1,152 @@
+* {
+    box-sizing: border-box;
+    border-radius: 0.3em;
+}
+
+html {
+}
+
+button, select {
+    min-width: 5em;
+    background-image: linear-gradient(to top, darkgrey 30%, white 100%);
+    box-shadow: 0.1em 0.2em 0.5em grey;
+}
+
+button:hover, select:hover {
+    background-image: linear-gradient(to bottom, darkgrey 30%, white 100%);
+}
+
+input[type='checkbox']:hover {
+    transform: scale(1.25);
+}
+
+body {
+    font-family: Arial, Verdana, sans-serif;
+    border-width: 0 5px;
+}
+
+header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+    background-color: lightgreen;
+    padding: 0.5em;
+}
+
+#mainTitle {
+    margin: 10px;
+    text-shadow: 0.1em 0.1em 0.5em grey;
+}
+
+footer {
+    display: flex;
+    flex: 1 1 100%;
+    justify-content: space-between;
+    font-size: 80%;
+    padding: 10px;
+    background-color: lightgreen;
+}
+
+.loginPageTitleDiv {
+    font-size: 300%;
+}
+
+.validatable:invalid {
+    border: 0.2em solid red;
+}
+
+#loginContent {
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    justify-content: flex-start;
+    font-size: 11pt;
+}
+
+#usernameDiv {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 100%;
+    margin: 1em 0 0.1em 0;
+}
+
+#passwordDiv {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    margin: 0.1em 0 1em 0;
+}
+
+.loginLabel {
+    flex: 0 0 8em;
+    align-self: center;
+}
+
+#loginInfo {
+    margin: 0 0 0.5em 8em;
+    color: red;
+}
+
+.loginPageButtonDiv {
+    flex: 2;
+    margin: 0 0 0.5em 0;
+}
+
+
+#mainContent {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    flex-wrap: wrap;
+    align-items: stretch;
+    align-content: center;
+    justify-content: flex-start;
+    font-size: 11pt;
+}
+
+.mainSelection {
+    display: flex;
+    flex: 1 0 15em;
+    align-content: space-between;
+    background-color: lightgrey;
+    margin: 0.5em;
+    padding: 0.5em;
+    height: 6em;
+}
+
+.mainSelection > img {
+    margin-right: 0.5em;
+}
+
+.mainSelection:hover {
+    background-color: yellow;
+}
+
+.mainSelectionLabel {
+    align-self: center;
+}
+
+
+#menuIcon:hover {
+    transform: scale(1.25);
+}
+
+#homeautomationIcon {
+    width: 5em;
+}
+
+#rollupIcon {
+    width: 5em;
+}
+
+#tempIcon {
+    width: 5em;
+}
+
+#hygroIcon {
+    width: 5em;
+}
