@@ -52,18 +52,14 @@ footer {
     font-size: 300%;
 }
 
-.validatable:invalid {
+.ng-invalid:not(form)  {
     border: 0.2em solid red;
 }
 
 #loginContent {
-    display: flex;
-    flex-direction: column;
-    margin: 10px;
-    flex-wrap: nowrap;
-    align-items: flex-start;
-    justify-content: flex-start;
-    font-size: 11pt;
+}
+
+#loginForm {
 }
 
 #usernameDiv {
@@ -71,14 +67,15 @@ footer {
     align-items: center;
     flex-wrap: wrap;
     width: 100%;
-    margin: 1em 0 0.1em 0;
+    margin: 1em 0 0.4em 0;
 }
 
 #passwordDiv {
     display: flex;
+    flex-direction: row;
     flex-wrap: wrap;
     width: 100%;
-    margin: 0.1em 0 1em 0;
+    margin: 0.4em 0 1em 0;
 }
 
 .loginLabel {

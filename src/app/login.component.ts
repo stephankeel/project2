@@ -10,11 +10,8 @@ import {GenericService} from './generic.service';
 })
 
 export class LoginComponent {
-    @Input()
     username: string;
-    @Input()
     password: string;
-
     loginInfo: string;
     loggedOut: boolean = true;
 
@@ -22,7 +19,7 @@ export class LoginComponent {
                 private router: Router) {
         this.loggedOut = !genericService.loggedIn();
     }
-
+    
     doLogin(): void {
         this.genericService.login(this.username, this.password).then(user => {
             this.loginInfo = 'welcome';
