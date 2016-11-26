@@ -41,10 +41,10 @@ header {
 
 footer {
     display: flex;
-    flex: 1 1 100%;
     justify-content: space-between;
     font-size: 80%;
     padding: 10px;
+    width: 100%;
     background-color: lightgreen;
 }
 
@@ -83,7 +83,7 @@ footer {
     align-self: center;
 }
 
-#loginInfo {
+#loginMessage {
     margin: 0 0 0.5em 8em;
     color: red;
 }
@@ -93,6 +93,50 @@ footer {
     margin: 0 0 0.5em 0;
 }
 
+
+
+#dashboard {
+    display: flex;
+    width: 100%;
+}
+
+.dashboardMenu {
+    display: flex;
+    flex: 0 0;
+    flex-direction: column;
+    background: black;
+    color: white;
+    padding: 0.5em;
+}
+
+.hideMenu {
+    display: none;
+    //transform: translateX(-200px);
+    //transition: 2s;
+}
+
+.showMenu {
+    display: flex;
+    //transform: translateX(0px);
+    //transition: width 2s;
+}
+
+.menuItem {
+    margin-top: 0.5em;
+    padding: 0.2em;
+    transition: 0.4s;
+}
+
+.menuItem:hover {
+    color: black;
+    background-color: lightgrey;
+}
+
+#dashboardContent {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
 
 #mainContent {
     display: flex;

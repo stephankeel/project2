@@ -19,7 +19,7 @@
             <input [(ngModel)]="password" placeholder="password" id="password" class="validatable loginInput"
                    type="password" (keydown)="clearMessage()" (focus)="clearMessage()" name="password" required minlength="4">
         </div>
-        <div *ngIf="message" id="loginInfo">
+        <div *ngIf="message" id="loginMessage">
             {{message}}
         </div>
         <div id="loginButtonDiv" class="loginPageButtonDiv">
