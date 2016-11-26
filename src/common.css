@@ -110,21 +110,21 @@ footer {
 }
 
 .hideMenu {
-    display: none;
-    //transform: translateX(-200px);
-    //transition: 2s;
+    width: 0;
+    padding: 0.5em 0;
+    transition: 0.5s;
 }
 
 .showMenu {
-    display: flex;
-    //transform: translateX(0px);
-    //transition: width 2s;
+    width: 20em;
+    padding: 0.5em;
+    transition: width 0.5s;
 }
 
 .menuItem {
     margin-top: 0.5em;
     padding: 0.2em;
-    transition: 0.4s;
+    transition: width 0.4s;
 }
 
 .menuItem:hover {
