@@ -1,12 +1,12 @@
 <header>
     <img id="homeautomationIcon" src="app/img/homeautomation.svg" alt="Login Icon" title="Login Page Icon">
-    <h1 id="mainTitle">HOMEAUTOMATION</h1>
+    <h1 class="headerTitle">HOMEAUTOMATION</h1>
 </header>
 
 <div *ngIf="loggedOut===true" id="loginContent">
     <form (ngSubmit)="doLogin()" #loginForm="ngForm">
         <div id="loginTitleDiv" class="loginPageTitleDiv">
-            LOGIN
+            ANMELDEN
         </div>
         <div id="usernameDiv">
             <label id="usernameLabel" class="loginLabel" for="username">USERNAME</label>
@@ -15,7 +15,7 @@
                    name="username" required minlength="4">
         </div>
         <div id="passwordDiv">
-            <label id="passwordLabel" class="loginLabel" for="password">PASSWORD</label>
+            <label id="passwordLabel" class="loginLabel" for="password">PASSWORT</label>
             <input [(ngModel)]="password" placeholder="password" id="password" class="validatable loginInput"
                    type="password" (keydown)="clearMessage()" (focus)="clearMessage()" name="password" required minlength="4">
         </div>
@@ -29,7 +29,7 @@
 </div>
 <div *ngIf="loggedOut===false" id="logoutContent">
     <div id="logoutTitleDiv" class="loginPageTitleDiv">
-        LOGOUT
+        ABMELDEN
     </div>
     <div id="logoutButtonDiv" class="loginPageButtonDiv">
         <button id="logoutButton" (click)="doLogout()">OK</button>

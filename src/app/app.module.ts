@@ -12,6 +12,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {LoginComponent} from './login.component';
 import {GenericService} from "./generic.service";
 import {DashboardComponent} from "./dashboard.component";
+import {UsersComponent} from "./users.component";
 
 @NgModule({
     imports: [
@@ -24,7 +25,8 @@ import {DashboardComponent} from "./dashboard.component";
     declarations: [
         AppComponent,
         LoginComponent,
-        DashboardComponent
+        DashboardComponent,
+        UsersComponent
     ],
     providers: [GenericService],
     bootstrap: [AppComponent]

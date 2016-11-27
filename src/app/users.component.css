@@ -1,0 +1,48 @@
+#users {}
+
+#addIcon {}
+
+#usersContent {
+    display: flex;
+}
+
+.userList {
+    flex-direction: column;
+    margin: 0.5em;
+}
+
+.userListItem {}
+
+.userForm {
+    flex: 2 2;
+    flex-direction: column;
+    margin: 0.5em;
+    padding: 0.5em;
+    background-color: lightgray;
+}
+
+.userFormRow {
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    margin: 0.4em 0;
+}
+
+.userFormLabel {
+    flex: 0 0 8em;
+}
+
+.userFormValue {
+    flex: 1;
+}
+
+.userIdDiv {}
+
+#userMessage {}
+
+.buttonDiv {
+    margin-top: 0.5em;
+}
+
+#okButton {}
+#deleteButton {}
