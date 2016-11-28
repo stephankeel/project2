@@ -62,3 +62,7 @@
 .mainSelectionLabel {
   align-self: center;
 }
+
+#rollupIcon, #tempIcon, #hygroIcon {
+  width: 5em;
+}
