@@ -6,6 +6,10 @@
     display: flex;
 }
 
+main {
+  display: flex;
+}
+
 .userList {
     flex-direction: column;
     margin: 0.5em;

@@ -9,6 +9,12 @@
   width: 100%;
 }
 
+main {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
 .dashboardMenu {
   display: flex;
   flex: 0 0;
