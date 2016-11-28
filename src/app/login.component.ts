@@ -6,7 +6,8 @@ import {GenericService} from './generic.service';
 @Component({
     moduleId: module.id,
     selector: 'my-login',
-    templateUrl: 'login.component.html'
+    templateUrl: 'login.component.html',
+    styleUrls: ['login.component.css']
 })
 
 export class LoginComponent {

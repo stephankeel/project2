@@ -1,0 +1,20 @@
+main {
+}
+
+#loginForm {
+}
+
+.loginLabel {
+  flex: 0 0 8em;
+  align-self: center;
+}
+
+#loginMessage {
+  margin: 0 0 0.5em 8em;
+  color: red;
+}
+
+.loginPageButtonDiv {
+  flex: 2;
+  margin: 0 0 0.5em 0;
+}

@@ -3,7 +3,7 @@
     <h1 class="headerTitle">HOMEAUTOMATION</h1>
 </header>
 
-<div *ngIf="loggedOut===true" id="loginContent">
+<main *ngIf="loggedOut===true">
     <form (ngSubmit)="doLogin()" #loginForm="ngForm">
         <div id="loginTitleDiv" class="loginPageTitleDiv">
             ANMELDEN
@@ -26,12 +26,12 @@
             <button id="loginButton" type="submit" [disabled]="!loginForm.form.valid">OK</button>
         </div>
     </form>
-</div>
-<div *ngIf="loggedOut===false" id="logoutContent">
+</main>
+<main *ngIf="loggedOut===false" id="logoutContent">
     <div id="logoutTitleDiv" class="loginPageTitleDiv">
         ABMELDEN
     </div>
     <div id="logoutButtonDiv" class="loginPageButtonDiv">
         <button id="logoutButton" (click)="doLogout()">OK</button>
     </div>
-</div>
+</main>
