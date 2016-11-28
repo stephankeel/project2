@@ -22,3 +22,19 @@ main {
 #homeautomationIcon {
   width: 5em;
 }
+
+#usernameDiv {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
+  margin: 1em 0 0.4em 0;
+}
+
+#passwordDiv {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  margin: 0.4em 0 1em 0;
+}
