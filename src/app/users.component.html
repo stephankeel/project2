@@ -1,56 +1,54 @@
-<div id="users">
-    <header>
-        <img id="backIcon" class="headerAction" src="app/img/back.svg" alt="Back Icon" title="Back Icon"
-             (click)="backClicked()">
-        <h1 class="headerTitle">BENUTZER</h1>
-        <div class="contextHeaderActionDiv">
-            <img id="addIcon" class="headerAction contextHeaderAction" src="app/img/add.svg" alt="Add Icon"
-                 title="Add Icon" (click)="addClicked()">
-        </div>
-    </header>
-    <div id="usersContent">
-        <div class="userList">
-            <div *ngFor="let user of users" class="userListItem" [class.selected]="user === selectedUser"
-                 (click)="selectUser(user)">{{user.lastname}} {{user.firstname}}
-            </div>
-        </div>
-        <form class="userForm" *ngIf="user" (ngSubmit)="doAddOrUpdate()" #userForm="ngForm">
-            <div class="userFormRow">
-                <label class="userFormLabel">ID</label>
-                <label *ngIf="user.id" class="userFormValue">{{user.id}}</label>
-                <label *ngIf="!user.id" class="userFormValue">NEW</label>
-            </div>
-            <div class="userFormRow">
-                <label class="userFormLabel">VORNAME</label>
-                <input [(ngModel)]="user.firstname" placeholder="firstname" class="userFormValue validatable userInput"
-                       type="text" (keydown)="clearMessage()" (focus)="clearMessage()"
-                       name="firstName" required minlength="2">
-            </div>
-            <div class="userFormRow">
-                <label class="userFormLabel">NACHNAME</label>
-                <input [(ngModel)]="user.lastname" placeholder="lastname" class="userFormValue validatable userInput"
-                       type="text" (keydown)="clearMessage()" (focus)="clearMessage()"
-                       name="lastName" required minlength="2">
-            </div>
-            <div class="userFormRow">
-                <label class="userFormLabel">PASSWORT</label>
-                <input [(ngModel)]="user.password" placeholder="password" class="userFormValue validatable userInput"
-                       type="password" (keydown)="clearMessage()" (focus)="clearMessage()"
-                       name="password" required minlength="4">
-            </div>
-            <div class="userFormRow">
-                <label class="userFormLabel">PASSWORT</label>
-                <input [(ngModel)]="passwordConfirmation" placeholder="password confirmation" class="userFormValue validatable userInput"
-                       type="password" (keydown)="clearMessage()" (focus)="clearMessage()"
-                       name="passwordConfirm" required minlength="4">
-            </div>
-            <div *ngIf="message" id="userMessage">
-                {{message}}
-            </div>
-            <div class="buttonDiv">
-                <button id="okButton" type="submit" [disabled]="!userForm.form.valid || (passwordConfirmation != user.password)">OK</button>
-                <button id="deleteButton" type="button" [disabled]="!user.id" (click)="doDelete()">LÖSCHEN</button>
-            </div>
-        </form>
+ <header>
+    <img id="backIcon" class="headerAction" src="app/img/back.svg" alt="Back Icon" title="Back Icon"
+         (click)="backClicked()">
+    <h1 class="headerTitle">BENUTZER</h1>
+    <div class="contextHeaderActionDiv">
+        <img id="addIcon" class="headerAction contextHeaderAction" src="app/img/add.svg" alt="Add Icon"
+            title="Add Icon" (click)="addClicked()">
     </div>
-</div>
+ </header>
+ <main>
+    <div class="userList">
+        <div *ngFor="let user of users" class="userListItem" [class.selected]="user === selectedUser"
+             (click)="selectUser(user)">{{user.lastname}} {{user.firstname}}
+        </div>
+    </div>
+    <form class="userForm" *ngIf="user" (ngSubmit)="doAddOrUpdate()" #userForm="ngForm">
+        <div class="userFormRow">
+            <label class="userFormLabel">ID</label>
+            <label *ngIf="user.id" class="userFormValue">{{user.id}}</label>
+            <label *ngIf="!user.id" class="userFormValue">NEW</label>
+        </div>
+        <div class="userFormRow">
+            <label class="userFormLabel">VORNAME</label>
+            <input [(ngModel)]="user.firstname" placeholder="firstname" class="userFormValue validatable userInput"
+                   type="text" (keydown)="clearMessage()" (focus)="clearMessage()"
+                   name="firstName" required minlength="2">
+        </div>
+        <div class="userFormRow">
+            <label class="userFormLabel">NACHNAME</label>
+            <input [(ngModel)]="user.lastname" placeholder="lastname" class="userFormValue validatable userInput"
+                   type="text" (keydown)="clearMessage()" (focus)="clearMessage()"
+                   name="lastName" required minlength="2">
+        </div>
+        <div class="userFormRow">
+            <label class="userFormLabel">PASSWORT</label>
+            <input [(ngModel)]="user.password" placeholder="password" class="userFormValue validatable userInput"
+                   type="password" (keydown)="clearMessage()" (focus)="clearMessage()"
+                   name="password" required minlength="4">
+        </div>
+        <div class="userFormRow">
+            <label class="userFormLabel">PASSWORT</label>
+            <input [(ngModel)]="passwordConfirmation" placeholder="password confirmation" class="userFormValue validatable userInput"
+                   type="password" (keydown)="clearMessage()" (focus)="clearMessage()"
+                   name="passwordConfirm" required minlength="4">
+        </div>
+        <div *ngIf="message" id="userMessage">
+            {{message}}
+        </div>
+        <div class="buttonDiv">
+            <button id="okButton" type="submit" [disabled]="!userForm.form.valid || (passwordConfirmation != user.password)">OK</button>
+            <button id="deleteButton" type="button" [disabled]="!user.id" (click)="doDelete()">LÖSCHEN</button>
+        </div>
+    </form>
+</main>

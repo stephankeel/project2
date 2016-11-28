@@ -1,0 +1,68 @@
+#dashboard {
+  display: flex;
+  width: 100%;
+}
+
+#dashboardContent {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.dashboardMenu {
+  display: flex;
+  flex: 0 0;
+  flex-direction: column;
+  background: black;
+  color: white;
+  padding: 0.5em;
+}
+
+.hideMenu {
+  width: 0;
+  padding: 0.5em 0;
+  transition: 0.5s;
+}
+
+.showMenu {
+  width: 20em;
+  padding: 0.5em;
+  transition: width 0.5s;
+}
+
+.menuItem {
+  margin-top: 0.5em;
+  padding: 0.2em;
+  transition: width 0.4s;
+}
+
+.menuItem:hover {
+  color: black;
+  background-color: lightgrey;
+}
+
+.mainSelection {
+  display: flex;
+  flex: 1 0 15em;
+  align-content: space-between;
+  background-color: lightgrey;
+  margin: 0.5em;
+  padding: 0.5em;
+  height: 6em;
+}
+
+.mainSelection > img {
+  margin-right: 0.5em;
+}
+
+.mainSelection:hover {
+  background-color: yellow;
+}
+
+.mainSelectionLabel {
+  align-self: center;
+}
+
+#rollupIcon, #tempIcon, #hygroIcon {
+  width: 5em;
+}

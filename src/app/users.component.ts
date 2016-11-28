@@ -7,7 +7,7 @@ import {User} from './user';
 @Component({
     moduleId: module.id,
     selector: 'my-users',
-    styleUrls: ['../common.css', 'users.component.css'],
+    styleUrls: ['users.component.css'],
     templateUrl: 'users.component.html'
 })
 
