@@ -48,10 +48,6 @@ footer {
     background-color: lightgreen;
 }
 
-.loginPageTitleDiv {
-    font-size: 300%;
-}
-
 .ng-invalid:not(form)  {
     border: 0.2em solid red;
 }
