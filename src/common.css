@@ -39,15 +39,6 @@ header {
     text-shadow: 0.1em 0.1em 0.5em grey;
 }
 
-.contextHeaderActionDiv {
-    display: flex;
-    flex: 1;
-    justify-content: flex-end;
-}
-
-.contextHeaderAction {
-}
-
 footer {
     display: flex;
     justify-content: space-between;

@@ -46,3 +46,12 @@
 
 #okButton {}
 #deleteButton {}
+
+.contextHeaderActionDiv {
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.contextHeaderAction {
+}
