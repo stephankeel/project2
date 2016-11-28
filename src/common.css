@@ -81,40 +81,6 @@ footer {
     margin: 0.4em 0 1em 0;
 }
 
-#mainContent {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    flex-wrap: wrap;
-    align-items: stretch;
-    align-content: center;
-    justify-content: flex-start;
-    font-size: 11pt;
-}
-
-.mainSelection {
-    display: flex;
-    flex: 1 0 15em;
-    align-content: space-between;
-    background-color: lightgrey;
-    margin: 0.5em;
-    padding: 0.5em;
-    height: 6em;
-}
-
-.mainSelection > img {
-    margin-right: 0.5em;
-}
-
-.mainSelection:hover {
-    background-color: yellow;
-}
-
-.mainSelectionLabel {
-    align-self: center;
-}
-
-
 .headerAction:hover {
     transform: scale(1.25);
 }
