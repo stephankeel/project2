@@ -34,7 +34,7 @@ header {
     padding: 0.5em;
 }
 
-#mainTitle, .headerTitle {
+.headerTitle {
     margin: 10px;
     text-shadow: 0.1em 0.1em 0.5em grey;
 }
