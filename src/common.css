@@ -84,7 +84,3 @@ footer {
 .headerAction:hover {
     transform: scale(1.25);
 }
-
-#homeautomationIcon {
-    width: 5em;
-}

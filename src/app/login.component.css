@@ -18,3 +18,7 @@ main {
   flex: 2;
   margin: 0 0 0.5em 0;
 }
+
+#homeautomationIcon {
+  width: 5em;
+}
