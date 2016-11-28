@@ -39,15 +39,6 @@ header {
     text-shadow: 0.1em 0.1em 0.5em grey;
 }
 
-footer {
-    display: flex;
-    justify-content: space-between;
-    font-size: 80%;
-    padding: 10px;
-    width: 100%;
-    background-color: lightgreen;
-}
-
 .ng-invalid:not(form)  {
     border: 0.2em solid red;
 }

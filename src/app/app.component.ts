@@ -4,14 +4,10 @@ import {Router}   from '@angular/router';
 import {GenericService} from './generic.service';
 
 @Component({
+    moduleId: module.id,
     selector: 'my-app',
-    template: `
-        <router-outlet></router-outlet>
-        <footer>
-            <p class='logArea'>{{logInfo}}</p>
-            <p class='copyright'>&copy; 2016 Homeautomation Team</p>
-        </footer>
-    `
+    templateUrl: 'app.component.html',
+    styleUrls: ['app.component.css']
 })
 
 export class AppComponent {
