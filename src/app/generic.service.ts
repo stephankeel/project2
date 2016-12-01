@@ -9,13 +9,40 @@ import {InMemoryDataService} from './in-memory-data.service';
 @Injectable()
 export class GenericService {
 
+    private headers = new Headers({'Content-Type': 'application/json'});
     private usersUrl = 'app/users';
+
 
     loggedInUser: User;
 
     constructor(private http: Http) {
     }
 
+    addUser(user: User): Promise<User> {
+        return this.http
+            .post(this.usersUrl, JSON.stringify(user), {headers: this.headers})
+            .toPromise()
+            .then(res => res.json().data)
+            .catch(this.handleError);
+    }
+
+    updateUser(user: User): Promise<User> {
+        const url = `${this.usersUrl}/${user.id}`;
+        return this.http
+            .put(url, JSON.stringify(user), {headers: this.headers})
+            .toPromise()
+            .then(() => user)
+            .catch(this.handleError);
+    }
+
+    deleteUser(user: User): Promise<User> {
+        const url = `${this.usersUrl}/${user.id}`;
+        return this.http
+            .delete(url, {headers: this.headers})
+            .toPromise()
+            .then(() => null)
+            .catch(this.handleError);
+    }
 
     getUsers(): Promise<User[]> {
         return this.http.get(this.usersUrl)

@@ -32,6 +32,12 @@
                    name="lastName" required minlength="2">
         </div>
         <div class="userFormRow">
+            <label class="userFormLabel">USERNAME</label>
+            <input [(ngModel)]="user.username" placeholder="username" class="userFormValue validatable userInput"
+                   type="text" (keydown)="clearMessage()" (focus)="clearMessage()"
+                   name="userName" required minlength="4">
+        </div>
+        <div class="userFormRow">
             <label class="userFormLabel">PASSWORT</label>
             <input [(ngModel)]="user.password" placeholder="password" class="userFormValue validatable userInput"
                    type="password" (keydown)="clearMessage()" (focus)="clearMessage()"
