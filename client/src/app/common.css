@@ -1,0 +1,48 @@
+* {
+    box-sizing: border-box;
+    border-radius: 0.3em;
+}
+
+html {
+}
+
+button, select {
+    min-width: 5em;
+    background-image: linear-gradient(to top, darkgrey 30%, white 100%);
+    box-shadow: 0.1em 0.2em 0.5em grey;
+}
+
+button:hover, select:hover {
+    background-image: linear-gradient(to bottom, darkgrey 30%, white 100%);
+}
+
+input[type='checkbox']:hover {
+    transform: scale(1.25);
+}
+
+body {
+    font-family: Arial, Verdana, sans-serif;
+    border-width: 0 5px;
+}
+
+header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+    background-color: lightgreen;
+    padding: 0.5em;
+}
+
+.headerTitle {
+    margin: 10px;
+    text-shadow: 0.1em 0.1em 0.5em grey;
+}
+
+.ng-invalid:not(form)  {
+    border: 0.2em solid red;
+}
+
+.headerAction:hover {
+    transform: scale(1.25);
+}
