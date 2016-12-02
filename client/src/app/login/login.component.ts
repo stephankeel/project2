@@ -6,7 +6,7 @@ import {GenericService} from '../generic.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['../common.css', './login.component.css']
+  styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
 
