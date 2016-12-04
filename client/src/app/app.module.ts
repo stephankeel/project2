@@ -13,24 +13,26 @@ import {LoginComponent} from './login/login.component';
 import {GenericService} from "./generic.service";
 import {DashboardComponent} from "./dashboard/dashboard.component";
 import {UsersComponent} from "./users/users.component";
+import {AuthGuard} from "./auth/auth-guard.service";
 
 @NgModule({
-  imports: [
-    BrowserModule,
-    FormsModule,
-    HttpModule,
-    InMemoryWebApiModule.forRoot(InMemoryDataService),
-    AppRoutingModule
-  ],
-  declarations: [
-    AppComponent,
-    LoginComponent,
-    DashboardComponent,
-    UsersComponent
-  ],
-  providers: [GenericService],
-  bootstrap: [AppComponent]
+    imports: [
+        BrowserModule,
+        FormsModule,
+        HttpModule,
+        InMemoryWebApiModule.forRoot(InMemoryDataService),
+        AppRoutingModule
+    ],
+    declarations: [
+        AppComponent,
+        LoginComponent,
+        DashboardComponent,
+        UsersComponent
+    ],
+    providers: [GenericService, AuthGuard],
+    bootstrap: [AppComponent]
 })
 
-export class AppModule {}
+export class AppModule {
+}
 

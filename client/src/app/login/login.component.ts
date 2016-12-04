@@ -27,7 +27,8 @@ export class LoginComponent implements OnInit {
     this.genericService.login(this.username, this.password).then(user => {
       this.message = 'welcome';
       this.loggedOut = false;
-      this.router.navigate(['/dashboard']);
+      let url = this.genericService.redirectUrl ? this.genericService.redirectUrl : '/dashboard';
+      this.router.navigate([url]);
     }).catch(error => {
       this.message = 'login failure: ' + (error.message || error);
     });

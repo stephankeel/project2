@@ -13,6 +13,9 @@ export class GenericService {
 
   loggedInUser: User;
 
+  // store the URL so we can redirect after logging in
+  redirectUrl: string;
+
   constructor(private http: Http) {
   }
 
@@ -72,6 +75,7 @@ export class GenericService {
 
   logout(): void {
     this.loggedInUser = null;
+    this.redirectUrl = null;
   }
 
   loggedIn(): boolean {

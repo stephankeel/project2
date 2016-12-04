@@ -36,6 +36,18 @@ main {
   flex: 0 0 8em;
 }
 
+.userTypeRadioDiv {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.userFormRadio {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
 .userFormValue {
   flex: 1;
 }
