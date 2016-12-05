@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import {Router}   from '@angular/router';
 
-import {GenericService} from './generic.service';
+import {LoginService} from './remote/login.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./common.css', './app.component.css']
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent {
 
@@ -17,9 +17,9 @@ export class AppComponent {
   }
 
   //constructor(private router: Router, private loginCompoent: LoginComponent) {}
-  constructor(private router: Router, private genericService: GenericService) {
+  constructor(private router: Router, private loginService: LoginService) {
     this.log('Starting...');
-    if (genericService.loggedIn()) {
+    if (loginService.loggedIn()) {
       this.log('Goto dashboard');
       this.router.navigate(['/dashboard']);
     } else {

@@ -1,18 +1,18 @@
 import {Component, OnInit} from '@angular/core';
 import {Router}    from '@angular/router';
 
-import {GenericService} from '../generic.service';
+import {LoginService} from '../remote/login.service';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['../common.css', './dashboard.component.css']
+  styleUrls: ['./dashboard.component.css']
 })
 
 export class DashboardComponent implements OnInit {
   cssMenuClass: string = 'hideMenu';
 
-  constructor(private genericService: GenericService,
+  constructor(private loginService: LoginService,
               private router: Router) {
   }
 
@@ -36,7 +36,7 @@ export class DashboardComponent implements OnInit {
 
   logout(): void {
     this.closeMenu();
-    this.genericService.logout();
+    this.loginService.logout();
     this.router.navigate(['/login']);
   }
 

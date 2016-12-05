@@ -4,12 +4,14 @@ import {RouterModule, Routes}  from '@angular/router';
 import {LoginComponent} from './login/login.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {UsersComponent} from './users/users.component';
+import {AuthGuard} from './auth/auth-guard.service';
 
 const routes: Routes = [
     {path: '', redirectTo: '/login', pathMatch: 'full'},
     {path: 'login', component: LoginComponent},
-    {path: 'dashboard', component: DashboardComponent},
-    {path: 'users', component: UsersComponent},
+    {path: 'dashboard', canActivate: [AuthGuard], component: DashboardComponent},
+    {path: 'users', canActivate: [AuthGuard], component: UsersComponent},
+    {path: '**', canActivate: [AuthGuard], component: DashboardComponent},
 ]
 
 @NgModule({
@@ -18,5 +20,4 @@ const routes: Routes = [
 })
 
 export class AppRoutingModule {
-
 }

@@ -5,32 +5,36 @@ import {HttpModule}    from '@angular/http';
 
 // Imports for loading & configuring the in-memory web api
 import {InMemoryWebApiModule} from 'angular-in-memory-web-api';
-import {InMemoryDataService}  from './in-memory-data.service';
+import {InMemoryDataService}  from './remote/in-memory-data.service';
 
 import {AppComponent}  from './app.component';
 import {AppRoutingModule} from './app-routing.module';
 import {LoginComponent} from './login/login.component';
-import {GenericService} from "./generic.service";
+import {UserService} from "./remote/user.service";
+import {LoginService} from './remote/login.service';
 import {DashboardComponent} from "./dashboard/dashboard.component";
 import {UsersComponent} from "./users/users.component";
+import {AuthGuard} from "./auth/auth-guard.service";
 
 @NgModule({
-  imports: [
-    BrowserModule,
-    FormsModule,
-    HttpModule,
-    InMemoryWebApiModule.forRoot(InMemoryDataService),
-    AppRoutingModule
-  ],
-  declarations: [
-    AppComponent,
-    LoginComponent,
-    DashboardComponent,
-    UsersComponent
-  ],
-  providers: [GenericService],
-  bootstrap: [AppComponent]
+    imports: [
+        BrowserModule,
+        FormsModule,
+        HttpModule,
+        InMemoryWebApiModule.forRoot(InMemoryDataService),
+        AppRoutingModule
+    ],
+    declarations: [
+        AppComponent,
+        LoginComponent,
+        DashboardComponent,
+        UsersComponent,
+        LoginComponent
+    ],
+    providers: [UserService, LoginService, AuthGuard],
+    bootstrap: [AppComponent]
 })
 
-export class AppModule {}
+export class AppModule {
+}
 
