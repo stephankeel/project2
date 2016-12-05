@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {Router}    from '@angular/router';
 
-import {GenericService} from '../generic.service';
+import {UserService} from '../remote/user.service';
+import {LoginService} from '../remote/login.service';
 import {User} from '../user';
 
 @Component({
@@ -20,7 +21,8 @@ export class UsersComponent implements OnInit {
     userTypesText: string[] = User.getUserTypesText();
     message: string;
 
-    constructor(private genericService: GenericService,
+    constructor(private loginService: LoginService,
+                private genericService: UserService,
                 private router: Router) {
         genericService.getUsers().then(users => {
             this.users = users;
@@ -92,7 +94,7 @@ export class UsersComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.loginUserId = this.genericService.loggedInUser.id;
+        this.loginUserId = this.loginService.loggedInUser.id;
     }
 
 }

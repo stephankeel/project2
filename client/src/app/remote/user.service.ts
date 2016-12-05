@@ -1,20 +1,15 @@
 import {Injectable} from "@angular/core";
 import {Headers, Http, Response} from "@angular/http";
 
-import {User} from "./user";
+import {User} from "../user";
 
 import 'rxjs/add/operator/toPromise';
 
 @Injectable()
-export class GenericService {
+export class UserService {
 
   private headers = new Headers({'Content-Type': 'application/json'});
   private usersUrl = 'app/users';
-
-  loggedInUser: User;
-
-  // store the URL so we can redirect after logging in
-  redirectUrl: string;
 
   constructor(private http: Http) {
   }
@@ -55,31 +50,6 @@ export class GenericService {
   getUser(id: number): Promise<User> {
     return this.getUsers()
       .then(users => users.find(user => user.id === id));
-  }
-
-  private getLoginUser(username: string): Promise<User> {
-    return this.getUsers()
-      .then(users => users.find(user => user.username === username));
-  }
-
-  login(username: string, password: string): Promise<User> {
-    return this.getLoginUser(username).then(user => {
-      if (user && user.password === password) {
-        this.loggedInUser = user;
-        return user;
-      } else {
-        throw new Error(`Either the username ${username} is unknown or the password is invalid!`);
-      }
-    });
-  }
-
-  logout(): void {
-    this.loggedInUser = null;
-    this.redirectUrl = null;
-  }
-
-  loggedIn(): boolean {
-    return this.loggedInUser != null;
   }
 
   private handleError(error: any): Promise<any> {

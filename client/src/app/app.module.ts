@@ -5,12 +5,13 @@ import {HttpModule}    from '@angular/http';
 
 // Imports for loading & configuring the in-memory web api
 import {InMemoryWebApiModule} from 'angular-in-memory-web-api';
-import {InMemoryDataService}  from './in-memory-data.service';
+import {InMemoryDataService}  from './remote/in-memory-data.service';
 
 import {AppComponent}  from './app.component';
 import {AppRoutingModule} from './app-routing.module';
 import {LoginComponent} from './login/login.component';
-import {GenericService} from "./generic.service";
+import {UserService} from "./remote/user.service";
+import {LoginService} from './remote/login.service';
 import {DashboardComponent} from "./dashboard/dashboard.component";
 import {UsersComponent} from "./users/users.component";
 import {AuthGuard} from "./auth/auth-guard.service";
@@ -27,9 +28,10 @@ import {AuthGuard} from "./auth/auth-guard.service";
         AppComponent,
         LoginComponent,
         DashboardComponent,
-        UsersComponent
+        UsersComponent,
+        LoginComponent
     ],
-    providers: [GenericService, AuthGuard],
+    providers: [UserService, LoginService, AuthGuard],
     bootstrap: [AppComponent]
 })
 
