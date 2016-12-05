@@ -31,33 +31,17 @@
                    type="text" (keydown)="clearMessage()" (focus)="clearMessage()"
                    name="lastName" required minlength="2">
         </div>
-
-        <!-- TODO: To be simplified by using ngFor and an enum for the user type -->
         <div class="userFormRow">
             <label class="userFormLabel">KATEGORIE</label>
             <div class="userFormValue userTypeRadioDiv">
-                <label for="standardUserType" class="userFormRadio">
-                    <input class="userFormValue validatable userInput" id="standardUserType"
+                <label *ngFor="let uType of userTypes" for="userType-{{uType}}" class="userFormRadio">
+                    <input class="userFormValue validatable userInput" id="userType-{{uType}}"
                            type="radio" (keydown)="clearMessage()" (focus)="clearMessage()"
-                           name="userType" value="1" [checked]="user.isStandardUser()" (click)="setUserType(1)">
-                    Standard
-                </label>
-                <label for="adminUserType" class="userFormRadio">
-                    <input class="userFormValue validatable userInput" id="adminUserType"
-                           type="radio" (keydown)="clearMessage()" (focus)="clearMessage()"
-                           name="userType" value="2" [checked]="user.isAdminUser()" (click)="setUserType(2)">
-                    Admin
-                </label>
-                <label for="guestUserType" class="userFormRadio">
-                    <input class="userFormValue validatable userInput" id="guestUserType"
-                           type="radio" (keydown)="clearMessage()" (focus)="clearMessage()"
-                           name="userType" value="3" [checked]="user.isGuestUser()" (click)="setUserType(3)">
-                    Gast
+                           name="userType" [checked]="user.isUserType(uType)" (click)="setUserType(uType)">
+                    {{userTypesText[uType]}}
                 </label>
             </div>
         </div>
-
-
         <div class="userFormRow">
             <label class="userFormLabel">USERNAME</label>
             <input [(ngModel)]="user.username" placeholder="username" class="userFormValue validatable userInput"

@@ -16,6 +16,8 @@ export class UsersComponent implements OnInit {
     selectedUser: User;
     passwordConfirmation: string;
     loginUserId: number;
+    userTypes : number[] = User.getUserTypes();
+    userTypesText: string[] = User.getUserTypesText();
     message: string;
 
     constructor(private genericService: GenericService,

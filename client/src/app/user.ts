@@ -1,7 +1,7 @@
 export class User {
-    static STANDARD: number = 1;
-    static ADMIN: number = 2;
-    static GUEST: number = 3;
+    static STANDARD: number = 0;
+    static ADMIN: number = 1;
+    static GUEST: number = 2;
 
     constructor(public id?: number,
                 public firstname?: string,
@@ -11,16 +11,28 @@ export class User {
                 public password?: string) {
     }
 
+    static getUserTypes(): number[] {
+        return [User.STANDARD, User.ADMIN, User.GUEST];
+    }
+
+    static getUserTypesText(): string[] {
+        return ['Standard', 'Admin', 'Gast'];
+    }
+
+    isUserType(type: number): boolean {
+        return this.type === type;
+    }
+
     isStandardUser(): boolean {
-        return this.type == User.STANDARD;
+        return this.type ===User.STANDARD;
     }
 
     isAdminUser(): boolean {
-        return this.type == User.ADMIN;
+        return this.type === User.ADMIN;
     }
 
     isGuestUser(): boolean {
-        return this.type == User.GUEST;
+        return this.type === User.GUEST;
     }
 
 }
