@@ -84,7 +84,7 @@
             <button id="okButton" type="submit"
                     [disabled]="!userForm.form.valid || (passwordConfirmation != user.password)">OK
             </button>
-            <button id="deleteButton" type="button" [disabled]="!user.id" (click)="doDelete()">LÖSCHEN</button>
+            <button id="deleteButton" type="button" [disabled]="!user.id || loginUserId == user.id" (click)="doDelete()">LÖSCHEN</button>
         </div>
     </form>
 </main>

@@ -15,6 +15,7 @@ export class UsersComponent implements OnInit {
     user: User;
     selectedUser: User;
     passwordConfirmation: string;
+    loginUserId: number;
     message: string;
 
     constructor(private genericService: GenericService,
@@ -89,6 +90,7 @@ export class UsersComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.loginUserId = this.genericService.loggedInUser.id;
     }
 
 }
