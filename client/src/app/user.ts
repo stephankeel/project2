@@ -1,9 +1,11 @@
-export class User {
+import {IUser} from '../../../server/entities/user.interface';
+
+class User implements IUser{
     static STANDARD: number = 0;
     static ADMIN: number = 1;
     static GUEST: number = 2;
 
-    constructor(public id?: number,
+    constructor(public id?: any,
                 public firstname?: string,
                 public lastname?: string,
                 public type?: number,
