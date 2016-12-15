@@ -1,6 +1,6 @@
 import {IUser} from '../../../server/entities/user.interface';
 
-class User implements IUser{
+export class User implements IUser{
     static STANDARD: number = 0;
     static ADMIN: number = 1;
     static GUEST: number = 2;
