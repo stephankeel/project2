@@ -1,51 +1,51 @@
-import {Injectable} from "@angular/core";
-import {Headers, Http, Response} from "@angular/http";
-
-import 'rxjs/add/operator/toPromise';
-
-import {User} from "../user";
-import {UserService} from "./user.service";
+﻿import { Injectable } from '@angular/core';
+import { Http, Headers, Response } from '@angular/http';
+import { Observable } from 'rxjs';
+import 'rxjs/add/operator/map'
 
 @Injectable()
 export class LoginService {
-  private headers = new Headers({'Content-Type': 'application/json'});
-  private usersUrl = 'app/users';
+    public token: string;
+    public loggedInUserId: number;
 
-  loggedInUser: User;
+    // TODO: gehört die redirectURL zum authService?
+    public redirectUrl: string;
 
-  // store the URL so we can redirect after logging in
-  redirectUrl: string;
+    constructor(private http: Http) {
+        // set token if saved in local storage
+        var currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        this.token = currentUser && currentUser.token;
+        this.loggedInUserId = currentUser && currentUser.userId;
+    }
 
-  constructor(private http: Http, private genericService: UserService) {
-  }
+    login(username: string, password: string): Observable<boolean> {
+        return this.http.post('/api/authenticate', JSON.stringify({ username: username, password: password }))
+            .map((response: Response) => {
+                // login successful if there's a jwt token in the response
+                let token = response.json() && response.json().token;
+                if (token) {
+                    // set token property
+                    this.token = token;
 
-  private getLoginUser(username: string): Promise<User> {
-    return this.genericService.getUsers()
-        .then(users => users.find(user => user.username === username));
-  }
+                    // store username and jwt token in local storage to keep user logged in between page refreshes
+                    localStorage.setItem('currentUser', JSON.stringify({ userId: 1, token: token }));
 
-  login(username: string, password: string): Promise<User> {
-    return this.getLoginUser(username).then(user => {
-      if (user && user.password === password) {
-        this.loggedInUser = user;
-        return user;
-      } else {
-        throw new Error(`Either the username ${username} is unknown or the password is invalid!`);
-      }
-    });
-  }
+                    // return true to indicate successful login
+                    return true;
+                } else {
+                    // return false to indicate failed login
+                    return false;
+                }
+            });
+    }
 
-  logout(): void {
-    this.loggedInUser = null;
-    this.redirectUrl = null;
-  }
+    logout(): void {
+        // clear token remove user from local storage to log user out
+        this.token = null;
+        localStorage.removeItem('currentUser');
+    }
 
-  loggedIn(): boolean {
-    return this.loggedInUser != null;
-  }
-
-  private handleError(error: any): Promise<any> {
-    console.error('An error occurred', error); // for demo purposes only
-    return Promise.reject(error.message || error);
-  }
+    loggedIn(): boolean {
+      return this.token != null;
+    }
 }

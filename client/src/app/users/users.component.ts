@@ -94,7 +94,7 @@ export class UsersComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.loginUserId = this.loginService.loggedInUser.id;
+        this.loginUserId = this.loginService.loggedInUserId;
     }
 
 }

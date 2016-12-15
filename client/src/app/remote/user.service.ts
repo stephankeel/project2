@@ -1,17 +1,16 @@
 import {Injectable} from "@angular/core";
-import {Headers, Http, Response} from "@angular/http";
-
+import {Headers, RequestOptions, Http} from "@angular/http";
 import {User} from "../user";
-
 import 'rxjs/add/operator/toPromise';
+import { LoginService } from './login.service';
 
 @Injectable()
 export class UserService {
 
   private headers = new Headers({'Content-Type': 'application/json'});
-  private usersUrl = 'app/users';
+  private usersUrl = '/api/users';
 
-  constructor(private http: Http) {
+  constructor(private http: Http, private loginService: LoginService) {
   }
 
   addUser(user: User): Promise<User> {
@@ -41,19 +40,29 @@ export class UserService {
   }
 
   getUsers(): Promise<User[]> {
-    return this.http.get(this.usersUrl)
+    let users = this.http.get(this.usersUrl, this.createAuthHeader(this.loginService.token))
       .toPromise()
       .then(response => response.json().data as User[])
       .catch(this.handleError);
+    return users;
   }
 
   getUser(id: number): Promise<User> {
-    return this.getUsers()
-      .then(users => users.find(user => user.id === id));
+    const url = `${this.usersUrl}/${id}`;
+    return this.http.get(url, this.createAuthHeader(this.loginService.token))
+      .toPromise()
+      .then(response => response.json().data as User)
+      .catch(this.handleError);
   }
 
   private handleError(error: any): Promise<any> {
     console.error('An error occurred', error); // for demo purposes only
     return Promise.reject(error.message || error);
+  }
+
+  private createAuthHeader(token: string) {
+    // add authorization header with jwt token
+    let headers = new Headers({ 'Authorization': 'Bearer ' + this.loginService.token });
+    return new RequestOptions({ headers: headers });
   }
 }
