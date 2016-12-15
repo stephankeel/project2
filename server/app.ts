@@ -3,9 +3,8 @@
 import createError = require('http-errors')
 import express = require('express');
 import bodyParser = require('body-parser');
-import {HttpError} from "http-errors";
 import mongoose = require('mongoose');
-let tingodb = require('tingodb');
+// let tingodb = require('tingodb');
 
 import {router} from './routes/request-routes';
 
