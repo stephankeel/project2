@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map'
 
 @Injectable()
-export class LoginService {
+export class AuthenticationService {
     public token: string;
     public loggedInUserId: number;
 

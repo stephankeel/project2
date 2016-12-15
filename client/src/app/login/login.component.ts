@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import {Router} from "@angular/router";
 
-import {LoginService} from "../remote/login.service";
+import {AuthenticationService} from "../remote/authentication.service";
 
 @Component({
   selector: 'app-login',
@@ -20,18 +20,18 @@ export class LoginComponent implements OnInit {
 //  model: any = {};
 //  error : string = "";
 
-  constructor(private loginService: LoginService,
+  constructor(private authenticationService: AuthenticationService,
               private router: Router) {
-    this.loggedOut = !loginService.loggedIn();
+    this.loggedOut = !authenticationService.loggedIn();
   }
 
   ngOnInit() {
-    this.loginService.logout();
+    this.authenticationService.logout();
   }
 
   doLogin(): void {
     this.loggedOut = false;
-    this.loginService.login(this.username, this.password)
+    this.authenticationService.login(this.username, this.password)
       .subscribe(result => {
         if (result === true) {
           this.router.navigate(['/dashboard']);
@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit {
   }
 
   doLogout(): void {
-    this.loginService.logout();
+    this.authenticationService.logout();
     this.loggedOut = true;
   }
 

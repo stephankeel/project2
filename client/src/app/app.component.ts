@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import {Router}   from '@angular/router';
 
-import {LoginService} from './remote/login.service';
+import {AuthenticationService} from './remote/authentication.service';
 
 @Component({
   selector: 'app-root',
@@ -16,10 +16,9 @@ export class AppComponent {
     this.logInfo = info;
   }
 
-  //constructor(private router: Router, private loginCompoent: LoginComponent) {}
-  constructor(private router: Router, private loginService: LoginService) {
+  constructor(private router: Router, private authenticationService: AuthenticationService) {
     this.log('Starting...');
-    if (loginService.loggedIn()) {
+    if (authenticationService.loggedIn()) {
       this.log('Goto dashboard');
       this.router.navigate(['/dashboard']);
     } else {

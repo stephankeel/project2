@@ -7,7 +7,7 @@ import {AppComponent}  from './app.component';
 import {AppRoutingModule} from './app-routing.module';
 import {LoginComponent} from './login/login.component';
 import {UserService} from "./remote/user.service";
-import {LoginService} from './remote/login.service';
+import {AuthenticationService} from './remote/authentication.service';
 import {DashboardComponent} from "./dashboard/dashboard.component";
 import {UsersComponent} from "./users/users.component";
 import {AuthGuard} from "./auth/auth-guard.service";
@@ -34,7 +34,7 @@ import { BaseRequestOptions } from '@angular/http';
     providers: [
         UserService,
         AuthGuard,
-        LoginService,
+        AuthenticationService,
 
         // providers used to create fake backend_helpers/index
         fakeBackendProvider,

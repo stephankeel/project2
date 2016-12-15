@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {Headers, RequestOptions, Http} from "@angular/http";
 import {User} from "../user";
 import 'rxjs/add/operator/toPromise';
-import { LoginService } from './login.service';
+import { AuthenticationService } from './authentication.service';
 
 @Injectable()
 export class UserService {
@@ -10,7 +10,7 @@ export class UserService {
   private headers = new Headers({'Content-Type': 'application/json'});
   private usersUrl = '/api/users';
 
-  constructor(private http: Http, private loginService: LoginService) {
+  constructor(private http: Http, private authenticationService: AuthenticationService) {
   }
 
   addUser(user: User): Promise<User> {
@@ -40,7 +40,7 @@ export class UserService {
   }
 
   getUsers(): Promise<User[]> {
-    let users = this.http.get(this.usersUrl, this.createAuthHeader(this.loginService.token))
+    let users = this.http.get(this.usersUrl, this.createAuthHeader(this.authenticationService.token))
       .toPromise()
       .then(response => response.json().data as User[])
       .catch(this.handleError);
@@ -49,7 +49,7 @@ export class UserService {
 
   getUser(id: number): Promise<User> {
     const url = `${this.usersUrl}/${id}`;
-    return this.http.get(url, this.createAuthHeader(this.loginService.token))
+    return this.http.get(url, this.createAuthHeader(this.authenticationService.token))
       .toPromise()
       .then(response => response.json().data as User)
       .catch(this.handleError);
@@ -62,7 +62,7 @@ export class UserService {
 
   private createAuthHeader(token: string) {
     // add authorization header with jwt token
-    let headers = new Headers({ 'Authorization': 'Bearer ' + this.loginService.token });
+    let headers = new Headers({ 'Authorization': 'Bearer ' + this.authenticationService.token });
     return new RequestOptions({ headers: headers });
   }
 }
