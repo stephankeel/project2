@@ -17,6 +17,7 @@ router.post('/user', function(req: express.Request, res: express.Response, next:
        if (err) {
            res.json({info: 'Error creating user', error: err});
        } else {
+           // set the user.id to the _id provided by the db
            addedUser.id = addedUser._id;
            res.json({info: 'User created successfully', data: addedUser});
        }
@@ -31,23 +32,25 @@ router.put('/user/:id', function(req: express.Request, res: express.Response, ne
     User.findById(id,  (err: any, user: IUserModel) => {
         if (err) {
             res.json({info: `User ${id} not found`, error: err});
-        }
-        // copy the properties
-        user.id = req.body.id;
-        user.lastname = req.body.lastname;
-        user.firstname = req.body.firstname;
-        user.type = req.body.type;
-        user.username = req.body.username;
-        user.password = req.body.password;
-        // save the updated user
-        user.save((err: any, updatedUser: IUserModel) =>
-        {
-            if (err) {
-                res.json({info: `Error updating user ${id}`, error: err});
-            }
-            res.json({info: 'User updated successfully', data: updatedUser});
             next();
-        });
+        } else {
+            // copy the properties
+            user.id = req.body.id;
+            user.lastname = req.body.lastname;
+            user.firstname = req.body.firstname;
+            user.type = req.body.type;
+            user.username = req.body.username;
+            user.password = req.body.password;
+            // save the updated user
+            user.save((err: any, updatedUser: IUserModel) => {
+                if (err) {
+                    res.json({info: `Error updating user ${id}`, error: err});
+                } else {
+                    res.json({info: 'User updated successfully', data: updatedUser});
+                }
+                next();
+            });
+        }
     });
 });
 
@@ -55,8 +58,11 @@ router.get('/users', function(req: express.Request, res: express.Response, next:
     User.find((err, users) => {
        if (err) {
            res.json({info: 'Error creating user', error: err});
+       } else {
+           // set the user.id to the _id provided by the db
+           users.forEach((user) => user.id = user._id);
+           res.json({info: 'Users found successfully', data: users});
        }
-        res.json({info: 'Users found successfully', data: users});
         next();
     });
 });
