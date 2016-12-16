@@ -34,7 +34,8 @@ export class LoginComponent implements OnInit {
     this.authenticationService.login(this.username, this.password)
       .subscribe(result => {
         if (result === true) {
-          this.router.navigate(['/dashboard']);
+          let url = this.authenticationService.redirectUrl ? this.authenticationService.redirectUrl : '/dashboard';
+          this.router.navigate([url]);
         } else {
           this.message = 'Username or password is incorrect';
           this.loggedOut = true;
