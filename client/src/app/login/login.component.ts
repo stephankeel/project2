@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import {Router}    from '@angular/router';
+import { Component, OnInit } from "@angular/core";
+import {Router} from "@angular/router";
 
-import {LoginService} from '../remote/login.service';
+import {AuthenticationService} from "../remote/authentication.service";
 
 @Component({
   selector: 'app-login',
@@ -15,33 +15,39 @@ export class LoginComponent implements OnInit {
   message: string;
   loggedOut: boolean = true;
 
-  constructor(private loginService: LoginService,
+  // TODO: change variable names?
+//  loaded = false;
+//  model: any = {};
+//  error : string = "";
+
+  constructor(private authenticationService: AuthenticationService,
               private router: Router) {
-    this.loggedOut = !loginService.loggedIn();
+    this.loggedOut = !authenticationService.loggedIn();
   }
 
   ngOnInit() {
+    this.authenticationService.logout();
   }
 
   doLogin(): void {
-    this.loginService.login(this.username, this.password).then(user => {
-      this.message = 'welcome';
-      this.loggedOut = false;
-      let url = this.loginService.redirectUrl ? this.loginService.redirectUrl : '/dashboard';
-      this.router.navigate([url]);
-    }).catch(error => {
-      this.message = 'login failure: ' + (error.message || error);
-    });
+    this.loggedOut = false;
+    this.authenticationService.login(this.username, this.password)
+      .subscribe(result => {
+        if (result === true) {
+          this.router.navigate(['/dashboard']);
+        } else {
+          this.message = 'Username or password is incorrect';
+          this.loggedOut = true;
+        }
+      });
   }
 
   doLogout(): void {
-    this.loginService.logout();
+    this.authenticationService.logout();
     this.loggedOut = true;
   }
 
   clearMessage(): void {
     this.message = null;
   }
-
-
 }

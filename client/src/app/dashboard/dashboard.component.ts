@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Router}    from '@angular/router';
 
-import {LoginService} from '../remote/login.service';
+import {AuthenticationService} from '../remote/authentication.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,7 +12,7 @@ import {LoginService} from '../remote/login.service';
 export class DashboardComponent implements OnInit {
   cssMenuClass: string = 'hideMenu';
 
-  constructor(private loginService: LoginService,
+  constructor(private authenticationService: AuthenticationService,
               private router: Router) {
   }
 
@@ -36,7 +36,7 @@ export class DashboardComponent implements OnInit {
 
   logout(): void {
     this.closeMenu();
-    this.loginService.logout();
+    this.authenticationService.logout();
     this.router.navigate(['/login']);
   }
 

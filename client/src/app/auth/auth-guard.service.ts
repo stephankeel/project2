@@ -6,11 +6,11 @@ import {
     CanActivateChild
 } from '@angular/router';
 
-import {LoginService}      from '../remote/login.service';
+import {AuthenticationService}      from '../remote/authentication.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate, CanActivateChild {
-    constructor(private loginService: LoginService, private router: Router) {
+    constructor(private authenticationService: AuthenticationService, private router: Router) {
     }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
@@ -23,11 +23,11 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     }
 
     checkLogin(url: string): boolean {
-        if (this.loginService.loggedIn()) {
+        if (this.authenticationService.loggedIn()) {
             return true;
         }
         // Store the attempted URL for redirecting
-        this.loginService.redirectUrl = url;
+        this.authenticationService.redirectUrl = url;
         // Navigate to the login page
         this.router.navigate(['/login']);
         return false;
