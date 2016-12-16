@@ -8,7 +8,7 @@ import mongoose = require('mongoose');
 
 import {router} from './routes/request-routes';
 
-const DB_OPTION = 3;
+const DB_OPTION = 1;
 const HOSTNAME = '127.0.0.1';
 const PORT = 3001;
 const DB_HOSTNAME = HOSTNAME;
