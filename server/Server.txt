@@ -9,7 +9,8 @@ In case of Database Option [1]
 ------------------------------
 open terminal
 cd server
-mongod --dbpath .\data
+mkdir data
+"C:\Program Files\MongoDB\Server\3.4\bin\mongod" --dbpath .\data
 
 MongoDB Terminal
 ----------------
