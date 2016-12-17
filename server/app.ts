@@ -3,13 +3,12 @@
 import createError = require('http-errors')
 import express = require('express');
 import bodyParser = require('body-parser');
-import {HttpError} from "http-errors";
 import mongoose = require('mongoose');
-let tingodb = require('tingodb');
+// let tingodb = require('tingodb');
 
 import {router} from './routes/request-routes';
 
-const DB_OPTION = 3;
+const DB_OPTION = 1;
 const HOSTNAME = '127.0.0.1';
 const PORT = 3001;
 const DB_HOSTNAME = HOSTNAME;
