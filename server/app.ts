@@ -8,11 +8,11 @@ import mongoose = require('mongoose');
 
 import {router} from './routes/request-routes';
 
-const DB_OPTION = 1;
-const HOSTNAME = '127.0.0.1';
-const PORT = 3001;
-const DB_HOSTNAME = HOSTNAME;
-const DB_PORT = 27017;
+const DB_OPTION: number = 3;
+const HOSTNAME: string = '127.0.0.1';
+const PORT: number = 3001;
+const DB_HOSTNAME: string = HOSTNAME;
+const DB_PORT: number = 27017;
 
 let app = express();
 
