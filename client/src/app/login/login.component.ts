@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import {Router} from "@angular/router";
 
 import {AuthenticationService} from "../remote/authentication.service";
+import {AuthGuard} from "../auth/auth-guard.service";
 
 @Component({
   selector: 'app-login',
@@ -21,6 +22,7 @@ export class LoginComponent implements OnInit {
 //  error : string = "";
 
   constructor(private authenticationService: AuthenticationService,
+              private authGuard: AuthGuard,
               private router: Router) {
     this.loggedOut = !authenticationService.loggedIn();
   }
@@ -34,7 +36,7 @@ export class LoginComponent implements OnInit {
     this.authenticationService.login(this.username, this.password)
       .subscribe(result => {
         if (result === true) {
-          let url = this.authenticationService.redirectUrl ? this.authenticationService.redirectUrl : '/dashboard';
+          let url = this.authGuard.redirectUrl ? this.authGuard.redirectUrl : '/dashboard';
           this.router.navigate([url]);
         } else {
           this.message = 'Username or password is incorrect';

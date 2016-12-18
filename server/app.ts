@@ -1,12 +1,13 @@
 'use strict';
 
-import createError = require('http-errors')
 import express = require('express');
 import bodyParser = require('body-parser');
 import mongoose = require('mongoose');
 // let tingodb = require('tingodb');
+let createError = require('http-errors');
 
-import {router} from './routes/request-routes';
+import {authenticationRoute} from './routes/authentication';
+import {userRoute} from './routes/user.route';
 
 const DB_OPTION: number = 3;
 const HOSTNAME: string = '127.0.0.1';
@@ -16,19 +17,21 @@ const DB_PORT: number = 27017;
 
 let app = express();
 
-let db: mongoose.Connection =  mongoose.connection;
+let db: mongoose.Connection = mongoose.connection;
 let dbLocation: any;
 switch (DB_OPTION) {
     case 1:
         dbLocation = `${DB_HOSTNAME}:${DB_PORT}/homeautomation`;
         break;
     case 2:
-        // not yet provided: new tingodb.Db('./data-tingodb', {});
-        // break;
+    // not yet provided: new tingodb.Db('./data-tingodb', {});
+    // break;
     default:
         dbLocation = 'mongodb://admin:hallihallo62@ds050879.mlab.com:50879/homeautomation';
 }
-db.once('open', () => console.log('DB is connected'));
+db.once('open', () => {
+    console.log('DB is connected');
+});
 db.on('error', console.error.bind(console, 'connection error:'));
 mongoose.connect(dbLocation);
 
@@ -59,14 +62,17 @@ app.use('/', function (req: express.Request, res: express.Response, next: expres
     next();
 });
 
-app.use(router);
+app.use(authenticationRoute);
+app.use(userRoute);
 
-/*
- app.use(function(req: express.Request, res: express.Response, next: express.NextFunction) {
- var err: HttpError = createError(404, 'Not found');
- next(err);
- });
- */
+app.use('/about', function (req: express.Request, res: express.Response, next: express.NextFunction) {
+    res.send('Homeautomation Project by D.Leuenberger and St.Keel');
+});
+
+
+app.use(function (req: express.Request, res: express.Response, next: express.NextFunction) {
+    next(createError(404, 'Not found'));
+});
 
 app.use(outputLogger);
 app.use(errorHandler);

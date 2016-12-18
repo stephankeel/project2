@@ -1,15 +1,14 @@
-﻿import { Injectable } from '@angular/core';
-import { Http, Headers, Response } from '@angular/http';
-import { Observable } from 'rxjs';
-import 'rxjs/add/operator/map'
+﻿import {Injectable} from '@angular/core';
+import {Http, Headers, Response} from '@angular/http';
+import {Observable} from 'rxjs';
+import 'rxjs/add/operator/map';
 
 @Injectable()
 export class AuthenticationService {
     public token: string;
     public loggedInUserId: number;
 
-    // TODO: gehört die redirectURL zum authService?
-    public redirectUrl: string;
+    private headers = new Headers({'Content-Type': 'application/json'});
 
     constructor(private http: Http) {
         // set token if saved in local storage
@@ -19,16 +18,20 @@ export class AuthenticationService {
     }
 
     login(username: string, password: string): Observable<boolean> {
-        return this.http.post('/api/authenticate', JSON.stringify({ username: username, password: password }))
+        return this.http.post('/api/authenticate', JSON.stringify({
+            username: username,
+            password: password
+        }), {headers: this.headers})
             .map((response: Response) => {
                 // login successful if there's a jwt token in the response
                 let token = response.json() && response.json().token;
+                console.log('login succeeded. Token: ' + token);
                 if (token) {
                     // set token property
                     this.token = token;
 
                     // store username and jwt token in local storage to keep user logged in between page refreshes
-                    localStorage.setItem('currentUser', JSON.stringify({ userId: 1, token: token }));
+                    localStorage.setItem('currentUser', JSON.stringify({userId: 1, token: token}));
 
                     // return true to indicate successful login
                     return true;
@@ -36,7 +39,21 @@ export class AuthenticationService {
                     // return false to indicate failed login
                     return false;
                 }
-            });
+            })
+            .catch(this.handleError);
+    }
+
+    private handleError (error: Response | any) {
+        let errMsg: string;
+        if (error instanceof Response) {
+            const body = error.json() || '';
+            const err = body.error || JSON.stringify(body);
+            errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
+        } else {
+            errMsg = error.message ? error.message : error.toString();
+        }
+        console.error(errMsg);
+        return Observable.throw(errMsg);
     }
 
     logout(): void {
@@ -46,6 +63,6 @@ export class AuthenticationService {
     }
 
     loggedIn(): boolean {
-      return this.token != null;
+        return this.token != null;
     }
 }
