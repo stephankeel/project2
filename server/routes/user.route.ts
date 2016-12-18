@@ -14,7 +14,7 @@ userRoute.post('/api/users', function(req: express.Request, res: express.Respons
        } else {
            // set the user.id to the _id provided by the db
            addedUser.id = addedUser._id;
-           res.status(201).json(addedUser);
+           res.status(201).json({data: addedUser});
        }
     });
 });
@@ -39,7 +39,7 @@ userRoute.put('/api/users/:id', function(req: express.Request, res: express.Resp
                 if (err) {
                     res.status(500).json({error: `error updating user ${id}. ${err}`});
                 } else {
-                    res.json(updatedUser);
+                    res.json({data: updatedUser});
                 }
             });
         }
@@ -53,7 +53,7 @@ userRoute.get('/api/users', function(req: express.Request, res: express.Response
        } else {
            // set the user.id to the _id provided by the db
            users.forEach((user) => user.id = user._id);
-           res.json(users);
+           res.json({data: users});
        }
     });
 });
@@ -66,7 +66,7 @@ userRoute.get('/api/users/:id', function(req: express.Request, res: express.Resp
         } else {
             // set the user.id to the _id provided by the db
             user.id = user._id;
-            res.json(user);
+            res.json({data: user});
         }
     });
 });
@@ -77,7 +77,7 @@ userRoute.delete('/api/users/:id', function(req: express.Request, res: express.R
         if (err) {
             res.status(404).json({error: `error deleting user ${ref._id}. ${err}`});
         }
-        res.json(ref._id);
+        res.json({data: ref._id});
     });
 });
 
