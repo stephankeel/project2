@@ -3,6 +3,8 @@ import {Http, Headers, Response} from '@angular/http';
 import {Observable} from 'rxjs';
 import 'rxjs/add/operator/map';
 
+import {handleError} from './error-utils';
+
 @Injectable()
 export class AuthenticationService {
     public token: string;
@@ -40,20 +42,7 @@ export class AuthenticationService {
                     return false;
                 }
             })
-            .catch(this.handleError);
-    }
-
-    private handleError (error: Response | any) {
-        let errMsg: string;
-        if (error instanceof Response) {
-            const body = error.json() || '';
-            const err = body.error || JSON.stringify(body);
-            errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
-        } else {
-            errMsg = error.message ? error.message : error.toString();
-        }
-        console.error(errMsg);
-        return Observable.throw(errMsg);
+            .catch(handleError);
     }
 
     logout(): void {
