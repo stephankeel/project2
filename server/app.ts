@@ -78,7 +78,7 @@ app.use(outputLogger);
 app.use(errorHandler);
 
 app.listen(PORT, HOSTNAME, () => {
-    console.log(`NoteServer running at http://${HOSTNAME}:${PORT}/`);
+    console.log(`Homeautomation server running at http://${HOSTNAME}:${PORT}/`);
 });
 
 
