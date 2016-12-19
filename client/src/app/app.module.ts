@@ -37,8 +37,8 @@ import { BaseRequestOptions } from '@angular/http';
         AuthenticationService,
 
         // providers used to create fake backend_helpers/index
-        fakeBackendProvider,
-        MockBackend,
+        //fakeBackendProvider,
+        //MockBackend,
         BaseRequestOptions
     ],
     bootstrap: [AppComponent]

@@ -24,7 +24,11 @@ export class UsersComponent implements OnInit {
     constructor(private authenticationService: AuthenticationService,
                 private genericService: UserService,
                 private router: Router) {
-        genericService.getUsers().then(users => {
+    }
+
+    ngOnInit() {
+        this.loginUserId = this.authenticationService.loggedInUserId;
+        this.genericService.getUsers().then(users => {
             this.users = users;
         }).catch(error => {
             console.error(error);
@@ -91,10 +95,6 @@ export class UsersComponent implements OnInit {
 
     clearMessage(): void {
         this.message = null;
-    }
-
-    ngOnInit() {
-        this.loginUserId = this.authenticationService.loggedInUserId;
     }
 
 }
