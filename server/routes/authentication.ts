@@ -17,7 +17,10 @@ authenticationRoute.post('/api/authenticate', function (req: express.Request, re
         } else {
             // verify the password
             if (users.length && users[0].password === password) {
-                res.json({token: 'fake-jwt-token ' + users[0].id});
+                res.json({
+                    token: 'fake-jwt-token ' + users[0].id,
+                    data: users[0]
+                });
             } else if (users.length == 0) {
                 res.status(401).json({error: `user ${username} unknown`});
             } else {

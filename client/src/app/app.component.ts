@@ -10,7 +10,7 @@ import {AuthenticationService} from './remote/authentication.service';
 })
 export class AppComponent {
 
-  logInfo: string;
+  private logInfo: string;
 
   log(info: string): void {
     this.logInfo = info;
@@ -26,4 +26,5 @@ export class AppComponent {
       this.router.navigate(['/login']);
     }
   }
+
 }

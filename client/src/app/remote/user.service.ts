@@ -15,7 +15,7 @@ export class UserService {
 
     addUser(user: User): Promise<User> {
         return this.http
-            .post(this.usersUrl, JSON.stringify(user), this.createAuthHeader(this.authenticationService.token))
+            .post(this.usersUrl, JSON.stringify(user), this.createAuthHeader())
             .map(response => response.json().data as User)
             .catch(handleError)
             .toPromise()
@@ -24,7 +24,7 @@ export class UserService {
     updateUser(user: User): Promise<User> {
         const url = `${this.usersUrl}/${user.id}`;
         return this.http
-            .put(url, JSON.stringify(user), this.createAuthHeader(this.authenticationService.token))
+            .put(url, JSON.stringify(user), this.createAuthHeader())
             .map(response => response.json().data as User)
             .catch(handleError)
             .toPromise()
@@ -33,14 +33,14 @@ export class UserService {
     deleteUser(user: User): Promise<User> {
         const url = `${this.usersUrl}/${user.id}`;
         return this.http
-            .delete(url, this.createAuthHeader(this.authenticationService.token))
+            .delete(url, this.createAuthHeader())
             .map(response => response.json().data as String)
             .catch(handleError)
             .toPromise()
     }
 
     getUsers(): Promise<User[]> {
-        let users = this.http.get(this.usersUrl, this.createAuthHeader(this.authenticationService.token))
+        let users = this.http.get(this.usersUrl, this.createAuthHeader())
             .map(response => response.json().data as User[])
             .catch(handleError)
             .toPromise()
@@ -49,7 +49,7 @@ export class UserService {
 
     getUser(id: number): Promise<User> {
         const url = `${this.usersUrl}/${id}`;
-        return this.http.get(url, this.createAuthHeader(this.authenticationService.token))
+        return this.http.get(url, this.createAuthHeader())
             .map(response => response.json().data as User)
             .catch(handleError)
             .toPromise()
@@ -61,10 +61,10 @@ export class UserService {
      return Promise.reject(error.message || error);
      }
      */
-    private createAuthHeader(token: string) {
+    private createAuthHeader() {
         // add authorization header with jwt token
         let headers = new Headers({
-            'Authorization': 'Bearer ' + this.authenticationService.token,
+            'Authorization': 'Bearer ' + this.authenticationService.getToken(),
             'Content-Type': 'application/json'
         });
         return new RequestOptions({headers: headers});
