@@ -4,11 +4,13 @@ import {Observable} from 'rxjs';
 import 'rxjs/add/operator/map';
 
 import {handleError} from './error-utils';
+import {User} from '../user';
 
 @Injectable()
 export class AuthenticationService {
-    public token: string;
-    public loggedInUserId: number;
+    private token: string;
+    private loggedInUserId: number;
+    private loggedInUser: User;
 
     private headers = new Headers({'Content-Type': 'application/json'});
 
@@ -26,12 +28,13 @@ export class AuthenticationService {
         }), {headers: this.headers})
             .map((response: Response) => {
                 // login successful if there's a jwt token in the response
-                let token = response.json() && response.json().token;
-                console.log('login succeeded. Token: ' + token);
+                let token: string = response.json() && response.json().token as string;
+                let user: User =  response.json() && response.json().data as User;
+                console.log(`login succeeded. Token: ${token}, user: ${user.firstname} ${user.lastname}`);
                 if (token) {
                     // set token property
                     this.token = token;
-
+                    this.loggedInUser = user;
                     // store username and jwt token in local storage to keep user logged in between page refreshes
                     localStorage.setItem('currentUser', JSON.stringify({userId: 1, token: token}));
 
@@ -49,9 +52,18 @@ export class AuthenticationService {
         // clear token remove user from local storage to log user out
         this.token = null;
         localStorage.removeItem('currentUser');
+        this.loggedInUser = null;
     }
 
     loggedIn(): boolean {
         return this.token != null;
+    }
+
+    getToken(): string {
+        return this.token;
+    }
+
+    getLoggedInUser(): User {
+        return this.loggedInUser;
     }
 }

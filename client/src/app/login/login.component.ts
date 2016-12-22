@@ -3,6 +3,8 @@ import {Router} from "@angular/router";
 
 import {AuthenticationService} from "../remote/authentication.service";
 import {AuthGuard} from "../auth/auth-guard.service";
+import {AppComponent} from '../app.component';
+import {User} from '../user';
 
 @Component({
     selector: 'app-login',
