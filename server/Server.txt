@@ -1,3 +1,7 @@
+Install required modules
+------------------------
+npm install
+
 Database
 --------
 Use either of following options (to be selected in app.ts):
@@ -25,5 +29,11 @@ Start the server
 open terminal
 cd server
 npm start
+
+Continuous building of the server
+---------------------------------
+open terminal
+cd server
+gulp
 
 
