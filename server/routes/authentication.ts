@@ -3,7 +3,6 @@
 import express = require('express');
 export let authenticationRoute = express.Router();
 import {IUserModel, User} from '../models/user.model'
-let createError = require('http-errors');
 
 authenticationRoute.post('/api/authenticate', function (req: express.Request, res: express.Response, next: express.NextFunction) {
     let jsonBody: string = JSON.stringify(req.body);
@@ -35,7 +34,7 @@ authenticationRoute.use('/api', function (req: express.Request, res: express.Res
     if (authHeader && authHeader.startsWith('Bearer fake-jwt-token ')) {
         let userIdFromFakeToken = authHeader.split(' ')[2];
         // TODO: test token and return 401 if invalid else do nothing!
-        console.log('user is authenticated');
+        console.log('user is authenticated with token ' + userIdFromFakeToken);
         next();
     } else {
         res.status(401).json({error: 'not yet authenticated'});

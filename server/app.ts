@@ -15,7 +15,7 @@ const PORT: number = 3001;
 const DB_HOSTNAME: string = HOSTNAME;
 const DB_PORT: number = 27017;
 
-let app = express();
+let app: express.Express = express();
 
 let db: mongoose.Connection = mongoose.connection;
 let dbLocation: any;
@@ -62,13 +62,12 @@ app.use('/', function (req: express.Request, res: express.Response, next: expres
     next();
 });
 
-app.use(authenticationRoute);
-app.use(userRoute);
-
 app.use('/about', function (req: express.Request, res: express.Response, next: express.NextFunction) {
     res.send('Homeautomation Project by D.Leuenberger and St.Keel');
 });
 
+app.use(authenticationRoute);
+userRoute(app);
 
 app.use(function (req: express.Request, res: express.Response, next: express.NextFunction) {
     next(createError(404, 'Not found'));
