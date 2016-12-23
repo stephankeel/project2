@@ -73,7 +73,7 @@ app.use(authenticationRoute);
 userRoute(app);
 
 app.use(function (req: express.Request, res: express.Response, next: express.NextFunction) {
-    next(createError(404, 'Not found'));
+    next(createError(404, `No route found for ${req.method} ${req.url}`));
 });
 
 app.use(outputLogger);
