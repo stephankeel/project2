@@ -1,7 +1,7 @@
 'use strict';
 
 import express = require('express');
-import {IUserModel, User} from '../models/user.model'
+import {IUserModel, User} from '../models/user.model';
 
 export function addUser(req: express.Request, res: express.Response, next: express.NextFunction) {
         let user: IUserModel = new User(req.body);
@@ -46,7 +46,7 @@ export function updateUser(req: express.Request, res: express.Response, next: ex
     }
 
 export function getAllUsers(req: express.Request, res: express.Response, next: express.NextFunction) {
-        User.find((err, users) => {
+        User.find((err: any, users: IUserModel[]) => {
             if (err) {
                 res.status(404).json({error: `error retrieving users. ${err}`});
             } else {
@@ -59,7 +59,7 @@ export function getAllUsers(req: express.Request, res: express.Response, next: e
 
 export function getUser(req: express.Request, res: express.Response, next: express.NextFunction) {
         let ref = {_id: req.params.id};
-        User.findById(ref, (err, user) => {
+        User.findById(ref, (err: any, user: IUserModel) => {
             if (err) {
                 res.status(404).json({error: `error retrieving user ${ref._id}. ${err}`});
             } else {
@@ -72,7 +72,7 @@ export function getUser(req: express.Request, res: express.Response, next: expre
 
 export function deleteUser(req: express.Request, res: express.Response, next: express.NextFunction) {
     let ref = {_id: req.params.id};
-    User.remove(ref, (err) => {
+    User.remove(ref, (err: any) => {
         if (err) {
             res.status(404).json({error: `error deleting user ${ref._id}. ${err}`});
         }

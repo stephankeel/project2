@@ -1,5 +1,4 @@
 'use strict';
-
 import express = require('express');
 import controller = require('../controllers/user.controller');
 
@@ -10,7 +9,7 @@ export function requiresAdmin(req: express.Request, res: express.Response, next:
         console.log(`user is authorized for ${req.url}`);
         next();
     } else {
-        res.status(403).json({error: `not autorized to use ${req.url}`});
+        res.status(403).json({error: `not authorized to use ${req.url}`});
     }
 
 }

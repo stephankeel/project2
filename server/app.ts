@@ -8,8 +8,9 @@ let createError = require('http-errors');
 
 import {authenticationRoute} from './routes/authentication';
 import {userRoute} from './routes/user.route';
+import {initAdmin} from './models/user.model';
 
-const DB_OPTION: number = 3;
+const DB_OPTION: number = 1;
 const HOSTNAME: string = '127.0.0.1';
 const PORT: number = 3001;
 const DB_HOSTNAME: string = HOSTNAME;
@@ -34,6 +35,8 @@ db.once('open', () => {
 });
 db.on('error', console.error.bind(console, 'connection error:'));
 mongoose.connect(dbLocation);
+// create admin user if not yet existing
+initAdmin();
 
 let errorHandler = function (err: Error, req: express.Request, res: express.Response, next: express.NextFunction) {
     console.log(`ErrorHandler: ${err.stack}`);

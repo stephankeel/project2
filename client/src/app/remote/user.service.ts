@@ -64,7 +64,7 @@ export class UserService {
     private createAuthHeader() {
         // add authorization header with jwt token
         let headers = new Headers({
-            'Authorization': 'Bearer ' + this.authenticationService.getToken(),
+            'Authorization': this.authenticationService.getToken(),
             'Content-Type': 'application/json'
         });
         return new RequestOptions({headers: headers});
