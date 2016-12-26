@@ -1,40 +1,40 @@
 import {IUser} from '../../../server/entities/user.interface';
+import {UserType, UserTypeValue, UserTypeString} from '../../../server/entities/user-type';
+
+export {UserType} from '../../../server/entities/user-type';
 
 export class User implements IUser{
-    static STANDARD: number = 0;
-    static ADMIN: number = 1;
-    static GUEST: number = 2;
 
     constructor(public id?: any,
                 public firstname?: string,
                 public lastname?: string,
-                public type?: number,
+                public type?: UserType,
                 public username?: string,
                 public password?: string) {
     }
 
-    static getUserTypes(): number[] {
-        return [User.STANDARD, User.ADMIN, User.GUEST];
+    static getUserTypeValue(): UserType[] {
+        return UserTypeValue;
     }
 
-    static getUserTypesText(): string[] {
-        return ['Standard', 'Admin', 'Gast'];
+    static getUserTypeText(): string[] {
+        return UserTypeString;
     }
 
-    isUserType(type: number): boolean {
+    isUserType(type: UserType): boolean {
         return this.type === type;
     }
 
     isStandardUser(): boolean {
-        return this.type ===User.STANDARD;
+        return this.type === UserType.STANDARD;
     }
 
     isAdminUser(): boolean {
-        return this.type === User.ADMIN;
+        return this.type === UserType.ADMIN;
     }
 
     isGuestUser(): boolean {
-        return this.type === User.GUEST;
+        return this.type === UserType.GUEST;
     }
 
 }

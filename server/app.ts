@@ -10,7 +10,7 @@ import {authenticationRoute} from './routes/authentication';
 import {userRoute} from './routes/user.route';
 import {initAdmin} from './models/user.model';
 
-const DB_OPTION: number = 1;
+const DB_OPTION: number = 3;
 const HOSTNAME: string = '127.0.0.1';
 const PORT: number = 3001;
 const DB_HOSTNAME: string = HOSTNAME;

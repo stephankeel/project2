@@ -3,7 +3,7 @@ import {Router}    from '@angular/router';
 
 import {UserService} from '../remote/user.service';
 import {AuthenticationService} from '../remote/authentication.service';
-import {User} from '../user';
+import {User, UserType} from '../user';
 
 @Component({
     selector: 'app-users',
@@ -18,8 +18,8 @@ export class UsersComponent implements OnInit {
     passwordConfirmation: string;
     loginUserId: number;
     loggedInUser: User;
-    userTypes : number[] = User.getUserTypes();
-    userTypesText: string[] = User.getUserTypesText();
+    userTypes: UserType[] = User.getUserTypeValue();
+    userTypesText: string[] = User.getUserTypeText();
     message: string;
 
     constructor(private authenticationService: AuthenticationService,
@@ -43,7 +43,7 @@ export class UsersComponent implements OnInit {
 
     addClicked(): void {
         this.user = new User();
-        this.user.type = User.STANDARD;
+        this.user.type = UserType.STANDARD;
         this.passwordConfirmation = null;
     }
 
@@ -53,12 +53,8 @@ export class UsersComponent implements OnInit {
         this.passwordConfirmation = this.user.password;
     }
 
-    setUserType(type: number) {
-        if (type >= User.STANDARD && type <= User.GUEST) {
-            this.user.type = type;
-        } else {
-            console.error('Unknow user type: ' + type);
-        }
+    setUserType(type: UserType) {
+        this.user.type = type;
     }
 
     doAddOrUpdate(): void {

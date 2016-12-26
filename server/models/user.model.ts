@@ -1,9 +1,9 @@
 import {Document, Schema, Model, model} from 'mongoose';
 import {IUser} from '../entities/user.interface';
+import {UserType} from '../entities/user-type';
 
 export interface IUserModel extends IUser, Document {
-}
-;
+};
 
 export let UserSchema = new Schema({
     id: String,
@@ -30,7 +30,7 @@ export function initAdmin() {
         let user:IUserModel = new User();
         user.firstname = 'admin';
         user.lastname = 'admin';
-        user.type = 1;
+        user.type = UserType.ADMIN;
         user.username = 'admin';
         user.password = '123456';
         console.log(`creating admin user: ${JSON.stringify(user)}`);
