@@ -36,4 +36,8 @@ open terminal
 cd server
 gulp
 
+Initial User
+------------
+If the homeautomation server is started, then admin user "admin", password "1234546" will be created if not yet existing.
+
 
