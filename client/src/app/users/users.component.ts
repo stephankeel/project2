@@ -19,7 +19,7 @@ export class UsersComponent implements OnInit {
     loginUserId: number;
     loggedInUser: User;
     userTypes: UserType[] = User.getUserTypeValue();
-    userTypesText: string[] = User.getUserTypeText();
+    userTypeText: string[] = User.getUserTypeText();
     message: string;
 
     constructor(private authenticationService: AuthenticationService,
