@@ -2,41 +2,17 @@
 
 import express = require('express');
 import bodyParser = require('body-parser');
-import mongoose = require('mongoose');
-// let tingodb = require('tingodb');
 let createError = require('http-errors');
 
 import {authenticationRoute} from './routes/authentication';
 import {userRoute} from './routes/user.route';
-import {initAdmin} from './models/user.model';
+import {DBService} from './models/db.service';
 
-const DB_OPTION: number = 3;
-const HOSTNAME: string = '127.0.0.1';
+export const HOSTNAME: string = '127.0.0.1';
 const PORT: number = 3001;
-const DB_HOSTNAME: string = HOSTNAME;
-const DB_PORT: number = 27017;
 
-let app: express.Express = express();
-
-let db: mongoose.Connection = mongoose.connection;
-let dbLocation: any;
-switch (DB_OPTION) {
-    case 1:
-        dbLocation = `${DB_HOSTNAME}:${DB_PORT}/homeautomation`;
-        break;
-    case 2:
-    // not yet provided: new tingodb.Db('./data-tingodb', {});
-    // break;
-    default:
-        dbLocation = 'mongodb://admin:hallihallo62@ds050879.mlab.com:50879/homeautomation';
-}
-db.once('open', () => {
-    console.log('DB is connected');
-});
-db.on('error', console.error.bind(console, 'connection error:'));
-mongoose.connect(dbLocation);
-// create admin user if not yet existing
-initAdmin();
+// Start the database service
+DBService.init(HOSTNAME);
 
 let errorHandler = function (err: Error, req: express.Request, res: express.Response, next: express.NextFunction) {
     console.log(`ErrorHandler: ${err.stack}`);
@@ -52,6 +28,8 @@ let outputLogger = function (req: express.Request, res: express.Response, next: 
     console.log(`Response with status code: ${res.statusCode}`);
     next();
 }
+
+let app: express.Express = express();
 
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
