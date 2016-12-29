@@ -13,8 +13,6 @@ import {UsersComponent} from "./users/users.component";
 import {AuthGuard} from "./auth/auth-guard.service";
 
 // used to create fake backend
-import { fakeBackendProvider } from './remote/fake-backend';
-import { MockBackend, MockConnection } from '@angular/http/testing';
 import { BaseRequestOptions } from '@angular/http';
 
 @NgModule({
@@ -37,8 +35,6 @@ import { BaseRequestOptions } from '@angular/http';
         AuthenticationService,
 
         // providers used to create fake backend_helpers/index
-        //fakeBackendProvider,
-        //MockBackend,
         BaseRequestOptions
     ],
     bootstrap: [AppComponent]

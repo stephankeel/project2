@@ -12,7 +12,7 @@ Use either of following options (to be selected in app.ts):
 In case of Database Option [1]
 ------------------------------
 open terminal
-cd server
+change to project2 folder
 mkdir data
 "C:\Program Files\MongoDB\Server\3.4\bin\mongod" --dbpath .\data
 
@@ -27,7 +27,7 @@ for (var key in schema) { print (key) ; }
 Start the server
 ----------------
 open terminal
-cd server
+change to project2/server folder
 npm start
 
 Continuous building of the server
@@ -35,5 +35,9 @@ Continuous building of the server
 open terminal
 cd server
 gulp
+
+Initial User
+------------
+If the homeautomation server is started, then admin user "admin", password "1234546" will be created if not yet existing.
 
 

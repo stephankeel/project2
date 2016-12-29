@@ -4,7 +4,7 @@ var tsProject = ts.createProject('tsconfig.json');
 var sourcemaps = require('gulp-sourcemaps');
 
 gulp.task('default', function () {
-    gulp.watch('./**/*.ts', ['build']);
+    gulp.watch(['./**/*.ts','!./public/**/*'], ['build']);
 });
 
 gulp.task('build', function () {

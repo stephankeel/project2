@@ -38,7 +38,7 @@
                     <input class="userFormValue validatable userInput" id="userType-{{uType}}"
                            type="radio" (keydown)="clearMessage()" (focus)="clearMessage()"
                            name="userType" [checked]="user.isUserType(uType)" (click)="setUserType(uType)">
-                    {{userTypesText[uType]}}
+                    {{userTypeText[uType]}}
                 </label>
             </div>
         </div>
