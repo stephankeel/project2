@@ -31,6 +31,11 @@ open terminal
 change to project2/server folder
 npm start
 
+Just building the server
+------------------------
+(continuous building, but not starting the server, i.e. for debugging in Webstorm)
+gulp watch
+
 Initial User
 ------------
 If the homeautomation server is started, then admin user "admin", password "1234546" will be created if not yet existing.

@@ -2,8 +2,10 @@
 
 import express = require('express');
 import bodyParser = require('body-parser');
-let createError = require('http-errors');
+import createError = require('http-errors');
+import log4js = require('log4js');
 
+import {logger} from './utils/logger';
 import {authenticationRoute} from './routes/authentication';
 import {userRoute} from './routes/user.route';
 import {DBService} from './models/db.service';
@@ -15,22 +17,26 @@ const PORT: number = 3001;
 DBService.init(HOSTNAME);
 
 let errorHandler = function (err: Error, req: express.Request, res: express.Response, next: express.NextFunction) {
-    console.log(`ErrorHandler: ${err.stack}`);
+    logger.error(`ErrorHandler: ${err.stack}`);
     res.status(500).send(err.message);
 }
 
 let inputLogger = function (req: express.Request, res: express.Response, next: express.NextFunction) {
-    console.log(`Request: ${req.method} ${req.url}`);
+    logger.debug(`Request: ${req.method} ${req.url}`);
     next();
 }
 
 let outputLogger = function (req: express.Request, res: express.Response, next: express.NextFunction) {
-    console.log(`Response with status code: ${res.statusCode}`);
+    logger.debug(`Response with status code: ${res.statusCode}`);
     next();
 }
 
 let app: express.Express = express();
 
+app.use(log4js.connectLogger(logger, {
+    level: 'trace',
+    format: 'express --> :method :url :status :req[Accept] :res[Content-Type]'
+}));
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
@@ -58,7 +64,7 @@ app.use(outputLogger);
 app.use(errorHandler);
 
 app.listen(PORT, HOSTNAME, () => {
-    console.log(`Homeautomation server running at http://${HOSTNAME}:${PORT}/`);
+    logger.info(`Homeautomation server running at http://${HOSTNAME}:${PORT}/`);
 });
 
 
