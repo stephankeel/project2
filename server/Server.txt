@@ -26,15 +26,10 @@ for (var key in schema) { print (key) ; }
 
 Start the server
 ----------------
+(incl. continuous building of the typescript files of the server) 
 open terminal
 change to project2/server folder
 npm start
-
-Continuous building of the server
----------------------------------
-open terminal
-cd server
-gulp
 
 Initial User
 ------------
