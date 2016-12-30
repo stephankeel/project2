@@ -1,7 +1,11 @@
 {
-  "name": "server",
+  "name": "project2-server",
   "version": "1.0.0",
-  "description": "",
+  "description": "Serverpart for Homeautomation Project, HSR, CAS FEE 2016-2",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dleuenbe/project2.git"
+  },
   "main": "app.js",
   "scripts": {
     "start": "gulp",
