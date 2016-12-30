@@ -1,0 +1,20 @@
+{
+  "name": "project2-starter",
+  "version": "1.0.0",
+  "description": "Starter for Homeautomation Project, HSR, CAS FEE 2016-2",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dleuenbe/project2.git"
+  },
+  "scripts": {
+    "start": "gulp",
+    "install": "gulp install"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "gulp": "^3.9.1"
+  },
+  "devDependencies": {}
+}
