@@ -1,5 +1,6 @@
 'use strict';
 
+import {logger} from '../utils/logger';
 import mongoose = require('mongoose');
 import {initAdmin} from './user.model';
 // let tingodb = require('tingodb');
@@ -37,16 +38,16 @@ export class DBService {
         }
 
         DBService.instance.db
-            .once('open', () => console.log('DB ready'))
-            .on('connecting', () => console.log('DB connecting...'))
-            .on('connected', () => console.log('DB connected'))
-            .on('reconnected', () => console.log('DB reconnected'))
-            .on('disconnected', () => console.log('DB disconnected'))
+            .once('open', () => logger.info('DB ready'))
+            .on('connecting', () => logger.info('DB connecting...'))
+            .on('connected', () => logger.info('DB connected'))
+            .on('reconnected', () => logger.info('DB reconnected'))
+            .on('disconnected', () => logger.info('DB disconnected'))
             .on('error', (error: any) => {
-                console.error(`DB connection error: ${error}`);
+                logger.error('DB connection error', error);
                 mongoose.disconnect((err) => {
                     if (err) {
-                        console.error(`mongoose disconnect failed: ${err}`);
+                        logger.error('mongoose disconnect failed', err);
                     }
                     DBService.instance.connect(RETRY_SECONDS);
                 });
@@ -61,7 +62,7 @@ export class DBService {
     }
 
     private connect(delay: number): void {
-        console.log(`Trying to connect the DB in ${delay} seconds ...`);
+        logger.info(`Trying to connect the DB in ${delay} seconds ...`);
         setTimeout(() => mongoose.connect(DBService.instance.dbLocation, {server:{auto_reconnect:true}}), delay * 1000);
     }
 

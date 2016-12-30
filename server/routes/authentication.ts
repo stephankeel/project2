@@ -1,15 +1,17 @@
 'use strict';
 
+import {logger} from '../utils/logger';
 import express = require('express');
-export let authenticationRoute = express.Router();
 import {IUserModel, User} from '../models/user.model'
 import {IUser} from '../entities/user.interface';
+
+export let authenticationRoute = express.Router();
 
 let tokenUserMap: Map<string, IUserModel> = new Map<string, IUserModel>();
 
 authenticationRoute.post('/api/authenticate', function (req: express.Request, res: express.Response, next: express.NextFunction) {
     let jsonBody: string = JSON.stringify(req.body);
-    console.log(`authenticate: ${jsonBody}`);
+    logger.info(`authenticate: ${jsonBody}`);
     let username: String = req.body.username;
     let password: String = req.body.password;
     let selector = {'username': username}
@@ -26,7 +28,7 @@ authenticationRoute.post('/api/authenticate', function (req: express.Request, re
                 user.id = user._id;
                 tokenUserMap.delete(authToken);
                 tokenUserMap.set(authToken, user);
-                console.log(`user ${user.username} authenticated successfully`);
+                logger.info(`user ${user.username} authenticated successfully`);
                 res.json({
                     token: authToken,
                     data: users[0]
@@ -44,7 +46,7 @@ authenticationRoute.use('/api', function (req: express.Request, res: express.Res
     let authHeader = req.get('Authorization');
     if (authHeader && tokenUserMap.get(authHeader)) {
         let user: IUserModel = tokenUserMap.get(authHeader);
-        console.log(`user ${user.username} is authenticated with token ${authHeader}`);
+        logger.info(`user ${user.username} is authenticated with token ${authHeader}`);
         next();
     } else {
         res.status(401).json({error: 'not yet authenticated'});
