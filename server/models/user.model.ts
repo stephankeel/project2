@@ -10,12 +10,19 @@ export let UserSchema = new Schema({
     id: String,
     firstname: String,
     lastname: String,
-    type: Number,
-    username: String,
-    password: String,
+    type: {type: Number, required: true, min:UserType.GUEST, max:UserType.ADMIN},
+    username: {type: String, required: true, minlength: 4, unique: true},
+    password: {type: String, required: true, minlength: 4}
 }, {
     versionKey: false, // avoids __v, i.e. the version key
 });
+
+/*
+UserSchema.pre('save', (next) => {
+    // TODO: Pre save validation
+    next();
+});
+*/
 
 export const User:Model<IUserModel> = model<IUserModel>('User', UserSchema);
 
