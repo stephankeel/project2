@@ -42,6 +42,18 @@ authenticationRoute.post('/api/authenticate', function (req: express.Request, re
     });
 });
 
+authenticationRoute.get('/api/authenticated', function (req: express.Request, res: express.Response, next: express.NextFunction) {
+    let authHeader = req.get('Authorization');
+    logger.info(`testing token ${authHeader}`);
+    if (authHeader && tokenUserMap.get(authHeader)) {
+        let user: IUserModel = tokenUserMap.get(authHeader);
+        logger.info(`user ${user.username} is authenticated with token ${authHeader}`);
+        res.json('token is valid');
+    } else {
+        res.status(401).json({error: 'token is not valid'});
+    }
+});
+
 authenticationRoute.use('/api', function (req: express.Request, res: express.Response, next: express.NextFunction) {
     let authHeader = req.get('Authorization');
     if (authHeader && tokenUserMap.get(authHeader)) {
