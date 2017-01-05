@@ -2,12 +2,12 @@
 
 import {logger} from '../utils/logger';
 import express = require('express');
+import eJwt = require('express-jwt');
+import jwt = require('jsonwebtoken');
 import {IUserModel, User} from '../models/user.model'
 import {IUser} from '../entities/user.interface';
 
 export let authenticationRoute = express.Router();
-
-let tokenUserMap: Map<string, IUserModel> = new Map<string, IUserModel>();
 
 authenticationRoute.post('/api/authenticate', function (req: express.Request, res: express.Response, next: express.NextFunction) {
     let jsonBody: string = JSON.stringify(req.body);
@@ -21,17 +21,12 @@ authenticationRoute.post('/api/authenticate', function (req: express.Request, re
         } else {
             // verify the password
             if (users.length && users[0].password === password) {
-                // TODO: create proper jwt token.
-                // TODO: It would be simpler to use username + password for each REST request instead of a jwt token!
-                let authToken = 'fake-jwt-token ' + users[0]._id;
                 let user: IUserModel = users[0];
                 user.id = user._id;
-                tokenUserMap.delete(authToken);
-                tokenUserMap.set(authToken, user);
+                let authToken = jwt.sign({id: user.id, username: user.username, userType: user.type}, "secret", {expiresIn: "1h"});
                 logger.info(`user ${user.username} authenticated successfully`);
                 res.json({
-                    token: authToken,
-                    data: users[0]
+                    token: authToken
                 });
             } else if (users.length == 0) {
                 res.status(401).json({error: `user ${username} unknown`});
@@ -42,14 +37,17 @@ authenticationRoute.post('/api/authenticate', function (req: express.Request, re
     });
 });
 
-authenticationRoute.use('/api', function (req: express.Request, res: express.Response, next: express.NextFunction) {
-    let authHeader = req.get('Authorization');
-    if (authHeader && tokenUserMap.get(authHeader)) {
-        let user: IUserModel = tokenUserMap.get(authHeader);
-        logger.info(`user ${user.username} is authenticated with token ${authHeader}`);
+authenticationRoute.use('/api', eJwt({secret: 'secret'}), function (req: express.Request & jwtTypeExtension.Authenticated<IUserModel>, res: express.Response, next: express.NextFunction) {
+    if (req.user) {
+        logger.info(`userid: ${req.user.id}, username: ${req.user.username}, req.body: ` + JSON.stringify(req.body));
         next();
     } else {
         res.status(401).json({error: 'not yet authenticated'});
     }
 });
 
+declare namespace jwtTypeExtension {
+    export interface Authenticated<T> {
+        user: T;
+    }
+}
