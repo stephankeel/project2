@@ -1,5 +1,6 @@
 'use strict';
 
+import {logger} from '../utils/logger';
 import {RequestResponse} from 'request';
 import {BASE_URL} from './constants';
 
@@ -17,7 +18,7 @@ describe('Initial Authentication Test', function () {
                 expect(response.statusCode).toBe(200);
                 let authData = JSON.parse(body);
                 adminToken = authData.token;
-                console.log(`admin-token: ${adminToken}`);
+                logger.debug(`admin-token: ${adminToken}`);
                 done();
             });
         });

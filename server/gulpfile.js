@@ -4,6 +4,7 @@ var tsProject = ts.createProject('tsconfig.json');
 var sourcemaps = require('gulp-sourcemaps');
 var spawn = require('child_process').spawn;
 var runSequence = require('run-sequence');
+var jasmine = require('gulp-jasmine');
 
 gulp.task('default', function () {
     runSequence('build', ['watch', 'run']);
@@ -23,4 +24,16 @@ gulp.task('build', function () {
         .pipe(tsProject()).js
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest('./'));
+});
+
+// Just run tests, app must have been started before
+gulp.task('jasmine', function() {
+    return gulp.src('spec/*.js').pipe(jasmine());
+});
+
+// Start app, run tests and stop app
+gulp.task('test', function() {
+   return runSequence(['run', 'jasmine'], function() {
+       process.exit();
+   });
 });

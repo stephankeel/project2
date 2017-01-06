@@ -27,6 +27,7 @@
     "express": "^4.14.0",
     "gulp": "^3.9.1",
     "gulp-cli": "^1.2.2",
+    "gulp-jasmine": "^2.4.2",
     "gulp-sourcemaps": "^1.9.1",
     "jasmine": "^2.5.2",
     "log4js": "^1.1.0",

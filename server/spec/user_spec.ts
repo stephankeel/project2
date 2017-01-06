@@ -1,5 +1,6 @@
 'use strict';
 
+import {logger} from '../utils/logger';
 import {RequestResponse} from 'request';
 import {BASE_URL} from './constants';
 import {IUser} from '../entities/user.interface';
@@ -31,7 +32,7 @@ describe('User Test', function () {
                 expect(response.statusCode).toBe(200);
                 let authData = JSON.parse(body);
                 adminToken = authData.token;
-                console.log(`admin-token: ${adminToken}`);
+                logger.debug(`admin-token: ${adminToken}`);
                 done();
             });
         });
@@ -43,9 +44,9 @@ describe('User Test', function () {
                 }
             }, function (error: any, response: RequestResponse, body: any) {
                 expect(response.statusCode).toBe(200);
-                console.log('Users: ' + JSON.stringify(body));
+                logger.debug('Users: ' + JSON.stringify(body));
                 let users: IUser[] = JSON.parse(body).data;
-                console.log('Users: ' + users);
+                logger.debug('Users: ' + users);
                 expect(users.length).toBeGreaterThan(0);
                 done();
             });
