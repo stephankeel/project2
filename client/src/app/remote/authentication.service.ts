@@ -9,15 +9,11 @@ import {User} from '../user';
 
 @Injectable()
 export class AuthenticationService {
-    private token: string;
     private jwtHelper: JwtHelper = new JwtHelper();
 
     private headers = new Headers({'Content-Type': 'application/json'});
 
     constructor(private http: Http) {
-        // set token if saved in local storage
-        var currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        this.token = currentUser && currentUser.token;
     }
 
     login(username: string, password: string): Observable<boolean> {
@@ -29,16 +25,11 @@ export class AuthenticationService {
                 // login successful if there's a jwt token in the response
                 let token: string = response.json() && response.json().token as string;
                 if (token) {
-                  // set token property
-                    this.token = token;
-                  // store jwt token in local storage to keep user logged in between page refreshes
+                    // store jwt token in local storage to keep user logged in between page refreshes
                     localStorage.setItem('id_token', token);
-                    let username = this.decodeUsername(token);
-                    console.log(`login succeeded. username: ${username}`);
-                  // return true to indicate successful login
+                    console.log(`login succeeded. username: ${this.decodeUsername(token)}`);
                     return true;
                 } else {
-                    // return false to indicate failed login
                     return false;
                 }
             })
@@ -46,8 +37,6 @@ export class AuthenticationService {
     }
 
     logout(): void {
-        // clear token remove user from local storage to log user out
-        this.token = null;
         localStorage.removeItem('id_token');
     }
 
@@ -61,11 +50,10 @@ export class AuthenticationService {
     }
 
     getToken(): string {
-        return this.token;
+        return localStorage.getItem('id_token');
     }
 
     getLoggedInUsername(): string {
-        let token = localStorage.getItem('id_token');
-        return this.decodeUsername(token);
+        return this.decodeUsername(this.getToken());
     }
 }
