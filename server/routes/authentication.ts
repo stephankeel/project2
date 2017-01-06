@@ -23,6 +23,7 @@ authenticationRoute.post('/api/authenticate', function (req: express.Request, re
             if (users.length && users[0].password === password) {
                 let user: IUserModel = users[0];
                 user.id = user._id;
+                // TODO: das Passwort 'secret' muss noch ersetzt werden. Am besten mit einem privaten und einem öffentlichen Schlüssel.
                 let authToken = jwt.sign({id: user.id, username: user.username, userType: user.type}, "secret", {expiresIn: "1h"});
                 logger.info(`user ${user.username} authenticated successfully`);
                 res.json({
@@ -37,6 +38,7 @@ authenticationRoute.post('/api/authenticate', function (req: express.Request, re
     });
 });
 
+// TODO: das Passwort 'secret' muss noch ersetzt werden. Am besten mit einem privaten und einem öffentlichen Schlüssel.
 authenticationRoute.use('/api', eJwt({secret: 'secret'}), function (req: express.Request & jwtTypeExtension.Authenticated<IUserModel>, res: express.Response, next: express.NextFunction) {
     if (req.user) {
         logger.info(`userid: ${req.user.id}, username: ${req.user.username}, req.body: ` + JSON.stringify(req.body));
