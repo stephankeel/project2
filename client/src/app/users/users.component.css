@@ -1,6 +1,8 @@
-#users {}
+#users {
+}
 
-#addIcon {}
+#addIcon {
+}
 
 #usersContent {
   display: flex;
@@ -15,7 +17,8 @@ main {
   margin: 0.5em;
 }
 
-.userListItem {}
+.userListItem {
+}
 
 .userForm {
   flex: 2 2;
@@ -52,16 +55,21 @@ main {
   flex: 1;
 }
 
-.userIdDiv {}
+.userIdDiv {
+}
 
-#userMessage {}
+#userMessage {
+}
 
 .buttonDiv {
   margin-top: 0.5em;
 }
 
-#okButton {}
-#deleteButton {}
+#okButton {
+}
+
+#deleteButton {
+}
 
 .contextHeaderActionDiv {
   display: flex;
