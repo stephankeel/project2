@@ -1,6 +1,6 @@
-import { SPAANGULARPage } from './app.po';
+import {SPAANGULARPage} from './app.po';
 
-describe('spa-angular App', function() {
+describe('spa-angular App', function () {
   let page: SPAANGULARPage;
 
   beforeEach(() => {
