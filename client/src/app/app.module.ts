@@ -20,39 +20,39 @@ import {RequestOptions, Http} from "@angular/http";
 import {AuthHttp, AuthConfig} from 'angular2-jwt';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
-  return new AuthHttp(new AuthConfig({
-    globalHeaders: [{'Content-Type':'application/json'}]
-  }), http, options);
+    return new AuthHttp(new AuthConfig({
+        globalHeaders: [{'Content-Type': 'application/json'}]
+    }), http, options);
 }
 
 @NgModule({
-  imports: [
-    BrowserModule,
-    FormsModule,
-    HttpModule,
-    AppRoutingModule,
-    Angular2JWTModule
-  ],
-  declarations: [
-    AppComponent,
-    LoginComponent,
-    DashboardComponent,
-    UsersComponent,
-    LoginComponent
-  ],
-  providers: [
-    UserService,
-    AuthGuard,
-    {
-      provide: AuthHttp,
-      useFactory: authHttpServiceFactory,
-      deps: [Http, RequestOptions]
-    },
-    AuthenticationService,
-    // providers used to create fake backend_helpers/index
-    BaseRequestOptions
-  ],
-  bootstrap: [AppComponent]
+    imports: [
+        BrowserModule,
+        FormsModule,
+        HttpModule,
+        AppRoutingModule,
+        Angular2JWTModule
+    ],
+    declarations: [
+        AppComponent,
+        LoginComponent,
+        DashboardComponent,
+        UsersComponent,
+        LoginComponent
+    ],
+    providers: [
+        UserService,
+        AuthGuard,
+        {
+            provide: AuthHttp,
+            useFactory: authHttpServiceFactory,
+            deps: [Http, RequestOptions]
+        },
+        AuthenticationService,
+        // providers used to create fake backend_helpers/index
+        BaseRequestOptions
+    ],
+    bootstrap: [AppComponent]
 })
 
 export class AppModule {
