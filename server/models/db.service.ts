@@ -63,7 +63,7 @@ export class DBService {
 
     private connect(delay: number): void {
         logger.info(`Trying to connect the DB in ${delay} seconds ...`);
-        setTimeout(() => mongoose.connect(DBService.instance.dbLocation, {server:{auto_reconnect:true}}), delay * 1000);
+        setTimeout(() => mongoose.connect(DBService.instance.dbLocation, {server: {auto_reconnect: true}}), delay * 1000);
     }
 
 }

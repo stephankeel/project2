@@ -7,4 +7,5 @@ export interface IUser {
     type?: UserType;
     username?: string;
     password?: string;
-};
+}
+;

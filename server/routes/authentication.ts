@@ -24,7 +24,11 @@ authenticationRoute.post('/api/authenticate', function (req: express.Request, re
                 let user: IUserModel = users[0];
                 user.id = user._id;
                 // TODO: das Passwort 'secret' muss noch ersetzt werden. Am besten mit einem privaten und einem öffentlichen Schlüssel.
-                let authToken = jwt.sign({id: user.id, username: user.username, userType: user.type}, "secret", {expiresIn: "1h"});
+                let authToken = jwt.sign({
+                    id: user.id,
+                    username: user.username,
+                    userType: user.type
+                }, "secret", {expiresIn: "1h"});
                 logger.info(`user ${user.username} authenticated successfully`);
                 res.json({
                     token: authToken
