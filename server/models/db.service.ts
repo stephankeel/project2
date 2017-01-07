@@ -14,56 +14,56 @@ const RETRY_SECONDS: number = 5;
  */
 export class DBService {
 
-    private static instance: DBService = new DBService();
-    private static hostname: string;
+  private static instance: DBService = new DBService();
+  private static hostname: string;
 
-    private db: mongoose.Connection = mongoose.connection;
-    private dbLocation: any;
+  private db: mongoose.Connection = mongoose.connection;
+  private dbLocation: any;
 
-    private constructor() {
+  private constructor() {
+  }
+
+  public static init(hostname: string): DBService {
+    DBService.hostname = hostname;
+
+    switch (DB_OPTION) {
+      case 1:
+        DBService.instance.dbLocation = `${DBService.hostname}:${DB_PORT}/homeautomation`;
+        break;
+      case 2:
+      // not yet provided: new tingodb.Db('./data-tingodb', {});
+      // break;
+      default:
+        DBService.instance.dbLocation = 'mongodb://admin:hallihallo62@ds050879.mlab.com:50879/homeautomation';
     }
 
-    public static init(hostname: string): DBService {
-        DBService.hostname = hostname;
+    DBService.instance.db
+      .once('open', () => logger.info('DB ready'))
+      .on('connecting', () => logger.info('DB connecting...'))
+      .on('connected', () => logger.info('DB connected'))
+      .on('reconnected', () => logger.info('DB reconnected'))
+      .on('disconnected', () => logger.info('DB disconnected'))
+      .on('error', (error: any) => {
+        logger.error('DB connection error', error);
+        mongoose.disconnect((err) => {
+          if (err) {
+            logger.error('mongoose disconnect failed', err);
+          }
+          DBService.instance.connect(RETRY_SECONDS);
+        });
+      });
 
-        switch (DB_OPTION) {
-            case 1:
-                DBService.instance.dbLocation = `${DBService.hostname}:${DB_PORT}/homeautomation`;
-                break;
-            case 2:
-            // not yet provided: new tingodb.Db('./data-tingodb', {});
-            // break;
-            default:
-                DBService.instance.dbLocation = 'mongodb://admin:hallihallo62@ds050879.mlab.com:50879/homeautomation';
-        }
+    DBService.instance.connect(0);
 
-        DBService.instance.db
-            .once('open', () => logger.info('DB ready'))
-            .on('connecting', () => logger.info('DB connecting...'))
-            .on('connected', () => logger.info('DB connected'))
-            .on('reconnected', () => logger.info('DB reconnected'))
-            .on('disconnected', () => logger.info('DB disconnected'))
-            .on('error', (error: any) => {
-                logger.error('DB connection error', error);
-                mongoose.disconnect((err) => {
-                    if (err) {
-                        logger.error('mongoose disconnect failed', err);
-                    }
-                    DBService.instance.connect(RETRY_SECONDS);
-                });
-            });
+    // create admin user if not yet existing
+    initAdmin();
 
-        DBService.instance.connect(0);
+    return DBService.instance;
+  }
 
-        // create admin user if not yet existing
-        initAdmin();
-
-        return DBService.instance;
-    }
-
-    private connect(delay: number): void {
-        logger.info(`Trying to connect the DB ${DBService.instance.dbLocation} in ${delay} seconds ...`);
-        setTimeout(() => mongoose.connect(DBService.instance.dbLocation, {server:{auto_reconnect:true}}), delay * 1000);
-    }
+  private connect(delay: number): void {
+    logger.info(`Trying to connect the DB ${DBService.instance.dbLocation} in ${delay} seconds ...`);
+    setTimeout(() => mongoose.connect(DBService.instance.dbLocation, {server: {auto_reconnect: true}}), delay * 1000);
+  }
 
 }
