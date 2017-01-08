@@ -5,7 +5,7 @@ import express = require('express');
 import eJwt = require('express-jwt');
 import jwt = require('jsonwebtoken');
 import {IUserModel, User} from '../models/user.model'
-import {IUser} from '../entities/user.interface';
+import {UserType} from '../entities/user-type';
 
 export let authenticationRoute = express.Router();
 
@@ -27,7 +27,7 @@ authenticationRoute.post('/api/authenticate', function (req: express.Request, re
         let authToken = jwt.sign({
           id: user.id,
           username: user.username,
-          userType: user.type
+          type: user.type
         }, "secret", {expiresIn: "1h"});
         logger.info(`user ${user.username} authenticated successfully`);
         res.json({
@@ -45,11 +45,16 @@ authenticationRoute.post('/api/authenticate', function (req: express.Request, re
 // TODO: das Passwort 'secret' muss noch ersetzt werden. Am besten mit einem privaten und einem öffentlichen Schlüssel.
 authenticationRoute.use('/api', eJwt({secret: 'secret'}), function (req: express.Request & jwtTypeExtension.Authenticated<IUserModel>, res: express.Response, next: express.NextFunction) {
   if (req.user) {
-    logger.info(`userid: ${req.user.id}, username: ${req.user.username}, req.body: ` + JSON.stringify(req.body));
+    logger.info(`userid: ${req.user.id}, username: ${req.user.username}, type: ${req.user.type}, req.body: ` + JSON.stringify(req.body));
     next();
   } else {
     res.status(401).json({error: 'not yet authenticated'});
   }
+});
+
+// Used for REST test
+authenticationRoute.get('/api/authenticated', function (req: express.Request, res: express.Response, next: express.NextFunction) {
+  res.json('authentication is valid');
 });
 
 declare namespace jwtTypeExtension {
