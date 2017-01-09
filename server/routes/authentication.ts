@@ -33,10 +33,8 @@ authenticationRoute.post('/api/authenticate', function (req: express.Request, re
         res.json({
           token: authToken
         });
-      } else if (users.length == 0) {
-        res.status(401).json({error: `user ${username} unknown`});
       } else {
-        res.status(401).json({error: `user ${username} wrong password`});
+        res.status(401).json({error: `Incorrect username or password.`});
       }
     }
   });
