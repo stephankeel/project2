@@ -11,23 +11,13 @@ let adminToken: string;
 describe('Initial Authentication Test', function () {
   const TEST_URL = BASE_URL + 'api/authenticate';
   describe('POST ' + TEST_URL, function () {
-    it('returns status code 401 -  wrong password', function (done) {
+    it('returns status code 401 -  wrong username or password', function (done) {
       let username: string = 'admin';
       request.post(TEST_URL,
         loginOptions(username, 'xxxxxx'),
         function (error: any, response: RequestResponse, body: any) {
           expect(response.statusCode).toBe(401);
-          expect(body).toContain(`user ${username} wrong password`);
-          done();
-        });
-    });
-    it('returns status code 401 -  wrong password', function (done) {
-      let username: string = 'muster';
-      request.post(TEST_URL,
-        loginOptions(username, 'xxxxxx'),
-        function (error: any, response: RequestResponse, body: any) {
-          expect(response.statusCode).toBe(401);
-          expect(body).toContain(`user ${username} unknown`);
+          expect(body).toContain(`Incorrect username or password.`);
           done();
         });
     });
