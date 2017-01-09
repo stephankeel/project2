@@ -3,7 +3,7 @@
 import {logger} from '../utils/logger';
 import {RequestResponse} from 'request';
 import {BASE_URL} from './constants';
-import {loginHeader, authBearerOptions} from './httpOptions';
+import {loginOptions, authBearerOptions} from './httpOptions';
 
 let request = require('request');
 let adminToken: string;
@@ -14,7 +14,7 @@ describe('Initial Authentication Test', function () {
     it('returns status code 401 -  wrong password', function (done) {
       let username: string = 'admin';
       request.post(TEST_URL,
-        loginHeader(username, 'xxxxxx'),
+        loginOptions(username, 'xxxxxx'),
         function (error: any, response: RequestResponse, body: any) {
           expect(response.statusCode).toBe(401);
           expect(body).toContain(`user ${username} wrong password`);
@@ -24,7 +24,7 @@ describe('Initial Authentication Test', function () {
     it('returns status code 401 -  wrong password', function (done) {
       let username: string = 'muster';
       request.post(TEST_URL,
-        loginHeader(username, 'xxxxxx'),
+        loginOptions(username, 'xxxxxx'),
         function (error: any, response: RequestResponse, body: any) {
           expect(response.statusCode).toBe(401);
           expect(body).toContain(`user ${username} unknown`);
@@ -34,7 +34,7 @@ describe('Initial Authentication Test', function () {
   });
   it('returns status code 200 - successfull authentication', function (done) {
     request.post(TEST_URL,
-      loginHeader('admin', '123456'),
+      loginOptions('admin', '123456'),
       function (error: any, response: RequestResponse, body: any) {
         expect(response.statusCode).toBe(200);
         let authData = JSON.parse(body);

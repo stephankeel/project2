@@ -5,7 +5,7 @@ import {RequestResponse} from 'request';
 import {BASE_URL} from './constants';
 import {IUser} from '../entities/user.interface';
 import {UserType} from '../entities/user-type';
-import {loginHeader, authBearerOptions} from './httpOptions';
+import {loginOptions, authBearerOptions} from './httpOptions';
 
 
 describe('User Test', function () {
@@ -29,7 +29,7 @@ describe('User Test', function () {
     });
     it('returns status code 200 - successfull authentication', function (done) {
       request.post(LOGIN_URL,
-        loginHeader('admin', '123456'),
+        loginOptions('admin', '123456'),
         function (error: any, response: RequestResponse, body: any) {
           expect(response.statusCode).toBe(200);
           let authData = JSON.parse(body);
