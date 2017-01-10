@@ -5,7 +5,7 @@ import express = require('express');
 import eJwt = require('express-jwt');
 import jwt = require('jsonwebtoken');
 import {IUserModel, User} from '../models/user.model'
-import {UserType} from '../entities/user-type';
+import {IUser} from '../entities/user.interface';
 
 export let authenticationRoute = express.Router();
 
@@ -41,7 +41,7 @@ authenticationRoute.post('/api/authenticate', function (req: express.Request, re
 });
 
 // TODO: das Passwort 'secret' muss noch ersetzt werden. Am besten mit einem privaten und einem öffentlichen Schlüssel.
-authenticationRoute.use('/api', eJwt({secret: 'secret'}), function (req: express.Request & jwtTypeExtension.Authenticated<IUserModel>, res: express.Response, next: express.NextFunction) {
+authenticationRoute.use('/api', eJwt({secret: 'secret'}), function (req: express.Request, res: express.Response, next: express.NextFunction) {
   if (req.user) {
     logger.info(`userid: ${req.user.id}, username: ${req.user.username}, type: ${req.user.type}, req.body: ` + JSON.stringify(req.body));
     next();
@@ -55,8 +55,10 @@ authenticationRoute.get('/api/authenticated', function (req: express.Request, re
   res.json('authentication is valid');
 });
 
-declare namespace jwtTypeExtension {
-  export interface Authenticated<T> {
-    user: T;
+// Augmenting the express Request interface with user: IUser to have user access where ever express.Request is used.
+declare module '@types/express' {
+  export interface Request{
+    user?: IUser;
   }
 }
+
