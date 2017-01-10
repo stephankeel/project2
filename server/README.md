@@ -1,13 +1,13 @@
 # Homeautomation-Project Server
 
 ## Install required modules
-npm install
+`npm install`
 
 ## Configure Database
-Use either of following options (to be selected in app.ts):
-1. Use installed MongoDB, see https://docs.mongodb.com/manual/administration/install-community/
-2. Use TingoDB, see http://www.tingodb.com/info/
-3. Use internet based DB server --> mongodb://admin:hallihallo62@ds050879.mlab.com:50879/homeautomation
+Use either of following options (to be selected in models/db.service.ts):
+* Use installed MongoDB, see https://docs.mongodb.com/manual/administration/install-community/
+* Use TingoDB, see http://www.tingodb.com/info/ (**NOTE:** not yet implemented)
+* Use internet based DB server: `mongodb://admin:hallihallo62@ds050879.mlab.com:50879/homeautomation`
 
 ## Optional: In case of Database Option [1]
 open terminal
@@ -49,6 +49,12 @@ gulp watch
 ## Initial User
 If the homeautomation server is started, then admin user **admin**, password **1234546** will be created if not yet existing.
 
+## Testing the REST Interface
+Server and test running in one terminal:
+* Pre-Condition: Built server.
+* Open terminal
+* Change to project2/server folder and execute `gulp test`
 
-
-
+Optionally you can run the server and the test in dedicated terminal:
+* Start the server in one terminal
+* Execute `jasmine` or `gulp jasmine` in a 2nd terminal
