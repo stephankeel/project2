@@ -7,9 +7,7 @@ import {requiresAdmin} from './authorization';
 export function userRoute(app: express.Express) {
   let router = express.Router();
 
-  app.use(requiresAdmin);
-
-  app.use('/api/users', router);
+  app.use('/api/users', requiresAdmin, router);
 
   router.route('/')
     .post(controller.addUser)
