@@ -57,7 +57,7 @@ app.use(authenticationRoute);
 userRoute(app);
 
 app.use(function (req: express.Request, res: express.Response, next: express.NextFunction) {
-  next(createError(404, `No route found for ${req.method} ${req.url}`));
+  res.sendFile(__dirname + '/public/index.html');
 });
 
 app.use(outputLogger);
