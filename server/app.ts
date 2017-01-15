@@ -10,7 +10,7 @@ import {authenticationRoute} from './routes/authentication';
 import {userRoute} from './routes/user.route';
 import {DBService} from './models/db.service';
 
-export const HOSTNAME: string = '127.0.0.1';
+export const HOSTNAME: string = 'localhost';
 const PORT: number = 3001;
 
 // Start the database service
@@ -67,7 +67,8 @@ app.use(function (req: express.Request, res: express.Response, next: express.Nex
 app.use(outputLogger);
 app.use(errorHandler);
 
-app.listen(PORT, HOSTNAME, () => {
+// HOSTNAME must not be set to be accessable from remote!!!
+app.listen(PORT, () => {
   logger.info(`Homeautomation server running at http://${HOSTNAME}:${PORT}/`);
 });
 
