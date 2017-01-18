@@ -1,39 +1,31 @@
 'use strict';
 
+import {Port} from '../hardware/port-map';
+
 export interface IDevice {
   id?: any;
   name?: string;
 }
 
 export interface IBlindsDevice extends IDevice {
-  keyUp?: IInputPort;
-  keyDown?: IInputPort;
-  actorUp?: IOutputPort;
-  actorDown?: IOutputPort;
+  keyUp?: Port;
+  keyDown?: Port;
+  actorUp?: Port;
+  actorDown?: Port;
   runningSeconds: number;
 
   isBlinds(device: any): void;
 }
 
 export interface ITemperaturDevice extends IDevice {
-  port?: IInputPort;
+  port?: Port;
 
   isTemperature(device: any): void;
 }
 
 export interface IHumidityDevice extends IDevice {
-  port?: IInputPort;
+  port?: Port;
 
   isHumidity(device: any): void;
 }
 
-interface IPort {
-  id: number;
-  name: string;
-}
-
-export interface IInputPort extends IPort {
-}
-
-export interface IOutputPort extends IPort {
-}
