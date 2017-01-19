@@ -2,7 +2,7 @@
 
 import {Port} from '../hardware/port-map';
 
-export interface IDevice {
+interface IDevice {
   id?: any;
   name?: string;
 }
@@ -13,19 +13,13 @@ export interface IBlindsDevice extends IDevice {
   actorUp?: Port;
   actorDown?: Port;
   runningSeconds: number;
-
-  isBlinds(device: any): void;
 }
 
 export interface ITemperaturDevice extends IDevice {
   port?: Port;
-
-  isTemperature(device: any): void;
 }
 
 export interface IHumidityDevice extends IDevice {
   port?: Port;
-
-  isHumidity(device: any): void;
 }
 

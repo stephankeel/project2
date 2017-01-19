@@ -37,7 +37,6 @@ describe('Blinds-Device Test', function () {
       actorUp: Port.DO_1,
       actorDown: Port.DO_2,
       runningSeconds: 60,
-      isBlinds(device: any): void{}
     };
     it('returns status code 201 - blinds-device created', function (done) {
       request.post(TEST_URL,
@@ -87,7 +86,6 @@ describe('Blinds-Device Test', function () {
       actorUp: Port.DO_1,
       actorDown: Port.DO_2,
       runningSeconds: 60,
-      isBlinds(device: any): void{}
     };
     it('returns status code 200 - blinds-device updated', function (done) {
       request.put(TEST_URL + '/' + testBlindsDeviceId,
