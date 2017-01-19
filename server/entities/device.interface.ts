@@ -12,7 +12,7 @@ export interface IBlindsDevice extends IDevice {
   keyDown?: Port;
   actorUp?: Port;
   actorDown?: Port;
-  runningSeconds: number;
+  runningSeconds?: number;
 }
 
 export interface ITemperaturDevice extends IDevice {
