@@ -1,6 +1,6 @@
 'use strict';
 
-import {IBlindsDevice, IHumidityDevice, ITemperaturDevice} from './device.interface';
+import {IBlindsDevice, IHumidityDevice, ITemperatureDevice} from './device.interface';
 
 export const enum DeviceType {
   BLINDS,

@@ -48,7 +48,7 @@ describe('Blinds-Device Test', function () {
       request.post(TEST_URL,
         authBearerOptions(adminToken, JSON.stringify(requestContent)),
         function (error: any, response: RequestResponse, body: any) {
-          logger.debug(`Blind-device created (body): ${body}`);
+          logger.debug(`Blinds-device created (body): ${body}`);
           expect(response.statusCode).toBe(201);
           logger.debug(`Blinds-device created (body): ${body}`);
           let responseContent: ResponseContainer<IBlindsDevice> = JSON.parse(body);

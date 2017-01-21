@@ -15,11 +15,11 @@ export interface IBlindsDevice extends IDevice {
   runningSeconds?: number;
 }
 
-export interface ITemperaturDevice extends IDevice {
+export interface IHumidityDevice extends IDevice {
   port?: Port;
 }
 
-export interface IHumidityDevice extends IDevice {
+export interface ITemperatureDevice extends IDevice {
   port?: Port;
 }
 

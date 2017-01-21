@@ -1,4 +1,5 @@
-import {logger} from '../utils/logger';
+'user strict';
+
 import {Document, Schema, Model, model} from 'mongoose';
 import {IBlindsDevice} from '../entities/device.interface';
 import {digitalInputs, digitalOutputs} from '../hardware/port-map';

@@ -9,8 +9,7 @@ import {RequestContainer, ResponseContainer, ResponseCollectionContainer} from '
 export function addBlindsDevice(req: express.Request, res: express.Response, next: express.NextFunction) {
   let requestContent: RequestContainer<IBlindsDevice> = req.body;
   let device: IBlindsDeviceModel = new BlindsDevice(requestContent.content);
-  let jsonBody: string = JSON.stringify(req.body);
-  logger.info(`create blinds-device: ${jsonBody}`);
+  logger.info(`create blinds-device: ${JSON.stringify(requestContent)}`);
   device.save((err: any, addedDevice: IBlindsDeviceModel) => {
     if (err) {
       res.status(500).json({error: `error creating blinds-device ${device.name}. ${err}`});
@@ -26,8 +25,7 @@ export function addBlindsDevice(req: express.Request, res: express.Response, nex
 
 export function updateBlindsDevice(req: express.Request, res: express.Response, next: express.NextFunction) {
   let id = req.params.id;
-  let jsonBody: string = JSON.stringify(req.body);
-  logger.info(`update blinds-device [${id}]: ${jsonBody}`);
+  logger.info(`update blinds-device [${id}]: ${JSON.stringify(req.body)}`);
   BlindsDevice.findById(id, (err: any, deviceFromDb: IBlindsDeviceModel) => {
     if (err) {
       res.status(404).json({error: `blinds-device ${id} not found. ${err}`});

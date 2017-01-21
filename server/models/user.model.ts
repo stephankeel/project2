@@ -1,3 +1,5 @@
+'user strict';
+
 import {logger} from '../utils/logger';
 import {Document, Schema, Model, model} from 'mongoose';
 import {IUser} from '../entities/user.interface';

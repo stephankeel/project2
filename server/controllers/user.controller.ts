@@ -6,8 +6,7 @@ import {IUserModel, User} from '../models/user.model';
 
 export function addUser(req: express.Request, res: express.Response, next: express.NextFunction) {
   let user: IUserModel = new User(req.body);
-  let jsonBody: string = JSON.stringify(req.body);
-  logger.info(`create user: ${jsonBody}`);
+  logger.info(`create user: ${user}`);
   user.save((err: any, addedUser: IUserModel) => {
     if (err) {
       res.status(500).json({error: `error creating user ${user.username}. ${err}`});
@@ -22,8 +21,7 @@ export function addUser(req: express.Request, res: express.Response, next: expre
 
 export function updateUser(req: express.Request, res: express.Response, next: express.NextFunction) {
   let id = req.params.id;
-  let jsonBody: string = JSON.stringify(req.body);
-  logger.info(`update user [${id}]: ${jsonBody}`);
+  logger.info(`update user [${id}]: ${JSON.stringify(req.body)}`);
   User.findById(id, (err: any, user: IUserModel) => {
     if (err) {
       res.status(404).json({error: `user ${id} not found. ${err}`});
