@@ -1,20 +1,29 @@
 'use strict';
 
 import express = require('express');
-import controller = require('../controllers/temperature-device.controller');
+import deviceController = require('../controllers/temperature-device.controller');
+import dataController = require('../controllers/temperature-data.controller');
 import {requiresAdmin} from './authorization';
 
 export function temperatureDeviceRoute(app: express.Express) {
-  let router = express.Router();
+  // Device configuration section (only for admin users)
+  let deviceRouter = express.Router();
 
-  app.use('/api/devices/temperature', requiresAdmin, router);
+  app.use('/api/devices/temperature', requiresAdmin, deviceRouter);
 
-  router.route('/')
-    .post(controller.addTemperatureDevice)
-    .get(controller.getAllTemperatureDevices);
+  deviceRouter.route('/')
+    .post(deviceController.addTemperatureDevice)
+    .get(deviceController.getAllTemperatureDevices);
 
-  router.route('/:id')
-    .get(controller.getTemperatureDevice)
-    .put(controller.updateTemperatureDevice)
-    .delete(controller.deleteTemperatureDevice)
+  deviceRouter.route('/:id')
+    .get(deviceController.getTemperatureDevice)
+    .put(deviceController.updateTemperatureDevice)
+    .delete(deviceController.deleteTemperatureDevice);
+
+  // Data section (for any type of user)
+  let dataRouter = express.Router();
+  app.use('/api/data/temperature', dataRouter);
+  dataRouter.route('/:id/all').get(dataController.getTemperatureData);
+  dataRouter.route('/:id/latest').get(dataController.getLatestTemperatureDataRecord);
+
 }

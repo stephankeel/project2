@@ -22,4 +22,3 @@ export interface IHumidityDevice extends IDevice {
 export interface ITemperatureDevice extends IDevice {
   port?: Port;
 }
-

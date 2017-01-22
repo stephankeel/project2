@@ -1,20 +1,29 @@
 'use strict';
 
 import express = require('express');
-import controller = require('../controllers/humidity-device.controller');
+import deviceController = require('../controllers/humidity-device.controller');
+import dataController = require('../controllers/humidity-data.controller');
 import {requiresAdmin} from './authorization';
 
 export function humidityDeviceRoute(app: express.Express) {
-  let router = express.Router();
+  // Device configuration section (only for admin users)
+  let deviceRouter = express.Router();
 
-  app.use('/api/devices/humidity', requiresAdmin, router);
+  app.use('/api/devices/humidity', requiresAdmin, deviceRouter);
 
-  router.route('/')
-    .post(controller.addHumidityDevice)
-    .get(controller.getAllHumidityDevices);
+  deviceRouter.route('/')
+    .post(deviceController.addHumidityDevice)
+    .get(deviceController.getAllHumidityDevices);
 
-  router.route('/:id')
-    .get(controller.getHumidityDevice)
-    .put(controller.updateHumidityDevice)
-    .delete(controller.deleteHumidityDevice)
+  deviceRouter.route('/:id')
+    .get(deviceController.getHumidityDevice)
+    .put(deviceController.updateHumidityDevice)
+    .delete(deviceController.deleteHumidityDevice);
+
+  // Data section (for any type of user)
+  let dataRouter = express.Router();
+  app.use('/api/data/humidity', dataRouter);
+  dataRouter.route('/:id/all').get(dataController.getHumidityData);
+  dataRouter.route('/:id/latest').get(dataController.getLatestHumidityDataRecord);
+
 }

@@ -13,7 +13,7 @@ export function addUser(req: express.Request, res: express.Response, next: expre
     } else {
       // set the user.id to the _id provided by the db
       addedUser.id = addedUser._id;
-      logger.trace(`created user successfully, id: ${addedUser.id}`);
+      logger.debug(`created user successfully, id: ${addedUser.id}`);
       res.status(201).json({data: addedUser});
     }
   });
@@ -38,7 +38,7 @@ export function updateUser(req: express.Request, res: express.Response, next: ex
         if (err) {
           res.status(500).json({error: `error updating user ${id}. ${err}`});
         } else {
-          logger.trace('updated user successfully');
+          logger.debug('updated user successfully');
           res.json({data: updatedUser});
         }
       });

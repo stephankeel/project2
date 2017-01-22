@@ -5,6 +5,7 @@ import express = require('express');
 import {IHumidityDeviceModel, HumidityDevice} from '../models/humidity-device.model';
 import {IHumidityDevice} from '../entities/device.interface';
 import {RequestContainer, ResponseContainer, ResponseCollectionContainer} from '../wire/com-container';
+import {cleanupHumidityData} from './humidity-data.controller';
 
 export function addHumidityDevice(req: express.Request, res: express.Response, next: express.NextFunction) {
   let requestContent: RequestContainer<IHumidityDevice> = req.body;
@@ -16,7 +17,7 @@ export function addHumidityDevice(req: express.Request, res: express.Response, n
     } else {
       // set the id to the _id provided by the db
       device.id = addedDevice._id;
-      logger.trace(`created humidity-device successfully, id: ${addedDevice.id}`);
+      logger.debug(`created humidity-device successfully, id: ${addedDevice.id}`);
       let responseContent: ResponseContainer<IHumidityDevice> = new ResponseContainer<IHumidityDevice>(device);
       res.status(201).json(responseContent);
     }
@@ -40,7 +41,7 @@ export function updateHumidityDevice(req: express.Request, res: express.Response
         if (err) {
           res.status(500).json({error: `error updating humidity-device ${id}. ${err}`});
         } else {
-          logger.trace('updated humidity-device successfully');
+          logger.debug('updated humidity-device successfully');
           let responseContent: ResponseContainer<IHumidityDevice> = new ResponseContainer<IHumidityDevice>(updatedDevice);
           res.json(responseContent);
         }
@@ -87,6 +88,7 @@ export function deleteHumidityDevice(req: express.Request, res: express.Response
       res.status(404).json({error: `error deleting humidity-device ${ref._id}. ${err}`});
     }
     logger.debug(`deleted humidity-device ${req.params.id} successfully`);
+    cleanupHumidityData(req.params.id);
     res.json(ref._id);
   });
 }

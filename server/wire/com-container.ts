@@ -34,7 +34,7 @@ export class ResponseCollectionContainer<T> {
 /**
  * Container for broadcast
  */
-export class IBroadcastContainer<T> {
+export class BroadcastContainer<T> {
   /**
    * @param clientCtx UUID to identify broadcast that holds data already received by the resulting REST response
    * @param contentType type of content being broadcast
@@ -44,5 +44,5 @@ export class IBroadcastContainer<T> {
 }
 
 export const enum ContentType {
-  USER, BLINDS_DEVICE, HUMIDITY_DEVICE, TEMPERATURE_DEVICE
+  USER, BLINDS_DEVICE, HUMIDITY_DEVICE, TEMPERATURE_DEVICE, BLINDS_DATA, HUMIDITY_DATA, TEMPERATURE_DATA
 }

@@ -5,6 +5,7 @@ import express = require('express');
 import {ITemperatureDeviceModel, TemperatureDevice} from '../models/temperature-device.model';
 import {ITemperatureDevice} from '../entities/device.interface';
 import {RequestContainer, ResponseContainer, ResponseCollectionContainer} from '../wire/com-container';
+import {cleanupTemperatureData} from './temperature-data.controller';
 
 export function addTemperatureDevice(req: express.Request, res: express.Response, next: express.NextFunction) {
   let requestContent: RequestContainer<ITemperatureDevice> = req.body;
@@ -16,7 +17,7 @@ export function addTemperatureDevice(req: express.Request, res: express.Response
     } else {
       // set the id to the _id provided by the db
       device.id = addedDevice._id;
-      logger.trace(`created temperature-device successfully, id: ${addedDevice.id}`);
+      logger.debug(`created temperature-device successfully, id: ${addedDevice.id}`);
       let responseContent: ResponseContainer<ITemperatureDevice> = new ResponseContainer<ITemperatureDevice>(device);
       res.status(201).json(responseContent);
     }
@@ -40,7 +41,7 @@ export function updateTemperatureDevice(req: express.Request, res: express.Respo
         if (err) {
           res.status(500).json({error: `error updating temperature-device ${id}. ${err}`});
         } else {
-          logger.trace('updated temperature-device successfully');
+          logger.debug('updated temperature-device successfully');
           let responseContent: ResponseContainer<ITemperatureDevice> = new ResponseContainer<ITemperatureDevice>(updatedDevice);
           res.json(responseContent);
         }
@@ -87,6 +88,7 @@ export function deleteTemperatureDevice(req: express.Request, res: express.Respo
       res.status(404).json({error: `error deleting temperature-device ${ref._id}. ${err}`});
     }
     logger.debug(`deleted temperature-device ${req.params.id} successfully`);
+    cleanupTemperatureData(req.params.id);
     res.json(ref._id);
   });
 }
