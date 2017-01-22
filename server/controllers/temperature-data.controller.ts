@@ -2,14 +2,14 @@
 
 import {logger} from '../utils/logger';
 import express = require('express');
-import {ITemperatureDataModel, TemperatureData} from '../models/temperature-data.model';
+import {ITemperatureDataDocument, TemperatureDataModel} from '../models/temperature-data.model';
 import {RequestContainer, ResponseContainer, ResponseCollectionContainer, BroadcastContainer, ContentType} from '../wire/com-container';
 import {ITemperatureData} from "../entities/data.interface";
 
 export function getTemperatureData(req: express.Request, res: express.Response, next: express.NextFunction) {
   logger.debug(`get temperature-data ${req.params.id}`);
   let ref = {_id: req.params.id};
-  TemperatureData.findById((err: any, data: ITemperatureDataModel[]) => {
+  TemperatureDataModel.findById((err: any, data: ITemperatureDataDocument[]) => {
     if (err) {
       res.status(404).json({error: `error retrieving temperature-data ${ref._id}. ${err}`});
     } else {
@@ -26,7 +26,7 @@ export function getLatestTemperatureDataRecord(req: express.Request, res: expres
   logger.debug(`get latest temperature-data record ${req.params.id}`);
   let ref = {_id: req.params.id};
   let sort = {timestamp: 1};
-  TemperatureData.findOne(ref).sort(sort).exec((err: any, data: ITemperatureDataModel) => {
+  TemperatureDataModel.findOne(ref).sort(sort).exec((err: any, data: ITemperatureDataDocument) => {
     if (err) {
       res.status(404).json({error: `error retrieving latest temperature-data record ${ref._id}. ${err}`});
     } else {
@@ -40,9 +40,9 @@ export function getLatestTemperatureDataRecord(req: express.Request, res: expres
 }
 
 export function addTemperatureData(data: ITemperatureData) {
-  let dataModel: ITemperatureDataModel = new TemperatureData(data);
+  let dataModel: ITemperatureDataDocument = new TemperatureDataModel(data);
   logger.info(`add temperature-data: ${JSON.stringify(data)}`);
-  dataModel.save((err: any, addedData: ITemperatureDataModel) => {
+  dataModel.save((err: any, addedData: ITemperatureDataDocument) => {
     if (err) {
       logger.error(`error adding temperature-data ${JSON.stringify(data)}. ${err}`);
     } else {

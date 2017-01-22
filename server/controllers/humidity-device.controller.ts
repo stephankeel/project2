@@ -2,16 +2,16 @@
 
 import {logger} from '../utils/logger';
 import express = require('express');
-import {IHumidityDeviceModel, HumidityDevice} from '../models/humidity-device.model';
+import {IHumidityDeviceDocument, HumidityDeviceModel} from '../models/humidity-device.model';
 import {IHumidityDevice} from '../entities/device.interface';
 import {RequestContainer, ResponseContainer, ResponseCollectionContainer} from '../wire/com-container';
 import {cleanupHumidityData} from './humidity-data.controller';
 
 export function addHumidityDevice(req: express.Request, res: express.Response, next: express.NextFunction) {
   let requestContent: RequestContainer<IHumidityDevice> = req.body;
-  let device: IHumidityDeviceModel = new HumidityDevice(requestContent.content);
+  let device: IHumidityDeviceDocument = new HumidityDeviceModel(requestContent.content);
   logger.info(`create humidity-device: ${JSON.stringify(requestContent)}`);
-  device.save((err: any, addedDevice: IHumidityDeviceModel) => {
+  device.save((err: any, addedDevice: IHumidityDeviceDocument) => {
     if (err) {
       res.status(500).json({error: `error creating humidity-device ${device.name}. ${err}`});
     } else {
@@ -27,17 +27,17 @@ export function addHumidityDevice(req: express.Request, res: express.Response, n
 export function updateHumidityDevice(req: express.Request, res: express.Response, next: express.NextFunction) {
   let id = req.params.id;
   logger.info(`update humidity-device [${id}]: ${JSON.stringify(req.body)}`);
-  HumidityDevice.findById(id, (err: any, deviceFromDb: IHumidityDeviceModel) => {
+  HumidityDeviceModel.findById(id, (err: any, deviceFromDb: IHumidityDeviceDocument) => {
     if (err) {
       res.status(404).json({error: `humidity-device ${id} not found. ${err}`});
     } else {
       let requestContent: RequestContainer<IHumidityDevice> = req.body;
-      let device: IHumidityDeviceModel = new HumidityDevice(requestContent.content);
+      let device: IHumidityDeviceDocument = new HumidityDeviceModel(requestContent.content);
       // copy the properties
       deviceFromDb.name = device.name;
       deviceFromDb.port = device.port;
       // save the updated user
-      deviceFromDb.save((err: any, updatedDevice: IHumidityDeviceModel) => {
+      deviceFromDb.save((err: any, updatedDevice: IHumidityDeviceDocument) => {
         if (err) {
           res.status(500).json({error: `error updating humidity-device ${id}. ${err}`});
         } else {
@@ -51,7 +51,7 @@ export function updateHumidityDevice(req: express.Request, res: express.Response
 }
 
 export function getAllHumidityDevices(req: express.Request, res: express.Response, next: express.NextFunction) {
-  HumidityDevice.find((err: any, devices: IHumidityDeviceModel[]) => {
+  HumidityDeviceModel.find((err: any, devices: IHumidityDeviceDocument[]) => {
     if (err) {
       res.status(404).json({error: `error retrieving humidity-devices. ${err}`});
     } else {
@@ -67,7 +67,7 @@ export function getAllHumidityDevices(req: express.Request, res: express.Respons
 export function getHumidityDevice(req: express.Request, res: express.Response, next: express.NextFunction) {
   logger.debug(`get humidity-device ${req.params.id}`);
   let ref = {_id: req.params.id};
-  HumidityDevice.findById(ref, (err: any, device: IHumidityDeviceModel) => {
+  HumidityDeviceModel.findById(ref, (err: any, device: IHumidityDeviceDocument) => {
     if (err) {
       res.status(404).json({error: `error retrieving humidity-device ${ref._id}. ${err}`});
     } else {
@@ -83,7 +83,7 @@ export function getHumidityDevice(req: express.Request, res: express.Response, n
 export function deleteHumidityDevice(req: express.Request, res: express.Response, next: express.NextFunction) {
   logger.info(`delete humidity-device ${req.params.id}`);
   let ref = {_id: req.params.id};
-  HumidityDevice.remove(ref, (err: any) => {
+  HumidityDeviceModel.remove(ref, (err: any) => {
     if (err) {
       res.status(404).json({error: `error deleting humidity-device ${ref._id}. ${err}`});
     }

@@ -5,11 +5,9 @@ import {Document, Schema, Model, model} from 'mongoose';
 import {IUser} from '../entities/user.interface';
 import {UserType} from '../entities/user-type';
 
-export interface IUserModel extends IUser, Document {
-}
-;
+export interface IUserDocument extends IUser, Document {};
 
-export let UserSchema = new Schema({
+let UserSchema = new Schema({
   id: String,
   firstname: String,
   lastname: String,
@@ -27,25 +25,25 @@ export let UserSchema = new Schema({
  });
  */
 
-export const User: Model<IUserModel> = model<IUserModel>('User', UserSchema);
+export const UserModel: Model<IUserDocument> = model<IUserDocument>('User', UserSchema);
 
 export function initAdmin() {
   let username: String = 'admin';
   let selector = {'username': username}
-  User.find(selector, (err, users) => {
+  UserModel.find(selector, (err, users) => {
     if (users.length) {
       logger.info(`admin user is ok. id = ${users[0]._id}`);
       return;
     }
 
-    let user: IUserModel = new User();
+    let user: IUserDocument = new UserModel();
     user.firstname = 'admin';
     user.lastname = 'admin';
     user.type = UserType.ADMIN;
     user.username = 'admin';
     user.password = '123456';
     logger.info(`creating admin user: ${JSON.stringify(user)}`);
-    user.save((err: any, adminUser: IUserModel) => {
+    user.save((err: any, adminUser: IUserDocument) => {
       if (err) {
         throw new Error(err);
       } else {

@@ -2,16 +2,16 @@
 
 import {logger} from '../utils/logger';
 import express = require('express');
-import {IBlindsDeviceModel, BlindsDevice} from '../models/blinds-device.model';
+import {IBlindsDeviceDocument, BlindsDeviceModel} from '../models/blinds-device.model';
 import {IBlindsDevice} from '../entities/device.interface';
 import {RequestContainer, ResponseContainer, ResponseCollectionContainer} from '../wire/com-container';
 import {cleanupBlindsData} from './blinds-data.controller';
 
 export function addBlindsDevice(req: express.Request, res: express.Response, next: express.NextFunction) {
   let requestContent: RequestContainer<IBlindsDevice> = req.body;
-  let device: IBlindsDeviceModel = new BlindsDevice(requestContent.content);
+  let device: IBlindsDeviceDocument = new BlindsDeviceModel(requestContent.content);
   logger.info(`create blinds-device: ${JSON.stringify(requestContent)}`);
-  device.save((err: any, addedDevice: IBlindsDeviceModel) => {
+  device.save((err: any, addedDevice: IBlindsDeviceDocument) => {
     if (err) {
       res.status(500).json({error: `error creating blinds-device ${device.name}. ${err}`});
     } else {
@@ -27,12 +27,12 @@ export function addBlindsDevice(req: express.Request, res: express.Response, nex
 export function updateBlindsDevice(req: express.Request, res: express.Response, next: express.NextFunction) {
   let id = req.params.id;
   logger.info(`update blinds-device [${id}]: ${JSON.stringify(req.body)}`);
-  BlindsDevice.findById(id, (err: any, deviceFromDb: IBlindsDeviceModel) => {
+  BlindsDeviceModel.findById(id, (err: any, deviceFromDb: IBlindsDeviceDocument) => {
     if (err) {
       res.status(404).json({error: `blinds-device ${id} not found. ${err}`});
     } else {
       let requestContent: RequestContainer<IBlindsDevice> = req.body;
-      let device: IBlindsDeviceModel = new BlindsDevice(requestContent.content);
+      let device: IBlindsDeviceDocument = new BlindsDeviceModel(requestContent.content);
       // copy the properties
       deviceFromDb.name = device.name;
       deviceFromDb.keyUp = device.keyUp;
@@ -41,7 +41,7 @@ export function updateBlindsDevice(req: express.Request, res: express.Response, 
       deviceFromDb.actorDown = device.actorDown;
       deviceFromDb.runningSeconds = device.runningSeconds;
       // save the updated user
-      deviceFromDb.save((err: any, updatedDevice: IBlindsDeviceModel) => {
+      deviceFromDb.save((err: any, updatedDevice: IBlindsDeviceDocument) => {
         if (err) {
           res.status(500).json({error: `error updating blinds-device ${id}. ${err}`});
         } else {
@@ -55,7 +55,7 @@ export function updateBlindsDevice(req: express.Request, res: express.Response, 
 }
 
 export function getAllBlindsDevices(req: express.Request, res: express.Response, next: express.NextFunction) {
-  BlindsDevice.find((err: any, devices: IBlindsDeviceModel[]) => {
+  BlindsDeviceModel.find((err: any, devices: IBlindsDeviceDocument[]) => {
     if (err) {
       res.status(404).json({error: `error retrieving blinds-devices. ${err}`});
     } else {
@@ -71,7 +71,7 @@ export function getAllBlindsDevices(req: express.Request, res: express.Response,
 export function getBlindsDevice(req: express.Request, res: express.Response, next: express.NextFunction) {
   logger.debug(`get blinds-device ${req.params.id}`);
   let ref = {_id: req.params.id};
-  BlindsDevice.findById(ref, (err: any, device: IBlindsDeviceModel) => {
+  BlindsDeviceModel.findById(ref, (err: any, device: IBlindsDeviceDocument) => {
     if (err) {
       res.status(404).json({error: `error retrieving blinds-device ${ref._id}. ${err}`});
     } else {
@@ -87,7 +87,7 @@ export function getBlindsDevice(req: express.Request, res: express.Response, nex
 export function deleteBlindsDevice(req: express.Request, res: express.Response, next: express.NextFunction) {
   logger.info(`delete blinds-device ${req.params.id}`);
   let ref = {_id: req.params.id};
-  BlindsDevice.remove(ref, (err: any) => {
+  BlindsDeviceModel.remove(ref, (err: any) => {
     if (err) {
       res.status(404).json({error: `error deleting blinds-device ${ref._id}. ${err}`});
     }

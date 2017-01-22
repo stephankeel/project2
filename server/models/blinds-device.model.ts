@@ -4,11 +4,9 @@ import {Document, Schema, Model, model} from 'mongoose';
 import {IBlindsDevice} from '../entities/device.interface';
 import {digitalInputs, digitalOutputs} from '../hardware/port-map';
 
-export interface IBlindsDeviceModel extends IBlindsDevice, Document {
-}
-;
+export interface IBlindsDeviceDocument extends IBlindsDevice, Document {};
 
-export let BlindsDeviceSchema = new Schema({
+let BlindsDeviceSchema = new Schema({
   id: String,
   name: {type: String, required: true, minlength:4, unique: true},
   keyUp: {type: Number, required: true, min: digitalInputs[0], max:digitalInputs[digitalInputs.length],  unique: true},
@@ -27,4 +25,4 @@ export let BlindsDeviceSchema = new Schema({
  });
  */
 
-export const BlindsDevice: Model<IBlindsDeviceModel> = model<IBlindsDeviceModel>('BlindsDevice', BlindsDeviceSchema);
+export const BlindsDeviceModel: Model<IBlindsDeviceDocument> = model<IBlindsDeviceDocument>('BlindsDevice', BlindsDeviceSchema);

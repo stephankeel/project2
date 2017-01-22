@@ -4,7 +4,7 @@ import {Document, Schema, Model, model} from 'mongoose';
 import {IHumidityDevice} from '../entities/device.interface';
 import {analogInputs} from '../hardware/port-map';
 
-export interface IHumidityDeviceModel extends IHumidityDevice, Document {};
+export interface IHumidityDeviceDocument extends IHumidityDevice, Document {};
 
 let HumidityDeviceSchema = new Schema({
   id: String,
@@ -21,4 +21,4 @@ let HumidityDeviceSchema = new Schema({
  });
  */
 
-export const HumidityDevice: Model<IHumidityDeviceModel> = model<IHumidityDeviceModel>('HumidityDevice', HumidityDeviceSchema);
+export const HumidityDeviceModel: Model<IHumidityDeviceDocument> = model<IHumidityDeviceDocument>('HumidityDevice', HumidityDeviceSchema);

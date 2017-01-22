@@ -4,7 +4,7 @@ import {logger} from '../utils/logger';
 import express = require('express');
 import eJwt = require('express-jwt');
 import jwt = require('jsonwebtoken');
-import {IUserModel, User} from '../models/user.model'
+import {IUserDocument, UserModel} from '../models/user.model'
 import {IUser} from '../entities/user.interface';
 
 export let authenticationRoute = express.Router();
@@ -15,13 +15,13 @@ authenticationRoute.post('/api/authenticate', function (req: express.Request, re
   let username: String = req.body.username;
   let password: String = req.body.password;
   let selector = {'username': username}
-  User.find(selector, (err: any, users: IUserModel[]) => {
+  UserModel.find(selector, (err: any, users: IUserDocument[]) => {
     if (err) {
       res.status(401).json({error: `username ${username} unknown. ${err}`});
     } else {
       // verify the password
       if (users.length && users[0].password === password) {
-        let user: IUserModel = users[0];
+        let user: IUserDocument = users[0];
         user.id = user._id;
         // TODO: das Passwort 'secret' muss noch ersetzt werden. Am besten mit einem privaten und einem öffentlichen Schlüssel.
         let authToken = jwt.sign({

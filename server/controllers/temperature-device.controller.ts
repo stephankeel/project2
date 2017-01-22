@@ -2,16 +2,16 @@
 
 import {logger} from '../utils/logger';
 import express = require('express');
-import {ITemperatureDeviceModel, TemperatureDevice} from '../models/temperature-device.model';
+import {ITemperatureDeviceDocument, TemperatureDeviceModel} from '../models/temperature-device.model';
 import {ITemperatureDevice} from '../entities/device.interface';
 import {RequestContainer, ResponseContainer, ResponseCollectionContainer} from '../wire/com-container';
 import {cleanupTemperatureData} from './temperature-data.controller';
 
 export function addTemperatureDevice(req: express.Request, res: express.Response, next: express.NextFunction) {
   let requestContent: RequestContainer<ITemperatureDevice> = req.body;
-  let device: ITemperatureDeviceModel = new TemperatureDevice(requestContent.content);
+  let device: ITemperatureDeviceDocument = new TemperatureDeviceModel(requestContent.content);
   logger.info(`create temperature-device: ${JSON.stringify(requestContent)}`);
-  device.save((err: any, addedDevice: ITemperatureDeviceModel) => {
+  device.save((err: any, addedDevice: ITemperatureDeviceDocument) => {
     if (err) {
       res.status(500).json({error: `error creating temperature-device ${device.name}. ${err}`});
     } else {
@@ -27,17 +27,17 @@ export function addTemperatureDevice(req: express.Request, res: express.Response
 export function updateTemperatureDevice(req: express.Request, res: express.Response, next: express.NextFunction) {
   let id = req.params.id;
   logger.info(`update temperature-device [${id}]: ${JSON.stringify(req.body)}`);
-  TemperatureDevice.findById(id, (err: any, deviceFromDb: ITemperatureDeviceModel) => {
+  TemperatureDeviceModel.findById(id, (err: any, deviceFromDb: ITemperatureDeviceDocument) => {
     if (err) {
       res.status(404).json({error: `temperature-device ${id} not found. ${err}`});
     } else {
       let requestContent: RequestContainer<ITemperatureDevice> = req.body;
-      let device: ITemperatureDeviceModel = new TemperatureDevice(requestContent.content);
+      let device: ITemperatureDeviceDocument = new TemperatureDeviceModel(requestContent.content);
       // copy the properties
       deviceFromDb.name = device.name;
       deviceFromDb.port = device.port;
       // save the updated user
-      deviceFromDb.save((err: any, updatedDevice: ITemperatureDeviceModel) => {
+      deviceFromDb.save((err: any, updatedDevice: ITemperatureDeviceDocument) => {
         if (err) {
           res.status(500).json({error: `error updating temperature-device ${id}. ${err}`});
         } else {
@@ -51,7 +51,7 @@ export function updateTemperatureDevice(req: express.Request, res: express.Respo
 }
 
 export function getAllTemperatureDevices(req: express.Request, res: express.Response, next: express.NextFunction) {
-  TemperatureDevice.find((err: any, devices: ITemperatureDeviceModel[]) => {
+  TemperatureDeviceModel.find((err: any, devices: ITemperatureDeviceDocument[]) => {
     if (err) {
       res.status(404).json({error: `error retrieving temperature-devices. ${err}`});
     } else {
@@ -67,7 +67,7 @@ export function getAllTemperatureDevices(req: express.Request, res: express.Resp
 export function getTemperatureDevice(req: express.Request, res: express.Response, next: express.NextFunction) {
   logger.debug(`get temperature-device ${req.params.id}`);
   let ref = {_id: req.params.id};
-  TemperatureDevice.findById(ref, (err: any, device: ITemperatureDeviceModel) => {
+  TemperatureDeviceModel.findById(ref, (err: any, device: ITemperatureDeviceDocument) => {
     if (err) {
       res.status(404).json({error: `error retrieving temperature-device ${ref._id}. ${err}`});
     } else {
@@ -83,7 +83,7 @@ export function getTemperatureDevice(req: express.Request, res: express.Response
 export function deleteTemperatureDevice(req: express.Request, res: express.Response, next: express.NextFunction) {
   logger.info(`delete temperature-device ${req.params.id}`);
   let ref = {_id: req.params.id};
-  TemperatureDevice.remove(ref, (err: any) => {
+  TemperatureDeviceModel.remove(ref, (err: any) => {
     if (err) {
       res.status(404).json({error: `error deleting temperature-device ${ref._id}. ${err}`});
     }

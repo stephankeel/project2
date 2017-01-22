@@ -2,14 +2,14 @@
 
 import {logger} from '../utils/logger';
 import express = require('express');
-import {IBlindsDataModel, BlindsData} from '../models/blinds-data.model';
+import {IBlindsDataDocument, BlindsDataModel} from '../models/blinds-data.model';
 import {RequestContainer, ResponseContainer, ResponseCollectionContainer, BroadcastContainer, ContentType} from '../wire/com-container';
 import {IBlindsData} from "../entities/data.interface";
 
 export function getBlindsData(req: express.Request, res: express.Response, next: express.NextFunction) {
   logger.debug(`get blinds-data ${req.params.id}`);
   let ref = {_id: req.params.id};
-  BlindsData.findById((err: any, data: IBlindsDataModel[]) => {
+  BlindsDataModel.findById((err: any, data: IBlindsDataDocument[]) => {
     if (err) {
       res.status(404).json({error: `error retrieving blinds-data ${ref._id}. ${err}`});
     } else {
@@ -26,7 +26,7 @@ export function getLatestBlindsDataRecord(req: express.Request, res: express.Res
   logger.debug(`get latest blinds-data record ${req.params.id}`);
   let ref = {_id: req.params.id};
   let sort = {timestamp: 1};
-  BlindsData.findOne(ref).sort(sort).exec((err: any, data: IBlindsDataModel) => {
+  BlindsDataModel.findOne(ref).sort(sort).exec((err: any, data: IBlindsDataDocument) => {
     if (err) {
       res.status(404).json({error: `error retrieving latest blinds-data record ${ref._id}. ${err}`});
     } else {
@@ -40,9 +40,9 @@ export function getLatestBlindsDataRecord(req: express.Request, res: express.Res
 }
 
 export function addBlindsData(data: IBlindsData) {
-  let dataModel: IBlindsDataModel = new BlindsData(data);
+  let dataModel: IBlindsDataDocument = new BlindsDataModel(data);
   logger.info(`add blinds-data: ${JSON.stringify(data)}`);
-  dataModel.save((err: any, addedData: IBlindsDataModel) => {
+  dataModel.save((err: any, addedData: IBlindsDataDocument) => {
     if (err) {
       logger.error(`error adding blinds-data ${JSON.stringify(data)}. ${err}`);
     } else {

@@ -2,14 +2,14 @@
 
 import {logger} from '../utils/logger';
 import express = require('express');
-import {IHumidityDataModel, HumidityData} from '../models/humidity-data.model';
+import {IHumidityDataDocument, HumidityDataModel} from '../models/humidity-data.model';
 import {RequestContainer, ResponseContainer, ResponseCollectionContainer, BroadcastContainer, ContentType} from '../wire/com-container';
 import {IHumidityData} from "../entities/data.interface";
 
 export function getHumidityData(req: express.Request, res: express.Response, next: express.NextFunction) {
   logger.debug(`get humidity-data ${req.params.id}`);
   let ref = {_id: req.params.id};
-  HumidityData.findById((err: any, data: IHumidityDataModel[]) => {
+  HumidityDataModel.findById((err: any, data: IHumidityDataDocument[]) => {
     if (err) {
       res.status(404).json({error: `error retrieving humidity-data ${ref._id}. ${err}`});
     } else {
@@ -26,7 +26,7 @@ export function getLatestHumidityDataRecord(req: express.Request, res: express.R
   logger.debug(`get latest humidity-data record ${req.params.id}`);
   let ref = {_id: req.params.id};
   let sort = {timestamp: 1};
-  HumidityData.findOne(ref).sort(sort).exec((err: any, data: IHumidityDataModel) => {
+  HumidityDataModel.findOne(ref).sort(sort).exec((err: any, data: IHumidityDataDocument) => {
     if (err) {
       res.status(404).json({error: `error retrieving latest humidity-data record ${ref._id}. ${err}`});
     } else {
@@ -40,9 +40,9 @@ export function getLatestHumidityDataRecord(req: express.Request, res: express.R
 }
 
 export function addHumidityData(data: IHumidityData) {
-  let dataModel: IHumidityDataModel = new HumidityData(data);
+  let dataModel: IHumidityDataDocument = new HumidityDataModel(data);
   logger.info(`add humidity-data: ${JSON.stringify(data)}`);
-  dataModel.save((err: any, addedData: IHumidityDataModel) => {
+  dataModel.save((err: any, addedData: IHumidityDataDocument) => {
     if (err) {
       logger.error(`error adding humidity-data ${JSON.stringify(data)}. ${err}`);
     } else {
