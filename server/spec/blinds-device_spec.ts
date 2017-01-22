@@ -7,7 +7,7 @@ import {BASE_URL} from './constants';
 import {IBlindsDevice} from '../entities/device.interface';
 import {Port} from '../hardware/port-map';
 import {loginOptions, authBearerOptions} from './httpOptions';
-import {RequestContainer, ResponseContainer} from '../wire/com-container';
+import {RequestContainer, ResponseContainer, ResponseCollectionContainer} from '../wire/com-container';
 
 describe('Blinds-Device Test', function () {
   const LOGIN_URL = BASE_URL + 'api/authenticate';
@@ -77,6 +77,20 @@ describe('Blinds-Device Test', function () {
           let responseContent: ResponseContainer<IBlindsDevice> = JSON.parse(body);
           logger.debug(`Blinds-device retrieved: ${JSON.stringify(responseContent)}`);
           expect(responseContent.content.name).toBe(TEST_BLINDS_DEVICE);
+          done();
+        });
+    });
+  });
+
+  describe('GET ' + TEST_URL, function () {
+    it('returns status code 200 - found blinds-devices', function (done) {
+      request.get(TEST_URL,
+        authBearerOptions(adminToken),
+        function (error: any, response: RequestResponse, body: any) {
+          expect(response.statusCode).toBe(200);
+          let responseContainerContent: ResponseCollectionContainer<IBlindsDevice> = JSON.parse(body);
+          logger.debug(`Blinds-device retrieved: ${JSON.stringify(responseContainerContent)}`);
+          expect(responseContainerContent.content[0].name).toBe(TEST_BLINDS_DEVICE);
           done();
         });
     });

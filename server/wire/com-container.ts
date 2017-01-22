@@ -6,7 +6,7 @@
 export class RequestContainer<T> {
   /**
    * @param clientCtx UUID to identify broadcast that holds data already received by the resulting REST response
-   * @param content content, like User, BlindsDevice, ...
+   * @param content content, like IUser, IBlindsDevice, ...
    */
   constructor(public clientCtx: string, public content: T){}
 }
@@ -16,7 +16,7 @@ export class RequestContainer<T> {
  */
 export class ResponseContainer<T> {
   /**
-   * @param content content, like User, BlindsDevice, ...
+   * @param content content, like IUser, IBlindsDevice, ...
    */
   constructor(public content: T){}
 }
@@ -26,7 +26,7 @@ export class ResponseContainer<T> {
  */
 export class ResponseCollectionContainer<T> {
   /**
-   * @param content content collection, like User[], BlindsDevice[], ...
+   * @param content content collection, like IUser[], IBlindsDevice[], ...
    */
   constructor(public content: T[]){}
 }
@@ -38,7 +38,7 @@ export class IBroadcastContainer<T> {
   /**
    * @param clientCtx UUID to identify broadcast that holds data already received by the resulting REST response
    * @param contentType type of content being broadcast
-   * @param content content, like User, BlindsDevice, ...
+   * @param content content, like IUser, IBlindsDevice, ...
    */
   constructor(public clientCtx: string, public contentType: ContentType, public content: T){}
 }
