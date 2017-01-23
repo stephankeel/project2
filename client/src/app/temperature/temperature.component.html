@@ -1,0 +1,10 @@
+<header>
+  <img id="backIcon" class="headerAction" src="app/images/back.svg" alt="Back Icon" title="Back Icon"
+       (click)="backClicked()">
+  <h1 class="headerTitle">TEMPERATUR</h1>
+</header>
+<main>
+  <h2>
+    <span>{{lastValue | number: '.1-1'}}</span> °C
+  </h2>
+</main>
