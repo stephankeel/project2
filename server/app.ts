@@ -8,6 +8,10 @@ import {userRoute} from './routes/user.route';
 import {DBService} from './models/db.service';
 import * as http from "http";
 import * as path from "path";
+import * as socketIo from "socket.io";
+import {TemperatureSocket} from "./socket/temperature-socket";
+import {TemperatureGenerator} from "./socket/temperature-generator";
+var socketioJwt   = require("socketio-jwt");
 
 declare var process: any, __dirname: any;
 
@@ -40,6 +44,9 @@ class Server {
 
     // Create database connections
     this.databases();
+
+    // Handle websockets
+    this.sockets();
 
     // Start listening
     this.listen();
@@ -90,6 +97,19 @@ class Server {
   // Configure databases
   private databases(): void {
     DBService.init('localhost');
+  }
+
+  // Configure sockets
+  private sockets(): void {
+    // Get socket.io handle
+    this.io = socketIo(this.server);
+    this.io.use(socketioJwt.authorize({
+      secret: 'secret',
+      handshake: true
+    }));
+
+    let tempSocket1 = new TemperatureSocket(this.io, "1");
+    new TemperatureGenerator(tempSocket1);
   }
 
   // Start HTTP server listening
