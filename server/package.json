@@ -25,6 +25,7 @@
     "@types/mongoose": "^4.7.1",
     "@types/node": "^6.0.52",
     "@types/request": "0.0.39",
+    "@types/uuid": "^2.0.29",
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
     "express-jwt": "^5.1.0",
@@ -39,7 +40,8 @@
     "request": "^2.79.0",
     "tingodb": "^0.4.2",
     "ts-node": "^1.7.2",
-    "typescript": "^2.1.4"
+    "typescript": "^2.1.4",
+    "uuid": "^3.0.1"
   },
   "devDependencies": {
     "@types/core-js": "^0.9.35",

@@ -8,6 +8,9 @@ import log4js = require('log4js');
 import {logger} from './utils/logger';
 import {authenticationRoute} from './routes/authentication';
 import {userRoute} from './routes/user.route';
+import {blindsDeviceRoute} from './routes/blinds-device.route';
+import {humidityDeviceRoute} from './routes/humidity-device.route';
+import {temperatureDeviceRoute} from './routes/temperature-device.route';
 import {DBService} from './models/db.service';
 
 export const HOSTNAME: string = 'localhost';
@@ -55,6 +58,9 @@ app.use('/about', function (req: express.Request, res: express.Response, next: e
 
 app.use(authenticationRoute);
 userRoute(app);
+blindsDeviceRoute(app);
+humidityDeviceRoute(app);
+temperatureDeviceRoute(app);
 
 app.use('/api', function (req: express.Request, res: express.Response, next: express.NextFunction) {
   next(createError(404, `No route found for ${req.method} ${req.url}`));
