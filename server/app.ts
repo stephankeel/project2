@@ -5,6 +5,9 @@ import * as log4js from "log4js";
 import {logger} from './utils/logger';
 import {authenticationRoute} from './routes/authentication';
 import {userRoute} from './routes/user.route';
+import {blindsDeviceRoute} from './routes/blinds-device.route';
+import {humidityDeviceRoute} from './routes/humidity-device.route';
+import {temperatureDeviceRoute} from './routes/temperature-device.route';
 import {DBService} from './models/db.service';
 import * as http from "http";
 import * as path from "path";
@@ -81,6 +84,9 @@ class Server {
 
     this.app.use(authenticationRoute);
     userRoute(this.app);
+    blindsDeviceRoute(this.app);
+    humidityDeviceRoute(this.app);
+    temperatureDeviceRoute(this.app);
 
     this.app.use('/api', function (req: express.Request, res: express.Response, next: express.NextFunction) {
       next(createError(404, `No route found for ${req.method} ${req.url}`));
@@ -147,8 +153,3 @@ class Server {
 // Bootstrap the server
 let server = Server.bootstrap();
 export = server.app;
-
-
-
-
-

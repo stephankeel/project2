@@ -2,19 +2,18 @@
 
 import {logger} from '../utils/logger';
 import express = require('express');
-import {IUserModel, User} from '../models/user.model';
+import {IUserDocument, UserModel} from '../models/user.model';
 
 export function addUser(req: express.Request, res: express.Response, next: express.NextFunction) {
-  let user: IUserModel = new User(req.body);
-  let jsonBody: string = JSON.stringify(req.body);
-  logger.info(`create user: ${jsonBody}`);
-  user.save((err: any, addedUser: IUserModel) => {
+  let user: IUserDocument = new UserModel(req.body);
+  logger.info(`create user: ${user}`);
+  user.save((err: any, addedUser: IUserDocument) => {
     if (err) {
       res.status(500).json({error: `error creating user ${user.username}. ${err}`});
     } else {
       // set the user.id to the _id provided by the db
       addedUser.id = addedUser._id;
-      logger.trace(`created user successfully, id: ${addedUser.id}`);
+      logger.debug(`created user successfully, id: ${addedUser.id}`);
       res.status(201).json({data: addedUser});
     }
   });
@@ -22,9 +21,8 @@ export function addUser(req: express.Request, res: express.Response, next: expre
 
 export function updateUser(req: express.Request, res: express.Response, next: express.NextFunction) {
   let id = req.params.id;
-  let jsonBody: string = JSON.stringify(req.body);
-  logger.info(`update user [${id}]: ${jsonBody}`);
-  User.findById(id, (err: any, user: IUserModel) => {
+  logger.info(`update user [${id}]: ${JSON.stringify(req.body)}`);
+  UserModel.findById(id, (err: any, user: IUserDocument) => {
     if (err) {
       res.status(404).json({error: `user ${id} not found. ${err}`});
     } else {
@@ -36,11 +34,11 @@ export function updateUser(req: express.Request, res: express.Response, next: ex
       user.username = req.body.username;
       user.password = req.body.password;
       // save the updated user
-      user.save((err: any, updatedUser: IUserModel) => {
+      user.save((err: any, updatedUser: IUserDocument) => {
         if (err) {
           res.status(500).json({error: `error updating user ${id}. ${err}`});
         } else {
-          logger.trace('updated user successfully');
+          logger.debug('updated user successfully');
           res.json({data: updatedUser});
         }
       });
@@ -49,7 +47,7 @@ export function updateUser(req: express.Request, res: express.Response, next: ex
 }
 
 export function getAllUsers(req: express.Request, res: express.Response, next: express.NextFunction) {
-  User.find((err: any, users: IUserModel[]) => {
+  UserModel.find((err: any, users: IUserDocument[]) => {
     if (err) {
       res.status(404).json({error: `error retrieving users. ${err}`});
     } else {
@@ -64,7 +62,7 @@ export function getAllUsers(req: express.Request, res: express.Response, next: e
 export function getUser(req: express.Request, res: express.Response, next: express.NextFunction) {
   logger.debug(`get user ${req.params.id}`);
   let ref = {_id: req.params.id};
-  User.findById(ref, (err: any, user: IUserModel) => {
+  UserModel.findById(ref, (err: any, user: IUserDocument) => {
     if (err) {
       res.status(404).json({error: `error retrieving user ${ref._id}. ${err}`});
     } else {
@@ -79,7 +77,7 @@ export function getUser(req: express.Request, res: express.Response, next: expre
 export function deleteUser(req: express.Request, res: express.Response, next: express.NextFunction) {
   logger.info(`delete user ${req.params.id}`);
   let ref = {_id: req.params.id};
-  User.remove(ref, (err: any) => {
+  UserModel.remove(ref, (err: any) => {
     if (err) {
       res.status(404).json({error: `error deleting user ${ref._id}. ${err}`});
     }
