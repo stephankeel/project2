@@ -41,6 +41,17 @@ let BlindsDeviceSchema = new Schema({
   versionKey: false, // avoids __v, i.e. the version key
 });
 
+BlindsDeviceSchema.pre('validate', function (next) {
+  if (this.keyUp != null && this.keyDown != null && this.keyUp === this.keyDown) {
+    next(Error(`keyUp and keyDown must not share same port ${this.keyUp}`));
+  } else if (this.actorUp != null && this.actorDown != null && this.actorUp === this.actorDown) {
+    next(Error(`actorUp and actorDown must not share same port ${this.actorUp}`));
+  } else {
+    next();
+  }
+});
+
+
 /*
  BlindsDeviceSchema.pre('save', (next) => {
  // TODO: Pre save validation
