@@ -28,6 +28,6 @@ export class GenericDataSocket<T> {
   }
 
   private disconnect(): void {
-    console.log(`Client disconnected ${this.namespacePrefix`);
+    console.log(`Client disconnected ${this.namespacePrefix}`);
   }
 }
