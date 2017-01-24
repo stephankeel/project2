@@ -3,7 +3,7 @@ import {analogInputs} from '../../hardware/port-map';
 
 describe('Temperature-Device-Model Test', function () {
 
-  it('should be invalid if is empty', done => {
+  it('should be invalid if empty', done => {
     let d = new TemperatureDeviceModel();
     d.validate((err: any) => {
       expect(err.errors.name).toBeDefined();
@@ -54,6 +54,14 @@ describe('Temperature-Device-Model Test', function () {
 
   it('should have error about port, if "port" are set to a port too big (more than 19)', done => {
     let d = new TemperatureDeviceModel({port: analogInputs[analogInputs.length - 1] + 1});
+    d.validate((err: any) => {
+      expect(err.errors.port).toBeDefined();
+      done();
+    });
+  });
+
+  it('should have an error about port, if "port" are set to a string', done => {
+    let d = new TemperatureDeviceModel({port: "Port.DI_1"});
     d.validate((err: any) => {
       expect(err.errors.port).toBeDefined();
       done();
