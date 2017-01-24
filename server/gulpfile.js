@@ -7,7 +7,7 @@ var runSequence = require('run-sequence');
 var jasmine = require('gulp-jasmine');
 
 gulp.task('default', function () {
-  runSequence('build', ['watch', 'run']);
+  runSequence('build', 'unittests', ['watch', 'run']);
 });
 
 gulp.task('watch', function () {
@@ -29,6 +29,11 @@ gulp.task('build', function () {
 // Just run tests, app must have been started before
 gulp.task('jasmine', function () {
   return gulp.src('spec/*.js').pipe(jasmine());
+});
+
+// run only unittests, no integration tests
+gulp.task('unittests', function () {
+  return gulp.src('spec/models/*.js').pipe(jasmine());
 });
 
 // Start app, run tests and stop app
