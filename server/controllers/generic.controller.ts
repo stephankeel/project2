@@ -8,7 +8,8 @@ import express = require('express');
 import {Model} from "mongoose";
 
 export class GenericController<T, R extends IDeviceDocument> {
-  constructor(private loggingPrefix: string, private model: Model<R>,
+  constructor(private loggingPrefix: string,
+              private model: Model<R>,
               private createDocument: (content: T) => R,
               private udpateDocument: (documentFromDb: R, inputDocument: R) => void,
               private createResponseContainer: (content: R) => ResponseContainer<T>,
@@ -100,6 +101,5 @@ export class GenericController<T, R extends IDeviceDocument> {
       }
     });
   }
-
 }
 
