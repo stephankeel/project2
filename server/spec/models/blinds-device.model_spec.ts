@@ -192,7 +192,22 @@ describe('Blinds-Device-Model Test', function () {
     });
   });
 
-  it('should be valid if is name and port are set with valid values', done => {
+  it('should have error as keyUp and keyDown share same port', done => {
+    let d = new BlindsDeviceModel({
+      name: "abcde",
+      keyUp: digitalInputs[2],
+      keyDown: digitalInputs[2],
+      actorUp: digitalOutputs[0],
+      actorDown: digitalOutputs[1],
+      runningSeconds: 15
+    });
+    d.validate((err: any) => {
+      expect(err).toBeDefined();
+      done();
+    });
+  });
+
+  it('should have error as actorUp and actorDown share same port', done => {
     let d = new BlindsDeviceModel({
       name: "abcde",
       keyUp: digitalInputs[0],
@@ -202,8 +217,24 @@ describe('Blinds-Device-Model Test', function () {
       runningSeconds: 15
     });
     d.validate((err: any) => {
+      expect(err).toBeDefined();
+      done();
+    });
+  });
+
+  it('should be valid if is name and port are set with valid values', done => {
+    let d = new BlindsDeviceModel({
+      name: "abcde",
+      keyUp: digitalInputs[0],
+      keyDown: digitalInputs[1],
+      actorUp: digitalOutputs[0],
+      actorDown: digitalOutputs[1],
+      runningSeconds: 15
+    });
+    d.validate((err: any) => {
       expect(err).toBeNull();
       done();
     });
   });
+
 });
