@@ -6,7 +6,8 @@ export interface IBlindsDataDocument extends IBlindsData, Document {
 }
 
 let BlindsDataSchema = new Schema({
-  deviceId: {type: String, required: true},
+  // TODO: brauchen wir hier noch eine id ?
+  deviceId: {type: String, required: true, index: true},
   timestamp: {type: Number, required: true},
   state: {
     type: Number,

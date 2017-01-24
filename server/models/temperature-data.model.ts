@@ -5,7 +5,8 @@ export interface ITemperatureDataDocument extends ITemperatureData, Document {
 }
 
 let TemperatureDataSchema = new Schema({
-  deviceId: {type: String, required: true},
+  // TODO: brauchen wir hier noch eine id ?
+  deviceId: {type: String, required: true, index: true},
   timestamp: {type: Number, required: true},
   value: {type: Number, required: true}
 }, {
