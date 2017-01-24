@@ -1,10 +1,9 @@
-'user strict';
-
 import {Document, Schema, Model, model} from 'mongoose';
 import {IBlindsData} from '../entities/data.interface';
 import {blindsStateValues} from '../entities/blinds-state';
 
-export interface IBlindsDataDocument extends IBlindsData, Document {};
+export interface IBlindsDataDocument extends IBlindsData, Document {
+}
 
 let BlindsDataSchema = new Schema({
   deviceId: {type: String, required: true},

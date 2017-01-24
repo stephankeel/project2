@@ -1,11 +1,10 @@
-'user strict';
-
 import {logger} from '../utils/logger';
 import {Document, Schema, Model, model} from 'mongoose';
 import {IUser} from '../entities/user.interface';
 import {UserType} from '../entities/user-type';
 
-export interface IUserDocument extends IUser, Document {};
+export interface IUserDocument extends IUser, Document {
+}
 
 let UserSchema = new Schema({
   id: String,
@@ -29,7 +28,7 @@ export const UserModel: Model<IUserDocument> = model<IUserDocument>('User', User
 
 export function initAdmin() {
   let username: String = 'admin';
-  let selector = {'username': username}
+  let selector = {'username': username};
   UserModel.find(selector, (err, users) => {
     if (users.length) {
       logger.info(`admin user is ok. id = ${users[0]._id}`);
