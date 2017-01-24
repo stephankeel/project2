@@ -1,9 +1,7 @@
-'use strict';
-
 import {BlindsState} from './blinds-state';
+import {IId} from './id.interface';
 
-interface IData {
-  id?: any;
+export interface IData extends IId {
   deviceId?: string,
   timestamp?: number;
 }
