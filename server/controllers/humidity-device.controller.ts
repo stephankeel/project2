@@ -4,9 +4,9 @@ import {logger} from '../utils/logger';
 import express = require('express');
 import {IHumidityDeviceDocument, HumidityDeviceModel} from '../models/humidity-device.model';
 import {IHumidityDevice} from '../entities/device.interface';
-import {RequestContainer, ResponseContainer, ResponseCollectionContainer} from '../wire/com-container';
-import {cleanupHumidityData} from './humidity-data.controller';
+import {ResponseContainer, ResponseCollectionContainer} from '../wire/com-container';
 import {GenericController} from './generic.controller';
+import {HumidityDataController} from "./humidity-data.controller";
 
 
 export class HumidityDeviceController extends GenericController<IHumidityDevice, IHumidityDeviceDocument> {
@@ -16,7 +16,7 @@ export class HumidityDeviceController extends GenericController<IHumidityDevice,
       (d, i) => HumidityDeviceController.updateDocument(d, i),
       d => new ResponseContainer<IHumidityDevice>(d),
       d => new ResponseCollectionContainer<IHumidityDevice>(d),
-      id => cleanupHumidityData(id),
+      id => new HumidityDataController().deleteAllById(id),
     );
   }
   private static updateDocument(documentFromDb: IHumidityDeviceDocument, inputDocument: IHumidityDeviceDocument) {

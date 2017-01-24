@@ -5,6 +5,7 @@ import deviceController = require('../controllers/temperature-device.controller'
 import {TemperatureDeviceController} from'../controllers/temperature-device.controller';
 import dataController = require('../controllers/temperature-data.controller');
 import {requiresAdmin} from './authorization';
+import {TemperatureDataController} from "../controllers/temperature-data.controller";
 
 export function temperatureDeviceRoute(app: express.Express) {
   // Device configuration section (only for admin users)
@@ -24,8 +25,9 @@ export function temperatureDeviceRoute(app: express.Express) {
 
   // Data section (for any type of user)
   let dataRouter = express.Router();
-  app.use('/api/data/temperature', dataRouter);
-  dataRouter.route('/:id/all').get(dataController.getTemperatureData);
-  dataRouter.route('/:id/latest').get(dataController.getLatestTemperatureDataRecord);
+  let dataController = new TemperatureDataController();
+  app.use('/api/data/humidity', dataRouter);
+  dataRouter.route('/:id/all').get((req, res) => dataController.getAllById(req, res));
+  dataRouter.route('/:id/latest').get((req, res) => dataController.getLatestById(req, res));
 
 }
