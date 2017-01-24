@@ -10,10 +10,10 @@ import {AuthenticationService} from './authentication.service';
 @Injectable()
 export class SocketService {
   private name: string;
-  private host: string = this.window.location.protocol + "//" + this.window.location.hostname + ":" + this.window.location.port;
+  private host: string = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port;
   socket: SocketIOClient.Socket;
 
-  constructor(private authService: AuthenticationService, @Inject('Window') private window: Window) {
+  constructor(private authService: AuthenticationService) {
   }
 
   /**

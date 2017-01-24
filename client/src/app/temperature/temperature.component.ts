@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Router}    from '@angular/router';
 import {SocketService} from '../remote/socket.service';
 import {TemperatureService} from '../remote/temperature.service';
-import {ITemperatureItem} from "../../../../server/entities/temperature.model";
+import {ITemperatureData} from "../../../../server/entities/data.interface";
 
 @Component({
   selector: 'app-temperature',
@@ -19,8 +19,8 @@ export class TemperatureComponent implements OnInit {
 
   ngOnInit() {
     this.temp1 = new TemperatureService("1", this.socketService);
-    this.temp1.values.subscribe((temperatureItem: ITemperatureItem) => {
-        this.lastValue = temperatureItem.value;
+    this.temp1.values.subscribe((temperatureData: ITemperatureData) => {
+        this.lastValue = temperatureData.value;
         console.log("subscribe called");
       },
       error => console.log(error));

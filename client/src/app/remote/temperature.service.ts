@@ -4,7 +4,7 @@ import {ReplaySubject} from "rxjs";
 import {SocketService} from "./socket.service";
 
 import {ISocketItem} from './../../../../server/entities/socket-item.model';
-import {ITemperatureItem} from "../../../../server/entities/temperature.model";
+import {ITemperatureData} from "../../../../server/entities/data.interface";
 
 
 /**
@@ -12,7 +12,7 @@ import {ITemperatureItem} from "../../../../server/entities/temperature.model";
  */
 @Injectable()
 export class TemperatureService {
-  private _values = new ReplaySubject<ITemperatureItem>();
+  private _values = new ReplaySubject<ITemperatureData>();
 
   constructor(private sensorId: string, private socketService: SocketService) {
     this.socketService
@@ -31,10 +31,10 @@ export class TemperatureService {
   }
 
   /**
-   * @returns {ReplaySubject<ITemperatureItem>} This observable follows the
+   * @returns {ReplaySubject<ITemperatureData>} This observable follows the
    *                temperature updates of the temperaturesensor with speific sensorId.
    */
-  get values(): ReplaySubject<ITemperatureItem> {
+  get values(): ReplaySubject<ITemperatureData> {
     return this._values;
   }
 }
