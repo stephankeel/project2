@@ -12,9 +12,10 @@ import {DBService} from './models/db.service';
 import * as http from "http";
 import * as path from "path";
 import * as socketIo from "socket.io";
-import {TemperatureSocket} from "./socket/temperature-socket";
-import {TemperatureGenerator} from "./socket/temperature-generator";
-var socketioJwt   = require("socketio-jwt");
+import {GenericDataSocket} from "./socket/generic-data-socket";
+import {GenericDataGenerator} from "./socket/generic-data-generator";
+import {ITemperatureData} from "./entities/data.interface";
+var socketioJwt = require("socketio-jwt");
 
 declare var process: any, __dirname: any;
 
@@ -22,7 +23,6 @@ class Server {
   public app: express.Express;
   private server: any;
   private io: SocketIO.Server;
-  private mongo: any;
   private root: string;
   private port: number;
   private host: string;
@@ -114,8 +114,10 @@ class Server {
       handshake: true
     }));
 
-    let tempSocket1 = new TemperatureSocket(this.io, "1");
-    new TemperatureGenerator(tempSocket1);
+    let tempSocket1 = new GenericDataSocket<ITemperatureData>(this.io, "temperature", "1");
+    new GenericDataGenerator<ITemperatureData>(tempSocket1, n => {
+      return {value: n, timestamp: Date.now(),}
+    });
   }
 
   // Start HTTP server listening
@@ -151,5 +153,4 @@ class Server {
 }
 
 // Bootstrap the server
-let server = Server.bootstrap();
-export = server.app;
+export = Server.bootstrap().app;
