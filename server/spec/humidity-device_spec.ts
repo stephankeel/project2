@@ -9,7 +9,7 @@ import {Port} from '../hardware/port-map';
 import {loginOptions, authBearerOptions} from './httpOptions';
 import {RequestContainer, ResponseContainer} from '../wire/com-container';
 
-describe('Humidity-Device Test', function () {
+describe('REST API Roundtrip Test of Humidity-Device', function () {
   const LOGIN_URL = BASE_URL + 'api/authenticate';
   const TEST_URL = BASE_URL + 'api/devices/humidity';
   const TEST_HUMIDITY_DEVICE = 'Test Humidity 99';
@@ -21,7 +21,7 @@ describe('Humidity-Device Test', function () {
 
   logger.debug(`clientCtx: ${clientCtx}`);
 
-  describe('POST ' + TEST_URL, function () {
+  describe('Test login and creation of a humidity-device', function () {
     it('returns status code 200 - successfull authentication', function (done) {
       request.post(LOGIN_URL,
         loginOptions('admin', '123456'),
@@ -44,9 +44,8 @@ describe('Humidity-Device Test', function () {
       request.post(TEST_URL,
         authBearerOptions(adminToken, JSON.stringify(requestContent)),
         function (error: any, response: RequestResponse, body: any) {
-          logger.debug(`Humidity-device created (body): ${body}`);
+          logger.debug(`Humidity-device created (body): ${JSON.stringify(body)}`);
           expect(response.statusCode).toBe(201);
-          logger.debug(`Humidity-device created (body): ${body}`);
           let responseContent: ResponseContainer<IHumidityDevice> = JSON.parse(body);
           logger.debug(`Humidity-device created: ${JSON.stringify(responseContent.content)}`);
           testHumidityDeviceId = responseContent.content.id;
@@ -64,7 +63,7 @@ describe('Humidity-Device Test', function () {
     });
   });
 
-  describe('GET ' + TEST_URL + '/' + testHumidityDeviceId, function () {
+  describe('Test get dedicated humidity-device', function () {
     it('returns status code 200 - found humidity-device', function (done) {
       request.get(TEST_URL + '/' + testHumidityDeviceId,
         authBearerOptions(adminToken),
@@ -78,7 +77,7 @@ describe('Humidity-Device Test', function () {
     });
   });
 
-  describe('PUT ' + TEST_URL + '/' + testHumidityDeviceId, function () {
+  describe('Test update of a humidity-device', function () {
     let NAME: string = 'Test Humidity-Device 007';
     let testHumidityDevice: IHumidityDevice = {
       id: testHumidityDeviceId,
@@ -100,7 +99,7 @@ describe('Humidity-Device Test', function () {
     });
   });
 
-  describe('DELETE ' + TEST_URL + '/' + testHumidityDeviceId, function () {
+  describe('Test deletion of a humidity-device', function () {
     it('returns status code 200 - humidity-device deleted', function (done) {
       request.delete(TEST_URL + '/' + testHumidityDeviceId,
         authBearerOptions(adminToken),

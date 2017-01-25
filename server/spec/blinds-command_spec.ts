@@ -7,7 +7,7 @@ import {BASE_URL} from './constants';
 import {loginOptions, authBearerOptions} from './httpOptions';
 import {RequestContainer, ResponseContainer} from '../wire/com-container';
 
-describe('Blinds-Device Test', function () {
+describe('REST API Roundtrip Test of Blinds-Command', function () {
   const LOGIN_URL = BASE_URL + 'api/authenticate';
   const TEST_URL = BASE_URL + 'api/command/blinds';
 
@@ -18,7 +18,7 @@ describe('Blinds-Device Test', function () {
 
   logger.debug(`clientCtx: ${clientCtx}`);
 
-  describe('Login: POST ' + TEST_URL, function () {
+  describe('Test login', function () {
     it('returns status code 200 - successfull authentication', function (done) {
       request.post(LOGIN_URL,
         loginOptions('admin', '123456'),
@@ -32,7 +32,7 @@ describe('Blinds-Device Test', function () {
     });
   });
 
-  describe(`Close Blinds: PUT ${TEST_URL}/${testBlindsDeviceId}/close`, function () {
+  describe(`Test closing blinds`, function () {
     let requestContent: RequestContainer<any> = new RequestContainer<any>(clientCtx, null);
     logger.debug(`requestContent: ${JSON.stringify(requestContent)}`);
     it('returns status code 200 - blinds-command executed', function (done) {
@@ -47,7 +47,7 @@ describe('Blinds-Device Test', function () {
     });
   });
 
-  describe(`Stop Blinds: PUT ${TEST_URL}/${testBlindsDeviceId}/stop`, function () {
+  describe(`Test sopping blinds`, function () {
     let requestContent: RequestContainer<any> = new RequestContainer<any>(clientCtx, null);
     logger.debug(`requestContent: ${JSON.stringify(requestContent)}`);
     it('returns status code 200 - blinds-command executed', function (done) {
@@ -62,7 +62,7 @@ describe('Blinds-Device Test', function () {
     });
   });
 
-  describe(`Open Blinds: PUT ${TEST_URL}/${testBlindsDeviceId}/open`, function () {
+  describe(`Test opening blinds`, function () {
     let requestContent: RequestContainer<any> = new RequestContainer<any>(clientCtx, null);
     logger.debug(`requestContent: ${JSON.stringify(requestContent)}`);
     it('returns status code 200 - blinds-command executed', function (done) {

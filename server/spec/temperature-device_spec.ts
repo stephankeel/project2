@@ -9,7 +9,7 @@ import {Port} from '../hardware/port-map';
 import {loginOptions, authBearerOptions} from './httpOptions';
 import {RequestContainer, ResponseContainer} from '../wire/com-container';
 
-describe('Temperature-Device Test', function () {
+describe('REST API Roundtrip Test of Temperature-Device', function () {
   const LOGIN_URL = BASE_URL + 'api/authenticate';
   const TEST_URL = BASE_URL + 'api/devices/temperature';
   const TEST_TEMPERATURE_DEVICE = 'Test Temperature 99';
@@ -21,7 +21,7 @@ describe('Temperature-Device Test', function () {
 
   logger.debug(`clientCtx: ${clientCtx}`);
 
-  describe('POST ' + TEST_URL, function () {
+  describe('Test login and creation of a temperature-device', function () {
     it('returns status code 200 - successfull authentication', function (done) {
       request.post(LOGIN_URL,
         loginOptions('admin', '123456'),
@@ -38,25 +38,24 @@ describe('Temperature-Device Test', function () {
       name: TEST_TEMPERATURE_DEVICE,
       port: Port.AI_1,
     };
-    let requestContent: RequestContainer<ITemperatureDevice> = new RequestContainer<ITemperatureDevice>(clientCtx, testTemperatureDevice);
-    logger.debug(`requestContent: ${JSON.stringify(requestContent)}`);
+    let requestContainer: RequestContainer<ITemperatureDevice> = new RequestContainer<ITemperatureDevice>(clientCtx, testTemperatureDevice);
+    logger.debug(`requestContainer: ${JSON.stringify(requestContainer)}`);
     it('returns status code 201 - temperature-device created', function (done) {
       request.post(TEST_URL,
-        authBearerOptions(adminToken, JSON.stringify(requestContent)),
+        authBearerOptions(adminToken, JSON.stringify(requestContainer)),
         function (error: any, response: RequestResponse, body: any) {
-          logger.debug(`Temperature-device created (body): ${body}`);
+          logger.debug(`Temperature-device created (body): ${JSON.stringify(body)}`);
           expect(response.statusCode).toBe(201);
-          logger.debug(`Temperature-device created (body): ${body}`);
-          let responseContent: ResponseContainer<ITemperatureDevice> = JSON.parse(body);
-          logger.debug(`Temperature-device created: ${JSON.stringify(responseContent.content)}`);
-          testTemperatureDeviceId = responseContent.content.id;
+          let responseContainer: ResponseContainer<ITemperatureDevice> = JSON.parse(body);
+          logger.debug(`Temperature-device created: ${JSON.stringify(responseContainer.content)}`);
+          testTemperatureDeviceId = responseContainer.content.id;
           logger.debug(`testDeviceId: ${testTemperatureDeviceId}`);
           done();
         });
     });
     it('returns status code 500 - temperature-device already exists', function (done) {
       request.post(TEST_URL,
-        authBearerOptions(adminToken, JSON.stringify(requestContent)),
+        authBearerOptions(adminToken, JSON.stringify(requestContainer)),
         function (error: any, response: RequestResponse, body: any) {
           expect(response.statusCode).toBe(500);
           done();
@@ -64,43 +63,43 @@ describe('Temperature-Device Test', function () {
     });
   });
 
-  describe('GET ' + TEST_URL + '/' + testTemperatureDeviceId, function () {
+  describe('Test get dedicated temperature-device', function () {
     it('returns status code 200 - found temperature-device', function (done) {
       request.get(TEST_URL + '/' + testTemperatureDeviceId,
         authBearerOptions(adminToken),
         function (error: any, response: RequestResponse, body: any) {
           expect(response.statusCode).toBe(200);
-          let responseContent: ResponseContainer<ITemperatureDevice> = JSON.parse(body);
-          logger.debug(`Temperature-device retrieved: ${JSON.stringify(responseContent)}`);
-          expect(responseContent.content.name).toBe(TEST_TEMPERATURE_DEVICE);
+          let responseContainer: ResponseContainer<ITemperatureDevice> = JSON.parse(body);
+          logger.debug(`Temperature-device retrieved: ${JSON.stringify(responseContainer)}`);
+          expect(responseContainer.content.name).toBe(TEST_TEMPERATURE_DEVICE);
           done();
         });
     });
   });
 
-  describe('PUT ' + TEST_URL + '/' + testTemperatureDeviceId, function () {
+  describe('Test update of a temperature-device', function () {
     let NAME: string = 'Test Temperature-Device 007';
     let testTemperatureDevice: ITemperatureDevice = {
       id: testTemperatureDeviceId,
       name: NAME,
       port: Port.AI_1,
     };
-    let requestContent: RequestContainer<ITemperatureDevice> = new RequestContainer<ITemperatureDevice>(clientCtx, testTemperatureDevice);
-    logger.debug(`requestContent: ${JSON.stringify(requestContent)}`);
+    let requestContainer: RequestContainer<ITemperatureDevice> = new RequestContainer<ITemperatureDevice>(clientCtx, testTemperatureDevice);
+    logger.debug(`requestContainer: ${JSON.stringify(requestContainer)}`);
     it('returns status code 200 - temperature-device updated', function (done) {
       request.put(TEST_URL + '/' + testTemperatureDeviceId,
-        authBearerOptions(adminToken, JSON.stringify(requestContent)),
+        authBearerOptions(adminToken, JSON.stringify(requestContainer)),
         function (error: any, response: RequestResponse, body: any) {
           expect(response.statusCode).toBe(200);
-          let responseContent: ResponseContainer<ITemperatureDevice> = JSON.parse(body);
-          logger.debug(`Temperature-device updated: ${JSON.stringify(responseContent)}`);
-          expect(responseContent.content.name).toBe(NAME);
+          let responseContainer: ResponseContainer<ITemperatureDevice> = JSON.parse(body);
+          logger.debug(`Temperature-device updated: ${JSON.stringify(responseContainer)}`);
+          expect(responseContainer.content.name).toBe(NAME);
           done();
         });
     });
   });
 
-  describe('DELETE ' + TEST_URL + '/' + testTemperatureDeviceId, function () {
+  describe('Test deletion of a temperature-device', function () {
     it('returns status code 200 - temperature-device deleted', function (done) {
       request.delete(TEST_URL + '/' + testTemperatureDeviceId,
         authBearerOptions(adminToken),

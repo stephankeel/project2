@@ -17,6 +17,7 @@ export class UsersComponent implements OnInit {
   selectedUser: User;
   passwordConfirmation: string;
   loggedInUsername: string;
+  loggedInUserId: any;
   userTypes: UserType[] = User.getUserTypeValue();
   userTypeText: string[] = User.getUserTypeText();
   message: string;
@@ -28,6 +29,7 @@ export class UsersComponent implements OnInit {
 
   ngOnInit() {
     this.loggedInUsername = this.authenticationService.getLoggedInUsername();
+    this.loggedInUserId = this.authenticationService.getLoggedInUserId();
     this.genericService.getUsers().then(users => {
       this.users = users;
     }).catch(error => {

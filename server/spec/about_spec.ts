@@ -5,7 +5,7 @@ import {BASE_URL} from './constants';
 
 let request = require('request');
 
-describe('About Test', function () {
+describe('REST API Roundtrip Test of the "about" page', function () {
   const TEST_URL = BASE_URL + 'about';
   describe('GET ' + TEST_URL, function () {
     it('returns status code 200', function (done) {
