@@ -19,7 +19,7 @@ export class GenericDataSocket<T> {
     logger.info(`Socket.IO: namespace /${namespacePrefix}/${this.sensorId} created`);
   }
 
-  public broadcastTemperature(value: T) {
+  public broadcast(value: T) {
     this.namespace.emit("update", value);
   }
 

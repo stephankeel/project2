@@ -6,8 +6,9 @@ import {IDevice} from "../entities/device.interface";
 import {RequestContainer, ResponseContainer, ResponseCollectionContainer} from "../wire/com-container";
 import express = require('express');
 import {Model} from "mongoose";
+import {IController} from "./controller.interface";
 
-export class GenericController<T, R extends IDeviceDocument> {
+export class GenericController<T, R extends IDeviceDocument> implements IController {
   constructor(private loggingPrefix: string,
               private model: Model<R>,
               private createDocument: (content: T) => R,

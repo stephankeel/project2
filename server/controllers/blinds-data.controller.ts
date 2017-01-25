@@ -2,7 +2,7 @@ import express = require('express');
 import {IBlindsDataDocument, BlindsDataModel} from '../models/blinds-data.model';
 import {ResponseContainer, ResponseCollectionContainer} from '../wire/com-container';
 import {IBlindsData} from "../entities/data.interface";
-import {GenericDataController} from "./generic.data.controller";
+import {GenericDataController} from "./generic.data-controller";
 
 export class BlindsDataController extends GenericDataController<IBlindsData, IBlindsDataDocument> {
   constructor() {
