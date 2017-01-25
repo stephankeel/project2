@@ -3,6 +3,7 @@ import {Http, Headers, Response} from '@angular/http';
 import {Observable} from 'rxjs';
 import 'rxjs/add/operator/map';
 import {tokenNotExpired, JwtHelper} from 'angular2-jwt';
+import {UserType} from '../user';
 
 import {handleError} from './error-utils';
 import {User} from '../user';
@@ -55,5 +56,15 @@ export class AuthenticationService {
 
   getLoggedInUsername(): string {
     return this.decodeUsername(this.getToken());
+  }
+
+  getLoggedInUserId(): any {
+    let decodedToken = this.jwtHelper.decodeToken(this.getToken());
+    return decodedToken.id;
+  }
+
+  getLoggedInUserType(): UserType {
+    let decodedToken = this.jwtHelper.decodeToken(this.getToken());
+    return decodedToken.userType;
   }
 }
