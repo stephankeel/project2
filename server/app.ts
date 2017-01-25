@@ -4,7 +4,6 @@ import * as createError from "http-errors";
 import * as log4js from "log4js";
 import {logger} from './utils/logger';
 import {authenticationRoute} from './routes/authentication';
-import {userRoute} from './routes/user.route';
 import {DBService} from './models/db.service';
 import * as http from "http";
 import * as path from "path";

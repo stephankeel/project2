@@ -1,6 +1,5 @@
 import express = require('express');
 import {Router} from "express-serve-static-core";
-import {IController} from "../controllers/controller.interface";
 import {IDataController} from "../controllers/data-controller.interface";
 
 export class GenericDataRouter<T> {
