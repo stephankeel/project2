@@ -9,7 +9,9 @@ import {Angular2JWTModule} from 'angular2-jsonwebtoken';
 import {LoginComponent} from './login/login.component';
 import {UserService} from "./remote/user.service";
 import {AuthenticationService} from './remote/authentication.service';
+import {SocketService} from './remote/socket.service';
 import {DashboardComponent} from "./dashboard/dashboard.component";
+import {TemperatureComponent} from './temperature/temperature.component';
 import {UsersComponent} from "./users/users.component";
 import {AuthGuard} from "./auth/auth-guard.service";
 
@@ -32,14 +34,15 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     FormsModule,
     HttpModule,
     AppRoutingModule,
-    Angular2JWTModule
+    Angular2JWTModule,
   ],
   declarations: [
     AppComponent,
     LoginComponent,
     DashboardComponent,
     UsersComponent,
-    LoginComponent
+    LoginComponent,
+    TemperatureComponent,
   ],
   providers: [
     UserService,
@@ -49,11 +52,18 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
       useFactory: authHttpServiceFactory,
       deps: [Http, RequestOptions]
     },
+    {
+      provide: Window,
+      useValue: window
+    },
     AuthenticationService,
+    SocketService,
     // providers used to create fake backend_helpers/index
-    BaseRequestOptions
+    BaseRequestOptions,
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [
+    AppComponent,
+  ]
 })
 
 export class AppModule {

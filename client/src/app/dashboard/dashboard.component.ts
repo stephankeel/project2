@@ -21,7 +21,7 @@ export class DashboardComponent implements OnInit {
     if (this.cssMenuClass === 'hideMenu') {
       this.cssMenuClass = 'showMenu';
     } else {
-      this.cssMenuClass = 'hideMenu'
+      this.cssMenuClass = 'hideMenu';
     }
   }
 
@@ -32,6 +32,10 @@ export class DashboardComponent implements OnInit {
   manageUsers(): void {
     this.closeMenu();
     this.router.navigate(['/users']);
+  }
+
+  temperature(): void {
+    this.router.navigate(['/temperature']);
   }
 
   logout(): void {
