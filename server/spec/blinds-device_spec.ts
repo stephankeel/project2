@@ -9,7 +9,7 @@ import {Port} from '../hardware/port-map';
 import {loginOptions, authBearerOptions} from './httpOptions';
 import {RequestContainer, ResponseContainer, ResponseCollectionContainer} from '../wire/com-container';
 
-describe('Blinds-Device Test', function () {
+describe('REST API Roundtrip Test of Blinds-Device', function () {
   const LOGIN_URL = BASE_URL + 'api/authenticate';
   const TEST_URL = BASE_URL + 'api/devices/blinds';
   const TEST_BLINDS_DEVICE = 'Test Blinds 99';
@@ -21,7 +21,7 @@ describe('Blinds-Device Test', function () {
 
   logger.debug(`clientCtx: ${clientCtx}`);
 
-  describe('POST ' + TEST_URL, function () {
+  describe('Test login, adding a blinds-device and duplicate rejection', function () {
     it('returns status code 200 - successfull authentication', function (done) {
       request.post(LOGIN_URL,
         loginOptions('admin', '123456'),
@@ -48,9 +48,8 @@ describe('Blinds-Device Test', function () {
       request.post(TEST_URL,
         authBearerOptions(adminToken, JSON.stringify(requestContent)),
         function (error: any, response: RequestResponse, body: any) {
-          logger.debug(`Blinds-device created (body): ${body}`);
+          logger.debug(`Blinds-device created (body): ${JSON.stringify(body)}`);
           expect(response.statusCode).toBe(201);
-          logger.debug(`Blinds-device created (body): ${body}`);
           let responseContent: ResponseContainer<IBlindsDevice> = JSON.parse(body);
           logger.debug(`Blinds-device created: ${JSON.stringify(responseContent.content)}`);
           testBlindsDeviceId = responseContent.content.id;
@@ -68,7 +67,7 @@ describe('Blinds-Device Test', function () {
     });
   });
 
-  describe('GET ' + TEST_URL + '/' + testBlindsDeviceId, function () {
+  describe('Test get dedicated blinds-device', function () {
     it('returns status code 200 - found blinds-device', function (done) {
       request.get(TEST_URL + '/' + testBlindsDeviceId,
         authBearerOptions(adminToken),
@@ -82,7 +81,7 @@ describe('Blinds-Device Test', function () {
     });
   });
 
-  describe('GET ' + TEST_URL, function () {
+  describe('Test get all blinds-devices', function () {
     it('returns status code 200 - found blinds-devices', function (done) {
       request.get(TEST_URL,
         authBearerOptions(adminToken),
@@ -96,7 +95,7 @@ describe('Blinds-Device Test', function () {
     });
   });
 
-  describe('PUT ' + TEST_URL + '/' + testBlindsDeviceId, function () {
+  describe('Test update of a  blinds-device', function () {
     let NAME: string = 'Test Blinds-Device 007';
     let testBlindsDevice: IBlindsDevice = {
       id: testBlindsDeviceId,
@@ -122,7 +121,7 @@ describe('Blinds-Device Test', function () {
     });
   });
 
-  describe('DELETE ' + TEST_URL + '/' + testBlindsDeviceId, function () {
+  describe('Test deletion of a blinds-device', function () {
     it('returns status code 200 - blinds-device deleted', function (done) {
       request.delete(TEST_URL + '/' + testBlindsDeviceId,
         authBearerOptions(adminToken),
