@@ -1,14 +1,16 @@
 'use strict';
 
 import {logger} from '../utils/logger';
+import {v4} from 'uuid';
 import {RequestResponse} from 'request';
 import {BASE_URL} from './constants';
 import {IUser} from '../entities/user.interface';
 import {UserType} from '../entities/user-type';
 import {loginOptions, authBearerOptions} from './httpOptions';
+import {RequestContainer, ResponseContainer, ResponseCollectionContainer} from '../wire/com-container';
 
 
-describe('User Test', function () {
+describe('REST API Roundtrip Test of User', function () {
   const LOGIN_URL = BASE_URL + 'api/authenticate';
   const TEST_URL = BASE_URL + 'api/users';
   const TEST_USERNAME = 'testuser99';
@@ -16,8 +18,9 @@ describe('User Test', function () {
   let request = require('request');
   let adminToken: string;
   let testUserId: any;
+  let clientCtx: string = v4();
 
-  describe('GET ' + TEST_URL, function () {
+  describe('Test authentication, login and get all', function () {
     it('returns status code 500 - not yet authenticated', function (done) {
       request.get(TEST_URL,
         authBearerOptions(''),
@@ -43,15 +46,16 @@ describe('User Test', function () {
         authBearerOptions(adminToken),
         function (error: any, response: RequestResponse, body: any) {
           expect(response.statusCode).toBe(200);
-          let users: IUser[] = JSON.parse(body).data;
-          logger.debug(`Users: ${users}`);
+          let responseCollectionContainer: ResponseCollectionContainer<IUser> = JSON.parse(body);
+          let users: IUser[] = responseCollectionContainer.content;
+          logger.debug(`Users: ${JSON.stringify(users)}`);
           expect(users.length).toBeGreaterThan(0);
           done();
         });
     });
   });
 
-  describe('POST ' + TEST_URL, function () {
+  describe('Test user creation and duplicate rejection', function () {
     let testUser: IUser = {
       firstname: 'Hugo',
       lastname: 'Boss',
@@ -59,14 +63,15 @@ describe('User Test', function () {
       username: TEST_USERNAME,
       password: '1234'
     };
+    let requestContainer: RequestContainer<IUser> = new RequestContainer<IUser>(clientCtx, testUser);
     it('returns status code 201 - user created', function (done) {
       request.post(TEST_URL,
-        authBearerOptions(adminToken, JSON.stringify(testUser)),
+        authBearerOptions(adminToken, JSON.stringify(requestContainer)),
         function (error: any, response: RequestResponse, body: any) {
-          logger.debug(`User created (body): ${body}`);
+          logger.debug(`User created (body): ${JSON.stringify(body)}`);
           expect(response.statusCode).toBe(201);
-          logger.debug(`User created (body): ${body}`);
-          let user: IUser = JSON.parse(body).data;
+          let responseContainer: ResponseContainer<IUser> = JSON.parse(body);
+          let user: IUser = responseContainer.content;
           logger.debug(`User created: ${JSON.stringify(user)}`);
           testUserId = user.id;
           logger.debug(`testUserId: ${testUserId}`);
@@ -83,13 +88,13 @@ describe('User Test', function () {
     });
   });
 
-  describe('GET ' + TEST_URL + '/' + testUserId, function () {
+  describe('Test get dedicated user', function () {
     it('returns status code 200 - found user', function (done) {
       request.get(TEST_URL + '/' + testUserId,
         authBearerOptions(adminToken),
         function (error: any, response: RequestResponse, body: any) {
           expect(response.statusCode).toBe(200);
-          let user: IUser = JSON.parse(body).data;
+          let user: IUser = JSON.parse(body).content;
           logger.debug(`User retrieved: ${JSON.stringify(user)}`);
           expect(user.username).toBe(TEST_USERNAME);
           done();
@@ -97,7 +102,7 @@ describe('User Test', function () {
     });
   });
 
-  describe('PUT ' + TEST_URL + '/' + testUserId, function () {
+  describe('Test update of a user', function () {
     const LASTNAME = 'The Boss';
     let testUser: IUser = {
       id: testUserId,
@@ -107,12 +112,14 @@ describe('User Test', function () {
       username: TEST_USERNAME,
       password: '1234'
     };
+    let requestContainer: RequestContainer<IUser> = new RequestContainer<IUser>(clientCtx, testUser);
     it('returns status code 200 - user updated', function (done) {
       request.put(TEST_URL + '/' + testUserId,
-        authBearerOptions(adminToken, JSON.stringify(testUser)),
+        authBearerOptions(adminToken, JSON.stringify(requestContainer)),
         function (error: any, response: RequestResponse, body: any) {
           expect(response.statusCode).toBe(200);
-          let user: IUser = JSON.parse(body).data;
+          let responseContainer: ResponseContainer<IUser> = JSON.parse(body);
+          let user: IUser = responseContainer.content;
           logger.debug(`User updated: ${JSON.stringify(user)}`);
           expect(user.lastname).toBe(LASTNAME);
           done();
@@ -120,7 +127,7 @@ describe('User Test', function () {
     });
   });
 
-  describe('DELETE ' + TEST_URL + '/' + testUserId, function () {
+  describe('Test deletion of a user', function () {
     it('returns status code 200 - user deleted', function (done) {
       request.delete(TEST_URL + '/' + testUserId,
         authBearerOptions(adminToken),
