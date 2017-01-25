@@ -30,7 +30,7 @@ export class TemperatureDevice implements ITemperatureDevice {
 }
 
 export abstract class DeviceCharacteristics {
-  constructor(public type: DeviceType, public displayName: string, public css: string, public icon: string){
+  constructor(public type: DeviceType, public displayName: string, public title: string, public css: string, public icon: string){
   }
 }
 
@@ -39,7 +39,7 @@ export class BlindsDeviceCharacteristics extends DeviceCharacteristics {
   public readonly outputPortSet: Port[] = digitalOutputs;
 
   constructor(){
-    super(DeviceType.BLINDS, 'ROLLLADEN', 'blinds', 'blinds.svg');
+    super(DeviceType.BLINDS, 'ROLLLADEN', 'Blinds', 'blinds', 'blinds.svg');
   }
 }
 
@@ -47,7 +47,7 @@ export class HumidityDeviceCharacteristics extends DeviceCharacteristics {
   public readonly portSet: Port[] = analogInputs;
 
   constructor(){
-    super(DeviceType.HUMIDITY, 'FEUCHTIGKEIT', 'humidity', 'humidity.svg');
+    super(DeviceType.HUMIDITY, 'FEUCHTIGKEIT', 'Humidity', 'humidity', 'humidity.svg');
   }
 }
 
@@ -55,7 +55,7 @@ export class TemperatureDeviceCharacteristics extends DeviceCharacteristics {
   public readonly portSet: Port[] = analogInputs;
 
   constructor(){
-    super(DeviceType.TEMPERATURE, 'TEMPERATUR', 'temperature', 'temperature.svg');
+    super(DeviceType.TEMPERATURE, 'TEMPERATUR', 'Temperature', 'temperature', 'temperature.svg');
   }
 }
 

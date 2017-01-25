@@ -11,8 +11,10 @@ import {User} from '../user';
 @Injectable()
 export class AuthenticationService {
   private jwtHelper: JwtHelper = new JwtHelper();
-
   private headers = new Headers({'Content-Type': 'application/json'});
+  private username: string;
+  private userId: any;
+  private userType: UserType;
 
   constructor(private http: Http) {
   }
@@ -28,7 +30,11 @@ export class AuthenticationService {
         if (token) {
           // store jwt token in local storage to keep user logged in between page refreshes
           localStorage.setItem('id_token', token);
-          console.log(`login succeeded. username: ${this.decodeUsername(token)}`);
+          let decodedToken = this.jwtHelper.decodeToken(this.getToken());
+          this.username = decodedToken.username;
+          this.userId = decodedToken.id;
+          this.userType = decodedToken.type;
+          console.log(`login succeeded. username: ${this.username}`);
           return true;
         } else {
           return false;
@@ -45,26 +51,19 @@ export class AuthenticationService {
     return tokenNotExpired();
   }
 
-  private decodeUsername(token): string {
-    let decodedToken = this.jwtHelper.decodeToken(token);
-    return decodedToken.username;
-  }
-
   getToken(): string {
     return localStorage.getItem('id_token');
   }
 
   getLoggedInUsername(): string {
-    return this.decodeUsername(this.getToken());
+    return this.loggedIn() ? this.username : null;
   }
 
   getLoggedInUserId(): any {
-    let decodedToken = this.jwtHelper.decodeToken(this.getToken());
-    return decodedToken.id;
+    return this.loggedIn() ? this.userId : null;
   }
 
   getLoggedInUserType(): UserType {
-    let decodedToken = this.jwtHelper.decodeToken(this.getToken());
-    return decodedToken.userType;
+    return this.loggedIn() ? this.userType : null;
   }
 }

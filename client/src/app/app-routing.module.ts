@@ -4,6 +4,7 @@ import {RouterModule, Routes}  from '@angular/router';
 import {LoginComponent} from './login/login.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {TemperatureComponent} from './temperature/temperature.component';
+import {DevicesComponent} from './devices/devices.component';
 import {UsersComponent} from './users/users.component';
 import {AuthGuard} from './auth/auth-guard.service';
 
@@ -11,6 +12,7 @@ const routes: Routes = [
   {path: '', redirectTo: '/login', pathMatch: 'full'},
   {path: 'login', component: LoginComponent},
   {path: 'dashboard', canActivate: [AuthGuard], component: DashboardComponent},
+  {path: 'devices', canActivate: [AuthGuard], component: DevicesComponent},
   {path: 'users', canActivate: [AuthGuard], component: UsersComponent},
   {path: 'temperature', canActivate: [AuthGuard], component: TemperatureComponent},
   {path: '**', canActivate: [AuthGuard], component: DashboardComponent},
