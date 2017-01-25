@@ -13,7 +13,7 @@ export class GenericDataGenerator<T extends IData> {
   constructor(private tempSocket: GenericDataSocket<T>, private createDataContent: (generatedValue: number) => T) {
     setInterval(() => {
       this.generatedValue += 0.1;
-      tempSocket.broadcastTemperature(createDataContent(this.generatedValue));
+      tempSocket.broadcast(createDataContent(this.generatedValue));
     }, 1000);
   }
 }
