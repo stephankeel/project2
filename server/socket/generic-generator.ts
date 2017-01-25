@@ -1,5 +1,5 @@
 import {IData} from '../entities/data.interface';
-import {GenericDataSocket} from './generic-data-socket';
+import {GenericSocket} from './generic-socket';
 
 
 /**
@@ -7,13 +7,13 @@ import {GenericDataSocket} from './generic-data-socket';
  *
  * This class is only used for tests.
  */
-export class GenericDataGenerator<T extends IData> {
+export class GenericGenerator<T extends IData> {
   private generatedValue: number = 20;
 
-  constructor(private tempSocket: GenericDataSocket<T>, private createDataContent: (generatedValue: number) => T) {
+  constructor(private tempSocket: GenericSocket<T>, private createDataContent: (generatedValue: number) => T) {
     setInterval(() => {
       this.generatedValue += 0.1;
-      tempSocket.broadcast(createDataContent(this.generatedValue));
+      tempSocket.update(createDataContent(this.generatedValue));
     }, 1000);
   }
 }
