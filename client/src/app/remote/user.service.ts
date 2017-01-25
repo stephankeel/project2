@@ -3,6 +3,7 @@ import {User} from "../user";
 import 'rxjs/add/operator/toPromise';
 import {handleError} from './error-utils';
 import {AuthHttp} from 'angular2-jwt';
+import {RequestContainer} from "../../../../server/wire/com-container";
 
 @Injectable()
 export class UserService {
@@ -13,18 +14,20 @@ export class UserService {
   }
 
   addUser(user: User): Promise<User> {
+    let container: RequestContainer<User> = new RequestContainer<User>(null, user);
     return this.authHttp
-      .post(this.usersUrl, JSON.stringify(user))
-      .map(response => response.json().data as User)
+      .post(this.usersUrl, JSON.stringify(container))
+      .map(response => response.json().content as User)
       .catch(handleError)
       .toPromise()
   }
 
   updateUser(user: User): Promise<User> {
     const url = `${this.usersUrl}/${user.id}`;
+    let container: RequestContainer<User> = new RequestContainer<User>(null, user);
     return this.authHttp
-      .put(url, JSON.stringify(user))
-      .map(response => response.json().data as User)
+      .put(url, JSON.stringify(container))
+      .map(response => response.json().content as User)
       .catch(handleError)
       .toPromise()
   }
@@ -33,14 +36,14 @@ export class UserService {
     const url = `${this.usersUrl}/${user.id}`;
     return this.authHttp
       .delete(url)
-      .map(response => response.json().data as String)
+      .map(response => response.json().content as String)
       .catch(handleError)
       .toPromise()
   }
 
   getUsers(): Promise<User[]> {
     let users = this.authHttp.get(this.usersUrl)
-      .map(response => response.json().data as User[])
+      .map(response => response.json().content as User[])
       .catch(handleError)
       .toPromise()
     return users;
@@ -49,7 +52,7 @@ export class UserService {
   getUser(id: number): Promise<User> {
     const url = `${this.usersUrl}/${id}`;
     return this.authHttp.get(url)
-      .map(response => response.json().data as User)
+      .map(response => response.json().content as User)
       .catch(handleError)
       .toPromise()
   }

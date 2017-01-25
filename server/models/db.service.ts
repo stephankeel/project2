@@ -1,5 +1,3 @@
-'use strict';
-
 import {logger} from '../utils/logger';
 import mongoose = require('mongoose');
 import {initAdmin} from './user.model';

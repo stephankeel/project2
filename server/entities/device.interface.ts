@@ -1,9 +1,7 @@
-'use strict';
-
 import {Port} from '../hardware/port-map';
+import {IId} from './id.interface';
 
-interface IDevice {
-  id?: any;
+export interface IDevice extends IId {
   name?: string;
 }
 
