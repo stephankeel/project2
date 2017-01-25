@@ -8,8 +8,8 @@ import {DBService} from './models/db.service';
 import * as http from "http";
 import * as path from "path";
 import * as socketIo from "socket.io";
-import {GenericDataSocket} from "./socket/generic-data-socket";
-import {GenericDataGenerator} from "./socket/generic-data-generator";
+import {GenericSocket} from "./socket/generic-socket";
+import {GenericGenerator} from "./socket/generic-generator";
 import {ITemperatureData} from "./entities/data.interface";
 import {requiresAdmin, requiresStandardOrAdmin} from "./routes/authorization";
 import {GenericRouter} from "./routes/generic.router";
@@ -128,8 +128,8 @@ class Server {
       handshake: true
     }));
 
-    let tempSocket1 = new GenericDataSocket<ITemperatureData>(this.io, "temperature", "1");
-    new GenericDataGenerator<ITemperatureData>(tempSocket1, n => {
+    let tempSocket1 = new GenericSocket<ITemperatureData>(this.io, "/temperature/1");
+    new GenericGenerator<ITemperatureData>(tempSocket1, n => {
       return {value: n, timestamp: Date.now(),}
     });
   }
