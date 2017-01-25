@@ -22,7 +22,7 @@ export class GenericDataController<T, R extends IDeviceDocument> implements IDat
         res.status(404).json({error: `error retrieving all ${this.loggingPrefix} with deviceId ${ref.deviceId}. ${err}`});
       } else {
         // set the id to the _id provided by the db
-        // TODO: should we create new Objects here, to prevent to properties (id and _id)?
+        // TODO: should we create new Objects here, to prevent two properties (id and _id)?
         data.forEach((rec) => rec.id = rec._id);
         logger.debug(`found ${data.length} ${this.loggingPrefix} records`);
         let responseContentCollection: ResponseCollectionContainer<T> = this.createResponseCollectionContainer(data);
