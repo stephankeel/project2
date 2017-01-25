@@ -3,8 +3,9 @@ import {IDeviceDocument} from "../models/model-helper";
 import {ResponseContainer, ResponseCollectionContainer} from "../wire/com-container";
 import express = require('express');
 import {Model} from "mongoose";
+import {IDataController} from "./data-controller.interface";
 
-export class GenericDataController<T, R extends IDeviceDocument> {
+export class GenericDataController<T, R extends IDeviceDocument> implements IDataController<T> {
   constructor(private loggingPrefix: string,
               private model: Model<R>,
               private createDocument: (content: T) => R,

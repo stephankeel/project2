@@ -5,9 +5,6 @@ import * as log4js from "log4js";
 import {logger} from './utils/logger';
 import {authenticationRoute} from './routes/authentication';
 import {userRoute} from './routes/user.route';
-import {blindsDeviceRoute} from './routes/blinds-device.route';
-import {humidityDeviceRoute} from './routes/humidity-device.route';
-import {temperatureDeviceRoute} from './routes/temperature-device.route';
 import {DBService} from './models/db.service';
 import * as http from "http";
 import * as path from "path";
@@ -15,6 +12,17 @@ import * as socketIo from "socket.io";
 import {GenericDataSocket} from "./socket/generic-data-socket";
 import {GenericDataGenerator} from "./socket/generic-data-generator";
 import {ITemperatureData} from "./entities/data.interface";
+import {requiresAdmin, requiresStandardOrAdmin} from "./routes/authorization";
+import {GenericRouter} from "./routes/generic.router";
+import {UserController} from "./controllers/user.controller";
+import {TemperatureDeviceController} from "./controllers/temperature-device.controller";
+import {GenericDataRouter} from "./routes/generic-data.router";
+import {TemperatureDataController} from "./controllers/temperature-data.controller";
+import {HumidityDataController} from "./controllers/humidity-data.controller";
+import {HumidityDeviceController} from "./controllers/humidity-device.controller";
+import {BlindsDeviceController} from "./controllers/blinds-device.controller";
+import {BlindsDataController} from "./controllers/blinds-data.controller";
+import {BlindsCommandRouter} from "./routes/blinds-command.router";
 var socketioJwt = require("socketio-jwt");
 
 declare var process: any, __dirname: any;
@@ -83,10 +91,17 @@ class Server {
     });
 
     this.app.use(authenticationRoute);
-    userRoute(this.app);
-    blindsDeviceRoute(this.app);
-    humidityDeviceRoute(this.app);
-    temperatureDeviceRoute(this.app);
+    this.app.use('/api/users', requiresAdmin, GenericRouter.create(new UserController()));
+
+    this.app.use('/api/devices/blinds', requiresAdmin, GenericRouter.create(new BlindsDeviceController()));
+    this.app.use('/api/devices/humidity', requiresAdmin, GenericRouter.create(new HumidityDeviceController()));
+    this.app.use('/api/devices/temperature', requiresAdmin, GenericRouter.create(new TemperatureDeviceController()));
+
+    this.app.use('/api/data/blinds', requiresAdmin, GenericDataRouter.create(new BlindsDataController()));
+    this.app.use('/api/data/humidity', requiresAdmin, GenericDataRouter.create(new HumidityDataController()));
+    this.app.use('/api/data/temperature', requiresAdmin, GenericDataRouter.create(new TemperatureDataController()));
+
+    this.app.use('/api/command/blinds', requiresStandardOrAdmin, BlindsCommandRouter.create());
 
     this.app.use('/api', function (req: express.Request, res: express.Response, next: express.NextFunction) {
       next(createError(404, `No route found for ${req.method} ${req.url}`));
