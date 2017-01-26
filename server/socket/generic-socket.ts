@@ -1,34 +1,49 @@
 import {logger} from '../utils/logger';
+import Namespace = SocketIO.Namespace;
+import Socket = SocketIO.Socket;
 
 /**
- * The GenericSocket broadcasts values from one sensor.
- *
- * It creates a new socket.io namespace with the name '<namespaceName>' (example: /temperature/123456 or /humidity).
- * All values are send to every client which is connected to this namespace.
- * The send object is a ISocketItem with the action 'update' and item of type T.
+ * The GenericSocket sends values to all registered clients.
  */
-export class GenericSocket<T> {
-  public namespace: any;
+export class GenericSocket {
+  private namespace: Namespace;
+  private io: SocketIO.Server;
+  private initialized : boolean = false;
 
-  constructor(private io: SocketIO.Server, private namespaceName: string) {
-    this.namespace = this.io.of(`${namespaceName}`);
-    this.namespace.on("connection", (socket: any) => {
-      logger.info(`Socket.IO: Client on ${namespaceName} connected`);
-      this.listen(socket);
-    });
-    logger.info(`Socket.IO: namespace /${namespaceName} created`);
+  constructor(private namespaceName: string) {
   }
 
-  public del(value: T) {
+  public init(io: SocketIO.Server) : GenericSocket {
+    if (this.initialized) {
+      return this;
+    }
+    this.io = io;
+    this.namespace = this.io.of(`${this.namespaceName}`);
+    this.namespace.on("connection", (socket: Socket) => {
+      logger.info(`Socket.IO: Client ${socket.client.id} on ${this.namespaceName} connected`);
+      this.listen(socket);
+    });
+    logger.info(`Socket.IO: namespace ${this.namespaceName} initialized`);
+    this.initialized = true;
+    return this;
+  }
+
+  public del(value: any) {
     this.namespace.emit("delete", value);
   }
 
-  public update(value: T) {
+  public update(value: any) {
     this.namespace.emit("update", value);
   }
 
-  public create(value: T) {
+  public create(value: any) {
     this.namespace.emit("create", value);
+  }
+
+  public close() {
+    this.namespace.clients((c: any) => {
+      logger.info(JSON.stringify(c));
+    });
   }
 
   private listen(socket: any): void {
@@ -36,6 +51,6 @@ export class GenericSocket<T> {
   }
 
   private disconnect(): void {
-    console.log(`Client disconnected ${this.namespaceName}`);
+    console.log(`Client disconnected ${this.namespace.name}`);
   }
 }

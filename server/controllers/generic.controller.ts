@@ -7,9 +7,11 @@ import {RequestContainer, ResponseContainer, ResponseCollectionContainer} from "
 import express = require('express');
 import {Model} from "mongoose";
 import {IController} from "./controller.interface";
+import {GenericSocket} from "../socket/generic-socket";
 
 export class GenericController<T, R extends IDeviceDocument> implements IController {
-  constructor(private loggingPrefix: string,
+  constructor(private genericSocket: GenericSocket,
+              private loggingPrefix: string,
               private model: Model<R>,
               private createDocument: (content: T) => R,
               private udpateDocument: (documentFromDb: R, inputDocument: R) => void,
@@ -28,6 +30,7 @@ export class GenericController<T, R extends IDeviceDocument> implements IControl
       } else {
         // set the id to the _id provided by the db
         device.id = addedDevice._id;
+        this.genericSocket.create(device.id);
         logger.debug(`created ${this.loggingPrefix} successfully, id: ${addedDevice.id}`);
         let responseContainer: ResponseContainer<T> = this.createResponseContainer(device);
         res.status(201).json(responseContainer);
@@ -71,9 +74,11 @@ export class GenericController<T, R extends IDeviceDocument> implements IControl
     this.model.remove(ref, (err: any) => {
       if (err) {
         res.status(404).json({error: `error deleting ${this.loggingPrefix} ${ref._id}. ${err}`});
+      } else {
+        this.genericSocket.del(ref._id);
+        logger.debug(`deleted ${this.loggingPrefix} ${req.params.id} successfully`);
+        this.cleanupCallbackOnDelete(req.params.id);
       }
-      logger.debug(`deleted ${this.loggingPrefix} ${req.params.id} successfully`);
-      this.cleanupCallbackOnDelete(req.params.id);
       res.json(ref._id);
     });
   }
@@ -95,6 +100,7 @@ export class GenericController<T, R extends IDeviceDocument> implements IControl
             res.status(500).json({error: `error updating ${this.loggingPrefix} ${id}. ${err}`});
           } else {
             logger.debug(`updated ${this.loggingPrefix} successfully`);
+            this.genericSocket.update(id);
             let responseContent: ResponseContainer<T> = this.createResponseContainer(updatedDevice);
             res.json(responseContent);
           }

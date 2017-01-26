@@ -4,10 +4,12 @@ import {IBlindsDevice} from '../entities/device.interface';
 import {ResponseContainer, ResponseCollectionContainer} from '../wire/com-container';
 import {BlindsDataController} from './blinds-data.controller';
 import {GenericController} from './generic.controller';
+import {SocketService} from "../socket/sockert-service";
 
 export class BlindsDeviceController extends GenericController<IBlindsDevice, IBlindsDeviceDocument> {
-  constructor() {
-    super("blinds-device", BlindsDeviceModel,
+  constructor(socketService: SocketService) {
+    super(socketService.registerSocket("/blinds"),
+      "blinds-device", BlindsDeviceModel,
       c => new BlindsDeviceModel(c),
       (d, i) => BlindsDeviceController.updateDocument(d, i),
       d => new ResponseContainer<IBlindsDevice>(d),

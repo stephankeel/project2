@@ -7,11 +7,13 @@ import {IHumidityDevice} from '../entities/device.interface';
 import {ResponseContainer, ResponseCollectionContainer} from '../wire/com-container';
 import {GenericController} from './generic.controller';
 import {HumidityDataController} from "./humidity-data.controller";
+import {SocketService} from "../socket/sockert-service";
 
 
 export class HumidityDeviceController extends GenericController<IHumidityDevice, IHumidityDeviceDocument> {
-  constructor() {
-    super("humitity-Device", HumidityDeviceModel,
+  constructor(socketService: SocketService) {
+    super(socketService.registerSocket("/humidity"),
+      "humitity-Device", HumidityDeviceModel,
       c => new HumidityDeviceModel(c),
       (d, i) => HumidityDeviceController.updateDocument(d, i),
       d => new ResponseContainer<IHumidityDevice>(d),
@@ -19,6 +21,7 @@ export class HumidityDeviceController extends GenericController<IHumidityDevice,
       id => new HumidityDataController().deleteAllById(id),
     );
   }
+
   private static updateDocument(documentFromDb: IHumidityDeviceDocument, inputDocument: IHumidityDeviceDocument) {
     documentFromDb.name = inputDocument.name;
     documentFromDb.port = inputDocument.port;

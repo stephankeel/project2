@@ -7,10 +7,12 @@ import {ITemperatureDevice} from '../entities/device.interface';
 import {RequestContainer, ResponseContainer, ResponseCollectionContainer} from '../wire/com-container';
 import {GenericController} from './generic.controller';
 import {TemperatureDataController} from "./temperature-data.controller";
+import {SocketService} from "../socket/sockert-service";
 
 export class TemperatureDeviceController extends GenericController<ITemperatureDevice, ITemperatureDeviceDocument> {
-  constructor() {
-    super("temperature-device", TemperatureDeviceModel,
+  constructor(socketService: SocketService) {
+    super(socketService.registerSocket("/temperature"),
+      "temperature-device", TemperatureDeviceModel,
       c => new TemperatureDeviceModel(c),
       (d, i) => TemperatureDeviceController.updateDocument(d, i),
       d => new ResponseContainer<ITemperatureDevice>(d),
