@@ -13,8 +13,8 @@
     </header>
 
     <main *ngFor="let device of devices">
-      <div id="rollupDiv" class="mainSelection" (click)="clickAction(device)">
-        <img id="{{device.css}}Icon" src="app/images/{{device.icon}}" alt="{{device.title}} Icon" title="{{device.title}} Icon">
+      <div class="mainSelection" (click)="clickAction(device)">
+        <img class="{{device.css}}Icon" src="app/images/{{device.icon}}" alt="{{device.title}} Icon" title="{{device.title}} Icon">
         <div class="mainSelectionLabel">{{device.displayName}}</div>
       </div>
     </main>
