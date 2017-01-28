@@ -14,3 +14,16 @@ export function portName(port: Port): string {
   let p: {[index: string]: any} = Port;
   return p[port];
 }
+
+export const enum PortDirection {
+  INPUT,
+  OUTPUT
+}
+
+export function portDirection(port: Port) {
+  if (port <= Port.DI_8 || port >= Port.AI_1 && port <= Port.AI_4) {
+    return PortDirection.INPUT;
+  } else {
+    return PortDirection.OUTPUT;
+  }
+}
