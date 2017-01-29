@@ -11,7 +11,7 @@ export class GenericRestService<T extends IId> {
   add(item: T): Observable<T> {
     return this.authHttp
       .post(this.restUrl, JSON.stringify(item))
-      .map(response => response.json().content as T)
+      .map(response => response.json() as T)
       .catch(handleError);
   }
 
