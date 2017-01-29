@@ -6,7 +6,7 @@ import Socket = SocketIO.Socket;
  * The GenericSocket sends values to all registered clients.
  */
 export class GenericSocket {
-  private namespace: Namespace;
+  private _namespace: Namespace;
   private io: SocketIO.Server;
   private initialized : boolean = false;
 
@@ -18,8 +18,8 @@ export class GenericSocket {
       return this;
     }
     this.io = io;
-    this.namespace = this.io.of(`${this.namespaceName}`);
-    this.namespace.on("connection", (socket: Socket) => {
+    this._namespace = this.io.of(`${this.namespaceName}`);
+    this._namespace.on("connection", (socket: Socket) => {
       logger.info(`Socket.IO: Client ${socket.client.id} on ${this.namespaceName} connected`);
       this.listen(socket);
     });
@@ -29,28 +29,36 @@ export class GenericSocket {
   }
 
   public del(value: any) {
-    this.namespace.emit("delete", value);
+    logger.info(`websocket.delete namespace: ${this._namespace.name} ${JSON.stringify(value)}`);
+    this._namespace.emit("delete", value);
   }
 
   public update(value: any) {
-    this.namespace.emit("update", value);
+    logger.info(`websocket.update namespace: ${this._namespace.name} ${JSON.stringify(value)}`);
+    this._namespace.emit("update", value);
   }
 
   public create(value: any) {
-    this.namespace.emit("create", value);
+    logger.info(`websocket.create namespace: ${this._namespace.name} ${JSON.stringify(value)}`);
+    this._namespace.emit("create", value);
   }
 
   public close() {
-    this.namespace.clients((c: any) => {
+    this._namespace.clients((c: any) => {
       logger.info(JSON.stringify(c));
     });
   }
+
+  public get namespace() {
+    return this._namespace;
+  }
+
 
   private listen(socket: any): void {
     socket.on("disconnect", () => this.disconnect());
   }
 
   private disconnect(): void {
-    console.log(`Client disconnected ${this.namespace.name}`);
+    console.log(`Client disconnected ${this._namespace.name}`);
   }
 }
