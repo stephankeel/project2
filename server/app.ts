@@ -22,6 +22,8 @@ import {HumidityDeviceController} from "./controllers/humidity-device.controller
 import {BlindsDeviceController} from "./controllers/blinds-device.controller";
 import {BlindsDataController} from "./controllers/blinds-data.controller";
 import {BlindsCommandRouter} from "./routes/blinds-command.router";
+import {Engine} from './logic/engine';
+
 var socketioJwt = require("socketio-jwt");
 
 declare var process: any, __dirname: any;
@@ -60,6 +62,9 @@ class Server {
 
     // Start listening
     this.listen();
+
+    // Start the hardware controller engine
+    Engine.getInstance();
   }
 
   private config(): void {
