@@ -8,7 +8,8 @@ import {SocketService} from "../socket/sockert-service";
 
 export class BlindsDeviceController extends GenericController<IBlindsDevice, IBlindsDeviceDocument> {
   constructor(socketService: SocketService) {
-    super(socketService.registerSocket("/blinds"),
+    super(socketService,
+      socketService.registerSocket("/blinds"),
       BlindsDeviceModel,
       c => new BlindsDeviceModel(c),
       (d, i) => BlindsDeviceController.updateDocument(d, i),

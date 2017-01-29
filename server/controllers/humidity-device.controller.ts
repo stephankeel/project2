@@ -12,7 +12,8 @@ import {SocketService} from "../socket/sockert-service";
 
 export class HumidityDeviceController extends GenericController<IHumidityDevice, IHumidityDeviceDocument> {
   constructor(socketService: SocketService) {
-    super(socketService.registerSocket("/humidity"),
+    super(socketService,
+      socketService.registerSocket("/humidity"),
       HumidityDeviceModel,
       c => new HumidityDeviceModel(c),
       (d, i) => HumidityDeviceController.updateDocument(d, i),

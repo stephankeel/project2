@@ -11,7 +11,8 @@ import {SocketService} from "../socket/sockert-service";
 
 export class TemperatureDeviceController extends GenericController<ITemperatureDevice, ITemperatureDeviceDocument> {
   constructor(socketService: SocketService) {
-    super(socketService.registerSocket("/temperature"),
+    super(socketService,
+      socketService.registerSocket("/temperature"),
       TemperatureDeviceModel,
       c => new TemperatureDeviceModel(c),
       (d, i) => TemperatureDeviceController.updateDocument(d, i),
