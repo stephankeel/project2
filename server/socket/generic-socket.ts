@@ -10,7 +10,7 @@ export class GenericSocket {
   private io: SocketIO.Server;
   private initialized : boolean = false;
 
-  constructor(private _namespaceName: string) {
+  constructor(private namespaceName: string) {
   }
 
   public init(io: SocketIO.Server) : GenericSocket {
@@ -18,12 +18,12 @@ export class GenericSocket {
       return this;
     }
     this.io = io;
-    this.namespace = this.io.of(`${this._namespaceName}`);
+    this.namespace = this.io.of(`${this.namespaceName}`);
     this.namespace.on("connection", (socket: Socket) => {
-      logger.info(`Socket.IO: Client ${socket.client.id} on ${this._namespaceName} connected`);
+      logger.info(`Socket.IO: Client ${socket.client.id} on ${this.namespaceName} connected`);
       this.listen(socket);
     });
-    logger.info(`Socket.IO: namespace ${this._namespaceName} initialized`);
+    logger.info(`Socket.IO: namespace ${this.namespaceName} initialized`);
     this.initialized = true;
     return this;
   }
@@ -44,15 +44,19 @@ export class GenericSocket {
   }
 
   public close() {
-    this.namespace.clients((c: any) => {
-      logger.info(JSON.stringify(c));
+    const connectedNameSpaceSockets = Object.keys(this.namespace.connected); // Get Object with Connected SocketIds as properties
+    connectedNameSpaceSockets.forEach(socketId => {
+      connectedNameSpaceSockets[socketId].disconnect(); // Disconnect Each socket
+      logger.info(`Socket.IO: namespace ${this.namespaceName} client ${connectedNameSpaceSockets[socketId]} disconnected`);
     });
-  }
+    this.namespace.removeAllListeners(); // Remove all Listeners for the event emitter
+    delete this.io.nsps[this.namespaceName]; // Remove from the server namespaces
 
-  public get namespaceName() {
-    return this._namespaceName;
+    // TODO: logger scheint im Callback nicht mehr definiert zu sein. Scope / Context?
+    logger.info(`Socket.IO: namespace ${this.namespaceName} closed`);
+    // TODO: provisorisch console.log verwendet
+    console.log(`Socket.IO: namespace ${this.namespaceName} closed`);
   }
-
 
   private listen(socket: any): void {
     socket.on("disconnect", () => this.disconnect());
