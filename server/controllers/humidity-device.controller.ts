@@ -13,11 +13,11 @@ import {SocketService} from "../socket/sockert-service";
 export class HumidityDeviceController extends GenericController<IHumidityDevice, IHumidityDeviceDocument> {
   constructor(socketService: SocketService) {
     super(socketService,
-      socketService.registerSocket("/humidity"),
+      "/humidity",
       HumidityDeviceModel,
       c => new HumidityDeviceModel(c),
       (d, i) => HumidityDeviceController.updateDocument(d, i),
-      id => new HumidityDataController().deleteAllById(id),
+      id => new HumidityDataController(socketService).deleteAllById(id),
     );
   }
 

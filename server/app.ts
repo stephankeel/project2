@@ -49,14 +49,14 @@ class Server {
     // create ClientSocketService
     this.socketService = new SocketService();
 
+    // Create database connections
+    this.databases();
+
     // Setup routes
     this.routes();
 
     // Create server
     this.server = http.createServer(this.app);
-
-    // Create database connections
-    this.databases();
 
     // Handle websockets
     this.sockets();
@@ -99,9 +99,9 @@ class Server {
     this.app.use('/api/devices/humidity', requiresAdmin, GenericRouter.create(new HumidityDeviceController(this.socketService)));
     this.app.use('/api/devices/temperature', requiresAdmin, GenericRouter.create(new TemperatureDeviceController(this.socketService)));
 
-    this.app.use('/api/data/blinds', requiresAdmin, GenericDataRouter.create(new BlindsDataController()));
-    this.app.use('/api/data/humidity', requiresAdmin, GenericDataRouter.create(new HumidityDataController()));
-    this.app.use('/api/data/temperature', requiresAdmin, GenericDataRouter.create(new TemperatureDataController()));
+    this.app.use('/api/data/blinds', requiresAdmin, GenericDataRouter.create(new BlindsDataController(this.socketService)));
+    this.app.use('/api/data/humidity', requiresAdmin, GenericDataRouter.create(new HumidityDataController(this.socketService)));
+    this.app.use('/api/data/temperature', requiresAdmin, GenericDataRouter.create(new TemperatureDataController(this.socketService)));
 
     this.app.use('/api/command/blinds', requiresStandardOrAdmin, BlindsCommandRouter.create());
 
@@ -132,9 +132,9 @@ class Server {
     }));
 
     this.socketService.init(this.io);
-    new GenericGenerator(this.socketService.registerSocket("/temperature/1"), n => {
+/*    new GenericGenerator(this.socketService.registerSocket("/temperature/1"), n => {
       return {value: n, timestamp: Date.now(),}
-    });
+    });*/
   }
 
   // Start HTTP server listening

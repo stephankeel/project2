@@ -8,7 +8,7 @@ import {SocketService} from "../socket/sockert-service";
 export class UserController extends GenericController<IUser, IUserDocument> {
   constructor(socketService: SocketService) {
     super(socketService,
-      socketService.registerSocket("/users"),
+      "/users",
       UserModel,
       c => new UserModel(c),
       (d, i) => UserController.updateDocument(d, i),

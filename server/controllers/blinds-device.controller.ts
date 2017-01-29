@@ -9,11 +9,11 @@ import {SocketService} from "../socket/sockert-service";
 export class BlindsDeviceController extends GenericController<IBlindsDevice, IBlindsDeviceDocument> {
   constructor(socketService: SocketService) {
     super(socketService,
-      socketService.registerSocket("/blinds"),
+      "/blinds",
       BlindsDeviceModel,
       c => new BlindsDeviceModel(c),
       (d, i) => BlindsDeviceController.updateDocument(d, i),
-      id => new BlindsDataController().deleteAllById(id),
+      id => new BlindsDataController(socketService).deleteAllById(id),
     );
   }
 

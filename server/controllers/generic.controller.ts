@@ -8,14 +8,16 @@ import {SocketService} from "../socket/sockert-service";
 
 export class GenericController<T, R extends IDeviceDocument> implements IController {
   private loggingPrefix: string;
+  private genericSocket: GenericSocket;
 
   constructor(private socketService: SocketService,
-              private genericSocket: GenericSocket,
+              private namespaceName: string,
               private model: Model<R>,
               private createDocument: (content: T) => R,
               private udpateDocument: (documentFromDb: R, inputDocument: R) => void,
               private cleanupCallbackOnDelete: (id: string) => void) {
-    this.loggingPrefix = this.genericSocket.namespaceName;
+    this.loggingPrefix = this.namespaceName;
+    this.genericSocket = socketService.registerSocket(this.namespaceName);
   }
 
   public add(req: express.Request, res: express.Response) {
@@ -28,7 +30,7 @@ export class GenericController<T, R extends IDeviceDocument> implements IControl
       } else {
         // set the id to the _id provided by the db
         device.id = addedDevice._id;
-        this.socketService.registerSocket(`${this.genericSocket.namespaceName}/${device.id}`);
+        this.socketService.registerSocket(`${this.namespaceName}/${device.id}`);
         this.genericSocket.create(device);
         logger.debug(`created ${this.loggingPrefix} successfully, id: ${addedDevice.id}`);
         res.status(201).json(device);
@@ -72,7 +74,7 @@ export class GenericController<T, R extends IDeviceDocument> implements IControl
         res.status(404).json({error: `error deleting ${this.loggingPrefix} ${ref._id}. ${err}`});
       } else {
         this.genericSocket.del(ref._id);
-        this.socketService.unregisterSocket(`${this.genericSocket.namespaceName}/${ref._id}`);
+        this.socketService.unregisterSocket(`${this.namespaceName}/${ref._id}`);
         logger.debug(`deleted ${this.loggingPrefix} ${req.params.id} successfully`);
         this.cleanupCallbackOnDelete(req.params.id);
       }

@@ -4,11 +4,17 @@ import {ResponseContainer, ResponseCollectionContainer} from "../wire/com-contai
 import express = require('express');
 import {Model} from "mongoose";
 import {IDataController} from "./data-controller.interface";
+import {SocketService} from "../socket/sockert-service";
 
 export class GenericDataController<T, R extends IDeviceDocument> implements IDataController<T> {
-  constructor(private loggingPrefix: string,
+
+  private loggingPrefix: string;
+
+  constructor(private socketService: SocketService,
+              private namespaceName: string,
               private model: Model<R>,
               private createDocument: (content: T) => R) {
+    this.loggingPrefix = `${this.namespaceName}-data`;
   }
 
   public getAllById(req: express.Request, res: express.Response) {
@@ -54,11 +60,8 @@ export class GenericDataController<T, R extends IDeviceDocument> implements IDat
       } else {
         // set the id to the _id provided by the db
         dataModel.id = addedData._id;
+        this.socketService.getSocket(`${this.namespaceName}/${addedData._id}`).update(dataModel);
         logger.debug(`added ${this.loggingPrefix} successfully, id: ${addedData.id}`);
-
-        // TODO: Broadcast data
-        // let broadcastData: BroadcastContainer<ITemperatureData> = new BroadcastContainer(null, ContentType.TEMPERATURE_DATA, dataModel);
-        // logger.error(`broadcasting added ${this.loggingPrefix} ${JSON.stringify(broadcastData)} ==> TO BE IMPLEMENTED`);
       }
     });
   };

@@ -3,10 +3,12 @@ import {ResponseContainer, ResponseCollectionContainer} from "../wire/com-contai
 import {ITemperatureData} from "../entities/data.interface";
 import {GenericDataController} from "./generic.data-controller";
 import express = require('express');
+import {SocketService} from "../socket/sockert-service";
 
 export class TemperatureDataController extends GenericDataController<ITemperatureData, ITemperatureDataDocument> {
-  constructor() {
-    super("temperature-data",
+  constructor(socketService: SocketService) {
+    super(socketService,
+      "/temperature",
       TemperatureDataModel,
       c => new TemperatureDataModel(c),
     );
