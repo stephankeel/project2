@@ -22,8 +22,10 @@ export class GenericService<T extends IId> {
   }
 
   private processItem(packet: ISocketItem) {
-    if (packet.action === "create" || packet.action === "update") {
+    if (packet.action === "create") {
       this.addItem(packet.item);
+    } else if (packet.action === "update") {
+      this.updateItem(packet.item);
     } else if (packet.action === "delete") {
       this.currentItems.delete(packet.item);
     }
@@ -56,7 +58,7 @@ export class GenericService<T extends IId> {
 
   private addAll(items: T[]) {
     this.currentItems = new Map<string, T>();
-    for(let item of items){
+    for (let item of items) {
       this.currentItems.set(item.id, item);
     }
     this.items.next(List<T>(this.currentItems.values()));
