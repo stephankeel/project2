@@ -13,7 +13,7 @@ export class SocketService {
     this.initialized = true;
   }
 
-  public registerSocket(namespace: string) {
+  public registerSocket(namespace: string) : GenericSocket {
     let socket: GenericSocket = new GenericSocket(namespace);
     if (this.initialized) {
       socket.init(this.io);
