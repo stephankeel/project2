@@ -4,7 +4,6 @@ import {List} from "immutable";
 import {GenericRestService} from "./generic-rest.service";
 import {IId} from "../../../../server/entities/id.interface";
 import {AuthHttp} from "angular2-jwt";
-import {ClientContextService} from "../service/client-context.service";
 import {ISocketItem} from "../../../../server/entities/socket-item.model";
 import {forEach} from "@angular/router/src/utils/collection";
 
