@@ -1,23 +1,26 @@
-import {ReplaySubject, Observable} from "rxjs";
+import {ReplaySubject, Observable, Subscription} from "rxjs";
 import {ClientSocketService} from "./client-socket.service";
 import {List} from "immutable";
 import {GenericRestService} from "./generic-rest.service";
 import {IId} from "../../../../server/entities/id.interface";
 import {AuthHttp} from "angular2-jwt";
 import {ISocketItem} from "../../../../server/entities/socket-item.model";
-import {forEach} from "@angular/router/src/utils/collection";
 
 export class GenericService<T extends IId> {
   items: ReplaySubject<List<T>> = new ReplaySubject<List<T>>(1);
   private currentItems: Map<string, T> = new Map<string, T>();
-  private socket: Observable<ISocketItem>;
+  private dataSubscription: Subscription;
   private restService: GenericRestService<T>;
 
   constructor(private authHttp: AuthHttp, private socketService: ClientSocketService,
               private restUrl: string, private socketNamespace: string) {
     this.restService = new GenericRestService<T>(authHttp, restUrl);
-    this.socket = socketService.get(socketNamespace);
-    this.socket.subscribe((item: ISocketItem) => this.processItem(item));
+    let observable = socketService.get(socketNamespace);
+    this.dataSubscription = observable.subscribe((item: ISocketItem) => this.processItem(item));
+  }
+
+  public disconnect() {
+    this.dataSubscription.unsubscribe();
   }
 
   private processItem(packet: ISocketItem) {

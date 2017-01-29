@@ -40,6 +40,10 @@ export class UsersComponent implements OnInit {
     this.genericService.getAll();
   }
 
+  ngOnDestroy() {
+    this.genericService.disconnect();
+  }
+
   backClicked(): void {
     this.router.navigate(['/dashboard']);
   }
