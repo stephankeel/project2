@@ -15,8 +15,6 @@ export class TemperatureDeviceController extends GenericController<ITemperatureD
       "temperature-device", TemperatureDeviceModel,
       c => new TemperatureDeviceModel(c),
       (d, i) => TemperatureDeviceController.updateDocument(d, i),
-      d => new ResponseContainer<ITemperatureDevice>(d),
-      d => new ResponseCollectionContainer<ITemperatureDevice>(d),
       id => new TemperatureDataController().deleteAllById(id),
     );
   }

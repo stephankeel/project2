@@ -16,8 +16,6 @@ export class HumidityDeviceController extends GenericController<IHumidityDevice,
       "humitity-Device", HumidityDeviceModel,
       c => new HumidityDeviceModel(c),
       (d, i) => HumidityDeviceController.updateDocument(d, i),
-      d => new ResponseContainer<IHumidityDevice>(d),
-      d => new ResponseCollectionContainer<IHumidityDevice>(d),
       id => new HumidityDataController().deleteAllById(id),
     );
   }

@@ -1,12 +1,5 @@
-'use strict';
-
 import {logger} from "../utils/logger";
 import {IDeviceDocument} from "../models/model-helper";
-import {IDevice} from "../entities/device.interface";
-import {
-  RequestContainer, ResponseContainer, ResponseCollectionContainer,
-  BroadcastContainer
-} from "../wire/com-container";
 import express = require('express');
 import {Model} from "mongoose";
 import {IController} from "./controller.interface";
@@ -18,9 +11,6 @@ export class GenericController<T, R extends IDeviceDocument> implements IControl
               private model: Model<R>,
               private createDocument: (content: T) => R,
               private udpateDocument: (documentFromDb: R, inputDocument: R) => void,
-              private createResponseContainer: (content: R) => ResponseContainer<T>,
-              private createResponseCollectionContainer: (content: R[]) => ResponseCollectionContainer<T>,
-//              private createBroadcastContainer: (clientContext: string, content: R) => BroadcastContainer<T>,
               private cleanupCallbackOnDelete: (id: string) => void) {
   }
 
@@ -36,8 +26,7 @@ export class GenericController<T, R extends IDeviceDocument> implements IControl
         device.id = addedDevice._id;
         this.genericSocket.create(device);
         logger.debug(`created ${this.loggingPrefix} successfully, id: ${addedDevice.id}`);
-        let responseContainer: ResponseContainer<T> = this.createResponseContainer(device);
-        res.status(201).json(responseContainer);
+        res.status(201).json(device);
       }
     });
   }

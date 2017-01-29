@@ -12,8 +12,6 @@ export class BlindsDeviceController extends GenericController<IBlindsDevice, IBl
       "blinds-device", BlindsDeviceModel,
       c => new BlindsDeviceModel(c),
       (d, i) => BlindsDeviceController.updateDocument(d, i),
-      d => new ResponseContainer<IBlindsDevice>(d),
-      d => new ResponseCollectionContainer<IBlindsDevice>(d),
       id => new BlindsDataController().deleteAllById(id),
     );
   }
