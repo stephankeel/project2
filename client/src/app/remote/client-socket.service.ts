@@ -2,13 +2,14 @@ import {Injectable, Inject} from "@angular/core";
 import {Observable} from "rxjs";
 import * as io from "socket.io-client";
 import {AuthenticationService} from './authentication.service';
+import {ISocketItem} from "../../../../server/entities/socket-item.model";
 
 /**
  * This class handles authentication, error's, connect's and disconnect's from socket.io.
  * The created observable follows the "update" signals from socket stream.
  */
 @Injectable()
-export class SocketService {
+export class ClientSocketService {
   private name: string;
   private host: string = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port;
   socket: SocketIOClient.Socket;
@@ -17,13 +18,12 @@ export class SocketService {
   }
 
   /**
-   *
    * @param name The name of the requested namespace
    * @returns {any} Observable which follows the "update" signals from socket stream
    */
-  get(name: string): Observable<any> {
+  get(name: string): Observable<ISocketItem> {
     this.name = name;
-    let socketUrl = this.host + "/" + this.name;
+    let socketUrl = this.host + this.name;
     this.socket = io.connect(socketUrl, {
       'query': 'token=' + this.authService.getToken()
     });
@@ -39,13 +39,10 @@ export class SocketService {
     // Return observable which follows the "update" signals from socket stream
     return Observable.create((observer: any) => {
       this.socket.on("update", (item: any) => observer.next({action: "update", item: item}));
+      this.socket.on("create", (item: any) => observer.next({action: "create", item: item}));
+      this.socket.on("delete", (item: any) => observer.next({action: "delete", item: item}));
       return () => this.socket.close();
     });
-  }
-
-  private update(item: any, observer: any) {
-    console.log("update");
-    observer.next({action: "update", item: item})
   }
 
   private connect() {

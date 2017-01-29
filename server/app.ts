@@ -46,7 +46,7 @@ class Server {
     // Configure application
     this.config();
 
-    // create SocketService
+    // create ClientSocketService
     this.socketService = new SocketService();
 
     // Setup routes

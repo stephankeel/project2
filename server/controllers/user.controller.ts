@@ -1,5 +1,3 @@
-'use strict';
-
 import express = require('express');
 import {IUserDocument, UserModel} from '../models/user.model';
 import {GenericController} from "./generic.controller";
@@ -9,7 +7,7 @@ import {SocketService} from "../socket/sockert-service";
 
 export class UserController extends GenericController<IUser, IUserDocument> {
   constructor(socketService: SocketService) {
-    super(socketService.registerSocket("/user"), "user", UserModel,
+    super(socketService.registerSocket("/api/user"), "user", UserModel,
       c => new UserModel(c),
       (d, i) => UserController.updateDocument(d, i),
       d => new ResponseContainer<IUser>(d),

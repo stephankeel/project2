@@ -3,7 +3,10 @@
 import {logger} from "../utils/logger";
 import {IDeviceDocument} from "../models/model-helper";
 import {IDevice} from "../entities/device.interface";
-import {RequestContainer, ResponseContainer, ResponseCollectionContainer} from "../wire/com-container";
+import {
+  RequestContainer, ResponseContainer, ResponseCollectionContainer,
+  BroadcastContainer
+} from "../wire/com-container";
 import express = require('express');
 import {Model} from "mongoose";
 import {IController} from "./controller.interface";
@@ -17,20 +20,21 @@ export class GenericController<T, R extends IDeviceDocument> implements IControl
               private udpateDocument: (documentFromDb: R, inputDocument: R) => void,
               private createResponseContainer: (content: R) => ResponseContainer<T>,
               private createResponseCollectionContainer: (content: R[]) => ResponseCollectionContainer<T>,
+//              private createBroadcastContainer: (clientContext: string, content: R) => BroadcastContainer<T>,
               private cleanupCallbackOnDelete: (id: string) => void) {
   }
 
   public add(req: express.Request, res: express.Response) {
-    let requestContainer: RequestContainer<T> = req.body;
-    logger.info(`create ${this.loggingPrefix}: ${JSON.stringify(requestContainer)}`);
-    let device: R = this.createDocument(requestContainer.content);
+    let item: T = req.body;
+    logger.info(`create ${this.loggingPrefix}: ${JSON.stringify(item)}`);
+    let device: R = this.createDocument(item);
     device.save((err: any, addedDevice: R) => {
       if (err) {
         res.status(500).json({error: `error creating ${this.loggingPrefix} ${device.name}. ${err}`});
       } else {
         // set the id to the _id provided by the db
         device.id = addedDevice._id;
-        this.genericSocket.create(device.id);
+        this.genericSocket.create(device);
         logger.debug(`created ${this.loggingPrefix} successfully, id: ${addedDevice.id}`);
         let responseContainer: ResponseContainer<T> = this.createResponseContainer(device);
         res.status(201).json(responseContainer);
@@ -46,8 +50,7 @@ export class GenericController<T, R extends IDeviceDocument> implements IControl
         // set the id to the _id provided by the db
         devices.forEach((device) => device.id = device._id);
         logger.debug(`found ${devices.length} ${this.loggingPrefix}`);
-        let responseContentCollection: ResponseCollectionContainer<T> = this.createResponseCollectionContainer(devices);
-        res.json(responseContentCollection);
+        res.json(devices);
       }
     });
   }
@@ -62,8 +65,7 @@ export class GenericController<T, R extends IDeviceDocument> implements IControl
         // set the id to the _id provided by the db
         device.id = device._id;
         logger.debug(`found ${this.loggingPrefix} ${req.params.id}: ${JSON.stringify(device)}`);
-        let responseContent: ResponseContainer<T> = this.createResponseContainer(device);
-        res.json(responseContent);
+        res.json(device);
       }
     });
   }
@@ -90,8 +92,8 @@ export class GenericController<T, R extends IDeviceDocument> implements IControl
       if (err) {
         res.status(404).json({error: `${this.loggingPrefix} ${id} not found. ${err}`});
       } else {
-        let requestContent: RequestContainer<T> = req.body;
-        let device: R = this.createDocument(requestContent.content);
+        let item: T = req.body;
+        let device: R = this.createDocument(item);
         // copy the properties
         this.udpateDocument(deviceFromDb, device);
         // save the updated user
@@ -100,9 +102,8 @@ export class GenericController<T, R extends IDeviceDocument> implements IControl
             res.status(500).json({error: `error updating ${this.loggingPrefix} ${id}. ${err}`});
           } else {
             logger.debug(`updated ${this.loggingPrefix} successfully`);
-            this.genericSocket.update(id);
-            let responseContent: ResponseContainer<T> = this.createResponseContainer(updatedDevice);
-            res.json(responseContent);
+            this.genericSocket.update(updatedDevice);
+            res.json(updatedDevice);
           }
         });
       }
