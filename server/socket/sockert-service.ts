@@ -1,5 +1,6 @@
 import {GenericSocket} from "./generic-socket";
 import forEach = require("core-js/fn/array/for-each");
+import {isUndefined} from "util";
 export class SocketService {
   private genericSockets: Map<string,GenericSocket> = new Map<string,GenericSocket>();
   private initialized: boolean = false;
@@ -13,7 +14,7 @@ export class SocketService {
     this.initialized = true;
   }
 
-  public registerSocket(namespace: string) : GenericSocket {
+  public registerSocket(namespace: string): GenericSocket {
     let socket: GenericSocket = new GenericSocket(namespace);
     if (this.initialized) {
       socket.init(this.io);
@@ -27,7 +28,10 @@ export class SocketService {
   }
 
   public unregisterSocket(namespace: string) {
-    this.genericSockets.get(namespace).close();
-    this.genericSockets.delete(namespace);
+    let genericSocket = this.genericSockets.get(namespace);
+    if (!isUndefined(genericSocket)) {
+      this.genericSockets.get(namespace).close();
+      this.genericSockets.delete(namespace);
+    }
   }
 }
