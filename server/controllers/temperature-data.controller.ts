@@ -6,10 +6,9 @@ import express = require('express');
 
 export class TemperatureDataController extends GenericDataController<ITemperatureData, ITemperatureDataDocument> {
   constructor() {
-    super("temperature-data", TemperatureDataModel,
+    super("temperature-data",
+      TemperatureDataModel,
       c => new TemperatureDataModel(c),
-      d => new ResponseContainer<ITemperatureData>(d),
-      d => new ResponseCollectionContainer<ITemperatureData>(d),
     );
   }
 }

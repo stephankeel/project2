@@ -6,10 +6,9 @@ import {GenericDataController} from "./generic.data-controller";
 
 export class HumidityDataController extends GenericDataController<IHumidityData, IHumidityDataDocument> {
   constructor() {
-    super("humidity-data", HumidityDataModel,
+    super("humidity-data",
+      HumidityDataModel,
       c => new HumidityDataModel(c),
-      d => new ResponseContainer<IHumidityData>(d),
-      d => new ResponseCollectionContainer<IHumidityData>(d),
     );
   }
 }

@@ -6,10 +6,9 @@ import {GenericDataController} from "./generic.data-controller";
 
 export class BlindsDataController extends GenericDataController<IBlindsData, IBlindsDataDocument> {
   constructor() {
-    super("humidity-data", BlindsDataModel,
+    super("humidity-data",
+      BlindsDataModel,
       c => new BlindsDataModel(c),
-      d => new ResponseContainer<IBlindsData>(d),
-      d => new ResponseCollectionContainer<IBlindsData>(d),
     );
   }
 }
