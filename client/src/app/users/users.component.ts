@@ -31,7 +31,7 @@ export class UsersComponent implements OnInit {
 
   ngOnInit() {
     this.genericService = new GenericService<User>(this.authHttp,
-      this.socketService, "/api/users", "/api/user");
+      this.socketService, "/api/users", "/users");
     this.loggedInUsername = this.authenticationService.getLoggedInUsername();
     this.loggedInUserId = this.authenticationService.getLoggedInUserId();
     this.genericService.items.subscribe(users =>
