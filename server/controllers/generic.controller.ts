@@ -6,12 +6,13 @@ import {IController} from "./controller.interface";
 import {GenericSocket} from "../socket/generic-socket";
 
 export class GenericController<T, R extends IDeviceDocument> implements IController {
+  private loggingPrefix: string;
   constructor(private genericSocket: GenericSocket,
-              private loggingPrefix: string,
               private model: Model<R>,
               private createDocument: (content: T) => R,
               private udpateDocument: (documentFromDb: R, inputDocument: R) => void,
               private cleanupCallbackOnDelete: (id: string) => void) {
+    this.loggingPrefix = this.genericSocket.namespaceName;
   }
 
   public add(req: express.Request, res: express.Response) {
