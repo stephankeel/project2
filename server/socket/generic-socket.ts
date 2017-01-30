@@ -1,34 +1,59 @@
 import {logger} from '../utils/logger';
+import Namespace = SocketIO.Namespace;
+import Socket = SocketIO.Socket;
+import {Logger} from "log4js";
 
 /**
- * The GenericSocket broadcasts values from one sensor.
- *
- * It creates a new socket.io namespace with the name '<namespaceName>' (example: /temperature/123456 or /humidity).
- * All values are send to every client which is connected to this namespace.
- * The send object is a ISocketItem with the action 'update' and item of type T.
+ * The GenericSocket sends values to all registered clients.
  */
-export class GenericSocket<T> {
-  public namespace: any;
+export class GenericSocket {
+  private namespace: Namespace;
+  private io: SocketIO.Server;
+  private initialized : boolean = false;
+  private static logger : Logger = logger;
 
-  constructor(private io: SocketIO.Server, private namespaceName: string) {
-    this.namespace = this.io.of(`${namespaceName}`);
-    this.namespace.on("connection", (socket: any) => {
-      logger.info(`Socket.IO: Client on ${namespaceName} connected`);
-      this.listen(socket);
-    });
-    logger.info(`Socket.IO: namespace /${namespaceName} created`);
+  constructor(private namespaceName: string) {
   }
 
-  public del(value: T) {
+  public init(io: SocketIO.Server) : GenericSocket {
+    if (this.initialized) {
+      return this;
+    }
+    this.io = io;
+    this.namespace = this.io.of(`${this.namespaceName}`);
+    this.namespace.on("connection", (socket: Socket) => {
+      GenericSocket.logger.info(`Socket.IO: Client ${socket.client.id} on ${this.namespaceName} connected`);
+      this.listen(socket);
+    });
+    GenericSocket.logger.info(`Socket.IO: namespace ${this.namespaceName} initialized`);
+    this.initialized = true;
+    return this;
+  }
+
+  public del(value: any) {
+    GenericSocket.logger.info(`websocket.delete namespace: ${this.namespace.name} ${JSON.stringify(value)}`);
     this.namespace.emit("delete", value);
   }
 
-  public update(value: T) {
+  public update(value: any) {
+    GenericSocket.logger.info(`websocket.update namespace: ${this.namespace.name} ${JSON.stringify(value)}`);
     this.namespace.emit("update", value);
   }
 
-  public create(value: T) {
+  public create(value: any) {
+    GenericSocket.logger.info(`websocket.create namespace: ${this.namespace.name} ${JSON.stringify(value)}`);
     this.namespace.emit("create", value);
+  }
+
+  public close() {
+    const connectedNameSpaceSockets = Object.keys(this.namespace.connected); // Get Object with Connected SocketIds as properties
+    connectedNameSpaceSockets.forEach(socketId => {
+      connectedNameSpaceSockets[socketId].disconnect(); // Disconnect Each socket
+      GenericSocket.logger.info(`Socket.IO: namespace ${this.namespaceName} client ${connectedNameSpaceSockets[socketId]} disconnected`);
+    });
+    this.namespace.removeAllListeners(); // Remove all Listeners for the event emitter
+    delete this.io.nsps[this.namespaceName]; // Remove from the server namespaces
+    GenericSocket.logger.info(`Socket.IO: namespace ${this.namespaceName} closed`);
   }
 
   private listen(socket: any): void {
@@ -36,6 +61,6 @@ export class GenericSocket<T> {
   }
 
   private disconnect(): void {
-    console.log(`Client disconnected ${this.namespaceName}`);
+    GenericSocket.logger.info(`Client disconnected ${this.namespace.name}`);
   }
 }

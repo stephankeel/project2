@@ -1,19 +1,17 @@
-import {IData} from '../entities/data.interface';
 import {GenericSocket} from './generic-socket';
-
 
 /**
  * This class generates Values and calls the broadcastFunction of GenericSocket every second.
  *
  * This class is only used for tests.
  */
-export class GenericGenerator<T extends IData> {
+export class GenericGenerator {
   private generatedValue: number = 20;
 
-  constructor(private tempSocket: GenericSocket<T>, private createDataContent: (generatedValue: number) => T) {
+  constructor(private socket: GenericSocket, private createDataContent: (generatedValue: number) => any) {
     setInterval(() => {
       this.generatedValue += 0.1;
-      tempSocket.update(createDataContent(this.generatedValue));
+      socket.update(createDataContent(this.generatedValue));
     }, 1000);
   }
 }

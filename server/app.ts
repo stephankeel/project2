@@ -8,9 +8,7 @@ import {DBService} from './models/db.service';
 import * as http from "http";
 import * as path from "path";
 import * as socketIo from "socket.io";
-import {GenericSocket} from "./socket/generic-socket";
 import {GenericGenerator} from "./socket/generic-generator";
-import {ITemperatureData} from "./entities/data.interface";
 import {requiresAdmin, requiresStandardOrAdmin} from "./routes/authorization";
 import {GenericRouter} from "./routes/generic.router";
 import {UserController} from "./controllers/user.controller";
@@ -22,6 +20,7 @@ import {HumidityDeviceController} from "./controllers/humidity-device.controller
 import {BlindsDeviceController} from "./controllers/blinds-device.controller";
 import {BlindsDataController} from "./controllers/blinds-data.controller";
 import {BlindsCommandRouter} from "./routes/blinds-command.router";
+import {SocketService} from "./socket/sockert-service";
 var socketioJwt = require("socketio-jwt");
 
 declare var process: any, __dirname: any;
@@ -33,6 +32,7 @@ class Server {
   private root: string;
   private port: number;
   private host: string;
+  private socketService: SocketService;
 
   // Bootstrap the application.
   public static bootstrap(): Server {
@@ -46,14 +46,17 @@ class Server {
     // Configure application
     this.config();
 
+    // create ClientSocketService
+    this.socketService = new SocketService();
+
+    // Create database connections
+    this.databases();
+
     // Setup routes
     this.routes();
 
     // Create server
     this.server = http.createServer(this.app);
-
-    // Create database connections
-    this.databases();
 
     // Handle websockets
     this.sockets();
@@ -90,15 +93,15 @@ class Server {
     });
 
     this.app.use(authenticationRoute);
-    this.app.use('/api/users', requiresAdmin, GenericRouter.create(new UserController()));
+    this.app.use('/api/users', requiresAdmin, GenericRouter.create(new UserController(this.socketService)));
 
-    this.app.use('/api/devices/blinds', requiresAdmin, GenericRouter.create(new BlindsDeviceController()));
-    this.app.use('/api/devices/humidity', requiresAdmin, GenericRouter.create(new HumidityDeviceController()));
-    this.app.use('/api/devices/temperature', requiresAdmin, GenericRouter.create(new TemperatureDeviceController()));
+    this.app.use('/api/devices/blinds', requiresAdmin, GenericRouter.create(new BlindsDeviceController(this.socketService)));
+    this.app.use('/api/devices/humidity', requiresAdmin, GenericRouter.create(new HumidityDeviceController(this.socketService)));
+    this.app.use('/api/devices/temperature', requiresAdmin, GenericRouter.create(new TemperatureDeviceController(this.socketService)));
 
-    this.app.use('/api/data/blinds', requiresAdmin, GenericDataRouter.create(new BlindsDataController()));
-    this.app.use('/api/data/humidity', requiresAdmin, GenericDataRouter.create(new HumidityDataController()));
-    this.app.use('/api/data/temperature', requiresAdmin, GenericDataRouter.create(new TemperatureDataController()));
+    this.app.use('/api/data/blinds', requiresAdmin, GenericDataRouter.create(new BlindsDataController(this.socketService)));
+    this.app.use('/api/data/humidity', requiresAdmin, GenericDataRouter.create(new HumidityDataController(this.socketService)));
+    this.app.use('/api/data/temperature', requiresAdmin, GenericDataRouter.create(new TemperatureDataController(this.socketService)));
 
     this.app.use('/api/command/blinds', requiresStandardOrAdmin, BlindsCommandRouter.create());
 
@@ -128,10 +131,10 @@ class Server {
       handshake: true
     }));
 
-    let tempSocket1 = new GenericSocket<ITemperatureData>(this.io, "/temperature/1");
-    new GenericGenerator<ITemperatureData>(tempSocket1, n => {
+    this.socketService.init(this.io);
+/*    new GenericGenerator(this.socketService.registerSocket("/temperature/1"), n => {
       return {value: n, timestamp: Date.now(),}
-    });
+    });*/
   }
 
   // Start HTTP server listening
