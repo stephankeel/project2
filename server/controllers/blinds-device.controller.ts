@@ -14,6 +14,7 @@ export class BlindsDeviceController extends GenericController<IBlindsDevice, IBl
       c => new BlindsDeviceModel(c),
       (d, i) => BlindsDeviceController.updateDocument(d, i),
       id => new BlindsDataController(socketService).deleteAllById(id),
+      true,
     );
   }
 

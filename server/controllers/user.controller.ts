@@ -14,6 +14,7 @@ export class UserController extends GenericController<IUser, IUserDocument> {
       (d, i) => UserController.updateDocument(d, i),
       id => {
       },
+      false,
     );
   }
 
