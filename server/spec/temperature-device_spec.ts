@@ -1,5 +1,3 @@
-'use strict';
-
 import {logger} from '../utils/logger';
 import {v4} from 'uuid';
 import {RequestResponse} from 'request';
@@ -7,7 +5,6 @@ import {BASE_URL} from './constants';
 import {ITemperatureDevice} from '../entities/device.interface';
 import {Port} from '../hardware/port-map';
 import {loginOptions, authBearerOptions} from './httpOptions';
-import {RequestContainer, ResponseContainer} from '../wire/com-container';
 
 describe('REST API Roundtrip Test of Temperature-Device', function () {
   const LOGIN_URL = BASE_URL + 'api/authenticate';
@@ -38,24 +35,23 @@ describe('REST API Roundtrip Test of Temperature-Device', function () {
       name: TEST_TEMPERATURE_DEVICE,
       port: Port.AI_1,
     };
-    let requestContainer: RequestContainer<ITemperatureDevice> = new RequestContainer<ITemperatureDevice>(clientCtx, testTemperatureDevice);
-    logger.debug(`requestContainer: ${JSON.stringify(requestContainer)}`);
+    logger.debug(`request: ${JSON.stringify(testTemperatureDevice)}`);
     it('returns status code 201 - temperature-device created', function (done) {
       request.post(TEST_URL,
-        authBearerOptions(adminToken, JSON.stringify(requestContainer)),
+        authBearerOptions(adminToken, JSON.stringify(testTemperatureDevice)),
         function (error: any, response: RequestResponse, body: any) {
           logger.debug(`Temperature-device created (body): ${JSON.stringify(body)}`);
           expect(response.statusCode).toBe(201);
-          let responseContainer: ResponseContainer<ITemperatureDevice> = JSON.parse(body);
-          logger.debug(`Temperature-device created: ${JSON.stringify(responseContainer.content)}`);
-          testTemperatureDeviceId = responseContainer.content.id;
+          let testTemperatureDevice: ITemperatureDevice = JSON.parse(body);
+          logger.debug(`Temperature-device created: ${JSON.stringify(testTemperatureDevice)}`);
+          testTemperatureDeviceId = testTemperatureDevice.id;
           logger.debug(`testDeviceId: ${testTemperatureDeviceId}`);
           done();
         });
     });
     it('returns status code 500 - temperature-device already exists', function (done) {
       request.post(TEST_URL,
-        authBearerOptions(adminToken, JSON.stringify(requestContainer)),
+        authBearerOptions(adminToken, JSON.stringify(testTemperatureDevice)),
         function (error: any, response: RequestResponse, body: any) {
           expect(response.statusCode).toBe(500);
           done();
@@ -69,9 +65,9 @@ describe('REST API Roundtrip Test of Temperature-Device', function () {
         authBearerOptions(adminToken),
         function (error: any, response: RequestResponse, body: any) {
           expect(response.statusCode).toBe(200);
-          let responseContainer: ResponseContainer<ITemperatureDevice> = JSON.parse(body);
-          logger.debug(`Temperature-device retrieved: ${JSON.stringify(responseContainer)}`);
-          expect(responseContainer.content.name).toBe(TEST_TEMPERATURE_DEVICE);
+          let temperatureDevice: ITemperatureDevice = JSON.parse(body);
+          logger.debug(`Temperature-device retrieved: ${JSON.stringify(temperatureDevice)}`);
+          expect(temperatureDevice.name).toBe(TEST_TEMPERATURE_DEVICE);
           done();
         });
     });
@@ -84,16 +80,15 @@ describe('REST API Roundtrip Test of Temperature-Device', function () {
       name: NAME,
       port: Port.AI_1,
     };
-    let requestContainer: RequestContainer<ITemperatureDevice> = new RequestContainer<ITemperatureDevice>(clientCtx, testTemperatureDevice);
-    logger.debug(`requestContainer: ${JSON.stringify(requestContainer)}`);
+    logger.debug(`request: ${JSON.stringify(testTemperatureDevice)}`);
     it('returns status code 200 - temperature-device updated', function (done) {
       request.put(TEST_URL + '/' + testTemperatureDeviceId,
-        authBearerOptions(adminToken, JSON.stringify(requestContainer)),
+        authBearerOptions(adminToken, JSON.stringify(testTemperatureDevice)),
         function (error: any, response: RequestResponse, body: any) {
           expect(response.statusCode).toBe(200);
-          let responseContainer: ResponseContainer<ITemperatureDevice> = JSON.parse(body);
-          logger.debug(`Temperature-device updated: ${JSON.stringify(responseContainer)}`);
-          expect(responseContainer.content.name).toBe(NAME);
+          let temperatureDevice: ITemperatureDevice = JSON.parse(body);
+          logger.debug(`Temperature-device updated: ${JSON.stringify(temperatureDevice)}`);
+          expect(temperatureDevice.name).toBe(NAME);
           done();
         });
     });

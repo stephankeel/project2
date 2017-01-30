@@ -7,7 +7,6 @@ import {AppComponent}  from './app.component';
 import {AppRoutingModule} from './app-routing.module';
 import {Angular2JWTModule} from 'angular2-jsonwebtoken';
 import {LoginComponent} from './login/login.component';
-import {UserService} from "./remote/user.service";
 import {AuthenticationService} from './remote/authentication.service';
 import {ClientSocketService} from './remote/client-socket.service';
 import {DashboardComponent} from "./dashboard/dashboard.component";
@@ -47,7 +46,6 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     DevicesComponent
   ],
   providers: [
-    UserService,
     AuthGuard,
     {
       provide: AuthHttp,
