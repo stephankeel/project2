@@ -1,10 +1,6 @@
-'use strict';
-
-import {logger} from '../utils/logger';
 import express = require('express');
 import {IHumidityDeviceDocument, HumidityDeviceModel} from '../models/humidity-device.model';
 import {IHumidityDevice} from '../entities/device.interface';
-import {ResponseContainer, ResponseCollectionContainer} from '../wire/com-container';
 import {GenericController} from './generic.controller';
 import {HumidityDataController} from "./humidity-data.controller";
 import {SocketService} from "../socket/sockert-service";

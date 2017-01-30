@@ -1,7 +1,6 @@
 import express = require('express');
 import {IBlindsDeviceDocument, BlindsDeviceModel} from '../models/blinds-device.model';
 import {IBlindsDevice} from '../entities/device.interface';
-import {ResponseContainer, ResponseCollectionContainer} from '../wire/com-container';
 import {BlindsDataController} from './blinds-data.controller';
 import {GenericController} from './generic.controller';
 import {SocketService} from "../socket/sockert-service";

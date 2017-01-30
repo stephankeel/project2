@@ -1,7 +1,6 @@
 import express = require('express');
 import {IUserDocument, UserModel} from '../models/user.model';
 import {GenericController} from "./generic.controller";
-import {ResponseContainer, ResponseCollectionContainer} from "../wire/com-container";
 import {IUser} from "../entities/user.interface";
 import {SocketService} from "../socket/sockert-service";
 

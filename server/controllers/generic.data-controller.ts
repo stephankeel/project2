@@ -1,6 +1,5 @@
 import {logger} from "../utils/logger";
 import {IDeviceDocument} from "../models/model-helper";
-import {ResponseContainer, ResponseCollectionContainer} from "../wire/com-container";
 import express = require('express');
 import {Model} from "mongoose";
 import {IDataController} from "./data-controller.interface";

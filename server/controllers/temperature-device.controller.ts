@@ -1,10 +1,6 @@
-'use strict';
-
-import {logger} from '../utils/logger';
 import express = require('express');
 import {ITemperatureDeviceDocument, TemperatureDeviceModel} from '../models/temperature-device.model';
 import {ITemperatureDevice} from '../entities/device.interface';
-import {RequestContainer, ResponseContainer, ResponseCollectionContainer} from '../wire/com-container';
 import {GenericController} from './generic.controller';
 import {TemperatureDataController} from "./temperature-data.controller";
 import {SocketService} from "../socket/sockert-service";
