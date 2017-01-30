@@ -86,7 +86,7 @@ describe('REST API Roundtrip Test of User', function () {
         authBearerOptions(adminToken),
         function (error: any, response: RequestResponse, body: any) {
           expect(response.statusCode).toBe(200);
-          let user: IUser = JSON.parse(body).content;
+          let user: IUser = JSON.parse(body);
           logger.debug(`User retrieved: ${JSON.stringify(user)}`);
           expect(user.username).toBe(TEST_USERNAME);
           done();
