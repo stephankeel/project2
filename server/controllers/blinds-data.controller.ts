@@ -7,7 +7,7 @@ import {SocketService} from "../socket/sockert-service";
 export class BlindsDataController extends GenericDataController<IBlindsData, IBlindsDataDocument> {
   constructor(socketService: SocketService) {
     super(socketService,
-      "/humidity",
+      "/blinds",
       BlindsDataModel,
       c => new BlindsDataModel(c),
     );
