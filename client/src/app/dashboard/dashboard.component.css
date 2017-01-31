@@ -69,6 +69,6 @@ main {
   align-self: center;
 }
 
-#rollupIcon, #tempIcon, #hygroIcon {
+.blindsIcon, .humidityIcon, .temperatureIcon {
   width: 5em;
 }

@@ -1,20 +1,20 @@
 import {Injectable} from "@angular/core";
 import {ReplaySubject} from "rxjs";
 
-import {SocketService} from "./socket.service";
+import {ClientSocketService} from "./client-socket.service";
 
 import {ISocketItem} from './../../../../server/entities/socket-item.model';
 import {ITemperatureData} from "../../../../server/entities/data.interface";
 
 
 /**
- * This class wraps the SocketService for the temperature sensor usage.
+ * This class wraps the ClientSocketService for the temperature sensor usage.
  */
 @Injectable()
 export class TemperatureService {
   private _values = new ReplaySubject<ITemperatureData>();
 
-  constructor(private sensorId: string, private socketService: SocketService) {
+  constructor(private sensorId: string, private socketService: ClientSocketService) {
     this.socketService
       .get("temperature/" + encodeURIComponent(this.sensorId))
       .subscribe(

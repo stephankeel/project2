@@ -1,13 +1,9 @@
-'use strict';
-
 import {logger} from '../utils/logger';
-import {v4} from 'uuid';
 import {RequestResponse} from 'request';
 import {BASE_URL} from './constants';
 import {IUser} from '../entities/user.interface';
 import {UserType} from '../entities/user-type';
 import {loginOptions, authBearerOptions} from './httpOptions';
-import {RequestContainer, ResponseContainer, ResponseCollectionContainer} from '../wire/com-container';
 
 
 describe('REST API Roundtrip Test of User', function () {
@@ -18,7 +14,6 @@ describe('REST API Roundtrip Test of User', function () {
   let request = require('request');
   let adminToken: string;
   let testUserId: any;
-  let clientCtx: string = v4();
 
   describe('Test authentication, login and get all', function () {
     it('returns status code 500 - not yet authenticated', function (done) {
@@ -46,8 +41,7 @@ describe('REST API Roundtrip Test of User', function () {
         authBearerOptions(adminToken),
         function (error: any, response: RequestResponse, body: any) {
           expect(response.statusCode).toBe(200);
-          let responseCollectionContainer: ResponseCollectionContainer<IUser> = JSON.parse(body);
-          let users: IUser[] = responseCollectionContainer.content;
+          let users: IUser[] = JSON.parse(body);
           logger.debug(`Users: ${JSON.stringify(users)}`);
           expect(users.length).toBeGreaterThan(0);
           done();
@@ -63,15 +57,13 @@ describe('REST API Roundtrip Test of User', function () {
       username: TEST_USERNAME,
       password: '1234'
     };
-    let requestContainer: RequestContainer<IUser> = new RequestContainer<IUser>(clientCtx, testUser);
     it('returns status code 201 - user created', function (done) {
       request.post(TEST_URL,
-        authBearerOptions(adminToken, JSON.stringify(requestContainer)),
+        authBearerOptions(adminToken, JSON.stringify(testUser)),
         function (error: any, response: RequestResponse, body: any) {
           logger.debug(`User created (body): ${JSON.stringify(body)}`);
           expect(response.statusCode).toBe(201);
-          let responseContainer: ResponseContainer<IUser> = JSON.parse(body);
-          let user: IUser = responseContainer.content;
+          let user: IUser = JSON.parse(body);
           logger.debug(`User created: ${JSON.stringify(user)}`);
           testUserId = user.id;
           logger.debug(`testUserId: ${testUserId}`);
@@ -94,7 +86,7 @@ describe('REST API Roundtrip Test of User', function () {
         authBearerOptions(adminToken),
         function (error: any, response: RequestResponse, body: any) {
           expect(response.statusCode).toBe(200);
-          let user: IUser = JSON.parse(body).content;
+          let user: IUser = JSON.parse(body);
           logger.debug(`User retrieved: ${JSON.stringify(user)}`);
           expect(user.username).toBe(TEST_USERNAME);
           done();
@@ -112,14 +104,12 @@ describe('REST API Roundtrip Test of User', function () {
       username: TEST_USERNAME,
       password: '1234'
     };
-    let requestContainer: RequestContainer<IUser> = new RequestContainer<IUser>(clientCtx, testUser);
     it('returns status code 200 - user updated', function (done) {
       request.put(TEST_URL + '/' + testUserId,
-        authBearerOptions(adminToken, JSON.stringify(requestContainer)),
+        authBearerOptions(adminToken, JSON.stringify(testUser)),
         function (error: any, response: RequestResponse, body: any) {
           expect(response.statusCode).toBe(200);
-          let responseContainer: ResponseContainer<IUser> = JSON.parse(body);
-          let user: IUser = responseContainer.content;
+          let user: IUser = JSON.parse(body);
           logger.debug(`User updated: ${JSON.stringify(user)}`);
           expect(user.lastname).toBe(LASTNAME);
           done();

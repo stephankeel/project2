@@ -1,9 +1,10 @@
-import {Component, OnInit} from '@angular/core';
-import {Router}    from '@angular/router';
-
-import {UserService} from '../remote/user.service';
-import {AuthenticationService} from '../remote/authentication.service';
-import {User, UserType} from '../user';
+import {Component, OnInit} from "@angular/core";
+import {Router} from "@angular/router";
+import {AuthenticationService} from "../remote/authentication.service";
+import {User, UserType} from "../user";
+import {GenericService} from "../remote/generic.service";
+import {AuthHttp} from "angular2-jwt";
+import {ClientSocketService} from "../remote/client-socket.service";
 
 @Component({
   selector: 'app-users',
@@ -21,20 +22,26 @@ export class UsersComponent implements OnInit {
   userTypes: UserType[] = User.getUserTypeValue();
   userTypeText: string[] = User.getUserTypeText();
   message: string;
+  private genericService: GenericService<User>;
 
   constructor(private authenticationService: AuthenticationService,
-              private genericService: UserService,
-              private router: Router) {
+              private router: Router,
+              private socketService: ClientSocketService, private authHttp: AuthHttp) {
   }
 
   ngOnInit() {
+    this.genericService = new GenericService<User>(this.authHttp,
+      this.socketService, "/api/users", "/users");
     this.loggedInUsername = this.authenticationService.getLoggedInUsername();
     this.loggedInUserId = this.authenticationService.getLoggedInUserId();
-    this.genericService.getUsers().then(users => {
-      this.users = users;
-    }).catch(error => {
-      console.error(error);
-    });
+    this.genericService.items.subscribe(users =>
+      this.users = users.toArray()
+    );
+    this.genericService.getAll();
+  }
+
+  ngOnDestroy() {
+    this.genericService.disconnect();
   }
 
   backClicked(): void {
@@ -60,39 +67,21 @@ export class UsersComponent implements OnInit {
   doAddOrUpdate(): void {
     if (this.user) {
       if (this.user.id) {
-        this.genericService.updateUser(this.user).then(() => {
-          this.users[this.users.indexOf(this.selectedUser)] = this.user;
-          this.selectedUser = null;
-          this.user = null;
-        }).catch(error => {
-          this.message = 'Update user failed with ' + (error.message || error )
-        });
+        this.genericService.update(this.user);
       } else {
-        this.genericService.addUser(this.user).then(user => {
-          this.users.push(user);
-          this.selectedUser = null;
-          this.user = null;
-        }).catch(error => {
-          this.message = 'Add user failed with ' + (error.message || error )
-        });
+        this.genericService.create(this.user);
       }
     }
   }
 
   doDelete(): void {
-    if (this.user && this.user.id) {
-      this.genericService.deleteUser(this.user).then(() => {
-        this.users = this.users.filter(user => user.id != this.user.id);
-        this.selectedUser = null;
-        this.user = null;
-      }).catch(error => {
-        this.message = 'Delete user failed with ' + (error.message || error )
-      });
+    if (this.user && this.user.id
+    ) {
+      this.genericService.del(this.user);
     }
   }
 
   clearMessage(): void {
     this.message = null;
   }
-
 }
