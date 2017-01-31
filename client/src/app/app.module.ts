@@ -20,6 +20,7 @@ import {BaseRequestOptions} from '@angular/http';
 import {RequestOptions, Http} from "@angular/http";
 import {AuthHttp, AuthConfig} from 'angular2-jwt';
 import { DevicesComponent } from './devices/devices.component';
+import { TemperatureConfigComponent } from './temperature-config/temperature-config.component';
 
 // TODO: in welches File müsste diese Methode?
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
@@ -43,7 +44,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     UsersComponent,
     LoginComponent,
     TemperatureComponent,
-    DevicesComponent
+    DevicesComponent,
+    TemperatureConfigComponent
   ],
   providers: [
     AuthGuard,

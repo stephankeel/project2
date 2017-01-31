@@ -1,8 +1,8 @@
 <div id="dashboard">
   <div class="dashboardMenu {{cssMenuClass}}">
-    <div id="compoentMenuItem" class="menuItem">KOMPONENTEN</div>
-    <div id="userMenuItem" class="menuItem" (click)="manageUsers()">BENUTZER</div>
-    <div id="infoMenuItem" class="menuItem">INFO</div>
+    <div id="compoentMenuItem" class="menuItem" *ngIf="isAdmin" (click)="manageDevices()">KOMPONENTEN</div>
+    <div id="userMenuItem" class="menuItem" *ngIf="isAdmin" (click)="manageUsers()">BENUTZER</div>
+    <div id="infoMenuItem" class="menuItem" (click)="showInfo()">INFO</div>
     <div id="logoutMenuItem" class="menuItem" (click)="logout()">ABMELDEN</div>
   </div>
   <div id="dashboardContent">
@@ -12,18 +12,10 @@
       <h1 class="headerTitle">HOMEAUTOMATION</h1>
     </header>
 
-    <main>
-      <div id="rollupDiv" class="mainSelection">
-        <img id="rollupIcon" src="app/images/blinds.svg" alt="Blinds Icon" title="Blinds Icon">
-        <div class="mainSelectionLabel">ROLLLADEN</div>
-      </div>
-      <div id="tempDiv" class="mainSelection" (click)="temperature()">
-        <img id="tempIcon" src="app/images/temperature.svg" alt="Temperature Icon" title="Temperature Icon">
-        <div class="mainSelectionLabel">TEMPERATUR</div>
-      </div>
-      <div id="hygroDiv" class="mainSelection">
-        <img id="hygroIcon" src="app/images/humidity.svg" alt="Humidity Icon" title="Humidity Icon">
-        <div class="mainSelectionLabel">FEUCHTIGKEIT</div>
+    <main *ngFor="let device of devices">
+      <div class="mainSelection" (click)="clickAction(device)">
+        <img class="{{device.css}}Icon" src="app/images/{{device.icon}}" alt="{{device.title}} Icon" title="{{device.title}} Icon">
+        <div class="mainSelectionLabel">{{device.displayName}}</div>
       </div>
     </main>
   </div>
