@@ -7,9 +7,8 @@ import {AppComponent}  from './app.component';
 import {AppRoutingModule} from './app-routing.module';
 import {Angular2JWTModule} from 'angular2-jsonwebtoken';
 import {LoginComponent} from './login/login.component';
-import {UserService} from "./remote/user.service";
 import {AuthenticationService} from './remote/authentication.service';
-import {SocketService} from './remote/socket.service';
+import {ClientSocketService} from './remote/client-socket.service';
 import {DashboardComponent} from "./dashboard/dashboard.component";
 import {TemperatureComponent} from './temperature/temperature.component';
 import {UsersComponent} from "./users/users.component";
@@ -49,7 +48,6 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     TemperatureConfigComponent
   ],
   providers: [
-    UserService,
     AuthGuard,
     {
       provide: AuthHttp,
@@ -61,7 +59,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
       useValue: window
     },
     AuthenticationService,
-    SocketService,
+    ClientSocketService,
     // providers used to create fake backend_helpers/index
     BaseRequestOptions,
   ],

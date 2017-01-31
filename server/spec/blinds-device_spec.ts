@@ -1,5 +1,3 @@
-'use strict';
-
 import {logger} from '../utils/logger';
 import {v4} from 'uuid';
 import {RequestResponse} from 'request';
@@ -7,7 +5,6 @@ import {BASE_URL} from './constants';
 import {IBlindsDevice} from '../entities/device.interface';
 import {Port} from '../hardware/port-map';
 import {loginOptions, authBearerOptions} from './httpOptions';
-import {RequestContainer, ResponseContainer, ResponseCollectionContainer} from '../wire/com-container';
 
 describe('REST API Roundtrip Test of Blinds-Device', function () {
   const LOGIN_URL = BASE_URL + 'api/authenticate';
@@ -42,24 +39,23 @@ describe('REST API Roundtrip Test of Blinds-Device', function () {
       actorDown: Port.DO_2,
       runningSeconds: 60
     };
-    let requestContent: RequestContainer<IBlindsDevice> = new RequestContainer<IBlindsDevice>(clientCtx, testBlindsDevice);
-    logger.debug(`requestContent: ${JSON.stringify(requestContent)}`);
+    logger.debug(`requestContent: ${JSON.stringify(testBlindsDevice)}`);
     it('returns status code 201 - blinds-device created', function (done) {
       request.post(TEST_URL,
-        authBearerOptions(adminToken, JSON.stringify(requestContent)),
+        authBearerOptions(adminToken, JSON.stringify(testBlindsDevice)),
         function (error: any, response: RequestResponse, body: any) {
           logger.debug(`Blinds-device created (body): ${JSON.stringify(body)}`);
           expect(response.statusCode).toBe(201);
-          let responseContent: ResponseContainer<IBlindsDevice> = JSON.parse(body);
-          logger.debug(`Blinds-device created: ${JSON.stringify(responseContent.content)}`);
-          testBlindsDeviceId = responseContent.content.id;
+          let blindsDevice: IBlindsDevice = JSON.parse(body);
+          logger.debug(`Blinds-device created: ${JSON.stringify(blindsDevice)}`);
+          testBlindsDeviceId = blindsDevice.id;
           logger.debug(`testDeviceId: ${testBlindsDeviceId}`);
           done();
         });
     });
     it('returns status code 500 - blinds-device already exists', function (done) {
       request.post(TEST_URL,
-        authBearerOptions(adminToken, JSON.stringify(requestContent)),
+        authBearerOptions(adminToken, JSON.stringify(testBlindsDevice)),
         function (error: any, response: RequestResponse, body: any) {
           expect(response.statusCode).toBe(500);
           done();
@@ -73,9 +69,9 @@ describe('REST API Roundtrip Test of Blinds-Device', function () {
         authBearerOptions(adminToken),
         function (error: any, response: RequestResponse, body: any) {
           expect(response.statusCode).toBe(200);
-          let responseContent: ResponseContainer<IBlindsDevice> = JSON.parse(body);
-          logger.debug(`Blinds-device retrieved: ${JSON.stringify(responseContent)}`);
-          expect(responseContent.content.name).toBe(TEST_BLINDS_DEVICE);
+          let blindsDevice: IBlindsDevice = JSON.parse(body);
+          logger.debug(`Blinds-device retrieved: ${JSON.stringify(blindsDevice)}`);
+          expect(blindsDevice.name).toBe(TEST_BLINDS_DEVICE);
           done();
         });
     });
@@ -87,9 +83,9 @@ describe('REST API Roundtrip Test of Blinds-Device', function () {
         authBearerOptions(adminToken),
         function (error: any, response: RequestResponse, body: any) {
           expect(response.statusCode).toBe(200);
-          let responseContainerContent: ResponseCollectionContainer<IBlindsDevice> = JSON.parse(body);
-          logger.debug(`Blinds-device retrieved: ${JSON.stringify(responseContainerContent)}`);
-          expect(responseContainerContent.content[0].name).toBe(TEST_BLINDS_DEVICE);
+          let blindsDevices: IBlindsDevice[] = JSON.parse(body);
+          logger.debug(`Blinds-device retrieved: ${JSON.stringify(blindsDevices)}`);
+          expect(blindsDevices[0].name).toBe(TEST_BLINDS_DEVICE);
           done();
         });
     });
@@ -106,16 +102,15 @@ describe('REST API Roundtrip Test of Blinds-Device', function () {
       actorDown: Port.DO_2,
       runningSeconds: 60
     };
-    let requestContent: RequestContainer<IBlindsDevice> = new RequestContainer<IBlindsDevice>(clientCtx, testBlindsDevice);
-    logger.debug(`requestContent: ${JSON.stringify(requestContent)}`);
+    logger.debug(`requestContent: ${JSON.stringify(testBlindsDevice)}`);
     it('returns status code 200 - blinds-device updated', function (done) {
       request.put(TEST_URL + '/' + testBlindsDeviceId,
-        authBearerOptions(adminToken, JSON.stringify(requestContent)),
+        authBearerOptions(adminToken, JSON.stringify(testBlindsDevice)),
         function (error: any, response: RequestResponse, body: any) {
           expect(response.statusCode).toBe(200);
-          let responseContent: ResponseContainer<IBlindsDevice> = JSON.parse(body);
-          logger.debug(`Blinds-device updated: ${JSON.stringify(responseContent)}`);
-          expect(responseContent.content.name).toBe(NAME);
+          let blindsDevice: IBlindsDevice = JSON.parse(body);
+          logger.debug(`Blinds-device updated: ${JSON.stringify(blindsDevice)}`);
+          expect(blindsDevice.name).toBe(NAME);
           done();
         });
     });

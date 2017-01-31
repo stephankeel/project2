@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Router}    from '@angular/router';
-import {SocketService} from '../remote/socket.service';
+import {ClientSocketService} from '../remote/client-socket.service';
 import {TemperatureService} from '../remote/temperature.service';
 import {ITemperatureData} from "../../../../server/entities/data.interface";
 
@@ -14,7 +14,7 @@ export class TemperatureComponent implements OnInit {
   private temp1: TemperatureService;
   private lastValue: number;
 
-  constructor(private socketService : SocketService, private router: Router) {
+  constructor(private socketService : ClientSocketService, private router: Router) {
   }
 
   ngOnInit() {

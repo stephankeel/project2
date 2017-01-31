@@ -1,5 +1,3 @@
-'use strict';
-
 import {logger} from '../utils/logger';
 import {v4} from 'uuid';
 import {RequestResponse} from 'request';
@@ -7,7 +5,6 @@ import {BASE_URL} from './constants';
 import {IHumidityDevice} from '../entities/device.interface';
 import {Port} from '../hardware/port-map';
 import {loginOptions, authBearerOptions} from './httpOptions';
-import {RequestContainer, ResponseContainer} from '../wire/com-container';
 
 describe('REST API Roundtrip Test of Humidity-Device', function () {
   const LOGIN_URL = BASE_URL + 'api/authenticate';
@@ -38,24 +35,23 @@ describe('REST API Roundtrip Test of Humidity-Device', function () {
       name: TEST_HUMIDITY_DEVICE,
       port: Port.AI_1,
     };
-    let requestContent: RequestContainer<IHumidityDevice> = new RequestContainer<IHumidityDevice>(clientCtx, testHumidityDevice);
-    logger.debug(`requestContent: ${JSON.stringify(requestContent)}`);
+    logger.debug(`requestContent: ${JSON.stringify(testHumidityDevice)}`);
     it('returns status code 201 - humidity-device created', function (done) {
       request.post(TEST_URL,
-        authBearerOptions(adminToken, JSON.stringify(requestContent)),
+        authBearerOptions(adminToken, JSON.stringify(testHumidityDevice)),
         function (error: any, response: RequestResponse, body: any) {
           logger.debug(`Humidity-device created (body): ${JSON.stringify(body)}`);
           expect(response.statusCode).toBe(201);
-          let responseContent: ResponseContainer<IHumidityDevice> = JSON.parse(body);
-          logger.debug(`Humidity-device created: ${JSON.stringify(responseContent.content)}`);
-          testHumidityDeviceId = responseContent.content.id;
+          let humidityDevice: IHumidityDevice = JSON.parse(body);
+          logger.debug(`Humidity-device created: ${JSON.stringify(humidityDevice)}`);
+          testHumidityDeviceId = humidityDevice.id;
           logger.debug(`testDeviceId: ${testHumidityDeviceId}`);
           done();
         });
     });
     it('returns status code 500 - humidity-device already exists', function (done) {
       request.post(TEST_URL,
-        authBearerOptions(adminToken, JSON.stringify(requestContent)),
+        authBearerOptions(adminToken, JSON.stringify(testHumidityDevice)),
         function (error: any, response: RequestResponse, body: any) {
           expect(response.statusCode).toBe(500);
           done();
@@ -69,9 +65,9 @@ describe('REST API Roundtrip Test of Humidity-Device', function () {
         authBearerOptions(adminToken),
         function (error: any, response: RequestResponse, body: any) {
           expect(response.statusCode).toBe(200);
-          let responseContent: ResponseContainer<IHumidityDevice> = JSON.parse(body);
-          logger.debug(`Humidity-device retrieved: ${JSON.stringify(responseContent)}`);
-          expect(responseContent.content.name).toBe(TEST_HUMIDITY_DEVICE);
+          let humidityDevice: IHumidityDevice = JSON.parse(body);
+          logger.debug(`Humidity-device retrieved: ${JSON.stringify(humidityDevice)}`);
+          expect(humidityDevice.name).toBe(TEST_HUMIDITY_DEVICE);
           done();
         });
     });
@@ -84,16 +80,15 @@ describe('REST API Roundtrip Test of Humidity-Device', function () {
       name: NAME,
       port: Port.AI_1,
     };
-    let requestContent: RequestContainer<IHumidityDevice> = new RequestContainer<IHumidityDevice>(clientCtx, testHumidityDevice);
-    logger.debug(`requestContent: ${JSON.stringify(requestContent)}`);
+    logger.debug(`requestContent: ${JSON.stringify(testHumidityDevice)}`);
     it('returns status code 200 - humidity-device updated', function (done) {
       request.put(TEST_URL + '/' + testHumidityDeviceId,
-        authBearerOptions(adminToken, JSON.stringify(requestContent)),
+        authBearerOptions(adminToken, JSON.stringify(testHumidityDevice)),
         function (error: any, response: RequestResponse, body: any) {
           expect(response.statusCode).toBe(200);
-          let responseContent: ResponseContainer<IHumidityDevice> = JSON.parse(body);
-          logger.debug(`Humidity-device updated: ${JSON.stringify(responseContent)}`);
-          expect(responseContent.content.name).toBe(NAME);
+          let humidityDevice: IHumidityDevice = JSON.parse(body);
+          logger.debug(`Humidity-device updated: ${JSON.stringify(humidityDevice)}`);
+          expect(humidityDevice.name).toBe(NAME);
           done();
         });
     });

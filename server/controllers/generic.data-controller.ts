@@ -1,16 +1,19 @@
 import {logger} from "../utils/logger";
 import {IDeviceDocument} from "../models/model-helper";
-import {ResponseContainer, ResponseCollectionContainer} from "../wire/com-container";
 import express = require('express');
 import {Model} from "mongoose";
 import {IDataController} from "./data-controller.interface";
+import {SocketService} from "../socket/sockert-service";
 
 export class GenericDataController<T, R extends IDeviceDocument> implements IDataController<T> {
-  constructor(private loggingPrefix: string,
+
+  private loggingPrefix: string;
+
+  constructor(private socketService: SocketService,
+              private namespaceName: string,
               private model: Model<R>,
-              private createDocument: (content: T) => R,
-              private createResponseContainer: (content: R) => ResponseContainer<T>,
-              private createResponseCollectionContainer: (content: R[]) => ResponseCollectionContainer<T>) {
+              private createDocument: (content: T) => R) {
+    this.loggingPrefix = `${this.namespaceName}-data`;
   }
 
   public getAllById(req: express.Request, res: express.Response) {
@@ -25,8 +28,7 @@ export class GenericDataController<T, R extends IDeviceDocument> implements IDat
         // TODO: should we create new Objects here, to prevent two properties (id and _id)?
         data.forEach((rec) => rec.id = rec._id);
         logger.debug(`found ${data.length} ${this.loggingPrefix} records`);
-        let responseContentCollection: ResponseCollectionContainer<T> = this.createResponseCollectionContainer(data);
-        res.json(responseContentCollection);
+        res.json(data);
       }
     });
   }
@@ -43,8 +45,7 @@ export class GenericDataController<T, R extends IDeviceDocument> implements IDat
         // set the id to the _id provided by the db
         data.id = data._id;
         logger.debug(`found latest ${this.loggingPrefix} record ${req.params.id}: ${JSON.stringify(data)}`);
-        let responseContent: ResponseContainer<T> = this.createResponseContainer(data);
-        res.json(responseContent);
+        res.json(data);
       }
     });
   }
@@ -58,11 +59,8 @@ export class GenericDataController<T, R extends IDeviceDocument> implements IDat
       } else {
         // set the id to the _id provided by the db
         dataModel.id = addedData._id;
+        this.socketService.getSocket(`${this.namespaceName}/${addedData._id}`).update(dataModel);
         logger.debug(`added ${this.loggingPrefix} successfully, id: ${addedData.id}`);
-
-        // TODO: Broadcast data
-        // let broadcastData: BroadcastContainer<ITemperatureData> = new BroadcastContainer(null, ContentType.TEMPERATURE_DATA, dataModel);
-        // logger.error(`broadcasting added ${this.loggingPrefix} ${JSON.stringify(broadcastData)} ==> TO BE IMPLEMENTED`);
       }
     });
   };
