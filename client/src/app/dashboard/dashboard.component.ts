@@ -37,7 +37,7 @@ export class DashboardComponent implements OnInit {
     this.cssMenuClass = 'hideMenu';
   }
 
-  manageDevices(): void {
+  deviceSetup(): void {
     this.closeMenu();
     if (this.isAdmin) {
       this.router.navigate(['/devices']);

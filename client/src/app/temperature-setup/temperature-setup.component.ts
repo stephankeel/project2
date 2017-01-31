@@ -5,10 +5,10 @@ import {TemperatureDevice, TemperatureDeviceCharacteristics, Port, portName} fro
 
 @Component({
   selector: 'app-temperature-config',
-  templateUrl: './temperature-config.component.html',
-  styleUrls: ['./temperature-config.component.scss']
+  templateUrl: 'temperature-setup.component.html',
+  styleUrls: ['temperature-setup.component.scss']
 })
-export class TemperatureConfigComponent implements OnInit {
+export class TemperatureSetupComponent implements OnInit {
 
   devices: TemperatureDevice[] = [];
   device: TemperatureDevice;
