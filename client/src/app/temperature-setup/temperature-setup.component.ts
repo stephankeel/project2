@@ -1,5 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {Router}    from '@angular/router';
+import {Router} from "@angular/router";
+import {GenericService} from "../remote/generic.service";
+import {AuthHttp} from "angular2-jwt";
+import {ClientSocketService} from "../remote/client-socket.service";
+
 import {TemperatureDevice, TemperatureDeviceCharacteristics, Port, portName} from '../device-pool';
 
 
@@ -15,15 +19,24 @@ export class TemperatureSetupComponent implements OnInit {
   selectedDevice: TemperatureDevice;
   ports: Port[] = TemperatureDeviceCharacteristics.portSet;
   selectedPort: Port;
+  private genericService: GenericService<TemperatureDevice>;
   message: string;
 
-  constructor(private router: Router) {
+  constructor(private router: Router,
+              private socketService: ClientSocketService, private authHttp: AuthHttp) {
   }
 
   ngOnInit() {
-    this.devices.push(new TemperatureDevice('1', 'Temp Küche', Port.AI_1));
-    this.devices.push(new TemperatureDevice('2', 'Temp Wohnzimmer', Port.AI_2));
-    this.devices.push(new TemperatureDevice('3', 'Temp Bad', Port.AI_3));
+    this.genericService = new GenericService<TemperatureDevice>(this.authHttp,
+      this.socketService, "/api/devices/temperature", "/temperature");
+    this.genericService.items.subscribe(devices =>
+      this.devices = devices.toArray()
+    );
+    this.genericService.getAll();
+  }
+
+  ngOnDestroy() {
+    this.genericService.disconnect();
   }
 
   backClicked(): void {
@@ -46,16 +59,16 @@ export class TemperatureSetupComponent implements OnInit {
   doAddOrUpdate(): void {
     if (this.device) {
       if (this.device.id) {
-        //TODO: this.genericService.updateUser(this.device).then(() => {...
+        this.genericService.update(this.device);
       } else {
-        // TODO: this.genericService.addUser(this.device).then(device => {...
+        this.genericService.create(this.device);
       }
     }
   }
 
   doDelete(): void {
     if (this.device && this.device.id) {
-      // TODO: this.genericService.deleteDevice(this.device).then(() => {...
+      this.genericService.del(this.device);
     }
   }
 
