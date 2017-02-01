@@ -17,7 +17,8 @@ main {
   margin: 0.5em;
 }
 
-.userListItem {
+.userListItem.selected {
+  background-color: lightgray;
 }
 
 .userForm {
