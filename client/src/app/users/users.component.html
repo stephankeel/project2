@@ -9,7 +9,7 @@
 </header>
 <main>
   <div class="userList">
-    <div *ngFor="let user of users" class="userListItem" [class.selected]="user === selectedUser"
+    <div *ngFor="let user of users" class="userListItem selectionListItem" [class.selected]="user === selectedUser"
          (click)="selectUser(user)">{{user.lastname}} {{user.firstname}}
     </div>
   </div>

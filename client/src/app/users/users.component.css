@@ -17,10 +17,6 @@ main {
   margin: 0.5em;
 }
 
-.userListItem.selected {
-  background-color: lightgray;
-}
-
 .userForm {
   flex: 2 2;
   flex-direction: column;

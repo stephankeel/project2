@@ -9,7 +9,7 @@
 </header>
 <main>
   <div class="deviceList">
-    <div *ngFor="let device of devices" class="deviceListItem" [class.selected]="device === selectedDevice"
+    <div *ngFor="let device of devices" class="deviceListItem selectionListItem" [class.selected]="device === selectedDevice"
          (click)="selectDevice(device)">{{device.name}}
     </div>
   </div>
