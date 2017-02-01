@@ -1,13 +1,13 @@
 <header>
   <img id="backIcon" class="headerAction" src="app/images/back.svg" alt="Back Icon" title="Back Icon"
        (click)="backClicked()">
-  <h1 class="headerTitle">KOMPONENTEN-EINSTELLUNGEN</h1>
+  <h1 class="headerTitle">KOMPONENTEN-SETUP</h1>
 </header>
 
 <main *ngFor="let device of devices">
   <div class="mainSelection" (click)="clickAction(device)">
     <img class="{{device.css}}Icon" src="app/images/{{device.icon}}" alt="{{device.title}} Icon"
          title="{{device.title}} Icon">
-    <div class="mainSelectionLabel">{{device.displayName}}</div>
+    <div class="mainSelectionLabel">{{device.displayName}}-SETUP</div>
   </div>
 </main>
