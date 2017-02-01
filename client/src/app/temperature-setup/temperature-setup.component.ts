@@ -29,9 +29,11 @@ export class TemperatureSetupComponent implements OnInit {
   ngOnInit() {
     this.genericService = new GenericService<TemperatureDevice>(this.authHttp,
       this.socketService, "/api/devices/temperature", "/temperature");
-    this.genericService.items.subscribe(devices =>
-      this.devices = devices.toArray()
-    );
+    this.genericService.items.subscribe(devices => {
+        this.devices = devices.toArray();
+        this.device = null;
+        this.selectedDevice = null;
+      }, error => this.message = error.toString());
     this.genericService.getAll();
   }
 
@@ -48,6 +50,7 @@ export class TemperatureSetupComponent implements OnInit {
   }
 
   selectDevice(device: TemperatureDevice) {
+    this.clearMessage();
     this.selectedDevice = device;
     this.device = new TemperatureDevice(this.selectedDevice.id, this.selectedDevice.name, this.selectedDevice.port);
   }
