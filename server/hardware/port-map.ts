@@ -20,14 +20,11 @@ export const enum PortDirection {
   INPUT,
   OUTPUT
 }
- // To be deleted?
+
 export function portDirection(port: Port) {
   if (port <= Port.DI_8 || port >= Port.AI_1 && port <= Port.AI_4) {
     return PortDirection.INPUT;
   } else {
     return PortDirection.OUTPUT;
   }
-
-export const enum PortState {
-  OFF, SHORT, MEDIUM, LONG
 }
