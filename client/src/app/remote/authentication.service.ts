@@ -6,7 +6,6 @@ import {tokenNotExpired, JwtHelper} from 'angular2-jwt';
 import {UserType} from '../user';
 
 import {handleError} from './error-utils';
-import {User} from '../user';
 
 @Injectable()
 export class AuthenticationService {

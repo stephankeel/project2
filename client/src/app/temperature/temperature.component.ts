@@ -1,8 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {Router}    from '@angular/router';
 import {ClientSocketService} from '../remote/client-socket.service';
-import {TemperatureService} from '../remote/temperature.service';
 import {ITemperatureData} from "../../../../server/entities/data.interface";
+import {GenericService} from "../remote/generic.service";
+import {AuthHttp} from "angular2-jwt";
+import {AuthenticationService} from "../remote/authentication.service";
+import {ITemperatureDevice} from "../../../../server/entities/device.interface";
+import {TemperatureService} from "./temperature.service";
 
 @Component({
   selector: 'app-temperature',
@@ -11,19 +15,11 @@ import {ITemperatureData} from "../../../../server/entities/data.interface";
 })
 export class TemperatureComponent implements OnInit {
 
-  private temp1: TemperatureService;
-  private lastValue: number;
-
-  constructor(private socketService : ClientSocketService, private router: Router) {
+  constructor(private router: Router, private socketService: ClientSocketService,
+              private authHttp: AuthHttp, private temperatureService: TemperatureService) {
   }
 
   ngOnInit() {
-    this.temp1 = new TemperatureService("1", this.socketService);
-    this.temp1.values.subscribe((temperatureData: ITemperatureData) => {
-        this.lastValue = temperatureData.value;
-        console.log("subscribe called");
-      },
-      error => console.log(error));
   }
 
   backClicked(): void {

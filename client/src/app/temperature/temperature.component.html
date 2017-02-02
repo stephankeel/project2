@@ -4,7 +4,10 @@
   <h1 class="headerTitle">TEMPERATUR</h1>
 </header>
 <main>
-  <h2>
-    <span>{{lastValue | number: '.1-1'}}</span> °C
-  </h2>
+  <h1>Temperature Device List</h1>
+  <div class="temperatureDeviceList">
+    <div *ngFor="let temperature of temperatureService.temperatureDevices" class="temperatureListItem">
+      <app-temperature-view [temperatureDevice]="temperature"></app-temperature-view>
+    </div>
+  </div>
 </main>

@@ -1,4 +1,6 @@
 import {GenericSocket} from './generic-socket';
+import {GenericDataController} from "../controllers/generic.data-controller";
+import {IDeviceDocument} from "../models/model-helper";
 
 /**
  * This class generates Values and calls the broadcastFunction of GenericSocket every second.
@@ -8,10 +10,10 @@ import {GenericSocket} from './generic-socket';
 export class GenericGenerator {
   private generatedValue: number = 20;
 
-  constructor(private socket: GenericSocket, private createDataContent: (generatedValue: number) => any) {
+  constructor(private callback: (value: number) => void) {
     setInterval(() => {
       this.generatedValue += 0.1;
-      socket.update(createDataContent(this.generatedValue));
+      callback(this.generatedValue);
     }, 1000);
   }
 }

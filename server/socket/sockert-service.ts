@@ -24,7 +24,11 @@ export class SocketService {
   }
 
   public getSocket(namespace: string): GenericSocket {
-    return this.genericSockets.get(namespace);
+    let genericSocket: GenericSocket = this.genericSockets.get(namespace);
+    if (isUndefined(genericSocket )) {
+      throw new Error(`socket for namespace ${namespace} not defined.`);
+    }
+    return genericSocket;
   }
 
   public unregisterSocket(namespace: string) {
