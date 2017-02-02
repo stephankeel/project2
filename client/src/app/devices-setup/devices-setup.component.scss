@@ -1,0 +1,31 @@
+main {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.mainSelection {
+  display: flex;
+  flex: 1 0 15em;
+  align-content: space-between;
+  background-color: lightgrey;
+  margin: 0.5em;
+  padding: 0.5em;
+  height: 6em;
+}
+
+.mainSelection > img {
+  margin-right: 0.5em;
+}
+
+.mainSelection:hover {
+  background-color: yellow;
+}
+
+.mainSelectionLabel {
+  align-self: center;
+}
+
+.blindsIcon, .humidityIcon, .temperatureIcon {
+  width: 5em;
+}

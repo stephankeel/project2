@@ -1,23 +1,13 @@
-#users {
-}
-
-#addIcon {
-}
-
-#usersContent {
-  display: flex;
-}
-
 main {
   display: flex;
 }
 
-.userList {
+.deviceList {
   flex-direction: column;
   margin: 0.5em;
 }
 
-.userForm {
+.deviceForm {
   flex: 2 2;
   flex-direction: column;
   margin: 0.5em;
@@ -25,34 +15,19 @@ main {
   background-color: lightgray;
 }
 
-.userFormRow {
+.deviceFormRow {
   display: flex;
   align-items: flex-start;
   flex-wrap: wrap;
   margin: 0.4em 0;
 }
 
-.userFormLabel {
+.deviceFormLabel {
   flex: 0 0 8em;
 }
 
-.userTypeRadioDiv {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  align-items: flex-start;
-}
-
-.userFormRadio {
-  display: flex;
-  flex-wrap: nowrap;
-}
-
-.userFormValue {
+.deviceFormValue {
   flex: 1;
-}
-
-.userIdDiv {
 }
 
 #userMessage {

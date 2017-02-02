@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Router}    from '@angular/router';
+import {DeviceType, DeviceCharacteristics, devicePool} from '../device-pool';
+import {UserType} from '../user';
 
 import {AuthenticationService} from '../remote/authentication.service';
 
@@ -11,9 +13,15 @@ import {AuthenticationService} from '../remote/authentication.service';
 
 export class DashboardComponent implements OnInit {
   cssMenuClass: string = 'hideMenu';
+  devices: DeviceCharacteristics[] = devicePool;
+  isAdmin: boolean;
 
   constructor(private authenticationService: AuthenticationService,
               private router: Router) {
+  }
+
+  ngOnInit() {
+    this.isAdmin = this.authenticationService.getLoggedInUserType() == UserType.ADMIN;
   }
 
   menuClicked(): void {
@@ -29,13 +37,23 @@ export class DashboardComponent implements OnInit {
     this.cssMenuClass = 'hideMenu';
   }
 
-  manageUsers(): void {
+  deviceSetup(): void {
     this.closeMenu();
-    this.router.navigate(['/users']);
+    if (this.isAdmin) {
+      this.router.navigate(['/devices']);
+    }
   }
 
-  temperature(): void {
-    this.router.navigate(['/temperature']);
+  manageUsers(): void {
+    this.closeMenu();
+    if (this.isAdmin) {
+      this.router.navigate(['/users']);
+    }
+  }
+
+  showInfo(): void {
+    this.closeMenu();
+    // TODO: this.router.navigate(['/info']);
   }
 
   logout(): void {
@@ -44,6 +62,18 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
-  ngOnInit() {
+  clickAction(device: DeviceCharacteristics): void {
+    switch (device.type) {
+      case DeviceType.BLINDS:
+        // TODO: this.router.navigate(['/blinds']);
+        break;
+      case DeviceType.HUMIDITY:
+        // TODO: this.router.navigate(['/humidity']);
+        break;
+      case DeviceType.TEMPERATURE:
+        this.router.navigate(['/temperature']);
+        break;
+    }
   }
+
 }
