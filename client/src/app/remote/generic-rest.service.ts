@@ -39,7 +39,7 @@ export class GenericRestService<T extends IId> {
       .catch(handleError)
   }
 
-  get(id: number): Observable<T> {
+  get(id: string): Observable<T> {
     const url = `${this.restUrl}/${id}`;
     return this.authHttp.get(url)
       .map(response => response.json() as T)

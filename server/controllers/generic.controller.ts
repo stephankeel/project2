@@ -31,7 +31,7 @@ export class GenericController<T, R extends IDeviceDocument> implements IControl
           GenericController.logger.error(`error retrieving ${this.loggingPrefix}. ${err}`);
         } else {
           devices.forEach((device) => {
-            this.socketService.registerSocket(`${this.namespaceName}/${device.id}`);
+            this.socketService.registerSocket(`${this.namespaceName}/${device._id}`);
           });
         }
       })
@@ -124,6 +124,8 @@ export class GenericController<T, R extends IDeviceDocument> implements IControl
           if (err) {
             res.status(500).json({error: `error updating ${this.loggingPrefix} ${id}. ${err}`});
           } else {
+            // set the id to the _id provided by the db
+            updatedDevice.id = updatedDevice._id;
             logger.debug(`updated ${this.loggingPrefix} successfully`);
             this.genericSocket.update(updatedDevice);
             res.json(updatedDevice);

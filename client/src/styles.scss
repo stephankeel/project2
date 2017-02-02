@@ -46,3 +46,7 @@ header {
 .headerAction:hover {
   transform: scale(1.25);
 }
+
+.selectionListItem.selected {
+  background-color: lightgray;
+}

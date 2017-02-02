@@ -34,9 +34,11 @@ export class UsersComponent implements OnInit {
       this.socketService, "/api/users", "/users");
     this.loggedInUsername = this.authenticationService.getLoggedInUsername();
     this.loggedInUserId = this.authenticationService.getLoggedInUserId();
-    this.genericService.items.subscribe(users =>
-      this.users = users.toArray()
-    );
+    this.genericService.items.subscribe(users => {
+        this.users = users.toArray();
+        this.user = null;
+        this.selectedUser = null;
+      }, error => this.message = error.toString());
     this.genericService.getAll();
   }
 
@@ -55,6 +57,7 @@ export class UsersComponent implements OnInit {
   }
 
   selectUser(user: User) {
+    this.clearMessage();
     this.selectedUser = user;
     this.user = new User(this.selectedUser.id, this.selectedUser.firstname, this.selectedUser.lastname, this.selectedUser.type, this.selectedUser.username, this.selectedUser.password);
     this.passwordConfirmation = this.user.password;

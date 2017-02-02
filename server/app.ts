@@ -21,6 +21,8 @@ import {BlindsDeviceController} from "./controllers/blinds-device.controller";
 import {BlindsDataController} from "./controllers/blinds-data.controller";
 import {BlindsCommandRouter} from "./routes/blinds-command.router";
 import {SocketService} from "./socket/sockert-service";
+import {ITemperatureData} from "./entities/data.interface";
+import {TemperatureDeviceModel, ITemperatureDeviceDocument} from "./models/temperature-device.model";
 import {Engine} from './logic/engine';
 
 var socketioJwt = require("socketio-jwt");
@@ -35,6 +37,8 @@ class Server {
   private port: number;
   private host: string;
   private socketService: SocketService;
+
+  private temperatureDataController: TemperatureDataController;
 
   // Bootstrap the application.
   public static bootstrap(): Server {
@@ -106,7 +110,8 @@ class Server {
 
     this.app.use('/api/data/blinds', requiresAdmin, GenericDataRouter.create(new BlindsDataController(this.socketService)));
     this.app.use('/api/data/humidity', requiresAdmin, GenericDataRouter.create(new HumidityDataController(this.socketService)));
-    this.app.use('/api/data/temperature', requiresAdmin, GenericDataRouter.create(new TemperatureDataController(this.socketService)));
+    this.temperatureDataController = new TemperatureDataController(this.socketService);
+    this.app.use('/api/data/temperature', requiresAdmin, GenericDataRouter.create(this.temperatureDataController));
 
     this.app.use('/api/command/blinds', requiresStandardOrAdmin, BlindsCommandRouter.create());
 
@@ -137,9 +142,16 @@ class Server {
     }));
 
     this.socketService.init(this.io);
-/*    new GenericGenerator(this.socketService.registerSocket("/temperature/1"), n => {
-      return {value: n, timestamp: Date.now(),}
-    });*/
+    TemperatureDeviceModel.findOne({name: "Wohnzimmer"}, (err: any, device: ITemperatureDeviceDocument) => {
+      if (err) {
+        logger.error(`can not found device with name "Wohnzimmer".`);
+      } else {
+        new GenericGenerator(v => {
+          let data: ITemperatureData = {deviceId: device._id, timestamp: Date.now(), value: v};
+          this.temperatureDataController.addDataRecord(data);
+        });
+      }
+    });
   }
 
   // Start HTTP server listening

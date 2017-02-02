@@ -1,7 +1,7 @@
 <header>
   <img id="backIcon" class="headerAction" src="app/images/back.svg" alt="Back Icon" title="Back Icon"
        (click)="backClicked()">
-  <h1 class="headerTitle">TEMPERATURE CONFIG</h1>
+  <h1 class="headerTitle">TEMPERATUR-SETUP</h1>
   <div class="contextHeaderActionDiv">
     <img id="addIcon" class="headerAction contextHeaderAction" src="app/images/add.svg" alt="Add Icon"
          title="Add Icon" (click)="addClicked()">
@@ -9,7 +9,7 @@
 </header>
 <main>
   <div class="deviceList">
-    <div *ngFor="let device of devices" class="deviceListItem" [class.selected]="device === selectedDevice"
+    <div *ngFor="let device of devices" class="deviceListItem selectionListItem" [class.selected]="device === selectedDevice"
          (click)="selectDevice(device)">{{device.name}}
     </div>
   </div>
@@ -27,7 +27,7 @@
     </div>
     <div class="deviceFormRow">
       <label class="deviceFormLabel">PORT</label>
-      <select [(ngModel)]="device.port" class="deviceFormValue validatable deviceInput" name="port">
+      <select [(ngModel)]="device.port" class="deviceFormValue validatable deviceInput" name="port" (focus)="clearMessage()">
         <option *ngFor="let port of ports" [value]="port" [selected]="port === device.port">{{getPortName(port)}}</option>
       </select>
     </div>
