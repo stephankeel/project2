@@ -12,7 +12,7 @@ export class TemperatureService {
   public temperatureDevices: ITemperatureDevice[] = [];
 
   private itemsSubscription: Subscription;
-  private initialized: boolean;
+  private initialized: boolean = false;
 
   constructor(private socketService: ClientSocketService, private authHttp: AuthHttp) {
   }
@@ -27,6 +27,7 @@ export class TemperatureService {
       this.temperatureDevices = temperatureDevices.toArray();
     });
     this.temperatureService.getAll();
+    this.initialized = true;
   }
 
   ngOnDestroy() {
