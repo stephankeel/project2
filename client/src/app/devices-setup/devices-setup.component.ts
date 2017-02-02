@@ -4,10 +4,10 @@ import {DeviceType, DeviceCharacteristics, devicePool} from '../device-pool';
 
 @Component({
   selector: 'app-devices',
-  templateUrl: './devices.component.html',
-  styleUrls: ['./devices.component.scss']
+  templateUrl: 'devices-setup.component.html',
+  styleUrls: ['devices-setup.component.scss']
 })
-export class DevicesComponent implements OnInit {
+export class DevicesSetupComponent implements OnInit {
 
   devices: DeviceCharacteristics[] = devicePool;
 
