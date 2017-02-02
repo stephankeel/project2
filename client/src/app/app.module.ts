@@ -21,8 +21,8 @@ import {RequestOptions, Http} from "@angular/http";
 import {AuthHttp, AuthConfig} from 'angular2-jwt';
 import {TemperatureViewComponent} from './temperature-view/temperature-view.component';
 import {TemperatureService} from "./temperature/temperature.service";
-import { DevicesSetupComponent } from './devices-setup/devices-setup.component';
-import { TemperatureSetupComponent } from './temperature-setup/temperature-setup.component';
+import {DevicesSetupComponent} from './devices-setup/devices-setup.component';
+import {TemperatureSetupComponent} from './temperature-setup/temperature-setup.component';
 
 // TODO: in welches File müsste diese Methode?
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {

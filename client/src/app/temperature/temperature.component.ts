@@ -20,6 +20,8 @@ export class TemperatureComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.temperatureService = new TemperatureService(this.socketService, this.authHttp);
+    this.temperatureService.init();
   }
 
   backClicked(): void {

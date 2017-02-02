@@ -7,13 +7,16 @@ import {GenericService} from "../remote/generic.service";
 import {Subscription} from "rxjs";
 
 @Injectable()
-export class TemperatureService  {
+export class TemperatureService {
   private temperatureService: GenericService<ITemperatureDevice>;
   public temperatureDevices: ITemperatureDevice[] = [];
 
   private itemsSubscription: Subscription;
 
   constructor(private socketService: ClientSocketService, private authHttp: AuthHttp) {
+  }
+
+  init() {
     this.temperatureService = new GenericService<ITemperatureDevice>(this.authHttp,
       this.socketService, "/api/devices/temperature", "/temperature");
     this.itemsSubscription = this.temperatureService.items.subscribe(temperatureDevices => {
