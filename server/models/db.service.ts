@@ -1,9 +1,10 @@
 import {logger} from '../utils/logger';
 import mongoose = require('mongoose');
 import {initAdmin} from './user.model';
+import {initTemperatureDeviceWohnzimmer} from "./temperature-device.model";
 // let tingodb = require('tingodb');
 
-const DB_OPTION: number = 3;
+const DB_OPTION: number = 1;
 const DB_PORT: number = 27017;
 const RETRY_SECONDS: number = 5;
 
@@ -55,6 +56,8 @@ export class DBService {
 
     // create admin user if not yet existing
     initAdmin();
+    // create test temperature Device 'Wohnzimmer'
+    initTemperatureDeviceWohnzimmer();
 
     return DBService.instance;
   }

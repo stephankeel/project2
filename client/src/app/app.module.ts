@@ -19,8 +19,10 @@ import {BaseRequestOptions} from '@angular/http';
 
 import {RequestOptions, Http} from "@angular/http";
 import {AuthHttp, AuthConfig} from 'angular2-jwt';
-import { DevicesSetupComponent } from './devices-setup/devices-setup.component';
-import { TemperatureSetupComponent } from './temperature-setup/temperature-setup.component';
+import {TemperatureViewComponent} from './temperature-view/temperature-view.component';
+import {TemperatureService} from "./temperature/temperature.service";
+import {DevicesSetupComponent} from './devices-setup/devices-setup.component';
+import {TemperatureSetupComponent} from './temperature-setup/temperature-setup.component';
 
 // TODO: in welches File müsste diese Methode?
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
@@ -44,6 +46,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     UsersComponent,
     LoginComponent,
     TemperatureComponent,
+    TemperatureViewComponent,
     DevicesSetupComponent,
     TemperatureSetupComponent
   ],
@@ -62,6 +65,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     ClientSocketService,
     // providers used to create fake backend_helpers/index
     BaseRequestOptions,
+    TemperatureService,
   ],
   bootstrap: [
     AppComponent,

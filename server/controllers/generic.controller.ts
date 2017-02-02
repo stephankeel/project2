@@ -31,7 +31,7 @@ export class GenericController<T, R extends IDeviceDocument> implements IControl
           GenericController.logger.error(`error retrieving ${this.loggingPrefix}. ${err}`);
         } else {
           devices.forEach((device) => {
-            this.socketService.registerSocket(`${this.namespaceName}/${device.id}`);
+            this.socketService.registerSocket(`${this.namespaceName}/${device._id}`);
           });
         }
       })

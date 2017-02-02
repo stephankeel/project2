@@ -4,8 +4,9 @@ import express = require('express');
 import {Model} from "mongoose";
 import {IDataController} from "./data-controller.interface";
 import {SocketService} from "../socket/sockert-service";
+import {IData} from "../entities/data.interface";
 
-export class GenericDataController<T, R extends IDeviceDocument> implements IDataController<T> {
+export class GenericDataController<T extends IData, R extends IDeviceDocument> implements IDataController<T> {
 
   private loggingPrefix: string;
 
@@ -58,8 +59,8 @@ export class GenericDataController<T, R extends IDeviceDocument> implements IDat
         logger.error(`error adding ${this.loggingPrefix} ${JSON.stringify(data)}. ${err}`);
       } else {
         // set the id to the _id provided by the db
-        dataModel.id = addedData._id;
-        this.socketService.getSocket(`${this.namespaceName}/${addedData._id}`).update(dataModel);
+        data.id = addedData._id;
+        this.socketService.getSocket(`${this.namespaceName}/${data.deviceId}`).create(data);
         logger.debug(`added ${this.loggingPrefix} successfully, id: ${addedData.id}`);
       }
     });

@@ -1,10 +1,10 @@
 import {ReplaySubject, Observable, Subscription, Subscriber} from "rxjs";
 import {ClientSocketService} from "./client-socket.service";
 import {List} from "immutable";
-import {GenericRestService} from "./generic-rest.service";
 import {IId} from "../../../../server/entities/id.interface";
 import {AuthHttp} from "angular2-jwt";
 import {ISocketItem} from "../../../../server/entities/socket-item.model";
+import {GenericRestService} from "./generic-rest.service";
 
 export class GenericService<T extends IId> {
   items: ReplaySubject<List<T>> = new ReplaySubject<List<T>>(1);
@@ -29,9 +29,8 @@ export class GenericService<T extends IId> {
     } else if (packet.action === "update") {
       this.updateItem(packet.item);
     } else if (packet.action === "delete") {
-      this.currentItems.delete(packet.item);
+      this.deleteItem(packet.item);
     }
-    this.items.next(List<T>(this.currentItems.values()));
   }
 
   public create(item: T) {
