@@ -12,17 +12,22 @@ export class TemperatureService {
   public temperatureDevices: ITemperatureDevice[] = [];
 
   private itemsSubscription: Subscription;
+  private initialized: boolean = false;
 
   constructor(private socketService: ClientSocketService, private authHttp: AuthHttp) {
   }
 
   init() {
+    if (this.initialized) {
+      return;
+    }
     this.temperatureService = new GenericService<ITemperatureDevice>(this.authHttp,
       this.socketService, "/api/devices/temperature", "/temperature");
     this.itemsSubscription = this.temperatureService.items.subscribe(temperatureDevices => {
       this.temperatureDevices = temperatureDevices.toArray();
     });
     this.temperatureService.getAll();
+    this.initialized = true;
   }
 
   ngOnDestroy() {
