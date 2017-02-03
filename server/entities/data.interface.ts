@@ -2,7 +2,7 @@ import {BlindsState} from './blinds-state';
 import {IId} from './id.interface';
 
 export interface IData extends IId {
-  deviceId?: string,
+  deviceId?: any,
   timestamp?: number;
 }
 

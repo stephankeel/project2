@@ -5,6 +5,11 @@ import {Subscriber} from 'rxjs/Subscriber';
 import {I_AIN, I_LED, I_GPIO, Direction} from '../hardware/ports.interface';
 import {AIN, LED, GPIO} from '../hardware/beaglebone-ports';
 import {SimulatedAIN, SimulatedLED, SimulatedGPIO} from "../hardware/simulation-ports";
+import {GenericGenerator} from "../socket/generic-generator";
+import {ITemperatureData} from "../entities/data.interface";
+import {TemperatureDeviceModel, ITemperatureDeviceDocument} from "../models/temperature-device.model";
+import {GenericDataController} from "../controllers/generic.data-controller";
+import {DeviceType} from '../entities/device-type';
 
 export class Engine {
   private static singleton = new Engine();
@@ -44,6 +49,17 @@ export class Engine {
       led = new SimulatedLED(3);
     }
     led.heartbeat();
+
+    TemperatureDeviceModel.findOne({name: "Wohnzimmer"}, (err: any, device: ITemperatureDeviceDocument) => {
+      if (err) {
+        logger.error(`can not found device with name "Wohnzimmer".`);
+      } else {
+        new GenericGenerator(v => {
+          let data: ITemperatureData = {deviceId: device._id, timestamp: Date.now(), value: v};
+          GenericDataController.getDataController(DeviceType.TEMPERATURE).addDataRecord(data);
+        });
+      }
+    });
 
   }
 
