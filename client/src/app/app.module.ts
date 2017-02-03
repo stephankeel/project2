@@ -5,7 +5,6 @@ import {HttpModule}    from '@angular/http';
 
 import {AppComponent}  from './app.component';
 import {AppRoutingModule} from './app-routing.module';
-import {Angular2JWTModule} from 'angular2-jsonwebtoken';
 import {LoginComponent} from './login/login.component';
 import {AuthenticationService} from './remote/authentication.service';
 import {ClientSocketService} from './remote/client-socket.service';
@@ -37,7 +36,6 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     FormsModule,
     HttpModule,
     AppRoutingModule,
-    Angular2JWTModule,
   ],
   declarations: [
     AppComponent,
