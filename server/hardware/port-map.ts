@@ -27,6 +27,7 @@ export function portDirection(port: Port) {
   } else {
     return PortDirection.OUTPUT;
   }
+}
 
 export const enum PortState {
   OFF, SHORT, MEDIUM, LONG

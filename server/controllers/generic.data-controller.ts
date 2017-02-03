@@ -5,16 +5,24 @@ import {Model} from "mongoose";
 import {IDataController} from "./data-controller.interface";
 import {SocketService} from "../socket/sockert-service";
 import {IData} from "../entities/data.interface";
+import {DeviceType} from '../entities/device-type';
 
 export class GenericDataController<T extends IData, R extends IDeviceDocument> implements IDataController<T> {
 
+  private static dataControllerMap: Map<DeviceType, IDataController<any>> = new Map<DeviceType, IDataController<any>>();
   private loggingPrefix: string;
 
   constructor(private socketService: SocketService,
               private namespaceName: string,
+              private deviceType: DeviceType,
               private model: Model<R>,
               private createDocument: (content: T) => R) {
     this.loggingPrefix = `${this.namespaceName}-data`;
+    GenericDataController.dataControllerMap.set(deviceType, this);
+  }
+
+  public static getDataController<T>(deviceType: DeviceType): IDataController<T> {
+    return this.dataControllerMap.get(deviceType);
   }
 
   public getAllById(req: express.Request, res: express.Response) {
