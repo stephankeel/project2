@@ -3,7 +3,7 @@ import {ITemperatureDeviceDocument, TemperatureDeviceModel} from '../models/temp
 import {ITemperatureDevice} from '../entities/device.interface';
 import {GenericController} from './generic.controller';
 import {TemperatureDataController} from "./temperature-data.controller";
-import {SocketService} from "../socket/sockert-service";
+import {SocketService} from "../socket/socket-service";
 
 export class TemperatureDeviceController extends GenericController<ITemperatureDevice, ITemperatureDeviceDocument> {
   constructor(socketService: SocketService) {

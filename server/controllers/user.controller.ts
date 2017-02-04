@@ -2,7 +2,7 @@ import express = require('express');
 import {IUserDocument, UserModel} from '../models/user.model';
 import {GenericController} from "./generic.controller";
 import {IUser} from "../entities/user.interface";
-import {SocketService} from "../socket/sockert-service";
+import {SocketService} from "../socket/socket-service";
 
 export class UserController extends GenericController<IUser, IUserDocument> {
   constructor(socketService: SocketService) {

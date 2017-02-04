@@ -4,7 +4,7 @@ import express = require('express');
 import {Model} from "mongoose";
 import {IController} from "./controller.interface";
 import {GenericSocket} from "../socket/generic-socket";
-import {SocketService} from "../socket/sockert-service";
+import {SocketService} from "../socket/socket-service";
 import {Logger} from "log4js";
 
 export class GenericController<T, R extends IDeviceDocument> implements IController {

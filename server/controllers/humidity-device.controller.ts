@@ -3,7 +3,7 @@ import {IHumidityDeviceDocument, HumidityDeviceModel} from '../models/humidity-d
 import {IHumidityDevice} from '../entities/device.interface';
 import {GenericController} from './generic.controller';
 import {HumidityDataController} from "./humidity-data.controller";
-import {SocketService} from "../socket/sockert-service";
+import {SocketService} from "../socket/socket-service";
 
 
 export class HumidityDeviceController extends GenericController<IHumidityDevice, IHumidityDeviceDocument> {

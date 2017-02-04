@@ -3,7 +3,7 @@ import {IBlindsDataDocument, BlindsDataModel} from '../models/blinds-data.model'
 import {IBlindsData} from '../entities/data.interface';
 import {DeviceType} from '../entities/device-type';
 import {GenericDataController} from './generic.data-controller';
-import {SocketService} from '../socket/sockert-service';
+import {SocketService} from '../socket/socket-service';
 
 export class BlindsDataController extends GenericDataController<IBlindsData, IBlindsDataDocument> {
   constructor(socketService: SocketService) {

@@ -3,7 +3,7 @@ import {IDeviceDocument} from "../models/model-helper";
 import express = require('express');
 import {Model} from "mongoose";
 import {IDataController} from "./data-controller.interface";
-import {SocketService} from "../socket/sockert-service";
+import {SocketService} from "../socket/socket-service";
 import {IData} from "../entities/data.interface";
 import {DeviceType} from '../entities/device-type';
 

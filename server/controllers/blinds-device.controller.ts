@@ -3,7 +3,7 @@ import {IBlindsDeviceDocument, BlindsDeviceModel} from '../models/blinds-device.
 import {IBlindsDevice} from '../entities/device.interface';
 import {BlindsDataController} from './blinds-data.controller';
 import {GenericController} from './generic.controller';
-import {SocketService} from "../socket/sockert-service";
+import {SocketService} from "../socket/socket-service";
 
 export class BlindsDeviceController extends GenericController<IBlindsDevice, IBlindsDeviceDocument> {
   constructor(socketService: SocketService) {
