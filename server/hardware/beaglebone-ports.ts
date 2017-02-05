@@ -2,9 +2,9 @@ import {logger} from '../utils/logger';
 import fs = require('fs');
 import {Observable} from 'rxjs/Observable';
 import {Subscriber} from 'rxjs/Subscriber';
-import {Direction, I_AIN, I_GPIO, I_LED} from '../hardware/ports.interface';
+import {Direction, AbstractAIN, AbstractGPIO, AbstractLED} from './abstract-ports';
 
-export class GPIO implements I_GPIO {
+export class GPIO extends AbstractGPIO {
   public static readonly VALID_IDS: number[] = [2, 3, 4, 5, 7, 8, 9, 10, 11, 14, 15, 20, 26, 27, 44, 45, 46, 47, 48, 49, 60, 61, 65, 66, 69, 115];
   private static readonly ROOT = '/sys/class/gpio/';
   private static readonly UNEXPORT = GPIO.ROOT + 'unexport';
@@ -13,7 +13,11 @@ export class GPIO implements I_GPIO {
 
   private outputObs: Observable<boolean> = null;
 
-  constructor(private id: number, private direction: Direction) {
+  constructor(protected id: number, private direction: Direction) {
+    super(id);
+    if (GPIO.VALID_IDS.filter(vid => vid != id).length === 0) {
+      throw new Error(`GPIO id ${id} is not valid!`);
+    }
     let portName: string = this.getName();
     // activate port if not yet done
     if (!fs.existsSync(portName)) {
@@ -93,7 +97,7 @@ export class GPIO implements I_GPIO {
         logger.error(`read ${cmd} failed with ${err}`);
       }
       let val: number = data.values()[0];
-      this.read(subscriber, cmd, val == 0 ? false : true);
+      this.read(subscriber, cmd, val != 0);
     });
   }
 
@@ -124,7 +128,7 @@ export class GPIO implements I_GPIO {
 }
 
 
-export class AIN implements I_AIN {
+export class AIN extends AbstractAIN {
   public static readonly VALID_IDS: number[] = [0, 1, 2, 3, 4, 5, 6];
   private static readonly ROOT = '/sys/bus/iio/devices/iio:device0/';
   private static readonly BASE_NAME = 'in_voltage';
@@ -134,7 +138,11 @@ export class AIN implements I_AIN {
   private intervalId: any = null;
   private doPoll: boolean = true;
 
-  constructor(private id: number) {
+  constructor(protected id: number) {
+    super(id);
+    if (AIN.VALID_IDS.filter(vid => vid != id).length === 0) {
+      throw new Error(`AIN id ${id} is not valid!`);
+    }
   }
 
   getName(): string {
@@ -178,14 +186,16 @@ export class AIN implements I_AIN {
 }
 
 
-export class LED implements I_LED {
+export class LED extends AbstractLED {
   public static readonly VALID_IDS: number[] = [0, 1, 2, 3];
   private static readonly ROOT = '/sys/class/leds/';
   private static readonly BASE_NAME = 'beaglebone:green:usr';
 
-  private intervalId: any = null;
-
-  constructor(private id: number) {
+  constructor(protected id: number) {
+    super(id);
+    if (LED.VALID_IDS.filter(vid => vid != id).length === 0) {
+      throw new Error(`LED id ${id} is not valid!`);
+    }
     this.setState(0);
   }
 

@@ -4,6 +4,7 @@ import {IBlindsDevice} from '../entities/device.interface';
 import {BlindsDataController} from './blinds-data.controller';
 import {GenericController} from './generic.controller';
 import {SocketService} from "../socket/socket-service";
+import {Engine} from '../logic/engine';
 
 export class BlindsDeviceController extends GenericController<IBlindsDevice, IBlindsDeviceDocument> {
   constructor(socketService: SocketService) {
@@ -25,4 +26,9 @@ export class BlindsDeviceController extends GenericController<IBlindsDevice, IBl
     documentFromDb.actorDown = inputDocument.actorDown;
     documentFromDb.runningSeconds = inputDocument.runningSeconds;
   }
+
+  protected informOnAdd(device: IBlindsDeviceDocument): void {
+    Engine.getInstance().addBlindsDevice(device);
+  }
+
 }

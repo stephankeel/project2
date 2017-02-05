@@ -4,7 +4,7 @@ import {IHumidityDevice} from '../entities/device.interface';
 import {GenericController} from './generic.controller';
 import {HumidityDataController} from "./humidity-data.controller";
 import {SocketService} from "../socket/socket-service";
-
+import {Engine} from '../logic/engine';
 
 export class HumidityDeviceController extends GenericController<IHumidityDevice, IHumidityDeviceDocument> {
   constructor(socketService: SocketService) {
@@ -22,5 +22,10 @@ export class HumidityDeviceController extends GenericController<IHumidityDevice,
     documentFromDb.name = inputDocument.name;
     documentFromDb.port = inputDocument.port;
   }
+
+  protected informOnAdd(device: IHumidityDeviceDocument): void {
+    Engine.getInstance().addHumidityDevice(device);
+  }
+
 }
 

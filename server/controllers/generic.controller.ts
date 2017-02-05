@@ -6,6 +6,7 @@ import {IController} from "./controller.interface";
 import {GenericSocket} from "../socket/generic-socket";
 import {SocketService} from "../socket/socket-service";
 import {Logger} from "log4js";
+import {Engine} from '../logic/engine';
 
 export class GenericController<T, R extends IDeviceDocument> implements IController {
   private static logger: Logger = logger;
@@ -31,7 +32,12 @@ export class GenericController<T, R extends IDeviceDocument> implements IControl
           GenericController.logger.error(`error retrieving ${this.loggingPrefix}. ${err}`);
         } else {
           devices.forEach((device) => {
+            // set the id to the _id provided by the db
+            device.id = device._id;
             this.socketService.registerSocket(`${this.namespaceName}/${device._id}`);
+
+            // TODO: mode to GenericDeviceController as soon as available
+            this.informOnAdd(device);
           });
         }
       })
@@ -53,6 +59,10 @@ export class GenericController<T, R extends IDeviceDocument> implements IControl
         }
         this.genericSocket.create(device);
         GenericController.logger.debug(`created ${this.loggingPrefix} successfully, id: ${addedDevice.id}`);
+
+        // TODO: move to GenericDeviceController as soon as available
+        this.informOnAdd(device);
+
         res.status(201).json(device);
       }
     });
@@ -103,6 +113,9 @@ export class GenericController<T, R extends IDeviceDocument> implements IControl
         }
         GenericController.logger.debug(`deleted ${this.loggingPrefix} ${req.params.id} successfully`);
         this.cleanupCallbackOnDelete(req.params.id);
+
+        // TODO: move to GenericDeviceController as soon as available
+        this.informOnDelete(ref._id);
       }
       res.json(ref._id);
     });
@@ -128,11 +141,27 @@ export class GenericController<T, R extends IDeviceDocument> implements IControl
             updatedDevice.id = updatedDevice._id;
             logger.debug(`updated ${this.loggingPrefix} successfully`);
             this.genericSocket.update(updatedDevice);
+
+            // TODO: move to GenericDeviceController as soon as available
+            this.informOnUpdate(device);
+
             res.json(updatedDevice);
           }
         });
       }
     });
   }
+
+  // TODO: move the following 3 methods to GenericDeviceController as soon as available. They will be overwritten by the device specific controller!
+  // TODO: remove the import of Enigine as well
+  protected informOnAdd(device: R): void {
+  }
+  protected informOnUpdate(device: R): void {
+    Engine.getInstance().updateDevice(device);
+  }
+  protected informOnDelete(id: any): void {
+    Engine.getInstance().removeDevice(id);
+  }
+
 }
 
