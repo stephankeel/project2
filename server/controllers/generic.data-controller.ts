@@ -30,7 +30,7 @@ export class GenericDataController<T extends IData, R extends IDeviceDocument> i
     // TODO: check if deviceId is correct (changed from _id) DL
     let ref = {deviceId: req.params.id};
     this.model.findById(ref, (err: any, data: R[]) => {
-      if (err) {
+      if (err || !data) {
         res.status(404).json({error: `error retrieving all ${this.loggingPrefix} with deviceId ${ref.deviceId}. ${err}`});
       } else {
         // set the id to the _id provided by the db
@@ -48,7 +48,7 @@ export class GenericDataController<T extends IData, R extends IDeviceDocument> i
     let ref = {deviceId: req.params.id};
     let sort = {timestamp: 1};
     this.model.findOne(ref).sort(sort).exec((err: any, data: R) => {
-      if (err) {
+      if (err || !data) {
         res.status(404).json({error: `error retrieving latest ${this.loggingPrefix} record ${ref.deviceId}. ${err}`});
       } else {
         // set the id to the _id provided by the db
@@ -79,7 +79,7 @@ export class GenericDataController<T extends IData, R extends IDeviceDocument> i
     logger.debug(`delete all ${this.loggingPrefix} ${id}`);
     let ref = {deviceId: id};
     this.model.findById(ref, (err: any, data: R[]) => {
-      if (err) {
+      if (err || !data) {
         return;
       } else {
         // delete all entries with given deviceId
