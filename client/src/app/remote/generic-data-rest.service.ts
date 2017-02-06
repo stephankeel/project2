@@ -10,7 +10,7 @@ export class GenericDataRestService<T extends IId> {
 
   getAll(id: string): Observable<T[]> {
     const url = `${this.restUrl}/${id}/all`;
-    return this.authHttp.get(this.restUrl)
+    return this.authHttp.get(url)
       .map(response =>
         response.json() as T[]
       )

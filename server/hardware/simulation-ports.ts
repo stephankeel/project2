@@ -1,13 +1,14 @@
 import {logger} from '../utils/logger';
 import {Observable} from 'rxjs/Observable';
 import {Subscriber} from 'rxjs/Subscriber';
-import {Direction, I_AIN, I_GPIO, I_LED} from '../hardware/ports.interface';
+import {Direction, AbstractAIN, AbstractGPIO, AbstractLED} from './abstract-ports';
 
-export class SimulatedGPIO implements I_GPIO {
+export class SimulatedGPIO extends AbstractGPIO {
 
   private outputObs: Observable<boolean> = null;
 
-  constructor(private id: number, private direction: Direction) {
+  constructor(protected id: number, private direction: Direction) {
+    super(id);
   }
 
   getName(): string {
@@ -37,6 +38,7 @@ export class SimulatedGPIO implements I_GPIO {
           let cmd: string = `${this.getName()}/value`;
           logger.debug(`watch ${cmd}`);
           logger.info(`TODO: implement output port simulator`);
+          subscriber.next(true);
         });
       }
       return this.outputObs;
@@ -59,13 +61,16 @@ export class SimulatedGPIO implements I_GPIO {
   }
 }
 
-export class SimulatedAIN {
+export class SimulatedAIN extends AbstractAIN {
 
   private outputObs: Observable<number> = null;
   private intervalId: any = null;
   private doPoll: boolean = true;
+  private generatedValue: number = 20;
+  private sign: number = 1;
 
-  constructor(private id: number) {
+  constructor(protected id: number) {
+    super(id);
   }
 
   getName(): string {
@@ -79,8 +84,16 @@ export class SimulatedAIN {
         this.doPoll = true;
         this.intervalId = setInterval(() => {
           if (this.doPoll) {
-            // TODO: pprovide simulated value between 0 and 4095
-            subscriber.next(1234);
+            // provide simulated value between 0 and 4095 max!
+            if (this.generatedValue > 30) {
+              this.sign = -1;
+            } else if (this.generatedValue < 15) {
+              this.sign = 1;
+            }
+            this.generatedValue += this.sign * 0.1;
+            subscriber.next(this.generatedValue);
+          } else {
+            subscriber.complete();
           }
         }, intervalSeconds * 1000);
       });
@@ -94,8 +107,9 @@ export class SimulatedAIN {
   }
 }
 
-export class SimulatedLED {
-  constructor(private id: number) {
+export class SimulatedLED extends AbstractLED {
+  constructor(protected id: number) {
+    super(id);
   }
 
   getName(): string {

@@ -3,18 +3,26 @@ import {IDeviceDocument} from "../models/model-helper";
 import express = require('express');
 import {Model} from "mongoose";
 import {IDataController} from "./data-controller.interface";
-import {SocketService} from "../socket/sockert-service";
+import {SocketService} from "../socket/socket-service";
 import {IData} from "../entities/data.interface";
+import {DeviceType} from '../entities/device-type';
 
 export class GenericDataController<T extends IData, R extends IDeviceDocument> implements IDataController<T> {
 
+  private static dataControllerMap: Map<DeviceType, IDataController<any>> = new Map<DeviceType, IDataController<any>>();
   private loggingPrefix: string;
 
   constructor(private socketService: SocketService,
               private namespaceName: string,
+              private deviceType: DeviceType,
               private model: Model<R>,
               private createDocument: (content: T) => R) {
     this.loggingPrefix = `${this.namespaceName}-data`;
+    GenericDataController.dataControllerMap.set(deviceType, this);
+  }
+
+  public static getDataController<T>(deviceType: DeviceType): IDataController<T> {
+    return this.dataControllerMap.get(deviceType);
   }
 
   public getAllById(req: express.Request, res: express.Response) {
@@ -22,7 +30,7 @@ export class GenericDataController<T extends IData, R extends IDeviceDocument> i
     // TODO: check if deviceId is correct (changed from _id) DL
     let ref = {deviceId: req.params.id};
     this.model.findById(ref, (err: any, data: R[]) => {
-      if (err) {
+      if (err || !data) {
         res.status(404).json({error: `error retrieving all ${this.loggingPrefix} with deviceId ${ref.deviceId}. ${err}`});
       } else {
         // set the id to the _id provided by the db
@@ -40,7 +48,7 @@ export class GenericDataController<T extends IData, R extends IDeviceDocument> i
     let ref = {deviceId: req.params.id};
     let sort = {timestamp: 1};
     this.model.findOne(ref).sort(sort).exec((err: any, data: R) => {
-      if (err) {
+      if (err || !data) {
         res.status(404).json({error: `error retrieving latest ${this.loggingPrefix} record ${ref.deviceId}. ${err}`});
       } else {
         // set the id to the _id provided by the db
@@ -71,7 +79,7 @@ export class GenericDataController<T extends IData, R extends IDeviceDocument> i
     logger.debug(`delete all ${this.loggingPrefix} ${id}`);
     let ref = {deviceId: id};
     this.model.findById(ref, (err: any, data: R[]) => {
-      if (err) {
+      if (err || !data) {
         return;
       } else {
         // delete all entries with given deviceId

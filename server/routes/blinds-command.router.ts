@@ -1,6 +1,6 @@
 import express = require('express');
 import {Router} from "express-serve-static-core";
-import {BlindsCommandController} from "../controllers/blinds-command.controller";
+import {BlindsCommandController} from "../logic/blinds-command.controller";
 
 export class BlindsCommandRouter {
   constructor(private controller: BlindsCommandController, private router: Router) {
