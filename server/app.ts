@@ -19,7 +19,7 @@ import {HumidityDeviceController} from "./controllers/humidity-device.controller
 import {BlindsDeviceController} from "./controllers/blinds-device.controller";
 import {BlindsDataController} from "./controllers/blinds-data.controller";
 import {BlindsCommandRouter} from "./routes/blinds-command.router";
-import {SocketService} from "./socket/sockert-service";
+import {SocketService} from "./socket/socket-service";
 import {Engine} from './logic/engine';
 
 var socketioJwt = require("socketio-jwt");

@@ -3,7 +3,7 @@ import {ITemperatureData} from '../entities/data.interface';
 import {DeviceType} from '../entities/device-type';
 import {GenericDataController} from './generic.data-controller';
 import express = require('express');
-import {SocketService} from '../socket/sockert-service';
+import {SocketService} from '../socket/socket-service';
 
 export class TemperatureDataController extends GenericDataController<ITemperatureData, ITemperatureDataDocument> {
   constructor(socketService: SocketService) {
