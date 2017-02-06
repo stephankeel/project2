@@ -14,7 +14,7 @@ export class PortsFactory {
   private portToBeagleBoneBlackId: Map<Port, number> = new Map<Port, number>();
 
   private constructor() {
-    this.isBBB = this.isBeagleBoneBlack();
+    this.isBBB = PortsFactory.isBeagleBoneBlack();
     this.createPortToPinMap();
   }
 
