@@ -1,11 +1,16 @@
 import {logger} from '../utils/logger';
 import {Observable} from 'rxjs/Observable';
 import {Subscriber} from 'rxjs/Subscriber';
+import {Subscription} from 'rxjs/Subscription';
 import {Direction, AbstractAIN, AbstractGPIO, AbstractLED} from './abstract-ports';
+import {SimulationCommandHandler} from "./simulation-command-handler";
 
 export class SimulatedGPIO extends AbstractGPIO {
 
   private outputObs: Observable<boolean> = null;
+  private doRead: boolean = true;
+  private keyPressed: boolean = false;
+  private cmdSubscription: Subscription;
 
   constructor(protected id: number, private direction: Direction) {
     super(id);
@@ -27,28 +32,57 @@ export class SimulatedGPIO extends AbstractGPIO {
   }
 
   setState(on: boolean): void {
-    let state: number = on ? 1 : 0;
-    logger.info(`Simulation: setState ${this.getName()} to ${state}`);
+    if (this.direction === Direction.OUTPUT) {
+      let state: number = on ? 1 : 0;
+      logger.info(`Simulation: setState ${this.getName()} to ${state}`);
+    } else {
+      logger.error(`setState ${this.getName()} not allowed for input pin`);
+    }
   }
 
   watch(): Observable<boolean> {
-    if (this.direction === Direction.OUTPUT) {
+    if (this.direction === Direction.INPUT) {
       if (this.outputObs === null) {
+        this.cmdSubscription = commandListener('gpi', this.id, (cmd: string) => {
+          let parts: string[] = cmd.split(' ');
+          if (parts.length > 2 && parts[2]) {
+            let value: number = +parts[2];
+            if (isNaN(value)) {
+              console.log(`setting GPI ${this.id} from ${this.keyPressed} to ${value != 0}`);
+              this.keyPressed = value != 0;
+            }
+          }
+        });
         this.outputObs = Observable.create((subscriber: Subscriber<boolean>) => {
           let cmd: string = `${this.getName()}/value`;
-          logger.debug(`watch ${cmd}`);
-          logger.info(`TODO: implement output port simulator`);
-          subscriber.next(true);
+          logger.info(`Simulation: watch ${cmd}`);
+          this.doRead = true;
+          let prevState: boolean = !this.keyPressed;
+          let intervalId = setInterval(() => {
+            if (this.doRead) {
+              if (this.keyPressed != prevState) {
+                subscriber.next(this.keyPressed);
+                prevState = this.keyPressed;
+              }
+            } else {
+              subscriber.complete();
+              clearInterval(intervalId);
+            }
+          }, 100);
         });
       }
       return this.outputObs;
     } else {
-      logger.error(`watch ${this.getName()} not allowed for input pin`);
+      logger.error(`watch ${this.getName()} not allowed for output pin`);
     }
   }
 
   reset(): void {
-    logger.info(`TODO: implement reset simulator`);
+    logger.info(`Simulation: reset ${this.getName()} --> for gpio${this.id}`);
+    this.doRead = false;
+    if (this.cmdSubscription) {
+      this.cmdSubscription.unsubscribe();
+    }
   }
 
   toString(): string {
@@ -64,10 +98,10 @@ export class SimulatedGPIO extends AbstractGPIO {
 export class SimulatedAIN extends AbstractAIN {
 
   private outputObs: Observable<number> = null;
-  private intervalId: any = null;
   private doPoll: boolean = true;
-  private generatedValue: number = 20;
+  private generatedValue: number = 20 + this.id;
   private sign: number = 1;
+  private cmdSubscription: Subscription;
 
   constructor(protected id: number) {
     super(id);
@@ -79,10 +113,20 @@ export class SimulatedAIN extends AbstractAIN {
 
   poll(intervalSeconds: number): Observable<number> {
     if (this.outputObs === null) {
+      this.cmdSubscription = commandListener('ain', this.id, (cmd: string) => {
+        let parts: string[] = cmd.split(' ');
+        if (parts.length > 2 && parts[2]) {
+          let value: number = +parts[2];
+          if (!isNaN(value)) {
+            console.log(`setting AIN ${this.id} from ${this.generatedValue} to ${value}`);
+            this.generatedValue = value;
+          }
+        }
+      });
       this.outputObs = Observable.create((subscriber: Subscriber<number>) => {
         logger.debug(`poll ${this.getName()} every ${intervalSeconds} second(s)`);
         this.doPoll = true;
-        this.intervalId = setInterval(() => {
+        let intervalId = setInterval(() => {
           if (this.doPoll) {
             // provide simulated value between 0 and 4095 max!
             if (this.generatedValue > 30) {
@@ -94,6 +138,7 @@ export class SimulatedAIN extends AbstractAIN {
             subscriber.next(this.generatedValue);
           } else {
             subscriber.complete();
+            clearInterval(intervalId);
           }
         }, intervalSeconds * 1000);
       });
@@ -104,6 +149,9 @@ export class SimulatedAIN extends AbstractAIN {
   stopPolling(): void {
     logger.debug(`stopPolling ${this.getName()}`);
     this.doPoll = false;
+    if (this.cmdSubscription) {
+      this.cmdSubscription.unsubscribe();
+    }
   }
 }
 
@@ -127,4 +175,14 @@ export class SimulatedLED extends AbstractLED {
   heartbeat(): void {
     logger.info(`Simulation: heartbeat ${this.getName()}`);
   }
+}
+
+
+function commandListener(cmdTag: string, portId: number, executeCommand: (cmd: string) => void): Subscription {
+  return SimulationCommandHandler.getInstance().getCommandObservable().subscribe((cmd: string) => {
+    if (cmd.startsWith(`${cmdTag} ${portId} `)) {
+      console.log(`cmd ${cmd}`);
+      executeCommand(cmd);
+    }
+  });
 }

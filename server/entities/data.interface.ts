@@ -10,10 +10,12 @@ export interface IBlindsData extends IData {
   state?: BlindsState;
 }
 
-export interface IHumidityData extends IData {
+export interface IAnalogData extends IData {
   value?: number;
 }
 
-export interface ITemperatureData extends IData {
-  value?: number;
+export interface IHumidityData extends IAnalogData {
+}
+
+export interface ITemperatureData extends IAnalogData {
 }

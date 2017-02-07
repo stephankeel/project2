@@ -4,6 +4,7 @@ import {AIN, GPIO, LED} from './beaglebone-ports';
 import {SimulatedAIN, SimulatedGPIO, SimulatedLED} from './simulation-ports';
 import {AbstractAIN, AbstractGPIO, AbstractLED, Direction} from './abstract-ports';
 import {Port, portName, analogInputs, digitalInputs, digitalOutputs} from './port-map';
+import {SimulationCommandHandler} from "./simulation-command-handler";
 
 export class PortsFactory {
 
@@ -35,6 +36,8 @@ export class PortsFactory {
     } else {
       logger.warn('not running on a beaglebone --> using hardware simulation!');
     }
+    SimulationCommandHandler.getInstance();
+
     return false;
   }
 
