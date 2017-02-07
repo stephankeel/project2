@@ -12,6 +12,7 @@ export class GPIO extends AbstractGPIO {
   private static readonly BASE_NAME = 'gpio';
 
   private outputObs: Observable<boolean> = null;
+  private doRead: boolean = true;
 
   constructor(protected id: number, private direction: Direction) {
     super(id);
@@ -53,7 +54,7 @@ export class GPIO extends AbstractGPIO {
   }
 
   setState(on: boolean): void {
-    if (this.direction === Direction.INPUT) {
+    if (this.direction === Direction.OUTPUT) {
       let cmd: string = `${this.getName()}/value`;
       let state: number = on ? 1 : 0;
       logger.debug(`setState ${cmd} to ${state}`);
@@ -64,17 +65,18 @@ export class GPIO extends AbstractGPIO {
         logger.error(`setState failed: ${cmd} does not exit`);
       }
     } else {
-      logger.error(`setState ${this.getName()} not allowed for output pin`);
+      logger.error(`setState ${this.getName()} not allowed for input pin`);
     }
   }
 
   watch(): Observable<boolean> {
-    if (this.direction === Direction.OUTPUT) {
+    if (this.direction === Direction.INPUT) {
       if (this.outputObs === null) {
         this.outputObs = Observable.create((subscriber: Subscriber<boolean>) => {
           let cmd: string = `${this.getName()}/value`;
           logger.debug(`watch ${cmd}`);
           if (fs.existsSync(cmd)) {
+            this.doRead = true;
             this.read(subscriber, cmd);
           } else {
             subscriber.error(`watch failed: ${cmd} does not exist`);
@@ -84,26 +86,34 @@ export class GPIO extends AbstractGPIO {
       }
       return this.outputObs;
     } else {
-      logger.error(`watch ${this.getName()} not allowed for input pin`);
+      logger.error(`watch ${this.getName()} not allowed for output pin`);
     }
   }
 
   private read(subscriber: Subscriber<boolean>, cmd: string, value?: boolean): void {
-    if (value != undefined) {
-      subscriber.next(value);
-    }
-    fs.readFile(cmd, (err, data) => {
-      if (err) {
-        logger.error(`read ${cmd} failed with ${err}`);
+    if (this.doRead) {
+      if (value != undefined) {
+        subscriber.next(value);
       }
-      let val: number = data.values()[0];
-      this.read(subscriber, cmd, val != 0);
-    });
+      fs.readFile(cmd, (err, data) => {
+        if (err) {
+          let errStr: string = `read ${cmd} failed with ${err}`;
+          logger.error(errStr);
+          subscriber.error(errStr);
+          subscriber.complete();
+        }
+        let val: number = data.values()[0];
+        this.read(subscriber, cmd, val != 0);
+      });
+    } else {
+      subscriber.complete();
+    }
   }
 
   reset(): void {
     logger.debug(`reset ${this.getName()} --> ${GPIO.UNEXPORT} for gpio${this.id}`);
     if (fs.existsSync(this.getName())) {
+      this.doRead = false;
       fs.writeFileSync(GPIO.UNEXPORT, this.id);
       logger.debug('done');
     } else {

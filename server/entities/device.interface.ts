@@ -13,10 +13,12 @@ export interface IBlindsDevice extends IDevice {
   runningSeconds?: number;
 }
 
-export interface IHumidityDevice extends IDevice {
+export interface IAnalogDevice extends IDevice {
   port?: Port;
 }
 
-export interface ITemperatureDevice extends IDevice {
-  port?: Port;
+export interface IHumidityDevice extends IAnalogDevice {
+}
+
+export interface ITemperatureDevice extends IAnalogDevice {
 }
