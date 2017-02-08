@@ -1,4 +1,4 @@
-import {logger} from '../utils/logger';
+import {Logger, getLogger} from '../utils/logger';
 import fs = require('fs');
 import {AIN, GPIO, LED} from './beaglebone-ports';
 import {SimulatedAIN, SimulatedGPIO, SimulatedLED} from './simulation-ports';
@@ -6,8 +6,9 @@ import {AbstractAIN, AbstractGPIO, AbstractLED, Direction} from './abstract-port
 import {Port, portName, analogInputs, digitalInputs, digitalOutputs} from './port-map';
 import {SimulationCommandHandler} from "./simulation-command-handler";
 
-export class PortsFactory {
+const LOGGER: Logger = getLogger('PortsFactory');
 
+export class PortsFactory {
   private readonly USE_BBB_SCHEMA_FOR_SIMULATION = true;
 
   private static singleton: PortsFactory = new PortsFactory();
@@ -28,13 +29,13 @@ export class PortsFactory {
     if (fs.existsSync(boardInfoFile)) {
       let name: string = fs.readFileSync(boardInfoFile, 'utf-8');
       if (name === 'A335BNLT') {
-        logger.info('BeagleBone Black detected!');
+        LOGGER.info('BeagleBone Black detected!');
         return true;
       } else {
-        logger.warn(`${name} is not a BeagleBone Black --> using hardware simulation!`);
+        LOGGER.warn(`${name} is not a BeagleBone Black --> using hardware simulation!`);
       }
     } else {
-      logger.warn('not running on a beaglebone --> using hardware simulation!');
+      LOGGER.warn('not running on a beaglebone --> using hardware simulation!');
     }
     SimulationCommandHandler.getInstance();
 

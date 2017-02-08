@@ -1,4 +1,4 @@
-import {logger} from "../utils/logger";
+import {Logger, getLogger} from "../utils/logger";
 import {IDeviceDocument} from "../models/model-helper";
 import express = require('express');
 import {Model} from "mongoose";
@@ -6,6 +6,8 @@ import {IDataController} from "./data-controller.interface";
 import {SocketService} from "../socket/socket-service";
 import {IData} from "../entities/data.interface";
 import {DeviceType} from '../entities/device-type';
+
+const LOGGER: Logger = getLogger('GenericDataController');
 
 export class GenericDataController<T extends IData, R extends IDeviceDocument> implements IDataController<T> {
 
@@ -26,7 +28,7 @@ export class GenericDataController<T extends IData, R extends IDeviceDocument> i
   }
 
   public getAllById(req: express.Request, res: express.Response) {
-    logger.debug(`getAllById ${this.loggingPrefix} ${req.params.id}`);
+    LOGGER.debug(`getAllById ${this.loggingPrefix} ${req.params.id}`);
     // TODO: check if deviceId is correct (changed from _id) DL
     let ref = {deviceId: req.params.id};
     this.model.findById(ref, (err: any, data: R[]) => {
@@ -36,14 +38,14 @@ export class GenericDataController<T extends IData, R extends IDeviceDocument> i
         // set the id to the _id provided by the db
         // TODO: should we create new Objects here, to prevent two properties (id and _id)?
         data.forEach((rec) => rec.id = rec._id);
-        logger.debug(`found ${data.length} ${this.loggingPrefix} records`);
+        LOGGER.debug(`found ${data.length} ${this.loggingPrefix} records`);
         res.json(data);
       }
     });
   }
 
   public getLatestById(req: express.Request, res: express.Response) {
-    logger.debug(`get latest ${this.loggingPrefix} record ${req.params.id}`);
+    LOGGER.debug(`get latest ${this.loggingPrefix} record ${req.params.id}`);
     // TODO: check if deviceId is correct (changed from _id) DL
     let ref = {deviceId: req.params.id};
     let sort = {timestamp: 1};
@@ -53,7 +55,7 @@ export class GenericDataController<T extends IData, R extends IDeviceDocument> i
       } else {
         // set the id to the _id provided by the db
         data.id = data._id;
-        logger.debug(`found latest ${this.loggingPrefix} record ${req.params.id}: ${JSON.stringify(data)}`);
+        LOGGER.debug(`found latest ${this.loggingPrefix} record ${req.params.id}: ${JSON.stringify(data)}`);
         res.json(data);
       }
     });
@@ -61,22 +63,22 @@ export class GenericDataController<T extends IData, R extends IDeviceDocument> i
 
   public addDataRecord(data: T) {
     let dataModel: R = this.createDocument(data);
-    logger.info(`add ${this.loggingPrefix}: ${JSON.stringify(data)}`);
+    LOGGER.info(`add ${this.loggingPrefix}: ${JSON.stringify(data)}`);
     dataModel.save((err: any, addedData: R) => {
       if (err) {
-        logger.error(`error adding ${this.loggingPrefix} ${JSON.stringify(data)}. ${err}`);
+        LOGGER.error(`error adding ${this.loggingPrefix} ${JSON.stringify(data)}. ${err}`);
       } else {
         // set the id to the _id provided by the db
         data.id = addedData._id;
         this.socketService.getSocket(`${this.namespaceName}/${data.deviceId}`).create(data);
-        logger.debug(`added ${this.loggingPrefix} successfully, id: ${addedData.id}`);
+        LOGGER.debug(`added ${this.loggingPrefix} successfully, id: ${addedData.id}`);
       }
     });
   };
 
   public deleteAllById(id: string) {
     // TODO: untested code
-    logger.debug(`delete all ${this.loggingPrefix} ${id}`);
+    LOGGER.debug(`delete all ${this.loggingPrefix} ${id}`);
     let ref = {deviceId: id};
     this.model.findById(ref, (err: any, data: R[]) => {
       if (err || !data) {
@@ -84,13 +86,13 @@ export class GenericDataController<T extends IData, R extends IDeviceDocument> i
       } else {
         // delete all entries with given deviceId
         data.forEach((rec) => {
-          logger.info(`delete ${this.loggingPrefix} ${rec._id}`);
+          LOGGER.info(`delete ${this.loggingPrefix} ${rec._id}`);
           let ref = {_id: rec._id};
           this.model.remove(ref);
         });
       }
     });
-    logger.debug(`deleted all ${this.loggingPrefix} entries with deviceId ${id} successfully`);
+    LOGGER.debug(`deleted all ${this.loggingPrefix} entries with deviceId ${id} successfully`);
   }
 }
 
