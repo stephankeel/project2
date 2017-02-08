@@ -1,5 +1,4 @@
-import {getLogger} from '../utils/logger';
-import {Logger} from "log4js";
+import {getLogger, Logger} from '../utils/logger';
 import {AbstractAIN, AbstractLED, AbstractGPIO, Direction} from '../hardware/abstract-ports';
 import {IAnalogData, IBlindsData} from "../entities/data.interface";
 import {GenericDataController} from "../controllers/generic.data-controller";
