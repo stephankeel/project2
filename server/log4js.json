@@ -1,0 +1,23 @@
+{
+  "appenders": [
+    {
+      "type": "console",
+      "level": "TRACE",
+      "layout": {
+        "type": "pattern",
+        "pattern": "%d [%[%-5p%]] %c - %m"
+      }
+    },
+    {
+      "type": "dateFile",
+      "filename": "logs/homeautomation.log",
+      "pattern": "-yyyyMMdd",
+      "alwaysIncludePattern": false,
+      "level": "TRACE",
+      "layout": {
+        "type": "pattern",
+        "pattern": "%d [%-5p] %c - %m"
+      }
+    }
+  ]
+}
