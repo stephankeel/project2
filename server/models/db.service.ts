@@ -1,4 +1,4 @@
-import {logger} from '../utils/logger';
+import {Logger, getLogger} from '../utils/logger';
 import mongoose = require('mongoose');
 import {initAdmin} from './user.model';
 import {initTemperatureDeviceWohnzimmer} from "./temperature-device.model";
@@ -7,6 +7,7 @@ import {initTemperatureDeviceWohnzimmer} from "./temperature-device.model";
 const DB_OPTION: number = 1;
 const DB_PORT: number = 27017;
 const RETRY_SECONDS: number = 5;
+const LOGGER: Logger = getLogger('DBService');
 
 /**
  * This singleton class manages the connection to the database and keeps it up and running.
@@ -37,16 +38,16 @@ export class DBService {
     }
 
     DBService.instance.db
-      .once('open', () => logger.info('DB ready'))
-      .on('connecting', () => logger.info('DB connecting...'))
-      .on('connected', () => logger.info('DB connected'))
-      .on('reconnected', () => logger.info('DB reconnected'))
-      .on('disconnected', () => logger.info('DB disconnected'))
+      .once('open', () => LOGGER.info('DB ready'))
+      .on('connecting', () => LOGGER.info('DB connecting...'))
+      .on('connected', () => LOGGER.info('DB connected'))
+      .on('reconnected', () => LOGGER.info('DB reconnected'))
+      .on('disconnected', () => LOGGER.info('DB disconnected'))
       .on('error', (error: any) => {
-        logger.error('DB connection error', error);
+        LOGGER.error('DB connection error', error);
         mongoose.disconnect((err) => {
           if (err) {
-            logger.error('mongoose disconnect failed', err);
+            LOGGER.error('mongoose disconnect failed', err);
           }
           DBService.instance.connect(RETRY_SECONDS);
         });
@@ -57,13 +58,14 @@ export class DBService {
     // create admin user if not yet existing
     initAdmin();
     // create test temperature Device 'Wohnzimmer'
-    initTemperatureDeviceWohnzimmer();
+    // NOTE: this will fail REST end to end tests
+    //initTemperatureDeviceWohnzimmer();
 
     return DBService.instance;
   }
 
   private connect(delay: number): void {
-    logger.info(`Trying to connect the DB ${DBService.instance.dbLocation} in ${delay} seconds ...`);
+    LOGGER.info(`Trying to connect the DB ${DBService.instance.dbLocation} in ${delay} seconds ...`);
     setTimeout(() => mongoose.connect(DBService.instance.dbLocation, {server: {auto_reconnect: true}}), delay * 1000);
   }
 

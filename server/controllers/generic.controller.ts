@@ -1,15 +1,15 @@
-import {logger} from "../utils/logger";
+import {Logger, getLogger} from "../utils/logger";
 import {IDeviceDocument} from "../models/model-helper";
 import express = require('express');
 import {Model} from "mongoose";
 import {IController} from "./controller.interface";
 import {GenericSocket} from "../socket/generic-socket";
 import {SocketService} from "../socket/socket-service";
-import {Logger} from "log4js";
 import {Engine} from '../logic/engine';
 
+const LOGGER: Logger = getLogger('GenericController');
+
 export class GenericController<T, R extends IDeviceDocument> implements IController {
-  private static logger: Logger = logger;
   private loggingPrefix: string;
   private genericSocket: GenericSocket;
 
@@ -29,7 +29,7 @@ export class GenericController<T, R extends IDeviceDocument> implements IControl
     if (this.websocketPreObject) {
       this.getAllEntities((err: any, devices: R[]) => {
         if (err) {
-          GenericController.logger.error(`error retrieving ${this.loggingPrefix}. ${err}`);
+          LOGGER.error(`error retrieving ${this.loggingPrefix}. ${err}`);
         } else {
           devices.forEach((device) => {
             // set the id to the _id provided by the db
@@ -46,7 +46,7 @@ export class GenericController<T, R extends IDeviceDocument> implements IControl
 
   public add(req: express.Request, res: express.Response) {
     let item: T = req.body;
-    GenericController.logger.info(`create ${this.loggingPrefix}: ${JSON.stringify(item)}`);
+    LOGGER.info(`create ${this.loggingPrefix}: ${JSON.stringify(item)}`);
     let device: R = this.createDocument(item);
     device.save((err: any, addedDevice: R) => {
       if (err) {
@@ -58,7 +58,7 @@ export class GenericController<T, R extends IDeviceDocument> implements IControl
           this.socketService.registerSocket(`${this.namespaceName}/${device.id}`);
         }
         this.genericSocket.create(device);
-        GenericController.logger.debug(`created ${this.loggingPrefix} successfully, id: ${addedDevice.id}`);
+        LOGGER.debug(`created ${this.loggingPrefix} successfully, id: ${addedDevice.id}`);
 
         // TODO: move to GenericDeviceController as soon as available
         this.informOnAdd(device);
@@ -75,7 +75,7 @@ export class GenericController<T, R extends IDeviceDocument> implements IControl
       } else {
         // set the id to the _id provided by the db
         devices.forEach((device) => device.id = device._id);
-        GenericController.logger.debug(`found ${devices.length} ${this.loggingPrefix}`);
+        LOGGER.debug(`found ${devices.length} ${this.loggingPrefix}`);
         res.json(devices);
       }
     });
@@ -86,7 +86,7 @@ export class GenericController<T, R extends IDeviceDocument> implements IControl
   }
 
   public get(req: express.Request, res: express.Response) {
-    GenericController.logger.debug(`get ${this.loggingPrefix} ${req.params.id}`);
+    LOGGER.debug(`get ${this.loggingPrefix} ${req.params.id}`);
     let ref = {_id: req.params.id};
     this.model.findById(ref, (err: any, device: R) => {
       if (err) {
@@ -94,14 +94,14 @@ export class GenericController<T, R extends IDeviceDocument> implements IControl
       } else {
         // set the id to the _id provided by the db
         device.id = device._id;
-        GenericController.logger.debug(`found ${this.loggingPrefix} ${req.params.id}: ${JSON.stringify(device)}`);
+        LOGGER.debug(`found ${this.loggingPrefix} ${req.params.id}: ${JSON.stringify(device)}`);
         res.json(device);
       }
     });
   }
 
   public del(req: express.Request, res: express.Response) {
-    GenericController.logger.info(`delete ${this.loggingPrefix} ${req.params.id}`);
+    LOGGER.info(`delete ${this.loggingPrefix} ${req.params.id}`);
     let ref = {_id: req.params.id};
     this.model.remove(ref, (err: any) => {
       if (err) {
@@ -111,7 +111,7 @@ export class GenericController<T, R extends IDeviceDocument> implements IControl
         if (this.websocketPreObject) {
           this.socketService.unregisterSocket(`${this.namespaceName}/${ref._id}`);
         }
-        GenericController.logger.debug(`deleted ${this.loggingPrefix} ${req.params.id} successfully`);
+        LOGGER.debug(`deleted ${this.loggingPrefix} ${req.params.id} successfully`);
         this.cleanupCallbackOnDelete(req.params.id);
 
         // TODO: move to GenericDeviceController as soon as available
@@ -123,7 +123,7 @@ export class GenericController<T, R extends IDeviceDocument> implements IControl
 
   public update(req: express.Request, res: express.Response) {
     let id = req.params.id;
-    logger.info(`update ${this.loggingPrefix} [${id}]: ${JSON.stringify(req.body)}`);
+    LOGGER.info(`update ${this.loggingPrefix} [${id}]: ${JSON.stringify(req.body)}`);
     this.model.findById(id, (err: any, deviceFromDb: R) => {
       if (err) {
         res.status(404).json({error: `${this.loggingPrefix} ${id} not found. ${err}`});
@@ -139,7 +139,7 @@ export class GenericController<T, R extends IDeviceDocument> implements IControl
           } else {
             // set the id to the _id provided by the db
             updatedDevice.id = updatedDevice._id;
-            logger.debug(`updated ${this.loggingPrefix} successfully`);
+            LOGGER.debug(`updated ${this.loggingPrefix} successfully`);
             this.genericSocket.update(updatedDevice);
 
             // TODO: move to GenericDeviceController as soon as available
