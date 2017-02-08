@@ -10,6 +10,7 @@ if (!fs.existsSync(path)) {
 
 log4js.configure('log4js.json', { reloadSecs: 300 });
 
+export * from 'log4js';
 export let logger = log4js.getLogger('default');
 export function getLogger(name: string) {
   return log4js.getLogger(name);
