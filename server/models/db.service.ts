@@ -57,7 +57,8 @@ export class DBService {
     // create admin user if not yet existing
     initAdmin();
     // create test temperature Device 'Wohnzimmer'
-    initTemperatureDeviceWohnzimmer();
+    // NOTE: this will fail REST end to end tests
+    //initTemperatureDeviceWohnzimmer();
 
     return DBService.instance;
   }
