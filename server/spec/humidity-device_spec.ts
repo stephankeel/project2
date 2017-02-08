@@ -1,10 +1,12 @@
-import {logger} from '../utils/logger';
+import {Logger, getLogger} from '../utils/logger';
 import {v4} from 'uuid';
 import {RequestResponse} from 'request';
 import {BASE_URL} from './constants';
 import {IHumidityDevice} from '../entities/device.interface';
 import {Port} from '../hardware/port-map';
 import {loginOptions, authBearerOptions} from './httpOptions';
+
+const LOGGER: Logger = getLogger('humidity_device_spec');
 
 describe('REST API Roundtrip Test of Humidity-Device', function () {
   const LOGIN_URL = BASE_URL + 'api/authenticate';
@@ -16,7 +18,7 @@ describe('REST API Roundtrip Test of Humidity-Device', function () {
   let testHumidityDeviceId: any;
   let clientCtx: string = v4();
 
-  logger.debug(`clientCtx: ${clientCtx}`);
+  LOGGER.debug(`clientCtx: ${clientCtx}`);
 
   describe('Test login and creation of a humidity-device', function () {
     it('returns status code 200 - successfull authentication', function (done) {
@@ -26,7 +28,7 @@ describe('REST API Roundtrip Test of Humidity-Device', function () {
           expect(response.statusCode).toBe(200);
           let authData = JSON.parse(body);
           adminToken = authData.token;
-          logger.debug(`admin-token: ${adminToken}`);
+          LOGGER.debug(`admin-token: ${adminToken}`);
           done();
         });
     });
@@ -35,17 +37,17 @@ describe('REST API Roundtrip Test of Humidity-Device', function () {
       name: TEST_HUMIDITY_DEVICE,
       port: Port.AI_1,
     };
-    logger.debug(`requestContent: ${JSON.stringify(testHumidityDevice)}`);
+    LOGGER.debug(`requestContent: ${JSON.stringify(testHumidityDevice)}`);
     it('returns status code 201 - humidity-device created', function (done) {
       request.post(TEST_URL,
         authBearerOptions(adminToken, JSON.stringify(testHumidityDevice)),
         function (error: any, response: RequestResponse, body: any) {
-          logger.debug(`Humidity-device created (body): ${JSON.stringify(body)}`);
+          LOGGER.debug(`Humidity-device created (body): ${JSON.stringify(body)}`);
           expect(response.statusCode).toBe(201);
           let humidityDevice: IHumidityDevice = JSON.parse(body);
-          logger.debug(`Humidity-device created: ${JSON.stringify(humidityDevice)}`);
+          LOGGER.debug(`Humidity-device created: ${JSON.stringify(humidityDevice)}`);
           testHumidityDeviceId = humidityDevice.id;
-          logger.debug(`testDeviceId: ${testHumidityDeviceId}`);
+          LOGGER.debug(`testDeviceId: ${testHumidityDeviceId}`);
           done();
         });
     });
@@ -66,7 +68,7 @@ describe('REST API Roundtrip Test of Humidity-Device', function () {
         function (error: any, response: RequestResponse, body: any) {
           expect(response.statusCode).toBe(200);
           let humidityDevice: IHumidityDevice = JSON.parse(body);
-          logger.debug(`Humidity-device retrieved: ${JSON.stringify(humidityDevice)}`);
+          LOGGER.debug(`Humidity-device retrieved: ${JSON.stringify(humidityDevice)}`);
           expect(humidityDevice.name).toBe(TEST_HUMIDITY_DEVICE);
           done();
         });
@@ -80,14 +82,14 @@ describe('REST API Roundtrip Test of Humidity-Device', function () {
       name: NAME,
       port: Port.AI_1,
     };
-    logger.debug(`requestContent: ${JSON.stringify(testHumidityDevice)}`);
+    LOGGER.debug(`requestContent: ${JSON.stringify(testHumidityDevice)}`);
     it('returns status code 200 - humidity-device updated', function (done) {
       request.put(TEST_URL + '/' + testHumidityDeviceId,
         authBearerOptions(adminToken, JSON.stringify(testHumidityDevice)),
         function (error: any, response: RequestResponse, body: any) {
           expect(response.statusCode).toBe(200);
           let humidityDevice: IHumidityDevice = JSON.parse(body);
-          logger.debug(`Humidity-device updated: ${JSON.stringify(humidityDevice)}`);
+          LOGGER.debug(`Humidity-device updated: ${JSON.stringify(humidityDevice)}`);
           expect(humidityDevice.name).toBe(NAME);
           done();
         });
@@ -109,7 +111,7 @@ describe('REST API Roundtrip Test of Humidity-Device', function () {
 
   afterAll(function () {
     if (testHumidityDeviceId) {
-      logger.error(`AfterAll: test humidity-device with id ${testHumidityDeviceId} has not been deleted. Please clean it from the database manually.`);
+      LOGGER.error(`AfterAll: test humidity-device with id ${testHumidityDeviceId} has not been deleted. Please clean it from the database manually.`);
     }
   });
 
