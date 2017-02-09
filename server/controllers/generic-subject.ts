@@ -13,9 +13,11 @@ export class GenericSubject<T, S extends IId> {
 
   constructor() {
     this.actions.subscribe((action: IAction) => {
-      this.listeners.get(action.action).forEach((listener: any) => {
-        listener(action.value);
-      })
+      if (this.listeners.has(action.action)) {
+        this.listeners.get(action.action).forEach((listener: any) => {
+          listener(action.value);
+        });
+      }
     });
   }
 
