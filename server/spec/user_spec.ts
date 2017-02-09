@@ -1,10 +1,11 @@
-import {logger} from '../utils/logger';
+import {Logger, getLogger} from '../utils/logger';
 import {RequestResponse} from 'request';
 import {BASE_URL} from './constants';
 import {IUser} from '../entities/user.interface';
 import {UserType} from '../entities/user-type';
 import {loginOptions, authBearerOptions} from './httpOptions';
 
+const LOGGER: Logger = getLogger('user_spec');
 
 describe('REST API Roundtrip Test of User', function () {
   const LOGIN_URL = BASE_URL + 'api/authenticate';
@@ -32,7 +33,7 @@ describe('REST API Roundtrip Test of User', function () {
           expect(response.statusCode).toBe(200);
           let authData = JSON.parse(body);
           adminToken = authData.token;
-          logger.debug(`admin-token: ${adminToken}`);
+          LOGGER.debug(`admin-token: ${adminToken}`);
           done();
         });
     });
@@ -42,7 +43,7 @@ describe('REST API Roundtrip Test of User', function () {
         function (error: any, response: RequestResponse, body: any) {
           expect(response.statusCode).toBe(200);
           let users: IUser[] = JSON.parse(body);
-          logger.debug(`Users: ${JSON.stringify(users)}`);
+          LOGGER.debug(`Users: ${JSON.stringify(users)}`);
           expect(users.length).toBeGreaterThan(0);
           done();
         });
@@ -61,12 +62,12 @@ describe('REST API Roundtrip Test of User', function () {
       request.post(TEST_URL,
         authBearerOptions(adminToken, JSON.stringify(testUser)),
         function (error: any, response: RequestResponse, body: any) {
-          logger.debug(`User created (body): ${JSON.stringify(body)}`);
+          LOGGER.debug(`User created (body): ${JSON.stringify(body)}`);
           expect(response.statusCode).toBe(201);
           let user: IUser = JSON.parse(body);
-          logger.debug(`User created: ${JSON.stringify(user)}`);
+          LOGGER.debug(`User created: ${JSON.stringify(user)}`);
           testUserId = user.id;
-          logger.debug(`testUserId: ${testUserId}`);
+          LOGGER.debug(`testUserId: ${testUserId}`);
           done();
         });
     });
@@ -87,7 +88,7 @@ describe('REST API Roundtrip Test of User', function () {
         function (error: any, response: RequestResponse, body: any) {
           expect(response.statusCode).toBe(200);
           let user: IUser = JSON.parse(body);
-          logger.debug(`User retrieved: ${JSON.stringify(user)}`);
+          LOGGER.debug(`User retrieved: ${JSON.stringify(user)}`);
           expect(user.username).toBe(TEST_USERNAME);
           done();
         });
@@ -110,7 +111,7 @@ describe('REST API Roundtrip Test of User', function () {
         function (error: any, response: RequestResponse, body: any) {
           expect(response.statusCode).toBe(200);
           let user: IUser = JSON.parse(body);
-          logger.debug(`User updated: ${JSON.stringify(user)}`);
+          LOGGER.debug(`User updated: ${JSON.stringify(user)}`);
           expect(user.lastname).toBe(LASTNAME);
           done();
         });
@@ -131,7 +132,7 @@ describe('REST API Roundtrip Test of User', function () {
 
   afterAll(function () {
     if (testUserId) {
-      logger.error(`AfterAll: test user with id ${testUserId} has not been deleted. Please clean it from the database manually.`);
+      LOGGER.error(`AfterAll: test user with id ${testUserId} has not been deleted. Please clean it from the database manually.`);
     }
   });
 

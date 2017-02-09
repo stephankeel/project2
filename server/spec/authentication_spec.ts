@@ -1,9 +1,11 @@
 'use strict';
 
-import {logger} from '../utils/logger';
+import {Logger, getLogger} from '../utils/logger';
 import {RequestResponse} from 'request';
 import {BASE_URL} from './constants';
 import {loginOptions, authBearerOptions} from './httpOptions';
+
+const LOGGER: Logger = getLogger('authentication_spec');
 
 let request = require('request');
 let adminToken: string;
@@ -29,7 +31,7 @@ describe('Initial Authentication Test', function () {
         expect(response.statusCode).toBe(200);
         let authData = JSON.parse(body);
         adminToken = authData.token;
-        logger.debug(`admin-token: ${adminToken}`);
+        LOGGER.debug(`admin-token: ${adminToken}`);
         done();
       });
   });

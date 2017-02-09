@@ -1,7 +1,9 @@
-import {logger} from '../utils/logger';
+import {Logger, getLogger} from '../utils/logger';
 import {Document, Schema, Model, model} from 'mongoose';
 import {IUser} from '../entities/user.interface';
 import {UserType} from '../entities/user-type';
+
+const LOGGER: Logger = getLogger('UserModel');
 
 export interface IUserDocument extends IUser, Document {
 }
@@ -31,7 +33,7 @@ export function initAdmin() {
   let selector = {'username': username};
   UserModel.find(selector, (err, users) => {
     if (users.length) {
-      logger.info(`admin user is ok. id = ${users[0]._id}`);
+      LOGGER.info(`admin user is ok. id = ${users[0]._id}`);
       return;
     }
 
@@ -41,12 +43,12 @@ export function initAdmin() {
     user.type = UserType.ADMIN;
     user.username = 'admin';
     user.password = '123456';
-    logger.info(`creating admin user: ${JSON.stringify(user)}`);
+    LOGGER.info(`creating admin user: ${JSON.stringify(user)}`);
     user.save((err: any, adminUser: IUserDocument) => {
       if (err) {
         throw new Error(err);
       } else {
-        logger.info(`Admin user created successfully: ${adminUser}`)
+        LOGGER.info(`Admin user created successfully: ${adminUser}`)
       }
     });
   });

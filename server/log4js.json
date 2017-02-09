@@ -2,7 +2,6 @@
   "appenders": [
     {
       "type": "console",
-      "level": "TRACE",
       "layout": {
         "type": "pattern",
         "pattern": "%d [%[%-5p%]] %c - %m"
@@ -13,11 +12,15 @@
       "filename": "logs/homeautomation.log",
       "pattern": "-yyyyMMdd",
       "alwaysIncludePattern": false,
-      "level": "TRACE",
       "layout": {
         "type": "pattern",
         "pattern": "%d [%-5p] %c - %m"
       }
     }
-  ]
+  ],
+  "levels": {
+    "[all]": "TRACE",
+    "GenericDataController": "INFO",
+    "GenericSocket": "INFO"
+  }
 }

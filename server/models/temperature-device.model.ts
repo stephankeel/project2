@@ -1,7 +1,9 @@
-import {logger} from '../utils/logger';
+import {Logger, getLogger} from '../utils/logger';
 import {Document, Schema, Model, model} from 'mongoose';
 import {ITemperatureDevice} from '../entities/device.interface';
 import {analogInputs, Port} from '../hardware/port-map';
+
+const LOGGER: Logger = getLogger('TemperatureDeviceModel');
 
 export interface ITemperatureDeviceDocument extends ITemperatureDevice, Document {
 }
@@ -28,7 +30,7 @@ export function initTemperatureDeviceWohnzimmer() {
   let selector = {'name': name};
   TemperatureDeviceModel.find(selector, (err, temperatureDevices) => {
     if (temperatureDevices.length) {
-      logger.info(`tempteratureDevice 'Wohnzimmer' is ok. id = ${temperatureDevices[0]._id}`);
+      LOGGER.info(`tempteratureDevice 'Wohnzimmer' is ok. id = ${temperatureDevices[0]._id}`);
       return;
     }
 
@@ -36,12 +38,12 @@ export function initTemperatureDeviceWohnzimmer() {
 
     temperatureDevice.name = name;
     temperatureDevice.port = Port.AI_1;
-    logger.info(`creating temperatureDevice 'Wohnzimmer': ${JSON.stringify(temperatureDevice)}`);
+    LOGGER.info(`creating temperatureDevice 'Wohnzimmer': ${JSON.stringify(temperatureDevice)}`);
     temperatureDevice.save((err: any, temperatureDevice: ITemperatureDeviceDocument) => {
       if (err) {
         throw new Error(err);
       } else {
-        logger.info(`temperatureDevice 'Wohnzimmer' created successfully: ${temperatureDevice}`)
+        LOGGER.info(`temperatureDevice 'Wohnzimmer' created successfully: ${temperatureDevice}`)
       }
     });
   });

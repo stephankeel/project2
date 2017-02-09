@@ -1,7 +1,9 @@
-import {logger} from '../utils/logger';
+import {Logger, getLogger} from '../utils/logger';
 import {RequestResponse} from 'request';
 import {BASE_URL} from './constants';
 import {loginOptions, authBearerOptions} from './httpOptions';
+
+const LOGGER: Logger = getLogger('blinds_command_spec');
 
 describe('REST API Roundtrip Test of Blinds-Command', function () {
   const LOGIN_URL = BASE_URL + 'api/authenticate';
@@ -19,7 +21,7 @@ describe('REST API Roundtrip Test of Blinds-Command', function () {
           expect(response.statusCode).toBe(200);
           let authData = JSON.parse(body);
           adminToken = authData.token;
-          logger.debug(`admin-token: ${adminToken}`);
+          LOGGER.debug(`admin-token: ${adminToken}`);
           done();
         });
     });
@@ -32,7 +34,7 @@ describe('REST API Roundtrip Test of Blinds-Command', function () {
         function (error: any, response: RequestResponse, body: any) {
           expect(response.statusCode).toBe(200);
           let responseContent: string = JSON.parse(body);
-          logger.debug(`Blinds-command executed: ${JSON.stringify(responseContent)}`);
+          LOGGER.debug(`Blinds-command executed: ${JSON.stringify(responseContent)}`);
           done();
         });
     });
@@ -45,7 +47,7 @@ describe('REST API Roundtrip Test of Blinds-Command', function () {
         function (error: any, response: RequestResponse, body: any) {
           expect(response.statusCode).toBe(200);
           let responseContent: string = JSON.parse(body);
-          logger.debug(`Blinds-command executed: ${JSON.stringify(responseContent)}`);
+          LOGGER.debug(`Blinds-command executed: ${JSON.stringify(responseContent)}`);
           done();
         });
     });
@@ -58,7 +60,7 @@ describe('REST API Roundtrip Test of Blinds-Command', function () {
         function (error: any, response: RequestResponse, body: any) {
           expect(response.statusCode).toBe(200);
           let responseContent: string = JSON.parse(body);
-          logger.debug(`Blinds-command executed: ${JSON.stringify(responseContent)}`);
+          LOGGER.debug(`Blinds-command executed: ${JSON.stringify(responseContent)}`);
           done();
         });
     });
