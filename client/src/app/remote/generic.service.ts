@@ -45,9 +45,9 @@ export class GenericService<T extends IId> {
     }, (err: any) => this.items.error(err));
   }
 
-  public del(item: T) {
-    this.restService.del(item).subscribe((item: T) => {
-      this.deleteItem(item);
+  public del(id: string) {
+    this.restService.del(id).subscribe((id: string) => {
+      this.deleteItem(id);
     }, (err: any) => this.items.error(err));
   }
 
@@ -79,9 +79,9 @@ export class GenericService<T extends IId> {
     }
   }
 
-  private deleteItem(item: T) {
-    if (this.currentItems.has(item.id)) {
-      this.currentItems.delete(item.id);
+  private deleteItem(id: string) {
+    if (this.currentItems.has(id)) {
+      this.currentItems.delete(id);
       this.items.next(List<T>(this.currentItems.values()));
     }
   }

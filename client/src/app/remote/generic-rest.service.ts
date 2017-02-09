@@ -23,8 +23,8 @@ export class GenericRestService<T extends IId> {
       .catch(handleError);
   }
 
-  del(item: T): Observable<T> {
-    const url = `${this.restUrl}/${item.id}`;
+  del(id: string): Observable<string> {
+    const url = `${this.restUrl}/${id}`;
     return this.authHttp
       .delete(url)
       .map(response => response.json() as String)
