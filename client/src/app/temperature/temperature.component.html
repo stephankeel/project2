@@ -6,7 +6,7 @@
 <main>
   <h1>Temperature Device List</h1>
   <div class="temperatureDeviceList">
-    <div *ngFor="let temperature of temperatureService.temperatureDevices" class="temperatureListItem">
+    <div *ngFor="let temperature of temperatureService.items | async" class="temperatureListItem">
       <app-temperature-view [temperatureDevice]="temperature"></app-temperature-view>
     </div>
   </div>
