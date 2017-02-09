@@ -1,6 +1,6 @@
-import {ReplaySubject, Observable, Subscription, Subscriber} from "rxjs";
+import {ReplaySubject, Subscription} from "rxjs";
 import {ClientSocketService} from "./client-socket.service";
-import {List} from "immutable";
+import {List, Map} from "immutable";
 import {IId} from "../../../../server/entities/id.interface";
 import {AuthHttp} from "angular2-jwt";
 import {ISocketItem} from "../../../../server/entities/socket-item.model";
@@ -8,7 +8,7 @@ import {GenericRestService} from "./generic-rest.service";
 
 export class GenericService<T extends IId> {
   items: ReplaySubject<List<T>> = new ReplaySubject<List<T>>(1);
-  private currentItems: Map<string, T> = new Map<string, T>();
+  private currentItems: Map<string, T> = Map<string, T>();
   private dataSubscription: Subscription;
   private restService: GenericRestService<T>;
 
@@ -58,7 +58,7 @@ export class GenericService<T extends IId> {
   }
 
   private addAll(items: T[]) {
-    this.currentItems = new Map<string, T>();
+    this.currentItems = Map<string, T>();
     for (let item of items) {
       this.currentItems.set(item.id, item);
     }
