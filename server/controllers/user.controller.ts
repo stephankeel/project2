@@ -2,9 +2,10 @@ import express = require('express');
 import {IUserDocument, UserModel} from "../models/user.model";
 import {IUser} from "../entities/user.interface";
 import {SocketService} from "../socket/socket-service";
-import {GenericDeviceController} from "./generic-device.controller";
+import {GenericController} from "./generic.controller";
+import {GenericSubject} from "./generic-subject";
 
-export class UserController extends GenericDeviceController<IUser, IUserDocument> {
+export class UserController extends GenericController<IUser, IUserDocument> {
   constructor(socketService: SocketService) {
     super(socketService,
       "/users",
@@ -14,6 +15,7 @@ export class UserController extends GenericDeviceController<IUser, IUserDocument
       id => {
       },
     );
+    this.init(new GenericSubject<string, IUserDocument>());
   }
 
   private static updateDocument(documentFromDb: IUserDocument, inputDocument: IUserDocument) {
