@@ -19,8 +19,8 @@
     }
   ],
   "levels": {
-    "[all]": "TRACE",
-    "GenericDataController": "INFO",
-    "GenericSocket": "INFO"
+    "[all]": "DEBUG",
+    "GenericDataController": "DEBUG",
+    "GenericSocket": "DEBUG"
   }
 }
