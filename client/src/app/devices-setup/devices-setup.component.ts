@@ -24,14 +24,13 @@ export class DevicesSetupComponent implements OnInit {
   clickAction(device: DeviceCharacteristics): void {
     switch (device.type) {
       case DeviceType.BLINDS:
-
-        // TODO: this.router.navigate(['/blinds-setup']);
+        this.router.navigate(['setup/blinds']);
         break;
       case DeviceType.HUMIDITY:
-        // TODO: this.router.navigate(['/humidity-setup']);
+        this.router.navigate(['setup/humidity']);
         break;
       case DeviceType.TEMPERATURE:
-        this.router.navigate(['config/temperature']);
+        this.router.navigate(['setup/temperature']);
         break;
     }
   }

@@ -1,0 +1,46 @@
+<header>
+  <img id="backIcon" class="headerAction" src="app/images/back.svg" alt="Back Icon" title="Back Icon"
+       (click)="backClicked()">
+  <h1 class="headerTitle">FEUCHTIGKEIT-SETUP</h1>
+  <div class="contextHeaderActionDiv">
+    <img id="addIcon" class="headerAction contextHeaderAction" src="app/images/add.svg" alt="Add Icon"
+         title="Add Icon" (click)="addClicked()">
+  </div>
+</header>
+<main>
+  <div class="deviceList">
+    <div *ngFor="let device of devices" class="deviceListItem selectionListItem" [class.selected]="device === selectedDevice"
+         (click)="selectDevice(device)">{{device.name}}
+    </div>
+  </div>
+  <form class="deviceForm" *ngIf="device" (ngSubmit)="doAddOrUpdate()" #deviceForm="ngForm">
+    <div class="deviceFormRow">
+      <label class="deviceFormLabel">ID</label>
+      <label *ngIf="device.id" class="deviceFormValue">{{device.id}}</label>
+      <label *ngIf="!device.id" class="deviceFormValue">NEW</label>
+    </div>
+    <div class="deviceFormRow">
+      <label class="deviceFormLabel">NAME</label>
+      <input [(ngModel)]="device.name" placeholder="name" class="deviceFormValue validatable deviceInput"
+             type="text" (keydown)="clearMessage()" (focus)="clearMessage()"
+             name="name" required minlength="2">
+    </div>
+    <div class="deviceFormRow">
+      <label class="deviceFormLabel">PORT</label>
+      <select [(ngModel)]="device.port" class="deviceFormValue validatable deviceInput" name="port" (focus)="clearMessage()">
+        <option *ngFor="let port of ports" [value]="port" [selected]="port === device.port">{{getPortName(port)}}</option>
+      </select>
+    </div>
+    <div *ngIf="message" id="deviceMessage">
+      {{message}}
+    </div>
+    <div class="buttonDiv">
+      <button id="okButton" type="submit"
+              [disabled]="!deviceForm.form.valid">OK
+      </button>
+      <button id="deleteButton" type="button" [disabled]="!device.id" (click)="doDelete()">
+        LÖSCHEN
+      </button>
+    </div>
+  </form>
+</main>
