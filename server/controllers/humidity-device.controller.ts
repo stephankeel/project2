@@ -5,8 +5,10 @@ import {GenericController} from './generic.controller';
 import {HumidityDataController} from "./humidity-data.controller";
 import {SocketService} from "../socket/socket-service";
 import {Engine} from '../logic/engine';
+import {GenericSubject} from "./generic-subject";
+import {GenericDeviceController} from "./generic-device.controller";
 
-export class HumidityDeviceController extends GenericController<IHumidityDevice, IHumidityDeviceDocument> {
+export class HumidityDeviceController extends GenericDeviceController<IHumidityDevice, IHumidityDeviceDocument> {
   constructor(socketService: SocketService) {
     super(socketService,
       "/humidity",
@@ -14,7 +16,6 @@ export class HumidityDeviceController extends GenericController<IHumidityDevice,
       c => new HumidityDeviceModel(c),
       (d, i) => HumidityDeviceController.updateDocument(d, i),
       id => new HumidityDataController(socketService).deleteAllById(id),
-      true,
     );
   }
 

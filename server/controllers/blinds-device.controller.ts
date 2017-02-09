@@ -5,8 +5,9 @@ import {BlindsDataController} from './blinds-data.controller';
 import {GenericController} from './generic.controller';
 import {SocketService} from "../socket/socket-service";
 import {Engine} from '../logic/engine';
+import {GenericDeviceController} from "./generic-device.controller";
 
-export class BlindsDeviceController extends GenericController<IBlindsDevice, IBlindsDeviceDocument> {
+export class BlindsDeviceController extends GenericDeviceController<IBlindsDevice, IBlindsDeviceDocument> {
   constructor(socketService: SocketService) {
     super(socketService,
       "/blinds",
@@ -14,7 +15,6 @@ export class BlindsDeviceController extends GenericController<IBlindsDevice, IBl
       c => new BlindsDeviceModel(c),
       (d, i) => BlindsDeviceController.updateDocument(d, i),
       id => new BlindsDataController(socketService).deleteAllById(id),
-      true,
     );
   }
 
