@@ -48,8 +48,9 @@ export class GenericSocket {
   public close() {
     const connectedNameSpaceSockets = Object.keys(this.namespace.connected); // Get Object with Connected SocketIds as properties
     connectedNameSpaceSockets.forEach(socketId => {
-      connectedNameSpaceSockets[socketId].disconnect(); // Disconnect Each socket
-      LOGGER.info(`Socket.IO: namespace ${this.namespaceName} client ${connectedNameSpaceSockets[socketId]} disconnected`);
+      let currentSocket : Socket = this.namespace.connected[socketId];
+      currentSocket.disconnect(); // Disconnect Each socket
+      LOGGER.info(`Socket.IO: namespace ${this.namespaceName} client ${currentSocket.id} disconnected`);
     });
     this.namespace.removeAllListeners(); // Remove all Listeners for the event emitter
     delete this.io.nsps[this.namespaceName]; // Remove from the server namespaces

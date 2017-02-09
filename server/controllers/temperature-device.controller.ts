@@ -1,10 +1,9 @@
 import express = require('express');
-import {ITemperatureDeviceDocument, TemperatureDeviceModel} from '../models/temperature-device.model';
-import {ITemperatureDevice} from '../entities/device.interface';
-import {GenericController} from './generic.controller';
+import {ITemperatureDeviceDocument, TemperatureDeviceModel} from "../models/temperature-device.model";
+import {ITemperatureDevice} from "../entities/device.interface";
 import {TemperatureDataController} from "./temperature-data.controller";
 import {SocketService} from "../socket/socket-service";
-import {Engine} from '../logic/engine';
+import {Engine} from "../logic/engine";
 import {GenericDeviceController} from "./generic-device.controller";
 
 export class TemperatureDeviceController extends GenericDeviceController<ITemperatureDevice, ITemperatureDeviceDocument> {
