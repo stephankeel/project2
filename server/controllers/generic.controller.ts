@@ -30,6 +30,18 @@ export class GenericController<T, R extends IDeviceDocument> implements IControl
   public init(genericSubject: GenericSubject<string, R>) {
     this.genericSocket = this.socketService.registerSocket(this.namespaceName);
     this.genericSubject = genericSubject;
+    this.getAllEntities((err: any, devices: R[]) => {
+      if (err) {
+        LOGGER.error(`error retrieving ${this.namespaceName}. ${err}`);
+      } else {
+        devices.forEach((device) => {
+          // set the id to the _id provided by the db
+          device.id = device._id;
+          // create add events for all existing devices
+          this.genericSubject.create(device);
+        });
+      }
+    })
   }
 
   public add(req: express.Request, res: express.Response) {
@@ -63,7 +75,7 @@ export class GenericController<T, R extends IDeviceDocument> implements IControl
     });
   }
 
-  protected getAllEntities(callback?: (err: any, res: R[]) => void) {
+  private getAllEntities(callback?: (err: any, res: R[]) => void) {
     this.model.find(callback);
   }
 

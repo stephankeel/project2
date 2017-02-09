@@ -18,7 +18,6 @@ export class GenericDeviceController<T, R extends IDeviceDocument> extends Gener
               cleanupCallbackOnDelete: (id: string) => void) {
     super(socketService, namespaceName, model, createDocument, udpateDocument, cleanupCallbackOnDelete);
     super.init(this.createDeviceSubject());
-    this.initDevices();
   }
 
   private createDeviceSubject() : GenericSubject<string, R> {
@@ -30,21 +29,6 @@ export class GenericDeviceController<T, R extends IDeviceDocument> extends Gener
     genericSubject.addUpdateListener((value: R) => this.informOnUpdate(value));
     genericSubject.addDeleteListener((value: string) => this.informOnDelete(value));
     return genericSubject;
-  }
-
-  private initDevices() {
-    super.getAllEntities((err: any, devices: R[]) => {
-      if (err) {
-        LOGGER.error(`error retrieving ${this.namespaceName}. ${err}`);
-      } else {
-        devices.forEach((device) => {
-          // set the id to the _id provided by the db
-          device.id = device._id;
-          this.socketService.registerSocket(`${this.namespaceName}/${device._id}`);
-          this.informOnAdd(device);
-        });
-      }
-    })
   }
 
   protected informOnAdd(device: R): void {
