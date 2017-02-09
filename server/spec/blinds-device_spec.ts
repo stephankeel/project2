@@ -1,10 +1,12 @@
-import {logger} from '../utils/logger';
+import {Logger, getLogger} from '../utils/logger';
 import {v4} from 'uuid';
 import {RequestResponse} from 'request';
 import {BASE_URL} from './constants';
 import {IBlindsDevice} from '../entities/device.interface';
 import {Port} from '../hardware/port-map';
 import {loginOptions, authBearerOptions} from './httpOptions';
+
+const LOGGER: Logger = getLogger('blinds_device_spec');
 
 describe('REST API Roundtrip Test of Blinds-Device', function () {
   const LOGIN_URL = BASE_URL + 'api/authenticate';
@@ -16,7 +18,7 @@ describe('REST API Roundtrip Test of Blinds-Device', function () {
   let testBlindsDeviceId: any;
   let clientCtx: string = v4();
 
-  logger.debug(`clientCtx: ${clientCtx}`);
+  LOGGER.debug(`clientCtx: ${clientCtx}`);
 
   describe('Test login, adding a blinds-device and duplicate rejection', function () {
     it('returns status code 200 - successfull authentication', function (done) {
@@ -26,7 +28,7 @@ describe('REST API Roundtrip Test of Blinds-Device', function () {
           expect(response.statusCode).toBe(200);
           let authData = JSON.parse(body);
           adminToken = authData.token;
-          logger.debug(`admin-token: ${adminToken}`);
+          LOGGER.debug(`admin-token: ${adminToken}`);
           done();
         });
     });
@@ -39,17 +41,17 @@ describe('REST API Roundtrip Test of Blinds-Device', function () {
       actorDown: Port.DO_2,
       runningSeconds: 60
     };
-    logger.debug(`requestContent: ${JSON.stringify(testBlindsDevice)}`);
+    LOGGER.debug(`requestContent: ${JSON.stringify(testBlindsDevice)}`);
     it('returns status code 201 - blinds-device created', function (done) {
       request.post(TEST_URL,
         authBearerOptions(adminToken, JSON.stringify(testBlindsDevice)),
         function (error: any, response: RequestResponse, body: any) {
-          logger.debug(`Blinds-device created (body): ${JSON.stringify(body)}`);
+          LOGGER.debug(`Blinds-device created (body): ${JSON.stringify(body)}`);
           expect(response.statusCode).toBe(201);
           let blindsDevice: IBlindsDevice = JSON.parse(body);
-          logger.debug(`Blinds-device created: ${JSON.stringify(blindsDevice)}`);
+          LOGGER.debug(`Blinds-device created: ${JSON.stringify(blindsDevice)}`);
           testBlindsDeviceId = blindsDevice.id;
-          logger.debug(`testDeviceId: ${testBlindsDeviceId}`);
+          LOGGER.debug(`testDeviceId: ${testBlindsDeviceId}`);
           done();
         });
     });
@@ -70,7 +72,7 @@ describe('REST API Roundtrip Test of Blinds-Device', function () {
         function (error: any, response: RequestResponse, body: any) {
           expect(response.statusCode).toBe(200);
           let blindsDevice: IBlindsDevice = JSON.parse(body);
-          logger.debug(`Blinds-device retrieved: ${JSON.stringify(blindsDevice)}`);
+          LOGGER.debug(`Blinds-device retrieved: ${JSON.stringify(blindsDevice)}`);
           expect(blindsDevice.name).toBe(TEST_BLINDS_DEVICE);
           done();
         });
@@ -84,7 +86,7 @@ describe('REST API Roundtrip Test of Blinds-Device', function () {
         function (error: any, response: RequestResponse, body: any) {
           expect(response.statusCode).toBe(200);
           let blindsDevices: IBlindsDevice[] = JSON.parse(body);
-          logger.debug(`Blinds-device retrieved: ${JSON.stringify(blindsDevices)}`);
+          LOGGER.debug(`Blinds-device retrieved: ${JSON.stringify(blindsDevices)}`);
           expect(blindsDevices[0].name).toBe(TEST_BLINDS_DEVICE);
           done();
         });
@@ -102,14 +104,14 @@ describe('REST API Roundtrip Test of Blinds-Device', function () {
       actorDown: Port.DO_2,
       runningSeconds: 60
     };
-    logger.debug(`requestContent: ${JSON.stringify(testBlindsDevice)}`);
+    LOGGER.debug(`requestContent: ${JSON.stringify(testBlindsDevice)}`);
     it('returns status code 200 - blinds-device updated', function (done) {
       request.put(TEST_URL + '/' + testBlindsDeviceId,
         authBearerOptions(adminToken, JSON.stringify(testBlindsDevice)),
         function (error: any, response: RequestResponse, body: any) {
           expect(response.statusCode).toBe(200);
           let blindsDevice: IBlindsDevice = JSON.parse(body);
-          logger.debug(`Blinds-device updated: ${JSON.stringify(blindsDevice)}`);
+          LOGGER.debug(`Blinds-device updated: ${JSON.stringify(blindsDevice)}`);
           expect(blindsDevice.name).toBe(NAME);
           done();
         });
@@ -131,7 +133,7 @@ describe('REST API Roundtrip Test of Blinds-Device', function () {
 
   afterAll(function () {
     if (testBlindsDeviceId) {
-      logger.error(`AfterAll: test blinds-device with id ${testBlindsDeviceId} has not been deleted. Please clean it from the database manually.`);
+      LOGGER.error(`AfterAll: test blinds-device with id ${testBlindsDeviceId} has not been deleted. Please clean it from the database manually.`);
     }
   });
 
