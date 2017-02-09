@@ -71,7 +71,7 @@ export class TemperatureSetupComponent implements OnInit {
 
   doDelete(): void {
     if (this.device && this.device.id) {
-      this.genericService.del(this.device);
+      this.genericService.del(this.device.id);
     }
   }
 

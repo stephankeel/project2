@@ -1,47 +1,47 @@
 import {Logger, getLogger} from "../utils/logger";
 import {IDeviceDocument} from "../models/model-helper";
-import express = require('express');
 import {Model} from "mongoose";
 import {IController} from "./controller.interface";
 import {GenericSocket} from "../socket/generic-socket";
 import {SocketService} from "../socket/socket-service";
-import {Engine} from '../logic/engine';
-
+import express = require('express');
+import {GenericSubject} from "./generic-subject";
 const LOGGER: Logger = getLogger('GenericController');
+
+export interface IAction {
+  action: string;
+  id: string;
+}
 
 export class GenericController<T, R extends IDeviceDocument> implements IController {
   private loggingPrefix: string;
   private genericSocket: GenericSocket;
+  private genericSubject: GenericSubject<string, R>;
 
-  constructor(private socketService: SocketService,
-              private namespaceName: string,
+  constructor(protected socketService: SocketService,
+              protected namespaceName: string,
               private model: Model<R>,
               private createDocument: (content: T) => R,
               private udpateDocument: (documentFromDb: R, inputDocument: R) => void,
-              private cleanupCallbackOnDelete: (id: string) => void,
-              private websocketPreObject: boolean) {
+              private cleanupCallbackOnDelete: (id: string) => void) {
     this.loggingPrefix = this.namespaceName;
-    this.initWebsocket();
   }
 
-  private initWebsocket() {
+  public init(genericSubject: GenericSubject<string, R>) {
     this.genericSocket = this.socketService.registerSocket(this.namespaceName);
-    if (this.websocketPreObject) {
-      this.getAllEntities((err: any, devices: R[]) => {
-        if (err) {
-          LOGGER.error(`error retrieving ${this.loggingPrefix}. ${err}`);
-        } else {
-          devices.forEach((device) => {
-            // set the id to the _id provided by the db
-            device.id = device._id;
-            this.socketService.registerSocket(`${this.namespaceName}/${device._id}`);
-
-            // TODO: mode to GenericDeviceController as soon as available
-            this.informOnAdd(device);
-          });
-        }
-      })
-    }
+    this.genericSubject = genericSubject;
+    this.getAllEntities((err: any, devices: R[]) => {
+      if (err) {
+        LOGGER.error(`error retrieving ${this.namespaceName}. ${err}`);
+      } else {
+        devices.forEach((device) => {
+          // set the id to the _id provided by the db
+          device.id = device._id;
+          // create add events for all existing devices
+          this.genericSubject.create(device);
+        });
+      }
+    })
   }
 
   public add(req: express.Request, res: express.Response) {
@@ -54,15 +54,9 @@ export class GenericController<T, R extends IDeviceDocument> implements IControl
       } else {
         // set the id to the _id provided by the db
         device.id = addedDevice._id;
-        if (this.websocketPreObject) {
-          this.socketService.registerSocket(`${this.namespaceName}/${device.id}`);
-        }
+        this.genericSubject.create(device);
         this.genericSocket.create(device);
         LOGGER.debug(`created ${this.loggingPrefix} successfully, id: ${addedDevice.id}`);
-
-        // TODO: move to GenericDeviceController as soon as available
-        this.informOnAdd(device);
-
         res.status(201).json(device);
       }
     });
@@ -108,14 +102,9 @@ export class GenericController<T, R extends IDeviceDocument> implements IControl
         res.status(404).json({error: `error deleting ${this.loggingPrefix} ${ref._id}. ${err}`});
       } else {
         this.genericSocket.del(ref._id);
-        if (this.websocketPreObject) {
-          this.socketService.unregisterSocket(`${this.namespaceName}/${ref._id}`);
-        }
+        this.genericSubject.del(ref._id);
         LOGGER.debug(`deleted ${this.loggingPrefix} ${req.params.id} successfully`);
         this.cleanupCallbackOnDelete(req.params.id);
-
-        // TODO: move to GenericDeviceController as soon as available
-        this.informOnDelete(ref._id);
       }
       res.json(ref._id);
     });
@@ -141,27 +130,12 @@ export class GenericController<T, R extends IDeviceDocument> implements IControl
             updatedDevice.id = updatedDevice._id;
             LOGGER.debug(`updated ${this.loggingPrefix} successfully`);
             this.genericSocket.update(updatedDevice);
-
-            // TODO: move to GenericDeviceController as soon as available
-            this.informOnUpdate(device);
-
+            this.genericSubject.update(updatedDevice);
             res.json(updatedDevice);
           }
         });
       }
     });
   }
-
-  // TODO: move the following 3 methods to GenericDeviceController as soon as available. They will be overwritten by the device specific controller!
-  // TODO: remove the import of Enigine as well
-  protected informOnAdd(device: R): void {
-  }
-  protected informOnUpdate(device: R): void {
-    Engine.getInstance().updateDevice(device);
-  }
-  protected informOnDelete(id: any): void {
-    Engine.getInstance().removeDevice(id);
-  }
-
 }
 
