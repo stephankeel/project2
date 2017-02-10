@@ -9,24 +9,23 @@ import {GenericSubject} from "./generic-subject";
 import {GenericDeviceController} from "./generic-device.controller";
 
 export class HumidityDeviceController extends GenericDeviceController<IHumidityDevice, IHumidityDeviceDocument> {
-  constructor(socketService: SocketService) {
+  constructor(socketService: SocketService, engine: Engine) {
     super(socketService,
       "/humidity",
       HumidityDeviceModel,
       c => new HumidityDeviceModel(c),
       (d, i) => HumidityDeviceController.updateDocument(d, i),
       id => new HumidityDataController(socketService).deleteAllById(id),
+      engine,
     );
+    this.registerOnCreate((value: IHumidityDeviceDocument) => engine.addHumidityDevice(value));
+    this.init();
+
   }
 
   private static updateDocument(documentFromDb: IHumidityDeviceDocument, inputDocument: IHumidityDeviceDocument) {
     documentFromDb.name = inputDocument.name;
     documentFromDb.port = inputDocument.port;
   }
-
-  protected informOnAdd(device: IHumidityDeviceDocument): void {
-    Engine.getInstance().addHumidityDevice(device);
-  }
-
 }
 

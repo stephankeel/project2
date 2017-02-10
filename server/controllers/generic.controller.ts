@@ -4,8 +4,8 @@ import {Model} from "mongoose";
 import {IController} from "./controller.interface";
 import {GenericSocket} from "../socket/generic-socket";
 import {SocketService} from "../socket/socket-service";
-import express = require('express');
 import {GenericSubject} from "./generic-subject";
+import express = require('express');
 const LOGGER: Logger = getLogger('GenericController');
 
 export interface IAction {
@@ -25,11 +25,23 @@ export class GenericController<T, R extends IDeviceDocument> implements IControl
               private udpateDocument: (documentFromDb: R, inputDocument: R) => void,
               private cleanupCallbackOnDelete: (id: string) => void) {
     this.loggingPrefix = this.namespaceName;
+    this.genericSubject = new GenericSubject();
   }
 
-  public init(genericSubject: GenericSubject<string, R>) {
+  public registerOnCreate(callbackfn: (value: R) => void) {
+    this.genericSubject.addCreateListener(callbackfn);
+  }
+
+  public registerOnUpdate(callbackfn: (value: R) => void) {
+    this.genericSubject.addUpdateListener(callbackfn);
+  }
+
+  public registerOnDelete(callbackfn: (value: string) => void) {
+    this.genericSubject.addDeleteListener(callbackfn);
+  }
+
+  public init() {
     this.genericSocket = this.socketService.registerSocket(this.namespaceName);
-    this.genericSubject = genericSubject;
     this.getAllEntities((err: any, devices: R[]) => {
       if (err) {
         LOGGER.error(`error retrieving ${this.namespaceName}. ${err}`);
