@@ -14,10 +14,10 @@ export class BlindsDeviceController extends GenericDeviceController<IBlindsDevic
       BlindsDeviceModel,
       c => new BlindsDeviceModel(c),
       (d, i) => BlindsDeviceController.updateDocument(d, i),
-      id => new BlindsDataController(socketService).deleteAllById(id),
       engine,
     );
     this.registerOnCreate((value: IBlindsDeviceDocument) => engine.addBlindsDevice(value));
+    this.registerOnDelete((id: string) => new BlindsDataController(socketService).deleteAllById(id));
     this.init();
 
   }

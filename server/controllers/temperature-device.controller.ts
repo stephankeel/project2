@@ -13,10 +13,10 @@ export class TemperatureDeviceController extends GenericDeviceController<ITemper
       TemperatureDeviceModel,
       c => new TemperatureDeviceModel(c),
       (d, i) => TemperatureDeviceController.updateDocument(d, i),
-      id => new TemperatureDataController(socketService).deleteAllById(id),
       engine,
     );
     this.registerOnCreate((value: ITemperatureDeviceDocument) => engine.addTemperatrueDevice(value));
+    this.registerOnDelete((id: string) => new TemperatureDataController(socketService).deleteAllById(id));
     this.init();
   }
 

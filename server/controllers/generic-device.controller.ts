@@ -15,9 +15,8 @@ export class GenericDeviceController<T, R extends IDeviceDocument> extends Gener
               model: Model<R>,
               createDocument: (content: T) => R,
               udpateDocument: (documentFromDb: R, inputDocument: R) => void,
-              cleanupCallbackOnDelete: (id: string) => void,
               private engine: Engine) {
-    super(socketService, namespaceName, model, createDocument, udpateDocument, cleanupCallbackOnDelete);
+    super(socketService, namespaceName, model, createDocument, udpateDocument);
     this.registerOnCreate((value: R) => this.registerSocket(value));
     this.registerOnDelete((id: string) => this.unregisterSocket(id));
 

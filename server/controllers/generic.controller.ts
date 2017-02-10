@@ -22,8 +22,7 @@ export class GenericController<T, R extends IDeviceDocument> implements IControl
               protected namespaceName: string,
               private model: Model<R>,
               private createDocument: (content: T) => R,
-              private udpateDocument: (documentFromDb: R, inputDocument: R) => void,
-              private cleanupCallbackOnDelete: (id: string) => void) {
+              private udpateDocument: (documentFromDb: R, inputDocument: R) => void) {
     this.loggingPrefix = this.namespaceName;
     this.genericSubject = new GenericSubject();
   }
@@ -116,7 +115,6 @@ export class GenericController<T, R extends IDeviceDocument> implements IControl
         this.genericSocket.del(ref._id);
         this.genericSubject.del(ref._id);
         LOGGER.debug(`deleted ${this.loggingPrefix} ${req.params.id} successfully`);
-        this.cleanupCallbackOnDelete(req.params.id);
       }
       res.json(ref._id);
     });

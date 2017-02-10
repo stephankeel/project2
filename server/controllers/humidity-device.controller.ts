@@ -15,12 +15,11 @@ export class HumidityDeviceController extends GenericDeviceController<IHumidityD
       HumidityDeviceModel,
       c => new HumidityDeviceModel(c),
       (d, i) => HumidityDeviceController.updateDocument(d, i),
-      id => new HumidityDataController(socketService).deleteAllById(id),
       engine,
     );
     this.registerOnCreate((value: IHumidityDeviceDocument) => engine.addHumidityDevice(value));
+    this.registerOnDelete((id: string) => new HumidityDataController(socketService).deleteAllById(id));
     this.init();
-
   }
 
   private static updateDocument(documentFromDb: IHumidityDeviceDocument, inputDocument: IHumidityDeviceDocument) {
