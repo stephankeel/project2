@@ -12,10 +12,8 @@ export class UserController extends GenericController<IUser, IUserDocument> {
       UserModel,
       c => new UserModel(c),
       (d, i) => UserController.updateDocument(d, i),
-      id => {
-      },
     );
-    this.init(new GenericSubject<string, IUserDocument>());
+    this.init();
   }
 
   private static updateDocument(documentFromDb: IUserDocument, inputDocument: IUserDocument) {

@@ -15,33 +15,23 @@ export class GenericDeviceController<T, R extends IDeviceDocument> extends Gener
               model: Model<R>,
               createDocument: (content: T) => R,
               udpateDocument: (documentFromDb: R, inputDocument: R) => void,
-              cleanupCallbackOnDelete: (id: string) => void) {
-    super(socketService, namespaceName, model, createDocument, udpateDocument, cleanupCallbackOnDelete);
-    super.init(this.createDeviceSubject());
+              private engine: Engine) {
+    super(socketService, namespaceName, model, createDocument, udpateDocument);
+    this.registerOnCreate((value: R) => this.registerSocket(value));
+    this.registerOnDelete((id: string) => this.unregisterSocket(id));
+
+    this.registerOnUpdate((value: R) => engine.updateDevice(value));
+    this.registerOnDelete((id: string) => engine.removeDevice(id));
   }
 
-  private createDeviceSubject() : GenericSubject<string, R> {
-    let genericSubject: GenericSubject<string, R> = new GenericSubject();
-    genericSubject.addCreateListener((value: R) => this.socketService.registerSocket(`${this.namespaceName}/${value.id}`));
-    genericSubject.addDeleteListener((value: string) => this.socketService.unregisterSocket(`${this.namespaceName}/${value}`));
-
-    genericSubject.addCreateListener((value: R) => this.informOnAdd(value));
-    genericSubject.addUpdateListener((value: R) => this.informOnUpdate(value));
-    genericSubject.addDeleteListener((value: string) => this.informOnDelete(value));
-    return genericSubject;
+  private registerSocket(value: R) {
+    this.socketService.registerSocket(`${this.namespaceName}/${value.id}`);
   }
 
-  protected informOnAdd(device: R): void {
+  private unregisterSocket(id: string) {
+    this.socketService.registerSocket(`${this.namespaceName}/${id}`);
   }
 
-  protected informOnUpdate(device: R): void {
-    Engine.getInstance().updateDevice(device);
-  }
-
-  // TODO: should we use string instead of any for the type of id?
-  protected informOnDelete(id: any): void {
-    Engine.getInstance().removeDevice(id);
-  }
 
 }
 

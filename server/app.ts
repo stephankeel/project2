@@ -36,6 +36,7 @@ class Server {
   private port: number;
   private host: string;
   private socketService: SocketService;
+  private engine: Engine;
 
   // Bootstrap the application.
   public static bootstrap(): Server {
@@ -55,6 +56,9 @@ class Server {
     // Create database connections
     this.databases();
 
+    // Start the hardware controller engine
+    this.engine = new Engine();
+
     // Setup routes
     this.routes();
 
@@ -66,9 +70,6 @@ class Server {
 
     // Start listening
     this.listen();
-
-    // Start the hardware controller engine
-    Engine.getInstance();
   }
 
   private config(): void {
@@ -101,9 +102,9 @@ class Server {
     this.app.use(authenticationRoute);
     this.app.use('/api/users', requiresAdmin, GenericRouter.create(new UserController(this.socketService)));
 
-    this.app.use('/api/devices/blinds', requiresAdmin, GenericRouter.create(new BlindsDeviceController(this.socketService)));
-    this.app.use('/api/devices/humidity', requiresAdmin, GenericRouter.create(new HumidityDeviceController(this.socketService)));
-    this.app.use('/api/devices/temperature', requiresAdmin, GenericRouter.create(new TemperatureDeviceController(this.socketService)));
+    this.app.use('/api/devices/blinds', requiresAdmin, GenericRouter.create(new BlindsDeviceController(this.socketService, this.engine)));
+    this.app.use('/api/devices/humidity', requiresAdmin, GenericRouter.create(new HumidityDeviceController(this.socketService, this.engine)));
+    this.app.use('/api/devices/temperature', requiresAdmin, GenericRouter.create(new TemperatureDeviceController(this.socketService, this.engine)));
 
     this.app.use('/api/data/blinds', requiresAdmin, GenericDataRouter.create(new BlindsDataController(this.socketService)));
     this.app.use('/api/data/humidity', requiresAdmin, GenericDataRouter.create(new HumidityDataController(this.socketService)));

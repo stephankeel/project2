@@ -8,14 +8,18 @@ import {Engine} from '../logic/engine';
 import {GenericDeviceController} from "./generic-device.controller";
 
 export class BlindsDeviceController extends GenericDeviceController<IBlindsDevice, IBlindsDeviceDocument> {
-  constructor(socketService: SocketService) {
+  constructor(socketService: SocketService, engine: Engine) {
     super(socketService,
       "/blinds",
       BlindsDeviceModel,
       c => new BlindsDeviceModel(c),
       (d, i) => BlindsDeviceController.updateDocument(d, i),
-      id => new BlindsDataController(socketService).deleteAllById(id),
+      engine,
     );
+    this.registerOnCreate((value: IBlindsDeviceDocument) => engine.addBlindsDevice(value));
+    this.registerOnDelete((id: string) => new BlindsDataController(socketService).deleteAllById(id));
+    this.init();
+
   }
 
   private static updateDocument(documentFromDb: IBlindsDeviceDocument, inputDocument: IBlindsDeviceDocument) {
@@ -26,9 +30,4 @@ export class BlindsDeviceController extends GenericDeviceController<IBlindsDevic
     documentFromDb.actorDown = inputDocument.actorDown;
     documentFromDb.runningSeconds = inputDocument.runningSeconds;
   }
-
-  protected informOnAdd(device: IBlindsDeviceDocument): void {
-    Engine.getInstance().addBlindsDevice(device);
-  }
-
 }

@@ -35,19 +35,14 @@ class BlindsGPIOs {
 
 
 export class Engine {
-  private static singleton: Engine = new Engine();
   private portsFactory: PortsFactory;
   private heartbeatLED: AbstractLED;
   private devices: Map<any, DeviceInfo> = new Map<any, DeviceInfo>();
   private ainInUse: Map<any, AbstractAIN> = new Map<any, AbstractAIN>();
   private gpiosInUse: Map<any, BlindsGPIOs> = new Map<any, BlindsGPIOs>();
 
-  private constructor() {
+  public constructor() {
     this.init();
-  }
-
-  public static getInstance(): Engine {
-    return Engine.singleton;
   }
 
   private init(): void {
