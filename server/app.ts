@@ -102,14 +102,27 @@ class Server {
     this.app.use(authenticationRoute);
     this.app.use('/api/users', requiresAdmin, GenericRouter.create(new UserController(this.socketService)));
 
-    this.app.use('/api/devices/blinds', requiresAdmin, GenericRouter.create(new BlindsDeviceController(this.socketService, this.engine)));
-    this.app.use('/api/devices/humidity', requiresAdmin, GenericRouter.create(new HumidityDeviceController(this.socketService, this.engine)));
-    this.app.use('/api/devices/temperature', requiresAdmin, GenericRouter.create(new TemperatureDeviceController(this.socketService, this.engine)));
+    // blinds devices
+    let blindsDeviceController: BlindsDeviceController = new BlindsDeviceController(this.socketService);
+    this.engine.registerBlindsDeviceController(blindsDeviceController);
+    this.app.use('/api/devices/blinds', requiresAdmin, GenericRouter.create(blindsDeviceController));
 
+    // humidity devices
+    let humidityDeviceController: HumidityDeviceController = new HumidityDeviceController(this.socketService);
+    this.engine.registerHumidityDeviceController(humidityDeviceController);
+    this.app.use('/api/devices/humidity', requiresAdmin, GenericRouter.create(humidityDeviceController));
+
+    // temperature devices
+    let temperatureDeviceController: TemperatureDeviceController = new TemperatureDeviceController(this.socketService);
+    this.engine.registerTemperatureDeviceController(temperatureDeviceController);
+    this.app.use('/api/devices/temperature', requiresAdmin, GenericRouter.create(temperatureDeviceController));
+
+    // data handling for all devices
     this.app.use('/api/data/blinds', requiresAdmin, GenericDataRouter.create(new BlindsDataController(this.socketService)));
     this.app.use('/api/data/humidity', requiresAdmin, GenericDataRouter.create(new HumidityDataController(this.socketService)));
     this.app.use('/api/data/temperature', requiresAdmin, GenericDataRouter.create(new TemperatureDataController(this.socketService)));
 
+    // blinds device command handling
     this.app.use('/api/command/blinds', requiresStandardOrAdmin, BlindsCommandRouter.create());
 
     this.app.use('/api', function (req: express.Request, res: express.Response, next: express.NextFunction) {

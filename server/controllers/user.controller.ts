@@ -13,7 +13,6 @@ export class UserController extends GenericController<IUser, IUserDocument> {
       c => new UserModel(c),
       (d, i) => UserController.updateDocument(d, i),
     );
-    this.init();
   }
 
   private static updateDocument(documentFromDb: IUserDocument, inputDocument: IUserDocument) {

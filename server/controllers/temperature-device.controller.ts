@@ -1,23 +1,17 @@
 import express = require('express');
-import {ITemperatureDeviceDocument, TemperatureDeviceModel} from "../models/temperature-device.model";
-import {ITemperatureDevice} from "../entities/device.interface";
-import {TemperatureDataController} from "./temperature-data.controller";
-import {SocketService} from "../socket/socket-service";
-import {Engine} from "../logic/engine";
-import {GenericDeviceController} from "./generic-device.controller";
+import {ITemperatureDeviceDocument, TemperatureDeviceModel} from '../models/temperature-device.model';
+import {ITemperatureDevice} from '../entities/device.interface';
+import {SocketService} from '../socket/socket-service';
+import {GenericDeviceController} from './generic-device.controller';
 
 export class TemperatureDeviceController extends GenericDeviceController<ITemperatureDevice, ITemperatureDeviceDocument> {
-  constructor(socketService: SocketService, engine: Engine) {
+  constructor(socketService: SocketService) {
     super(socketService,
-      "/temperature",
+      '/temperature',
       TemperatureDeviceModel,
       c => new TemperatureDeviceModel(c),
-      (d, i) => TemperatureDeviceController.updateDocument(d, i),
-      engine,
+      (d, i) => TemperatureDeviceController.updateDocument(d, i)
     );
-    this.registerOnCreate((value: ITemperatureDeviceDocument) => engine.addTemperatrueDevice(value));
-    this.registerOnDelete((id: string) => new TemperatureDataController(socketService).deleteAllById(id));
-    this.init();
   }
 
   private static updateDocument(documentFromDb: ITemperatureDeviceDocument, inputDocument: ITemperatureDeviceDocument) {
