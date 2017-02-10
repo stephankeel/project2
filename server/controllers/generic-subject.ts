@@ -25,7 +25,7 @@ export class GenericSubject<T, S extends IId> {
     this.actions.next({action: action, value: value});
   }
 
-  private addListener<R>(action: string, callbackfn: (value: R) => void) {
+  private registerListener<R>(action: string, callbackfn: (value: R) => void) {
     if (!this.listeners.has(action)) {
       this.listeners.set(action, new Set<R>());
     }
@@ -36,23 +36,23 @@ export class GenericSubject<T, S extends IId> {
     this.emit<S>("create", value);
   }
 
-  public addCreateListener(callbackfn: (value: S) => void) {
-    this.addListener<S>("create", callbackfn);
+  public registerOnCreate(callbackfn: (value: S) => void) {
+    this.registerListener<S>("create", callbackfn);
   }
 
   public update(value: S) {
     this.emit<S>("update", value);
   }
 
-  public addUpdateListener(callbackfn: (value: S) => void) {
-    this.addListener<S>("update", callbackfn);
+  public registerOnUpdate(callbackfn: (value: S) => void) {
+    this.registerListener<S>("update", callbackfn);
   }
 
   public del(value: T) {
     this.emit<T>("delete", value);
   }
 
-  public addDeleteListener(callbackfn: (value: string) => void) {
-    this.addListener<string>("delete", callbackfn);
+  public registerOnDelete(callbackfn: (value: string) => void) {
+    this.registerListener<string>("delete", callbackfn);
   }
 }

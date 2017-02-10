@@ -29,15 +29,15 @@ export class GenericController<T, R extends IDeviceDocument> implements IControl
   }
 
   public registerOnCreate(callbackfn: (value: R) => void) {
-    this.genericSubject.addCreateListener(callbackfn);
+    this.genericSubject.registerOnCreate(callbackfn);
   }
 
   public registerOnUpdate(callbackfn: (value: R) => void) {
-    this.genericSubject.addUpdateListener(callbackfn);
+    this.genericSubject.registerOnUpdate(callbackfn);
   }
 
   public registerOnDelete(callbackfn: (value: string) => void) {
-    this.genericSubject.addDeleteListener(callbackfn);
+    this.genericSubject.registerOnDelete(callbackfn);
   }
 
   public init() {
