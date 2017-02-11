@@ -4,10 +4,10 @@ import {RouterModule, Routes}  from '@angular/router';
 import {LoginComponent} from './login/login.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {DevicesSetupComponent} from './devices-setup/devices-setup.component';
-import {BlindsSetupComponent} from './blinds-setup/blinds-setup.component';
-import {HumiditySetupComponent} from './humidity-setup/humidity-setup.component';
+import {BlindsSetupComponent} from './devices-setup/blinds-setup/blinds-setup.component';
+import {HumiditySetupComponent} from './devices-setup/humidity-setup/humidity-setup.component';
 import {TemperatureComponent} from './temperature/temperature.component';
-import {TemperatureSetupComponent} from './temperature-setup/temperature-setup.component';
+import {TemperatureSetupComponent} from './devices-setup/temperature-setup/temperature-setup.component';
 import {UsersComponent} from './users/users.component';
 import {AuthGuard} from './auth/auth-guard.service';
 

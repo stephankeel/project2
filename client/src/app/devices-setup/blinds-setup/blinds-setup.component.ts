@@ -1,18 +1,18 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
-import {GenericService} from "../remote/generic.service";
+import {GenericService} from "../../remote/generic.service";
 import {AuthHttp} from "angular2-jwt";
-import {ClientSocketService} from "../remote/client-socket.service";
+import {ClientSocketService} from "../../remote/client-socket.service";
 
-import {BlindsDevice, BlindsDeviceCharacteristics, Port, portName} from '../device-pool';
+import {BlindsDevice, BlindsDeviceCharacteristics, Port, portName} from '../../device-pool';
 
 @Component({
   selector: 'app-blinds-setup',
-  templateUrl: './blinds-setup.component.html',
-  styleUrls: ['./blinds-setup.component.scss']
+  templateUrl: 'blinds-setup.component.html',
+  styleUrls: ['blinds-setup.component.scss']
 })
 export class BlindsSetupComponent implements OnInit {
-
+  headerTitle: string = 'ROLLLADEN-SETUP';
   devices: BlindsDevice[] = [];
   device: BlindsDevice;
   selectedDevice: BlindsDevice;
