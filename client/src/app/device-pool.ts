@@ -30,34 +30,46 @@ export class TemperatureDevice implements ITemperatureDevice {
   }
 }
 
-export abstract class DeviceCharacteristics {
+export abstract class DevicesInfo {
+  count: number = 0;
   constructor(public type: DeviceType, public displayName: string, public title: string, public css: string, public icon: string){
   }
 }
 
-export class BlindsDeviceCharacteristics extends DeviceCharacteristics {
+export class BlindsDevicesInfo extends DevicesInfo {
   public static readonly inputPortSet: Port[] = digitalInputs;
   public static readonly outputPortSet: Port[] = digitalOutputs;
+  public static inputPortsInUse: Set<Port> = new Set<Port>();
+  public static outputPortsInUse: Set<Port> = new Set<Port>();
 
   constructor(){
     super(DeviceType.BLINDS, 'ROLLLADEN', 'Blinds', 'blinds', 'blinds.svg');
   }
 }
 
-export class HumidityDeviceCharacteristics extends DeviceCharacteristics {
+export abstract class AnalogDevicesInfo extends DevicesInfo {
+  public static portsInUse: Set<Port> = new Set<Port>();
+}
+
+export class HumidityDevicesInfo extends AnalogDevicesInfo {
   public static readonly portSet: Port[] = analogInputs;
+  public static portsInUse: Set<Port> = new Set<Port>();
 
   constructor(){
     super(DeviceType.HUMIDITY, 'FEUCHTIGKEIT', 'Humidity', 'humidity', 'humidity.svg');
   }
 }
 
-export class TemperatureDeviceCharacteristics extends DeviceCharacteristics {
+export class TemperatureDevicesInfo extends AnalogDevicesInfo {
   public static readonly portSet: Port[] = analogInputs;
+  public static portsInUse: Set<Port> = new Set<Port>();
 
   constructor(){
     super(DeviceType.TEMPERATURE, 'TEMPERATUR', 'Temperature', 'temperature', 'temperature.svg');
   }
 }
 
-export const devicePool: DeviceCharacteristics[] = [new BlindsDeviceCharacteristics(), new HumidityDeviceCharacteristics(), new TemperatureDeviceCharacteristics];
+export const blindsDevicesInfo = new BlindsDevicesInfo();
+export const humidityDevicesInfo = new HumidityDevicesInfo();
+export const temperatureDevicesInfo = new TemperatureDevicesInfo();
+export const devicePool: DevicesInfo[] = [blindsDevicesInfo, humidityDevicesInfo, temperatureDevicesInfo];

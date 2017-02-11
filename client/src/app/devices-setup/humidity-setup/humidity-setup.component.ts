@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
-import {GenericService} from "../../remote/generic.service";
 import {AuthHttp} from "angular2-jwt";
-import {ClientSocketService} from "../../remote/client-socket.service";
 
-import {HumidityDevice, HumidityDeviceCharacteristics, Port, portName} from '../../device-pool';
+import {GenericService} from "../../remote/generic.service";
+import {ClientSocketService} from "../../remote/client-socket.service";
+import {HumidityDevice, HumidityDevicesInfo, humidityDevicesInfo, Port, portName} from '../../device-pool';
 
 
 @Component({
@@ -13,11 +13,11 @@ import {HumidityDevice, HumidityDeviceCharacteristics, Port, portName} from '../
   styleUrls: ['humidity-setup.component.scss']
 })
 export class HumiditySetupComponent implements OnInit {
-  headerTitle: string = 'FEUCHTIGKEIT-SETUP';
+  headerTitle: string = `${humidityDevicesInfo.displayName}-SETUP`;
   devices: HumidityDevice[] = [];
   device: HumidityDevice;
   selectedDevice: HumidityDevice;
-  ports: Port[] = HumidityDeviceCharacteristics.portSet;
+  ports: Port[] = HumidityDevicesInfo.portSet;
   private genericService: GenericService<HumidityDevice>;
   message: string;
 

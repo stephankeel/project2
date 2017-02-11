@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
-import {GenericService} from "../../remote/generic.service";
 import {AuthHttp} from "angular2-jwt";
-import {ClientSocketService} from "../../remote/client-socket.service";
 
-import {TemperatureDevice, TemperatureDeviceCharacteristics, Port, portName} from '../../device-pool';
+import {GenericService} from "../../remote/generic.service";
+import {ClientSocketService} from "../../remote/client-socket.service";
+import {TemperatureDevice, TemperatureDevicesInfo, temperatureDevicesInfo, Port, portName} from '../../device-pool';
 
 
 @Component({
@@ -13,11 +13,11 @@ import {TemperatureDevice, TemperatureDeviceCharacteristics, Port, portName} fro
   styleUrls: ['temperature-setup.component.scss']
 })
 export class TemperatureSetupComponent implements OnInit {
-  headerTitle: string = 'TEMPERATUR-SETUP';
+  headerTitle: string = `${temperatureDevicesInfo.displayName}-SETUP`;
   devices: TemperatureDevice[] = [];
   device: TemperatureDevice;
   selectedDevice: TemperatureDevice;
-  ports: Port[] = TemperatureDeviceCharacteristics.portSet;
+  ports: Port[] = TemperatureDevicesInfo.portSet;
   selectedPort: Port;
   private genericService: GenericService<TemperatureDevice>;
   message: string;

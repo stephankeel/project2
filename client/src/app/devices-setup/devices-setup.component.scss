@@ -22,7 +22,17 @@ main {
   background-color: yellow;
 }
 
+.deviceText {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+}
+
 .mainSelectionLabel {
+  align-self: center;
+}
+
+.deviceCount {
   align-self: center;
 }
 

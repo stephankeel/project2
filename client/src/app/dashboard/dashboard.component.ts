@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Router}    from '@angular/router';
-import {DeviceType, DeviceCharacteristics, devicePool} from '../device-pool';
+import {DeviceType, DevicesInfo, devicePool} from '../device-pool';
 import {UserType} from '../user';
 
 import {AuthenticationService} from '../remote/authentication.service';
@@ -13,7 +13,7 @@ import {AuthenticationService} from '../remote/authentication.service';
 
 export class DashboardComponent implements OnInit {
   cssMenuClass: string = 'hideMenu';
-  devices: DeviceCharacteristics[] = devicePool;
+  devices: DevicesInfo[] = devicePool;
   isAdmin: boolean;
 
   constructor(private authenticationService: AuthenticationService,
@@ -62,7 +62,7 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
-  clickAction(device: DeviceCharacteristics): void {
+  clickAction(device: DevicesInfo): void {
     switch (device.type) {
       case DeviceType.BLINDS:
         // TODO: this.router.navigate(['/blinds']);

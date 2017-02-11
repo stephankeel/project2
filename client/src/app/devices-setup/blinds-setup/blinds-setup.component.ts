@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
-import {GenericService} from "../../remote/generic.service";
 import {AuthHttp} from "angular2-jwt";
-import {ClientSocketService} from "../../remote/client-socket.service";
 
-import {BlindsDevice, BlindsDeviceCharacteristics, Port, portName} from '../../device-pool';
+import {GenericService} from "../../remote/generic.service";
+import {ClientSocketService} from "../../remote/client-socket.service";
+import {BlindsDevice, BlindsDevicesInfo, blindsDevicesInfo, Port, portName} from '../../device-pool';
 
 @Component({
   selector: 'app-blinds-setup',
@@ -12,12 +12,12 @@ import {BlindsDevice, BlindsDeviceCharacteristics, Port, portName} from '../../d
   styleUrls: ['blinds-setup.component.scss']
 })
 export class BlindsSetupComponent implements OnInit {
-  headerTitle: string = 'ROLLLADEN-SETUP';
+  headerTitle: string = `${blindsDevicesInfo.displayName}-SETUP`;
   devices: BlindsDevice[] = [];
   device: BlindsDevice;
   selectedDevice: BlindsDevice;
-  keyPorts: Port[] = BlindsDeviceCharacteristics.inputPortSet;
-  actorPorts: Port[] = BlindsDeviceCharacteristics.outputPortSet;
+  keyPorts: Port[];
+  actorPorts: Port[];
   private genericService: GenericService<BlindsDevice>;
   message: string;
 
@@ -45,13 +45,20 @@ export class BlindsSetupComponent implements OnInit {
   }
 
   addClicked(): void {
+    this.updatePortSet();
     this.device = new BlindsDevice();
   }
 
   selectDevice(device: BlindsDevice) {
     this.clearMessage();
+    this.updatePortSet(device);
     this.selectedDevice = device;
     this.device = new BlindsDevice(this.selectedDevice.id, this.selectedDevice.name, this.selectedDevice.keyUp, this.selectedDevice.keyDown, this.selectedDevice.actorUp, this.selectedDevice.actorDown, this.selectedDevice.runningSeconds);
+  }
+
+  updatePortSet(device?: BlindsDevice): void {
+    this.keyPorts = BlindsDevicesInfo.inputPortSet.filter(port => !BlindsDevicesInfo.inputPortsInUse.has(port) || device && (port === device.keyUp || port === device.keyDown));
+    this.actorPorts = BlindsDevicesInfo.outputPortSet.filter(port => !BlindsDevicesInfo.outputPortsInUse.has(port) ||device && (port === device.actorUp || port === device.actorDown));
   }
 
   getPortName(port: Port): string {
