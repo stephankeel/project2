@@ -44,7 +44,6 @@ class BlindsDevicesInfo extends DevicesInfo {
 
   constructor(){
     super(DeviceType.BLINDS, 'ROLLLADEN', 'Blinds', 'blinds', 'blinds.svg');
-    console.log('=====>>> create BlindsDeviceInfo');
   }
 
   updatePortsInUse(devices: BlindsDevice[]): void {
@@ -83,14 +82,12 @@ export abstract class AnalogDevicesInfo extends DevicesInfo {
 class HumidityDevicesInfo extends AnalogDevicesInfo {
   constructor(){
     super(DeviceType.HUMIDITY, 'FEUCHTIGKEIT', 'Humidity', 'humidity', 'humidity.svg');
-    console.log('=====>>> create HumidityDeviceInfo');
   }
 }
 
 class TemperatureDevicesInfo extends AnalogDevicesInfo {
   constructor(){
     super(DeviceType.TEMPERATURE, 'TEMPERATUR', 'Temperature', 'temperature', 'temperature.svg');
-    console.log('=====>>> create TemperatureDeviceInfo');
   }
 }
 
