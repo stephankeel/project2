@@ -1,27 +1,29 @@
 import {Logger, getLogger} from '../utils/logger';
 import express = require('express');
+import {Engine} from '../logic/engine';
 
 const LOGGER: Logger = getLogger('BlindsCommandController');
 
 export class BlindsCommandController {
-  public openBlinds(req: express.Request, res: express.Response) {
-    LOGGER.error(`open blinds-command ${req.params.id}: ${JSON.stringify(req.body)} ==> TO BE IMPLEMENTED`);
-    // TODO: Implement
 
-    res.json(`open blinds-command ${req.params.id}: ${JSON.stringify(req.body)} ==> TO BE IMPLEMENTED`);
+  constructor(private engine: Engine) {
+  }
+
+  public openBlinds(req: express.Request, res: express.Response) {
+    LOGGER.debug(`open blinds-command ${req.params.id}: ${JSON.stringify(req.body)}`);
+    this.engine.openBlinds(req.params.id);
+    res.status(200);
   }
 
   public closeBlinds(req: express.Request, res: express.Response) {
-    LOGGER.error(`close blinds-command ${req.params.id}: ${JSON.stringify(req.body)} ==> TO BE IMPLEMENTED`);
-    // TODO: Implement
-
-    res.json(`close blinds-command ${req.params.id}: ${JSON.stringify(req.body)} ==> TO BE IMPLEMENTED`);
+    LOGGER.debug(`close blinds-command ${req.params.id}: ${JSON.stringify(req.body)}`);
+    this.engine.closeBlinds(req.params.id);
+    res.status(200);
   }
 
   public stopBlinds(req: express.Request, res: express.Response) {
-    LOGGER.error(`stop blinds-command ${req.params.id}: ${JSON.stringify(JSON.stringify(req.body))} ==> TO BE IMPLEMENTED`);
-    // TODO: Implement
-
-    res.json(`stop blinds-command ${req.params.id}: ${JSON.stringify(JSON.stringify(req.body))} ==> TO BE IMPLEMENTED`);
+    LOGGER.debug(`stop blinds-command ${req.params.id}: ${JSON.stringify(JSON.stringify(req.body))}`);
+    this.engine.stopBlinds(req.params.id);
+    res.status(200);
   }
 }

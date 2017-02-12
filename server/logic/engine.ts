@@ -30,10 +30,6 @@ class BlindsGPIOs {
     this.actorUp.reset();
     this.actorDown.reset();
   }
-
-  public update(blindsDEvice: IBlindsDevice): void {
-    // TODO
-  }
 }
 
 
@@ -192,7 +188,11 @@ export class Engine {
     this.gpiosInUse.set(blindsDevice.id, ports);
 
     ports.keyUp.watch().subscribe((keyPressed: boolean) => {
-        let data: IBlindsData = {deviceId: blindsDevice.id, timestamp: Date.now(), state: this.getNewBlindsState(ports, BlindsState.OPENING)};
+        let data: IBlindsData = {
+          deviceId: blindsDevice.id,
+          timestamp: Date.now(),
+          state: this.getNewBlindsState(ports, BlindsState.OPENING)
+        };
         GenericDataController.getDataController(DeviceType.BLINDS).addDataRecord(data);
       },
       (err: any) => LOGGER.error(`${deviceTypeAsString(DeviceType.BLINDS)} device watching keyUp error ${err}`),
@@ -221,6 +221,44 @@ export class Engine {
       // TODO start timer to set the end state if timer completes
     }
     return blindsInfo.state;
+  }
+
+  public openBlinds(id?: any) {
+      this.getBlindsDevices(id).forEach(device => LOGGER.error(`openBlind: ${device.name} ==> TO BE IMPLEMENTED`));
+  }
+
+  public closeBlinds(id?: any) {
+    this.getBlindsDevices(id).forEach(device => LOGGER.error(`closeBlind: ${device.name} ==> TO BE IMPLEMENTED`));
+  }
+
+  public stopBlinds(id?: any) {
+    this.getBlindsDevices(id).forEach(device => LOGGER.error(`stopBlind: ${device.name} ==> TO BE IMPLEMENTED`));
+  }
+
+  private getBlindsDevices(id?: any): IBlindsDevice[] {
+    let blindsDevices: IBlindsDevice[] = [];
+    if (id) {
+      let deviceInfo: DeviceInfo = this.devices.get(id);
+      if (deviceInfo) {
+        LOGGER.info(`getBlindsDevice: ${deviceTypeAsString(deviceInfo.type)} ${deviceInfo.device.name} ${deviceInfo.device.id}`);
+        if (deviceInfo.type === DeviceType.BLINDS) {
+          blindsDevices.push(deviceInfo.device)
+        }
+      } else {
+        LOGGER.error(`getBlindsDevices: device with id ${id} not found`);
+      }
+    } else {
+      this.devices.forEach((deviceInfo: DeviceInfo, id: any, map: Map<any, DeviceInfo>) => {
+        if (deviceInfo.type === DeviceType.BLINDS) {
+          blindsDevices.push(deviceInfo.device);
+        }
+      });
+    }
+    if (LOGGER.isDebugEnabled()) {
+      LOGGER.debug(`getBlindsDevices of id: ${id}`);
+      blindsDevices.forEach(device => LOGGER.debug(`/t${device.name}`));
+    }
+    return blindsDevices;
   }
 
 }

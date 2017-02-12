@@ -1,6 +1,7 @@
 import express = require('express');
 import {Router} from "express-serve-static-core";
 import {BlindsCommandController} from "../logic/blinds-command.controller";
+import {Engine} from '../logic/engine';
 
 export class BlindsCommandRouter {
   constructor(private controller: BlindsCommandController, private router: Router) {
@@ -13,7 +14,7 @@ export class BlindsCommandRouter {
     return this.router;
   }
 
-  public static create(): Router {
-    return new BlindsCommandRouter(new BlindsCommandController(), express.Router()).getRouter();
+  public static create(engine: Engine): Router {
+    return new BlindsCommandRouter(new BlindsCommandController(engine), express.Router()).getRouter();
   }
 }
