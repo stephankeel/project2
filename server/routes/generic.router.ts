@@ -19,6 +19,8 @@ export class GenericRouter {
   }
 
   public static create(controller: IController): Router {
-    return new GenericRouter(controller, express.Router()).getRouter();
+    let router: Router = new GenericRouter(controller, express.Router()).getRouter();
+    controller.init();
+    return router;
   }
 }

@@ -1,10 +1,8 @@
-import {Logger, getLogger} from "../utils/logger";
-import {IDeviceDocument} from "../models/model-helper";
-import {Model} from "mongoose";
-import {SocketService} from "../socket/socket-service";
-import {Engine} from "../logic/engine";
-import {GenericController} from "./generic.controller";
-import {GenericSubject} from "./generic-subject";
+import {Logger, getLogger} from '../utils/logger';
+import {IDeviceDocument} from '../models/model-helper';
+import {Model} from 'mongoose';
+import {SocketService} from '../socket/socket-service';
+import {GenericController} from './generic.controller';
 import express = require('express');
 const LOGGER: Logger = getLogger('GenericDeviceController');
 
@@ -14,14 +12,10 @@ export class GenericDeviceController<T, R extends IDeviceDocument> extends Gener
               namespaceName: string,
               model: Model<R>,
               createDocument: (content: T) => R,
-              udpateDocument: (documentFromDb: R, inputDocument: R) => void,
-              private engine: Engine) {
+              udpateDocument: (documentFromDb: R, inputDocument: R) => void) {
     super(socketService, namespaceName, model, createDocument, udpateDocument);
     this.registerOnCreate((value: R) => this.registerSocket(value));
     this.registerOnDelete((id: string) => this.unregisterSocket(id));
-
-    this.registerOnUpdate((value: R) => engine.updateDevice(value));
-    this.registerOnDelete((id: string) => engine.removeDevice(id));
   }
 
   private registerSocket(value: R) {

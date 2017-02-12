@@ -1,6 +1,9 @@
 import {getLogger, Logger} from '../utils/logger';
 import {AbstractAIN, AbstractLED, AbstractGPIO, Direction} from '../hardware/abstract-ports';
 import {IAnalogData, IBlindsData} from "../entities/data.interface";
+import {BlindsDeviceController} from "../controllers/blinds-device.controller";
+import {HumidityDeviceController} from "../controllers/humidity-device.controller";
+import {TemperatureDeviceController} from "../controllers/temperature-device.controller";
 import {GenericDataController} from "../controllers/generic.data-controller";
 import {DeviceType, deviceTypeAsString} from '../entities/device-type';
 import {PortsFactory} from '../hardware/ports-factory';
@@ -55,7 +58,25 @@ export class Engine {
     led.heartbeat();
   }
 
-  public addBlindsDevice(device: IDevice) {
+  public registerBlindsDeviceController(deviceController: BlindsDeviceController): void {
+    deviceController.registerOnCreate((device: IDevice) => this.addBlindsDevice(device));
+    deviceController.registerOnUpdate((device: IDevice) => this.updateDevice(device));
+    deviceController.registerOnDelete((id: any) => this.removeDevice(id));
+  }
+
+  public registerHumidityDeviceController(deviceController: HumidityDeviceController): void {
+    deviceController.registerOnCreate((device: IDevice) => this.addHumidityDevice(device));
+    deviceController.registerOnUpdate((device: IDevice) => this.updateDevice(device));
+    deviceController.registerOnDelete((id: any) => this.removeDevice(id));
+  }
+
+  public registerTemperatureDeviceController(deviceController: TemperatureDeviceController): void {
+    deviceController.registerOnCreate((device: IDevice) => this.addTemperatrueDevice(device));
+    deviceController.registerOnUpdate((device: IDevice) => this.updateDevice(device));
+    deviceController.registerOnDelete((id: any) => this.removeDevice(id));
+  }
+
+  private addBlindsDevice(device: IDevice) {
     let deviceInfo: DeviceInfo = new DeviceInfo(device, DeviceType.BLINDS);
     LOGGER.info(`addBlindsDevice: ${JSON.stringify(device)}`);
     let blindsDevice: IBlindsDevice = device as IBlindsDevice;
@@ -63,12 +84,12 @@ export class Engine {
     this.devices.set(device.id, deviceInfo);
   }
 
-  public addHumidityDevice(device: IDevice) {
+  private addHumidityDevice(device: IDevice) {
     LOGGER.info(`addHumidityDevice: ${JSON.stringify(device)}`);
     this.addAnalogDevice(device, DeviceType.HUMIDITY);
   }
 
-  public addTemperatrueDevice(device: IDevice) {
+  private addTemperatrueDevice(device: IDevice) {
     LOGGER.info(`addTemperatureDevice: ${JSON.stringify(device)}`);
     this.addAnalogDevice(device, DeviceType.TEMPERATURE);
   }
