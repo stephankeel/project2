@@ -2,7 +2,7 @@ import * as express from "express";
 import * as bodyParser from "body-parser";
 import * as createError from "http-errors";
 import * as log4js from "log4js";
-import {logger} from './utils/logger';
+import {Logger, getLogger} from './utils/logger';
 import {authenticationRoute} from './routes/authentication';
 import {DBService} from './models/db.service';
 import * as http from "http";
@@ -22,6 +22,8 @@ import {BlindsCommandRouter} from "./routes/blinds-command.router";
 import {SocketService} from "./socket/socket-service";
 import {Engine} from './logic/engine';
 
+const LOGGER: Logger = getLogger('Server');
+
 var socketioJwt = require("socketio-jwt");
 
 declare var process: any, __dirname: any;
@@ -34,6 +36,7 @@ class Server {
   private port: number;
   private host: string;
   private socketService: SocketService;
+  private engine: Engine;
 
   // Bootstrap the application.
   public static bootstrap(): Server {
@@ -53,6 +56,9 @@ class Server {
     // Create database connections
     this.databases();
 
+    // Start the hardware controller engine
+    this.engine = new Engine();
+
     // Setup routes
     this.routes();
 
@@ -64,9 +70,6 @@ class Server {
 
     // Start listening
     this.listen();
-
-    // Start the hardware controller engine
-    Engine.getInstance();
   }
 
   private config(): void {
@@ -76,7 +79,7 @@ class Server {
   }
 
   private routes(): void {
-    this.app.use(log4js.connectLogger(logger, {
+    this.app.use(log4js.connectLogger(LOGGER, {
       level: 'trace',
       format: 'express --> :method :url :status :req[Accept] :res[Content-Type]'
     }));
@@ -99,14 +102,27 @@ class Server {
     this.app.use(authenticationRoute);
     this.app.use('/api/users', requiresAdmin, GenericRouter.create(new UserController(this.socketService)));
 
-    this.app.use('/api/devices/blinds', requiresAdmin, GenericRouter.create(new BlindsDeviceController(this.socketService)));
-    this.app.use('/api/devices/humidity', requiresAdmin, GenericRouter.create(new HumidityDeviceController(this.socketService)));
-    this.app.use('/api/devices/temperature', requiresAdmin, GenericRouter.create(new TemperatureDeviceController(this.socketService)));
+    // blinds devices
+    let blindsDeviceController: BlindsDeviceController = new BlindsDeviceController(this.socketService);
+    this.engine.registerBlindsDeviceController(blindsDeviceController);
+    this.app.use('/api/devices/blinds', requiresAdmin, GenericRouter.create(blindsDeviceController));
 
+    // humidity devices
+    let humidityDeviceController: HumidityDeviceController = new HumidityDeviceController(this.socketService);
+    this.engine.registerHumidityDeviceController(humidityDeviceController);
+    this.app.use('/api/devices/humidity', requiresAdmin, GenericRouter.create(humidityDeviceController));
+
+    // temperature devices
+    let temperatureDeviceController: TemperatureDeviceController = new TemperatureDeviceController(this.socketService);
+    this.engine.registerTemperatureDeviceController(temperatureDeviceController);
+    this.app.use('/api/devices/temperature', requiresAdmin, GenericRouter.create(temperatureDeviceController));
+
+    // data handling for all devices
     this.app.use('/api/data/blinds', requiresAdmin, GenericDataRouter.create(new BlindsDataController(this.socketService)));
     this.app.use('/api/data/humidity', requiresAdmin, GenericDataRouter.create(new HumidityDataController(this.socketService)));
     this.app.use('/api/data/temperature', requiresAdmin, GenericDataRouter.create(new TemperatureDataController(this.socketService)));
 
+    // blinds device command handling
     this.app.use('/api/command/blinds', requiresStandardOrAdmin, BlindsCommandRouter.create());
 
     this.app.use('/api', function (req: express.Request, res: express.Response, next: express.NextFunction) {
@@ -144,28 +160,28 @@ class Server {
 
     //add error handler
     this.server.on("error", function (error: Error) {
-      logger.error(`ERROR: ${error.stack}`);
+      LOGGER.error(`ERROR: ${error.stack}`);
     });
 
     //start listening on port
     this.server.on("listening", () => {
-      logger.info(`Homeautomation server running at http://${this.host}:${this.port}/`);
+      LOGGER.info(`Homeautomation server running at http://${this.host}:${this.port}/`);
     });
 
   }
 
   private errorHandler(err: Error, req: express.Request, res: express.Response, next: express.NextFunction) {
-    logger.error(`ErrorHandler: ${err.stack}`);
+    LOGGER.error(`ErrorHandler: ${err.stack}`);
     res.status(500).send(err.message);
   }
 
   private inputLogger(req: express.Request, res: express.Response, next: express.NextFunction) {
-    logger.debug(`Request: ${req.method} ${req.url}`);
+    LOGGER.debug(`Request: ${req.method} ${req.url}`);
     next();
   }
 
   private outputLogger(req: express.Request, res: express.Response, next: express.NextFunction) {
-    logger.debug(`Response with status code: ${res.statusCode}`);
+    LOGGER.debug(`Response with status code: ${res.statusCode}`);
     next();
   }
 }

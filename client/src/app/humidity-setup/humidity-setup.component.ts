@@ -4,22 +4,21 @@ import {GenericService} from "../remote/generic.service";
 import {AuthHttp} from "angular2-jwt";
 import {ClientSocketService} from "../remote/client-socket.service";
 
-import {TemperatureDevice, TemperatureDeviceCharacteristics, Port, portName} from '../device-pool';
+import {HumidityDevice, HumidityDeviceCharacteristics, Port, portName} from '../device-pool';
 
 
 @Component({
-  selector: 'app-temperature-config',
-  templateUrl: 'temperature-setup.component.html',
-  styleUrls: ['temperature-setup.component.scss']
+  selector: 'app-humidity-config',
+  templateUrl: 'humidity-setup.component.html',
+  styleUrls: ['humidity-setup.component.scss']
 })
-export class TemperatureSetupComponent implements OnInit {
+export class HumiditySetupComponent implements OnInit {
 
-  devices: TemperatureDevice[] = [];
-  device: TemperatureDevice;
-  selectedDevice: TemperatureDevice;
-  ports: Port[] = TemperatureDeviceCharacteristics.portSet;
-  selectedPort: Port;
-  private genericService: GenericService<TemperatureDevice>;
+  devices: HumidityDevice[] = [];
+  device: HumidityDevice;
+  selectedDevice: HumidityDevice;
+  ports: Port[] = HumidityDeviceCharacteristics.portSet;
+  private genericService: GenericService<HumidityDevice>;
   message: string;
 
   constructor(private router: Router,
@@ -27,8 +26,8 @@ export class TemperatureSetupComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.genericService = new GenericService<TemperatureDevice>(this.authHttp,
-      this.socketService, "/api/devices/temperature", "/temperature");
+    this.genericService = new GenericService<HumidityDevice>(this.authHttp,
+      this.socketService, "/api/devices/humidity", "/humidity");
     this.genericService.items.subscribe(devices => {
         this.devices = devices.toArray();
         this.device = null;
@@ -46,13 +45,13 @@ export class TemperatureSetupComponent implements OnInit {
   }
 
   addClicked(): void {
-    this.device = new TemperatureDevice();
+    this.device = new HumidityDevice();
   }
 
-  selectDevice(device: TemperatureDevice) {
+  selectDevice(device: HumidityDevice) {
     this.clearMessage();
     this.selectedDevice = device;
-    this.device = new TemperatureDevice(this.selectedDevice.id, this.selectedDevice.name, this.selectedDevice.port);
+    this.device = new HumidityDevice(this.selectedDevice.id, this.selectedDevice.name, this.selectedDevice.port);
   }
 
   getPortName(port: Port): string {

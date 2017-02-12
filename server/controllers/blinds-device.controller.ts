@@ -1,20 +1,16 @@
 import express = require('express');
 import {IBlindsDeviceDocument, BlindsDeviceModel} from '../models/blinds-device.model';
 import {IBlindsDevice} from '../entities/device.interface';
-import {BlindsDataController} from './blinds-data.controller';
-import {GenericController} from './generic.controller';
-import {SocketService} from "../socket/socket-service";
-import {Engine} from '../logic/engine';
+import {SocketService} from '../socket/socket-service';
+import {GenericDeviceController} from './generic-device.controller';
 
-export class BlindsDeviceController extends GenericController<IBlindsDevice, IBlindsDeviceDocument> {
+export class BlindsDeviceController extends GenericDeviceController<IBlindsDevice, IBlindsDeviceDocument> {
   constructor(socketService: SocketService) {
     super(socketService,
-      "/blinds",
+      '/blinds',
       BlindsDeviceModel,
       c => new BlindsDeviceModel(c),
-      (d, i) => BlindsDeviceController.updateDocument(d, i),
-      id => new BlindsDataController(socketService).deleteAllById(id),
-      true,
+      (d, i) => BlindsDeviceController.updateDocument(d, i)
     );
   }
 
@@ -26,9 +22,4 @@ export class BlindsDeviceController extends GenericController<IBlindsDevice, IBl
     documentFromDb.actorDown = inputDocument.actorDown;
     documentFromDb.runningSeconds = inputDocument.runningSeconds;
   }
-
-  protected informOnAdd(device: IBlindsDeviceDocument): void {
-    Engine.getInstance().addBlindsDevice(device);
-  }
-
 }

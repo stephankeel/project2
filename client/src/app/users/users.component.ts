@@ -80,7 +80,7 @@ export class UsersComponent implements OnInit {
   doDelete(): void {
     if (this.user && this.user.id
     ) {
-      this.genericService.del(this.user);
+      this.genericService.del(this.user.id);
     }
   }
 

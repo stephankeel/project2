@@ -1,4 +1,4 @@
-import {logger} from '../utils/logger';
+import {Logger, getLogger} from '../utils/logger';
 import fs = require('fs');
 import {Observable} from 'rxjs/Observable';
 import {Subscriber} from 'rxjs/Subscriber';
@@ -6,6 +6,7 @@ import {Direction, AbstractAIN, AbstractGPIO, AbstractLED} from './abstract-port
 
 export class GPIO extends AbstractGPIO {
   public static readonly VALID_IDS: number[] = [2, 3, 4, 5, 7, 8, 9, 10, 11, 14, 15, 20, 26, 27, 44, 45, 46, 47, 48, 49, 60, 61, 65, 66, 69, 115];
+  private static readonly logger: Logger = getLogger('GPIO');
   private static readonly ROOT = '/sys/class/gpio/';
   private static readonly UNEXPORT = GPIO.ROOT + 'unexport';
   private static readonly EXPORT = GPIO.ROOT + 'export';
@@ -24,17 +25,17 @@ export class GPIO extends AbstractGPIO {
     if (!fs.existsSync(portName)) {
       let cmd: string = `${GPIO.ROOT}${GPIO.EXPORT}`;
       fs.writeFileSync(cmd, id);
-      logger.debug(`enable port id ${id}`);
+      GPIO.logger.debug(`enable port id ${id}`);
     }
     // set port direction
     let cmd = `${portName}/direction`;
     fs.writeFileSync(cmd, this.directionVerb());
-    logger.debug(`port ${id} direction ${this.directionVerb()}`);
+    GPIO.logger.debug(`port ${id} direction ${this.directionVerb()}`);
     // if output then set mode to edge
     if (this.direction === Direction.OUTPUT) {
       cmd = `${portName}/edge`;
       fs.writeFileSync(cmd, 'both');
-      logger.debug(`port ${id} edge on both`);
+      GPIO.logger.debug(`port ${id} edge on both`);
     }
   }
 
@@ -57,15 +58,15 @@ export class GPIO extends AbstractGPIO {
     if (this.direction === Direction.OUTPUT) {
       let cmd: string = `${this.getName()}/value`;
       let state: number = on ? 1 : 0;
-      logger.debug(`setState ${cmd} to ${state}`);
+      GPIO.logger.debug(`setState ${cmd} to ${state}`);
       if (fs.existsSync(cmd)) {
         fs.writeFileSync(cmd, state);
-        logger.debug('done');
+        GPIO.logger.debug('done');
       } else {
-        logger.error(`setState failed: ${cmd} does not exit`);
+        GPIO.logger.error(`setState failed: ${cmd} does not exit`);
       }
     } else {
-      logger.error(`setState ${this.getName()} not allowed for input pin`);
+      GPIO.logger.error(`setState ${this.getName()} not allowed for input pin`);
     }
   }
 
@@ -74,7 +75,7 @@ export class GPIO extends AbstractGPIO {
       if (this.outputObs === null) {
         this.outputObs = Observable.create((subscriber: Subscriber<boolean>) => {
           let cmd: string = `${this.getName()}/value`;
-          logger.debug(`watch ${cmd}`);
+          GPIO.logger.debug(`watch ${cmd}`);
           if (fs.existsSync(cmd)) {
             this.doRead = true;
             this.read(subscriber, cmd);
@@ -86,7 +87,7 @@ export class GPIO extends AbstractGPIO {
       }
       return this.outputObs;
     } else {
-      logger.error(`watch ${this.getName()} not allowed for output pin`);
+      GPIO.logger.error(`watch ${this.getName()} not allowed for output pin`);
     }
   }
 
@@ -98,7 +99,7 @@ export class GPIO extends AbstractGPIO {
       fs.readFile(cmd, (err, data) => {
         if (err) {
           let errStr: string = `read ${cmd} failed with ${err}`;
-          logger.error(errStr);
+          GPIO.logger.error(errStr);
           subscriber.error(errStr);
           subscriber.complete();
         }
@@ -111,13 +112,13 @@ export class GPIO extends AbstractGPIO {
   }
 
   reset(): void {
-    logger.debug(`reset ${this.getName()} --> ${GPIO.UNEXPORT} for gpio${this.id}`);
+    GPIO.logger.debug(`reset ${this.getName()} --> ${GPIO.UNEXPORT} for gpio${this.id}`);
     if (fs.existsSync(this.getName())) {
       this.doRead = false;
       fs.writeFileSync(GPIO.UNEXPORT, this.id);
-      logger.debug('done');
+      GPIO.logger.debug('done');
     } else {
-      logger.error(`Reset failed: ${this.getName()} does not exit`);
+      GPIO.logger.error(`Reset failed: ${this.getName()} does not exit`);
     }
   }
 
@@ -140,6 +141,7 @@ export class GPIO extends AbstractGPIO {
 
 export class AIN extends AbstractAIN {
   public static readonly VALID_IDS: number[] = [0, 1, 2, 3, 4, 5, 6];
+  private static readonly logger: Logger = getLogger('AIN');
   private static readonly ROOT = '/sys/bus/iio/devices/iio:device0/';
   private static readonly BASE_NAME = 'in_voltage';
   private static readonly POST_FIX = '_raw';
@@ -162,7 +164,7 @@ export class AIN extends AbstractAIN {
   poll(intervalSeconds: number): Observable<number> {
     if (this.outputObs === null) {
       this.outputObs = Observable.create((subscriber: Subscriber<number>) => {
-        logger.debug(`poll ${this.getName()} every ${intervalSeconds} second(s)`);
+        AIN.logger.debug(`poll ${this.getName()} every ${intervalSeconds} second(s)`);
         if (fs.existsSync(this.getName())) {
           this.doPoll = true;
           this.intervalId = setInterval(() => {
@@ -189,7 +191,7 @@ export class AIN extends AbstractAIN {
   }
 
   stopPolling(): void {
-    logger.debug(`stopPolling ${this.getName()}`);
+    AIN.logger.debug(`stopPolling ${this.getName()}`);
     this.doPoll = false;
   }
 
@@ -198,6 +200,7 @@ export class AIN extends AbstractAIN {
 
 export class LED extends AbstractLED {
   public static readonly VALID_IDS: number[] = [0, 1, 2, 3];
+  private static readonly logger: Logger = getLogger('SimulatedGPIO');
   private static readonly ROOT = '/sys/class/leds/';
   private static readonly BASE_NAME = 'beaglebone:green:usr';
 
@@ -215,11 +218,11 @@ export class LED extends AbstractLED {
 
   setState(state: number): void {
     let cmd: string = `${this.getName()}/brightness`;
-    logger.debug(`setState ${cmd} to ${state}`);
+    LED.logger.debug(`setState ${cmd} to ${state}`);
     if (fs.existsSync(cmd)) {
       fs.writeFileSync(cmd, state);
     } else {
-      logger.error(`setState ${state} failed: ${cmd} does not exist`);
+      LED.logger.error(`setState ${state} failed: ${cmd} does not exist`);
     }
   }
 
@@ -227,24 +230,24 @@ export class LED extends AbstractLED {
     let cmdTimer: string = `${this.getName()}/trigger`;
     let cmdOn: string = `${this.getName()}/delay_on`;
     let cmdOff: string = `${this.getName()}/delay_off`;
-    logger.debug(`blink ${cmdTimer} with ${delayOn}-${delayOff}`);
+    LED.logger.debug(`blink ${cmdTimer} with ${delayOn}-${delayOff}`);
     if (fs.existsSync(cmdTimer)) {
       fs.writeFileSync(cmdTimer, 'timer');
       fs.writeFileSync(cmdOn, delayOn);
       fs.writeFileSync(cmdOff, delayOff);
     } else {
-      logger.error(`blink ${delayOn}-${delayOff} failed: ${cmdTimer} does not exist`);
+      LED.logger.error(`blink ${delayOn}-${delayOff} failed: ${cmdTimer} does not exist`);
     }
   }
 
   heartbeat(): void {
     let cmd: string = `${this.getName()}/trigger`;
     let value: string = 'heartbeat';
-    logger.debug(`heartbeat ${cmd} to ${value}`);
+    LED.logger.debug(`heartbeat ${cmd} to ${value}`);
     if (fs.existsSync(cmd)) {
       fs.writeFileSync(cmd, value);
     } else {
-      logger.error(`heatbeat ${value} failed: ${cmd} does not exist`);
+      LED.logger.error(`heatbeat ${value} failed: ${cmd} does not exist`);
     }
   }
 }

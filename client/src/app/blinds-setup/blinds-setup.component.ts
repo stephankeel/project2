@@ -4,22 +4,21 @@ import {GenericService} from "../remote/generic.service";
 import {AuthHttp} from "angular2-jwt";
 import {ClientSocketService} from "../remote/client-socket.service";
 
-import {TemperatureDevice, TemperatureDeviceCharacteristics, Port, portName} from '../device-pool';
-
+import {BlindsDevice, BlindsDeviceCharacteristics, Port, portName} from '../device-pool';
 
 @Component({
-  selector: 'app-temperature-config',
-  templateUrl: 'temperature-setup.component.html',
-  styleUrls: ['temperature-setup.component.scss']
+  selector: 'app-blinds-setup',
+  templateUrl: './blinds-setup.component.html',
+  styleUrls: ['./blinds-setup.component.scss']
 })
-export class TemperatureSetupComponent implements OnInit {
+export class BlindsSetupComponent implements OnInit {
 
-  devices: TemperatureDevice[] = [];
-  device: TemperatureDevice;
-  selectedDevice: TemperatureDevice;
-  ports: Port[] = TemperatureDeviceCharacteristics.portSet;
-  selectedPort: Port;
-  private genericService: GenericService<TemperatureDevice>;
+  devices: BlindsDevice[] = [];
+  device: BlindsDevice;
+  selectedDevice: BlindsDevice;
+  keyPorts: Port[] = BlindsDeviceCharacteristics.inputPortSet;
+  actorPorts: Port[] = BlindsDeviceCharacteristics.outputPortSet;
+  private genericService: GenericService<BlindsDevice>;
   message: string;
 
   constructor(private router: Router,
@@ -27,13 +26,13 @@ export class TemperatureSetupComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.genericService = new GenericService<TemperatureDevice>(this.authHttp,
-      this.socketService, "/api/devices/temperature", "/temperature");
+    this.genericService = new GenericService<BlindsDevice>(this.authHttp,
+      this.socketService, "/api/devices/blinds", "/blinds");
     this.genericService.items.subscribe(devices => {
-        this.devices = devices.toArray();
-        this.device = null;
-        this.selectedDevice = null;
-      }, error => this.message = error.toString());
+      this.devices = devices.toArray();
+      this.device = null;
+      this.selectedDevice = null;
+    }, error => this.message = error.toString());
     this.genericService.getAll();
   }
 
@@ -46,13 +45,13 @@ export class TemperatureSetupComponent implements OnInit {
   }
 
   addClicked(): void {
-    this.device = new TemperatureDevice();
+    this.device = new BlindsDevice();
   }
 
-  selectDevice(device: TemperatureDevice) {
+  selectDevice(device: BlindsDevice) {
     this.clearMessage();
     this.selectedDevice = device;
-    this.device = new TemperatureDevice(this.selectedDevice.id, this.selectedDevice.name, this.selectedDevice.port);
+    this.device = new BlindsDevice(this.selectedDevice.id, this.selectedDevice.name, this.selectedDevice.keyUp, this.selectedDevice.keyDown, this.selectedDevice.actorUp, this.selectedDevice.actorDown, this.selectedDevice.runningSeconds);
   }
 
   getPortName(port: Port): string {

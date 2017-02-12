@@ -1,4 +1,4 @@
-import {logger} from '../utils/logger';
+import {getLogger, Logger} from '../utils/logger';
 import {Observable} from 'rxjs/Observable';
 import {Subscriber} from 'rxjs/Subscriber';
 import {Subscription} from 'rxjs/Subscription';
@@ -6,7 +6,7 @@ import {Direction, AbstractAIN, AbstractGPIO, AbstractLED} from './abstract-port
 import {SimulationCommandHandler} from "./simulation-command-handler";
 
 export class SimulatedGPIO extends AbstractGPIO {
-
+  private static readonly logger: Logger = getLogger('SimulatedGPIO');
   private outputObs: Observable<boolean> = null;
   private doRead: boolean = true;
   private keyPressed: boolean = false;
@@ -34,9 +34,9 @@ export class SimulatedGPIO extends AbstractGPIO {
   setState(on: boolean): void {
     if (this.direction === Direction.OUTPUT) {
       let state: number = on ? 1 : 0;
-      logger.info(`Simulation: setState ${this.getName()} to ${state}`);
+      SimulatedGPIO.logger.info(`Simulation: setState ${this.getName()} to ${state}`);
     } else {
-      logger.error(`setState ${this.getName()} not allowed for input pin`);
+      SimulatedGPIO.logger.error(`setState ${this.getName()} not allowed for input pin`);
     }
   }
 
@@ -55,7 +55,7 @@ export class SimulatedGPIO extends AbstractGPIO {
         });
         this.outputObs = Observable.create((subscriber: Subscriber<boolean>) => {
           let cmd: string = `${this.getName()}/value`;
-          logger.info(`Simulation: watch ${cmd}`);
+          SimulatedGPIO.logger.info(`Simulation: watch ${cmd}`);
           this.doRead = true;
           let prevState: boolean = !this.keyPressed;
           let intervalId = setInterval(() => {
@@ -73,12 +73,12 @@ export class SimulatedGPIO extends AbstractGPIO {
       }
       return this.outputObs;
     } else {
-      logger.error(`watch ${this.getName()} not allowed for output pin`);
+      SimulatedGPIO.logger.error(`watch ${this.getName()} not allowed for output pin`);
     }
   }
 
   reset(): void {
-    logger.info(`Simulation: reset ${this.getName()} --> for gpio${this.id}`);
+    SimulatedGPIO.logger.info(`Simulation: reset ${this.getName()} --> for gpio${this.id}`);
     this.doRead = false;
     if (this.cmdSubscription) {
       this.cmdSubscription.unsubscribe();
@@ -96,6 +96,7 @@ export class SimulatedGPIO extends AbstractGPIO {
 }
 
 export class SimulatedAIN extends AbstractAIN {
+  private static readonly logger: Logger = getLogger('SimulatedAIN');
 
   private outputObs: Observable<number> = null;
   private doPoll: boolean = true;
@@ -124,7 +125,7 @@ export class SimulatedAIN extends AbstractAIN {
         }
       });
       this.outputObs = Observable.create((subscriber: Subscriber<number>) => {
-        logger.debug(`poll ${this.getName()} every ${intervalSeconds} second(s)`);
+        SimulatedAIN.logger.debug(`poll ${this.getName()} every ${intervalSeconds} second(s)`);
         this.doPoll = true;
         let intervalId = setInterval(() => {
           if (this.doPoll) {
@@ -147,7 +148,7 @@ export class SimulatedAIN extends AbstractAIN {
   }
 
   stopPolling(): void {
-    logger.debug(`stopPolling ${this.getName()}`);
+    SimulatedAIN.logger.debug(`stopPolling ${this.getName()}`);
     this.doPoll = false;
     if (this.cmdSubscription) {
       this.cmdSubscription.unsubscribe();
@@ -156,6 +157,8 @@ export class SimulatedAIN extends AbstractAIN {
 }
 
 export class SimulatedLED extends AbstractLED {
+  private static readonly logger: Logger = getLogger('SimulatedLED');
+
   constructor(protected id: number) {
     super(id);
   }
@@ -165,15 +168,15 @@ export class SimulatedLED extends AbstractLED {
   }
 
   setState(state: number): void {
-    logger.info(`Simulation: setState ${this.getName()} to ${state}`);
+    SimulatedLED.logger.info(`Simulation: setState ${this.getName()} to ${state}`);
   }
 
   blink(delayOn: number, delayOff: number): void {
-    logger.info(`Simulation: blink ${this.getName()} with on ${delayOn} and off ${delayOff}`);
+    SimulatedLED.logger.info(`Simulation: blink ${this.getName()} with on ${delayOn} and off ${delayOff}`);
   }
 
   heartbeat(): void {
-    logger.info(`Simulation: heartbeat ${this.getName()}`);
+    SimulatedLED.logger.info(`Simulation: heartbeat ${this.getName()}`);
   }
 }
 

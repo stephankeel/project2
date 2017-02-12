@@ -1,27 +1,23 @@
-import {NgModule}      from '@angular/core';
-import {BrowserModule} from '@angular/platform-browser';
-import {FormsModule}   from '@angular/forms';
-import {HttpModule}    from '@angular/http';
-
-import {AppComponent}  from './app.component';
-import {AppRoutingModule} from './app-routing.module';
-import {LoginComponent} from './login/login.component';
-import {AuthenticationService} from './remote/authentication.service';
-import {ClientSocketService} from './remote/client-socket.service';
+import {NgModule} from "@angular/core";
+import {BrowserModule} from "@angular/platform-browser";
+import {FormsModule} from "@angular/forms";
+// used to create fake backend
+import {HttpModule, BaseRequestOptions, RequestOptions, Http} from "@angular/http";
+import {AppComponent} from "./app.component";
+import {AppRoutingModule} from "./app-routing.module";
+import {LoginComponent} from "./login/login.component";
+import {AuthenticationService} from "./remote/authentication.service";
+import {ClientSocketService} from "./remote/client-socket.service";
 import {DashboardComponent} from "./dashboard/dashboard.component";
-import {TemperatureComponent} from './temperature/temperature.component';
+import {TemperatureComponent} from "./temperature/temperature.component";
 import {UsersComponent} from "./users/users.component";
 import {AuthGuard} from "./auth/auth-guard.service";
-
-// used to create fake backend
-import {BaseRequestOptions} from '@angular/http';
-
-import {RequestOptions, Http} from "@angular/http";
-import {AuthHttp, AuthConfig} from 'angular2-jwt';
-import {TemperatureViewComponent} from './temperature-view/temperature-view.component';
-import {TemperatureService} from "./temperature/temperature.service";
-import {DevicesSetupComponent} from './devices-setup/devices-setup.component';
-import {TemperatureSetupComponent} from './temperature-setup/temperature-setup.component';
+import {AuthHttp, AuthConfig} from "angular2-jwt";
+import {TemperatureViewComponent} from "./temperature-view/temperature-view.component";
+import {DevicesSetupComponent} from "./devices-setup/devices-setup.component";
+import {BlindsSetupComponent} from "./blinds-setup/blinds-setup.component";
+import {HumiditySetupComponent} from "./humidity-setup/humidity-setup.component";
+import {TemperatureSetupComponent} from "./temperature-setup/temperature-setup.component";
 
 // TODO: in welches File müsste diese Methode?
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
@@ -46,7 +42,9 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     TemperatureComponent,
     TemperatureViewComponent,
     DevicesSetupComponent,
-    TemperatureSetupComponent
+    BlindsSetupComponent,
+    HumiditySetupComponent,
+    TemperatureSetupComponent,
   ],
   providers: [
     AuthGuard,
@@ -63,7 +61,6 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     ClientSocketService,
     // providers used to create fake backend_helpers/index
     BaseRequestOptions,
-    TemperatureService,
   ],
   bootstrap: [
     AppComponent,

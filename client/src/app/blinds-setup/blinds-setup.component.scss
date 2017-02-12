@@ -1,0 +1,53 @@
+main {
+  display: flex;
+}
+
+.deviceList {
+  flex-direction: column;
+  margin: 0.5em;
+}
+
+.deviceForm {
+  flex: 2 2;
+  flex-direction: column;
+  margin: 0.5em;
+  padding: 0.5em;
+  background-color: lightgray;
+}
+
+.deviceFormRow {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  margin: 0.4em 0;
+}
+
+.deviceFormLabel {
+  flex: 0 0 8em;
+}
+
+.deviceFormValue {
+  flex: 1;
+}
+
+#userMessage {
+}
+
+.buttonDiv {
+  margin-top: 0.5em;
+}
+
+#okButton {
+}
+
+#deleteButton {
+}
+
+.contextHeaderActionDiv {
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.contextHeaderAction {
+}

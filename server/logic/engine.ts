@@ -1,12 +1,17 @@
-import {logger} from '../utils/logger';
+import {getLogger, Logger} from '../utils/logger';
 import {AbstractAIN, AbstractLED, AbstractGPIO, Direction} from '../hardware/abstract-ports';
 import {IAnalogData, IBlindsData} from "../entities/data.interface";
+import {BlindsDeviceController} from "../controllers/blinds-device.controller";
+import {HumidityDeviceController} from "../controllers/humidity-device.controller";
+import {TemperatureDeviceController} from "../controllers/temperature-device.controller";
 import {GenericDataController} from "../controllers/generic.data-controller";
 import {DeviceType, deviceTypeAsString} from '../entities/device-type';
 import {PortsFactory} from '../hardware/ports-factory';
 import {Port} from '../hardware/port-map';
 import {IDevice, IAnalogDevice, ITemperatureDevice, IBlindsDevice} from '../entities/device.interface';
 import {BlindsState} from '../entities/blinds-state';
+
+const LOGGER: Logger = getLogger('Engine');
 
 // for engine internal use only
 class DeviceInfo {
@@ -33,19 +38,14 @@ class BlindsGPIOs {
 
 
 export class Engine {
-  private static singleton: Engine = new Engine();
   private portsFactory: PortsFactory;
   private heartbeatLED: AbstractLED;
   private devices: Map<any, DeviceInfo> = new Map<any, DeviceInfo>();
   private ainInUse: Map<any, AbstractAIN> = new Map<any, AbstractAIN>();
   private gpiosInUse: Map<any, BlindsGPIOs> = new Map<any, BlindsGPIOs>();
 
-  private constructor() {
+  public constructor() {
     this.init();
-  }
-
-  public static getInstance(): Engine {
-    return Engine.singleton;
   }
 
   private init(): void {
@@ -58,27 +58,45 @@ export class Engine {
     led.heartbeat();
   }
 
-  public addBlindsDevice(device: IDevice) {
+  public registerBlindsDeviceController(deviceController: BlindsDeviceController): void {
+    deviceController.registerOnCreate((device: IDevice) => this.addBlindsDevice(device));
+    deviceController.registerOnUpdate((device: IDevice) => this.updateDevice(device));
+    deviceController.registerOnDelete((id: any) => this.removeDevice(id));
+  }
+
+  public registerHumidityDeviceController(deviceController: HumidityDeviceController): void {
+    deviceController.registerOnCreate((device: IDevice) => this.addHumidityDevice(device));
+    deviceController.registerOnUpdate((device: IDevice) => this.updateDevice(device));
+    deviceController.registerOnDelete((id: any) => this.removeDevice(id));
+  }
+
+  public registerTemperatureDeviceController(deviceController: TemperatureDeviceController): void {
+    deviceController.registerOnCreate((device: IDevice) => this.addTemperatrueDevice(device));
+    deviceController.registerOnUpdate((device: IDevice) => this.updateDevice(device));
+    deviceController.registerOnDelete((id: any) => this.removeDevice(id));
+  }
+
+  private addBlindsDevice(device: IDevice) {
     let deviceInfo: DeviceInfo = new DeviceInfo(device, DeviceType.BLINDS);
-    logger.info(`Engine.addBlindsDevice: ${JSON.stringify(device)}`);
+    LOGGER.info(`addBlindsDevice: ${JSON.stringify(device)}`);
     let blindsDevice: IBlindsDevice = device as IBlindsDevice;
     this.assignBlindsPorts(blindsDevice);
     this.devices.set(device.id, deviceInfo);
   }
 
-  public addHumidityDevice(device: IDevice) {
-    logger.info(`Engine.addHumidityDevice: ${JSON.stringify(device)}`);
+  private addHumidityDevice(device: IDevice) {
+    LOGGER.info(`addHumidityDevice: ${JSON.stringify(device)}`);
     this.addAnalogDevice(device, DeviceType.HUMIDITY);
   }
 
-  public addTemperatrueDevice(device: IDevice) {
-    logger.info(`Engine.addTemperatureDevice: ${JSON.stringify(device)}`);
+  private addTemperatrueDevice(device: IDevice) {
+    LOGGER.info(`addTemperatureDevice: ${JSON.stringify(device)}`);
     this.addAnalogDevice(device, DeviceType.TEMPERATURE);
   }
 
   private addAnalogDevice(device: IDevice, deviceType: DeviceType) {
     let deviceInfo: DeviceInfo = new DeviceInfo(device, deviceType);
-    logger.info(`Engine.addAnalogDevice: ${JSON.stringify(device)}`);
+    LOGGER.info(`addAnalogDevice: ${JSON.stringify(device)}`);
 
     let analogDevice: IAnalogDevice = device as ITemperatureDevice;
     let ain: AbstractAIN = this.assignAnalogInput(analogDevice.id, analogDevice.port);
@@ -86,8 +104,8 @@ export class Engine {
         let data: IAnalogData = {deviceId: device.id, timestamp: Date.now(), value: val};
         GenericDataController.getDataController(deviceType).addDataRecord(data);
       },
-      (err: any) => logger.error(`Engine: ${deviceTypeAsString(deviceType)} device polling error ${err}`),
-      () => logger.info(`Engine: ${deviceTypeAsString(deviceType)} device polling stopped`)
+      (err: any) => LOGGER.error(`${deviceTypeAsString(deviceType)} device polling error ${err}`),
+      () => LOGGER.info(`${deviceTypeAsString(deviceType)} device polling stopped`)
     );
     this.devices.set(device.id, deviceInfo);
   }
@@ -95,7 +113,7 @@ export class Engine {
   public updateDevice(device: IDevice) {
     let deviceInfo: DeviceInfo = this.devices.get(device.id);
     if (deviceInfo) {
-      logger.info(`Engine.updateDevice: ${deviceTypeAsString(deviceInfo.type)}\n\tfrom: ${JSON.stringify(deviceInfo)}\n\tto.:${JSON.stringify(device)}`);
+      LOGGER.info(`updateDevice: ${deviceTypeAsString(deviceInfo.type)}\n\tfrom: ${JSON.stringify(deviceInfo)}\n\tto.:${JSON.stringify(device)}`);
       switch (deviceInfo.type) {
         case DeviceType.BLINDS:
           let newBlindsDevice: IBlindsDevice = device as IBlindsDevice;
@@ -117,14 +135,14 @@ export class Engine {
       }
       deviceInfo.device = device;
     } else {
-      logger.error(`Engine.updateDevice: device ${device.name} with id ${device.id} not found`);
+      LOGGER.error(`updateDevice: device ${device.name} with id ${device.id} not found`);
     }
   }
 
   public removeDevice(id: any) {
     let deviceInfo: DeviceInfo = this.devices.get(id);
     if (deviceInfo) {
-      logger.info(`Engine.remnoveDevice: ${deviceTypeAsString(deviceInfo.type)} ${deviceInfo.device.name} ${deviceInfo.device.id}`);
+      LOGGER.info(`removeDevice: ${deviceTypeAsString(deviceInfo.type)} ${deviceInfo.device.name} ${deviceInfo.device.id}`);
       switch (deviceInfo.type) {
         case DeviceType.BLINDS:
           this.releaseBlindsPorts(id);
@@ -136,7 +154,7 @@ export class Engine {
       }
       this.devices.delete(id);
     } else {
-      logger.error(`Engine.remnoveDevice: device with id ${id} not found`);
+      LOGGER.error(`removeDevice: device with id ${id} not found`);
     }
   }
 
@@ -156,7 +174,7 @@ export class Engine {
       ain.stopPolling();
       this.ainInUse.delete(id);
     } else {
-      logger.error(`Engine.releaseAIN: device ${id} has no port assigned`);
+      LOGGER.error(`releaseAIN: device ${id} has no port assigned`);
     }
   }
 
@@ -177,8 +195,8 @@ export class Engine {
         let data: IBlindsData = {deviceId: blindsDevice.id, timestamp: Date.now(), state: this.getNewBlindsState(ports, BlindsState.OPENING)};
         GenericDataController.getDataController(DeviceType.BLINDS).addDataRecord(data);
       },
-      (err: any) => logger.error(`Engine: ${deviceTypeAsString(DeviceType.BLINDS)} device watching keyUp error ${err}`),
-      () => logger.info(`Engine: ${deviceTypeAsString(DeviceType.BLINDS)} device watching keyUp stopped`)
+      (err: any) => LOGGER.error(`${deviceTypeAsString(DeviceType.BLINDS)} device watching keyUp error ${err}`),
+      () => LOGGER.info(`${deviceTypeAsString(DeviceType.BLINDS)} device watching keyUp stopped`)
     );
 
     return ports;
@@ -190,7 +208,7 @@ export class Engine {
       gpios.reset();
       this.gpiosInUse.delete(id);
     } else {
-      logger.error(`Engine.releaseBlindsPorts: device ${id} has no ports assigned`);
+      LOGGER.error(`releaseBlindsPorts: device ${id} has no ports assigned`);
     }
   }
 

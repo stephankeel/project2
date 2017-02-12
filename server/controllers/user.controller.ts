@@ -1,8 +1,9 @@
 import express = require('express');
-import {IUserDocument, UserModel} from '../models/user.model';
-import {GenericController} from "./generic.controller";
+import {IUserDocument, UserModel} from "../models/user.model";
 import {IUser} from "../entities/user.interface";
 import {SocketService} from "../socket/socket-service";
+import {GenericController} from "./generic.controller";
+import {GenericSubject} from "./generic-subject";
 
 export class UserController extends GenericController<IUser, IUserDocument> {
   constructor(socketService: SocketService) {
@@ -11,9 +12,6 @@ export class UserController extends GenericController<IUser, IUserDocument> {
       UserModel,
       c => new UserModel(c),
       (d, i) => UserController.updateDocument(d, i),
-      id => {
-      },
-      false,
     );
   }
 
