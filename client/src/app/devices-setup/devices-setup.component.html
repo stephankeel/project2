@@ -5,9 +5,12 @@
 </header>
 
 <main>
-  <div *ngFor="let device of devices" class="mainSelection" (click)="clickAction(device)">
+  <div *ngFor="let device of devicePool" class="mainSelection" (click)="clickAction(device)">
     <img class="{{device.css}}Icon" src="app/images/{{device.icon}}" alt="{{device.title}} Icon"
          title="{{device.title}} Icon">
-    <div class="mainSelectionLabel">{{device.displayName}}-SETUP</div>
+    <div class="deviceText">
+      <div class="mainSelectionLabel">{{device.displayName}}-SETUP</div>
+      <div class="deviceCount">Anzahl {{device.count}}</div>
+    </div>
   </div>
 </main>

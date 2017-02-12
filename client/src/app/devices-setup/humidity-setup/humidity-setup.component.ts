@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
-import {GenericService} from "../remote/generic.service";
 import {AuthHttp} from "angular2-jwt";
-import {ClientSocketService} from "../remote/client-socket.service";
 
-import {HumidityDevice, HumidityDeviceCharacteristics, Port, portName} from '../device-pool';
+import {GenericService} from "../../remote/generic.service";
+import {ClientSocketService} from "../../remote/client-socket.service";
+import {HumidityDevice, humidityDevicesInfo, AnalogDevicesInfo, Port, portName} from '../../device-pool';
 
 
 @Component({
@@ -13,11 +13,12 @@ import {HumidityDevice, HumidityDeviceCharacteristics, Port, portName} from '../
   styleUrls: ['humidity-setup.component.scss']
 })
 export class HumiditySetupComponent implements OnInit {
-
+  headerTitle: string = `${humidityDevicesInfo.displayName}-SETUP`;
   devices: HumidityDevice[] = [];
   device: HumidityDevice;
   selectedDevice: HumidityDevice;
-  ports: Port[] = HumidityDeviceCharacteristics.portSet;
+  ports: Port[] = humidityDevicesInfo.portSet;
+  addActionEnabled: boolean = true;
   private genericService: GenericService<HumidityDevice>;
   message: string;
 
@@ -30,6 +31,8 @@ export class HumiditySetupComponent implements OnInit {
       this.socketService, "/api/devices/humidity", "/humidity");
     this.genericService.items.subscribe(devices => {
         this.devices = devices.toArray();
+        AnalogDevicesInfo.updateAnalogPortsInUse(humidityDevicesInfo, devices.toArray().map(device => device.port))
+        this.updatePortSet();
         this.device = null;
         this.selectedDevice = null;
       }, error => this.message = error.toString());
@@ -45,13 +48,21 @@ export class HumiditySetupComponent implements OnInit {
   }
 
   addClicked(): void {
+    this.selectedDevice = null;
+    this.updatePortSet();
     this.device = new HumidityDevice();
   }
 
   selectDevice(device: HumidityDevice) {
     this.clearMessage();
+    this.updatePortSet(device);
     this.selectedDevice = device;
     this.device = new HumidityDevice(this.selectedDevice.id, this.selectedDevice.name, this.selectedDevice.port);
+  }
+
+  updatePortSet(device?: HumidityDevice): void {
+    this.ports = humidityDevicesInfo.portSet.filter(port => !AnalogDevicesInfo.analogPortsInUse.has(port) || device && port === device.port);
+    this.addActionEnabled = device ? this.ports.length > 1 : this.ports.length > 0;
   }
 
   getPortName(port: Port): string {
