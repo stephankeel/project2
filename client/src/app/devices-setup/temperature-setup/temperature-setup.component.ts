@@ -4,7 +4,7 @@ import {AuthHttp} from "angular2-jwt";
 
 import {GenericService} from "../../remote/generic.service";
 import {ClientSocketService} from "../../remote/client-socket.service";
-import {TemperatureDevice, TemperatureDevicesInfo, temperatureDevicesInfo, Port, portName} from '../../device-pool';
+import {TemperatureDevice, temperatureDevicesInfo, AnalogDevicesInfo, Port, portName} from '../../device-pool';
 
 
 @Component({
@@ -17,8 +17,9 @@ export class TemperatureSetupComponent implements OnInit {
   devices: TemperatureDevice[] = [];
   device: TemperatureDevice;
   selectedDevice: TemperatureDevice;
-  ports: Port[] = TemperatureDevicesInfo.portSet;
+  ports: Port[];
   selectedPort: Port;
+  addActionEnabled: boolean = true;
   private genericService: GenericService<TemperatureDevice>;
   message: string;
 
@@ -31,6 +32,8 @@ export class TemperatureSetupComponent implements OnInit {
       this.socketService, "/api/devices/temperature", "/temperature");
     this.genericService.items.subscribe(devices => {
         this.devices = devices.toArray();
+        AnalogDevicesInfo.updateAnalogPortsInUse(temperatureDevicesInfo, devices.toArray().map(device => device.port));
+        this.updatePortSet();
         this.device = null;
         this.selectedDevice = null;
       }, error => this.message = error.toString());
@@ -46,13 +49,21 @@ export class TemperatureSetupComponent implements OnInit {
   }
 
   addClicked(): void {
+    this.selectedDevice = null;
+    this.updatePortSet();
     this.device = new TemperatureDevice();
   }
 
   selectDevice(device: TemperatureDevice) {
     this.clearMessage();
+    this.updatePortSet(device);
     this.selectedDevice = device;
     this.device = new TemperatureDevice(this.selectedDevice.id, this.selectedDevice.name, this.selectedDevice.port);
+  }
+
+  updatePortSet(device?: TemperatureDevice): void {
+    this.ports = temperatureDevicesInfo.portSet.filter(port => !AnalogDevicesInfo.analogPortsInUse.has(port) || device && port === device.port);
+    this.addActionEnabled = device ? this.ports.length > 1 : this.ports.length > 0;
   }
 
   getPortName(port: Port): string {

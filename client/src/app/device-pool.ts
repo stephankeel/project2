@@ -36,36 +36,61 @@ export abstract class DevicesInfo {
   }
 }
 
-export class BlindsDevicesInfo extends DevicesInfo {
-  public static readonly inputPortSet: Port[] = digitalInputs;
-  public static readonly outputPortSet: Port[] = digitalOutputs;
-  public static inputPortsInUse: Set<Port> = new Set<Port>();
-  public static outputPortsInUse: Set<Port> = new Set<Port>();
+class BlindsDevicesInfo extends DevicesInfo {
+  public readonly inputPortSet: Port[] = digitalInputs;
+  public readonly outputPortSet: Port[] = digitalOutputs;
+  public inputPortsInUse: Set<Port> = new Set<Port>();
+  public outputPortsInUse: Set<Port> = new Set<Port>();
 
   constructor(){
     super(DeviceType.BLINDS, 'ROLLLADEN', 'Blinds', 'blinds', 'blinds.svg');
+    console.log('=====>>> create BlindsDeviceInfo');
+  }
+
+  updatePortsInUse(devices: BlindsDevice[]): void {
+    blindsDevicesInfo.inputPortsInUse.clear();
+    blindsDevicesInfo.outputPortsInUse.clear();
+    devices.forEach(device => {
+      blindsDevicesInfo.inputPortsInUse.add(device.keyUp);
+      blindsDevicesInfo.inputPortsInUse.add(device.keyDown);
+      blindsDevicesInfo.outputPortsInUse.add(device.actorUp);
+      blindsDevicesInfo.outputPortsInUse.add(device.actorDown);
+    });
   }
 }
 
 export abstract class AnalogDevicesInfo extends DevicesInfo {
-  public static portsInUse: Set<Port> = new Set<Port>();
-}
+  public static analogPortsInUse: Set<Port> = new Set<Port>();
+  public readonly portSet: Port[] = analogInputs;
+  public portsInUse: Set<Port> = new Set<Port>();
 
-export class HumidityDevicesInfo extends AnalogDevicesInfo {
-  public static readonly portSet: Port[] = analogInputs;
-  public static portsInUse: Set<Port> = new Set<Port>();
-
-  constructor(){
-    super(DeviceType.HUMIDITY, 'FEUCHTIGKEIT', 'Humidity', 'humidity', 'humidity.svg');
+  static updateAnalogPortsInUse(devicesInfo: AnalogDevicesInfo, ports: Port[]) {
+    devicesInfo.portSet.forEach(port => {
+      // port added?
+      if (ports.indexOf(port) > -1 && !devicesInfo.portsInUse.has(port)){
+        AnalogDevicesInfo.analogPortsInUse.add(port);
+      }
+      // port removed?
+      if (ports.indexOf(port) < 0 && devicesInfo.portsInUse.has(port)){
+        AnalogDevicesInfo.analogPortsInUse.delete(port);
+      }
+    });
+    devicesInfo.portsInUse.clear();
+    ports.forEach(port => devicesInfo.portsInUse.add(port));
   }
 }
 
-export class TemperatureDevicesInfo extends AnalogDevicesInfo {
-  public static readonly portSet: Port[] = analogInputs;
-  public static portsInUse: Set<Port> = new Set<Port>();
+class HumidityDevicesInfo extends AnalogDevicesInfo {
+  constructor(){
+    super(DeviceType.HUMIDITY, 'FEUCHTIGKEIT', 'Humidity', 'humidity', 'humidity.svg');
+    console.log('=====>>> create HumidityDeviceInfo');
+  }
+}
 
+class TemperatureDevicesInfo extends AnalogDevicesInfo {
   constructor(){
     super(DeviceType.TEMPERATURE, 'TEMPERATUR', 'Temperature', 'temperature', 'temperature.svg');
+    console.log('=====>>> create TemperatureDeviceInfo');
   }
 }
 
