@@ -45,7 +45,7 @@ export class TemperatureSetupComponent implements OnInit {
   }
 
   backClicked(): void {
-    this.router.navigate(['/devices']);
+    this.router.navigate(['/devices-setup']);
   }
 
   addClicked(): void {

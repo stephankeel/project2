@@ -40,7 +40,7 @@ export class DashboardComponent implements OnInit {
   deviceSetup(): void {
     this.closeMenu();
     if (this.isAdmin) {
-      this.router.navigate(['/devices']);
+      this.router.navigate(['/devices-setup']);
     }
   }
 
@@ -75,5 +75,4 @@ export class DashboardComponent implements OnInit {
         break;
     }
   }
-
 }
