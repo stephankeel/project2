@@ -6,9 +6,9 @@ import {HumiditySetupComponent} from "./humidity-setup/humidity-setup.component"
 import {TemperatureSetupComponent} from "./temperature-setup/temperature-setup.component";
 
 const deviceSetupRoutes: Routes = [
-  {path: 'blinds', canActivate: [AuthGuard], component: BlindsSetupComponent},
-  {path: 'humidity', canActivate: [AuthGuard], component: HumiditySetupComponent},
-  {path: 'temperature', canActivate: [AuthGuard], component: TemperatureSetupComponent},
-]
+  {path: 'blinds-setup', canActivate: [AuthGuard], component: BlindsSetupComponent},
+  {path: 'humidity-setup', canActivate: [AuthGuard], component: HumiditySetupComponent},
+  {path: 'temperature-setup', canActivate: [AuthGuard], component: TemperatureSetupComponent},
+];
 
 export const deviceSetupRouting: ModuleWithProviders = RouterModule.forChild(deviceSetupRoutes);
