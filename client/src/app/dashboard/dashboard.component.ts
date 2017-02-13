@@ -65,7 +65,7 @@ export class DashboardComponent implements OnInit {
   clickAction(device: DevicesInfo): void {
     switch (device.type) {
       case DeviceType.BLINDS:
-        // TODO: this.router.navigate(['/blinds']);
+        this.router.navigate(['/blinds']);
         break;
       case DeviceType.HUMIDITY:
         // TODO: this.router.navigate(['/humidity']);

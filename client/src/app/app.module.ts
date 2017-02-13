@@ -9,11 +9,13 @@ import {LoginComponent} from "./login/login.component";
 import {AuthenticationService} from "./remote/authentication.service";
 import {ClientSocketService} from "./remote/client-socket.service";
 import {DashboardComponent} from "./dashboard/dashboard.component";
+import {BlindsComponent} from "./blinds/blinds.component";
 import {TemperatureComponent} from "./temperature/temperature.component";
 import {UsersComponent} from "./users/users.component";
 import {AuthGuard} from "./auth/auth-guard.service";
 import {AuthHttp, AuthConfig} from "angular2-jwt";
 import {TemperatureViewComponent} from "./temperature-view/temperature-view.component";
+import {AdminOrStandardGuard} from "./auth/admin-or-standard-guard.service";
 
 // TODO: in welches File müsste diese Methode?
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
@@ -35,6 +37,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     DashboardComponent,
     UsersComponent,
     LoginComponent,
+    BlindsComponent,
     TemperatureComponent,
     TemperatureViewComponent,
   ],
@@ -49,6 +52,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
       provide: Window,
       useValue: window
     },
+    AdminOrStandardGuard,
     AuthenticationService,
     ClientSocketService,
     // providers used to create fake backend_helpers/index
