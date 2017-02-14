@@ -1,0 +1,33 @@
+main {
+  display: flex;
+  flex-direction: row;
+}
+
+.deviceList {
+  flex-direction: column;
+  margin: 0.5em;
+}
+
+.deviceControl {
+  flex: 1 0;
+  flex-direction: column;
+  margin: 0.5em;
+  padding: 0.5em;
+  background-color: lightgray;
+}
+
+.controlDiv {
+  margin: 0.5em;
+}
+
+.keyUp {
+}
+
+.keyDown {
+}
+
+.stopBlinds {
+}
+
+.status {
+}
