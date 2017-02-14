@@ -31,7 +31,7 @@ export class GenericDataController<T extends IData, R extends IDeviceDocument> i
     LOGGER.debug(`getAllById ${this.loggingPrefix} ${req.params.id}`);
     // TODO: check if deviceId is correct (changed from _id) DL
     let ref = {deviceId: req.params.id};
-    this.model.findById(ref, (err: any, data: R[]) => {
+    this.model.find(ref, (err: any, data: R[]) => {
       if (err || !data) {
         res.status(404).json({error: `error retrieving all ${this.loggingPrefix} with deviceId ${ref.deviceId}. ${err}`});
       } else {
