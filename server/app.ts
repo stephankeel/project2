@@ -8,7 +8,7 @@ import {DBService} from './models/db.service';
 import * as http from "http";
 import * as path from "path";
 import * as socketIo from "socket.io";
-import {requiresAdmin, requiresStandardOrAdmin} from "./routes/authorization";
+import {requiresAdmin, requiresAdminExceptForGet, requiresStandardOrAdmin, requiresAuthenticatedUser} from "./routes/authorization";
 import {GenericRouter} from "./routes/generic.router";
 import {UserController} from "./controllers/user.controller";
 import {TemperatureDeviceController} from "./controllers/temperature-device.controller";
@@ -105,22 +105,22 @@ class Server {
     // blinds devices
     let blindsDeviceController: BlindsDeviceController = new BlindsDeviceController(this.socketService);
     this.engine.registerBlindsDeviceController(blindsDeviceController);
-    this.app.use('/api/devices/blinds', requiresAdmin, GenericRouter.create(blindsDeviceController));
+    this.app.use('/api/devices/blinds', requiresAdminExceptForGet, GenericRouter.create(blindsDeviceController));
 
     // humidity devices
     let humidityDeviceController: HumidityDeviceController = new HumidityDeviceController(this.socketService);
     this.engine.registerHumidityDeviceController(humidityDeviceController);
-    this.app.use('/api/devices/humidity', requiresAdmin, GenericRouter.create(humidityDeviceController));
+    this.app.use('/api/devices/humidity', requiresAdminExceptForGet, GenericRouter.create(humidityDeviceController));
 
     // temperature devices
     let temperatureDeviceController: TemperatureDeviceController = new TemperatureDeviceController(this.socketService);
     this.engine.registerTemperatureDeviceController(temperatureDeviceController);
-    this.app.use('/api/devices/temperature', requiresAdmin, GenericRouter.create(temperatureDeviceController));
+    this.app.use('/api/devices/temperature', requiresAdminExceptForGet, GenericRouter.create(temperatureDeviceController));
 
     // data handling for all devices
-    this.app.use('/api/data/blinds', requiresAdmin, GenericDataRouter.create(new BlindsDataController(this.socketService)));
-    this.app.use('/api/data/humidity', requiresAdmin, GenericDataRouter.create(new HumidityDataController(this.socketService)));
-    this.app.use('/api/data/temperature', requiresAdmin, GenericDataRouter.create(new TemperatureDataController(this.socketService)));
+    this.app.use('/api/data/blinds', requiresAuthenticatedUser, GenericDataRouter.create(new BlindsDataController(this.socketService)));
+    this.app.use('/api/data/humidity', requiresAuthenticatedUser, GenericDataRouter.create(new HumidityDataController(this.socketService)));
+    this.app.use('/api/data/temperature', requiresAuthenticatedUser, GenericDataRouter.create(new TemperatureDataController(this.socketService)));
 
     // blinds device command handling
     this.app.use('/api/command/blinds', requiresStandardOrAdmin, BlindsCommandRouter.create(this.engine));
