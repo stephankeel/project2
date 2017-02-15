@@ -5,7 +5,7 @@ export interface IHumidityDataDocument extends IHumidityData, Document {
 }
 
 let HumidityDataSchema = new Schema({
-  // TODO: brauchen wir hier noch eine id ?
+  id: String,
   deviceId: {type: String, required: true, index: true},
   timestamp: {type: Number, required: true},
   value: {type: Number, required: true}
