@@ -1,17 +1,15 @@
-import {ReplaySubject, Observable, Subscription} from "rxjs";
+import {ReplaySubject, Subscription} from "rxjs";
 import {ClientSocketService} from "./client-socket.service";
-import {List} from "immutable";
 import {IId} from "../../../../server/entities/id.interface";
 import {AuthHttp} from "angular2-jwt";
 import {ISocketItem} from "../../../../server/entities/socket-item.model";
-import {GenericRestService} from "./generic-rest.service";
 import {GenericDataRestService} from "./generic-data-rest.service";
 
 export class GenericDataService<T extends IId> {
-  items: ReplaySubject<List<T>> = new ReplaySubject<List<T>>(1);
+  items: ReplaySubject<Array<T>> = new ReplaySubject<Array<T>>(1);
   lastItem: ReplaySubject<T> = new ReplaySubject<T>();
   private currentItemIndex: Set<string> = new Set<string>();
-  private currentItems: List<T> = List<T>();
+  private currentItems: Array<T> = new Array<T>();
   private dataSubscription: Subscription;
   private restService: GenericDataRestService<T>;
 
@@ -45,14 +43,14 @@ export class GenericDataService<T extends IId> {
   }
 
   private addAll(items: T[]) {
-    this.currentItems = List<T>();
+    this.currentItems = new Array<T>();
     this.currentItemIndex = new Set<string>();
     for (let item of items) {
       this.currentItems.push(item);
       this.currentItemIndex.add(item.id);
     }
     this.items.next(this.currentItems);
-    this.lastItem.next(this.currentItems.last());
+    this.lastItem.next(this.currentItems[this.currentItems.length-1]);
   }
 
   private addItem(item: T) {
