@@ -21,7 +21,7 @@
       <button id="keyDown" type="button" [disabled]="!selectedDevice" (click)="keyDownAction()">SCHLIESSEN</button>
     </div>
     <div class="statusDiv, controlDiv">
-      <label id="status">{{statusText}}</label>
+      <label id="status">{{selectedDevice | blindsDataObservable:devicesState | async | blindsDataFormatter}}</label>
     </div>
   </div>
 </main>
