@@ -1,14 +1,20 @@
 import * as express from "express";
+import * as compression from "compression";
 import * as bodyParser from "body-parser";
 import * as createError from "http-errors";
 import * as log4js from "log4js";
-import {Logger, getLogger} from './utils/logger';
-import {authenticationRoute} from './routes/authentication';
-import {DBService} from './models/db.service';
+import {Logger, getLogger} from "./utils/logger";
+import {authenticationRoute} from "./routes/authentication";
+import {DBService} from "./models/db.service";
 import * as http from "http";
 import * as path from "path";
 import * as socketIo from "socket.io";
-import {requiresAdmin, requiresAdminExceptForGet, requiresStandardOrAdmin, requiresAuthenticatedUser} from "./routes/authorization";
+import {
+  requiresAdmin,
+  requiresAdminExceptForGet,
+  requiresStandardOrAdmin,
+  requiresAuthenticatedUser
+} from "./routes/authorization";
 import {GenericRouter} from "./routes/generic.router";
 import {UserController} from "./controllers/user.controller";
 import {TemperatureDeviceController} from "./controllers/temperature-device.controller";
@@ -20,7 +26,7 @@ import {BlindsDeviceController} from "./controllers/blinds-device.controller";
 import {BlindsDataController} from "./controllers/blinds-data.controller";
 import {BlindsCommandRouter} from "./routes/blinds-command.router";
 import {SocketService} from "./socket/socket-service";
-import {Engine} from './logic/engine';
+import {Engine} from "./logic/engine";
 
 const LOGGER: Logger = getLogger('Server');
 
@@ -46,6 +52,7 @@ class Server {
   constructor() {
     // Create expressjs application
     this.app = express();
+    this.app.use(compression());
 
     // Configure application
     this.config();
