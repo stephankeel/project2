@@ -1,19 +1,23 @@
-import {NgModule} from "@angular/core";
-import {BrowserModule} from "@angular/platform-browser";
-import {FormsModule} from "@angular/forms";
+import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {FormsModule} from '@angular/forms';
 // used to create fake backend
-import {HttpModule, BaseRequestOptions, RequestOptions, Http} from "@angular/http";
-import {AppComponent} from "./app.component";
-import {AppRoutingModule} from "./app-routing.module";
-import {LoginComponent} from "./login/login.component";
-import {AuthenticationService} from "./remote/authentication.service";
-import {ClientSocketService} from "./remote/client-socket.service";
-import {DashboardComponent} from "./dashboard/dashboard.component";
-import {TemperatureComponent} from "./temperature/temperature.component";
-import {UsersComponent} from "./users/users.component";
-import {AuthGuard} from "./auth/auth-guard.service";
-import {AuthHttp, AuthConfig} from "angular2-jwt";
-import {TemperatureViewComponent} from "./temperature-view/temperature-view.component";
+import {HttpModule, BaseRequestOptions, RequestOptions, Http} from '@angular/http';
+import {AppComponent} from './app.component';
+import {AppRoutingModule} from './app-routing.module';
+import {LoginComponent} from './login/login.component';
+import {AuthenticationService} from './remote/authentication.service';
+import {ClientSocketService} from './remote/client-socket.service';
+import {DashboardComponent} from './dashboard/dashboard.component';
+import {BlindsComponent} from './blinds/blinds.component';
+import {TemperatureComponent} from './temperature/temperature.component';
+import {UsersComponent} from './users/users.component';
+import {AuthGuard} from './auth/auth-guard.service';
+import {AuthHttp, AuthConfig} from 'angular2-jwt';
+import {TemperatureViewComponent} from './temperature-view/temperature-view.component';
+import {AdminOrStandardGuard} from './auth/admin-or-standard-guard.service';
+import {BlindsDataObservablePipe} from './blinds/blinds-data-observable.pipe';
+import {BlindsDataFormatterPipe} from './blinds/blinds-data-formatter.pipe';
 
 // TODO: in welches File müsste diese Methode?
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
@@ -35,8 +39,11 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     DashboardComponent,
     UsersComponent,
     LoginComponent,
+    BlindsComponent,
     TemperatureComponent,
     TemperatureViewComponent,
+    BlindsDataObservablePipe,
+    BlindsDataFormatterPipe,
   ],
   providers: [
     AuthGuard,
@@ -49,6 +56,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
       provide: Window,
       useValue: window
     },
+    AdminOrStandardGuard,
     AuthenticationService,
     ClientSocketService,
     // providers used to create fake backend_helpers/index

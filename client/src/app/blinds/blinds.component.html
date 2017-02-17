@@ -1,0 +1,27 @@
+<header>
+  <img id="backIcon" class="headerAction" src="app/images/back.svg" alt="Back Icon" title="Back Icon"
+       (click)="backClicked()">
+  <h1 class="headerTitle">{{headerTitle}}</h1>
+</header>
+<main>
+  <div class="deviceList">
+    <div *ngFor="let device of devices" class="deviceListItem selectionListItem"
+         [class.selected]="device === selectedDevice"
+         (click)="selectDevice(device)">{{device.name}}
+    </div>
+  </div>
+  <div class="deviceControl">
+    <div class="buttonDiv, controlDiv">
+      <button id="keyUp" type="button" [disabled]="!selectedDevice" (click)="keyUpAction()">ÖFFNEN</button>
+    </div>
+    <div class="buttonDiv, controlDiv">
+      <button id="stopBlinds" type="button" [disabled]="!selectedDevice" (click)="stopAction()">STOPP</button>
+    </div>
+    <div class="buttonDiv, controlDiv">
+      <button id="keyDown" type="button" [disabled]="!selectedDevice" (click)="keyDownAction()">SCHLIESSEN</button>
+    </div>
+    <div class="statusDiv, controlDiv">
+      <label id="status">{{selectedDevice | blindsDataObservable:devicesState | async | blindsDataFormatter}}</label>
+    </div>
+  </div>
+</main>
