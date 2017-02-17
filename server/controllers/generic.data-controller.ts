@@ -71,7 +71,7 @@ export class GenericDataController<T extends IData, R extends IDeviceDocument> i
         // set the id to the _id provided by the db
         data.id = addedData._id;
         this.socketService.getSocket(`${this.namespaceName}/${data.deviceId}`).create(data);
-        LOGGER.debug(`added ${this.loggingPrefix} successfully, id: ${addedData.id}`);
+        LOGGER.debug(`added ${this.loggingPrefix} successfully, id: ${data.id}`);
       }
     });
   };

@@ -5,6 +5,7 @@ import {Subscription} from 'rxjs/Subscription';
 import {Direction, AbstractAIN, AbstractGPIO, AbstractLED} from './abstract-ports';
 import {SimulationCommandHandler} from "./simulation-command-handler";
 
+
 export class SimulatedGPIO extends AbstractGPIO {
   private static readonly logger: Logger = getLogger('SimulatedGPIO');
   private outputObs: Observable<boolean> = null;
@@ -41,13 +42,16 @@ export class SimulatedGPIO extends AbstractGPIO {
   }
 
   watch(): Observable<boolean> {
+    SimulatedGPIO.logger.error(`watch 1 ${this.getName()}`);
     if (this.direction === Direction.INPUT) {
+      SimulatedGPIO.logger.error(`watch 2 ${this.getName()}`);
       if (this.outputObs === null) {
+        SimulatedGPIO.logger.error(`watch 3 ${this.getName()}`);
         this.cmdSubscription = commandListener('gpi', this.id, (cmd: string) => {
           let parts: string[] = cmd.split(' ');
           if (parts.length > 2 && parts[2]) {
             let value: number = +parts[2];
-            if (isNaN(value)) {
+            if (!isNaN(value)) {
               console.log(`setting GPI ${this.id} from ${this.keyPressed} to ${value != 0}`);
               this.keyPressed = value != 0;
             }
@@ -184,7 +188,7 @@ export class SimulatedLED extends AbstractLED {
 function commandListener(cmdTag: string, portId: number, executeCommand: (cmd: string) => void): Subscription {
   return SimulationCommandHandler.getInstance().getCommandObservable().subscribe((cmd: string) => {
     if (cmd.startsWith(`${cmdTag} ${portId} `)) {
-      console.log(`cmd ${cmd}`);
+      console.log(`execute cmd ${cmd}`);
       executeCommand(cmd);
     }
   });
