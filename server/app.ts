@@ -130,7 +130,7 @@ class Server {
     this.app.use('/api/data/temperature', requiresAuthenticatedUser, GenericDataRouter.create(new TemperatureDataController(this.socketService)));
 
     // blinds device command handling
-    this.app.use('/api/command/blinds', requiresStandardOrAdmin, BlindsCommandRouter.create());
+    this.app.use('/api/command/blinds', requiresStandardOrAdmin, BlindsCommandRouter.create(this.engine));
 
     this.app.use('/api', function (req: express.Request, res: express.Response, next: express.NextFunction) {
       next(createError(404, `No route found for ${req.method} ${req.url}`));
