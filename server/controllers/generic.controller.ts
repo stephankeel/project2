@@ -8,10 +8,12 @@ import {GenericSubject} from "./generic-subject";
 import express = require('express');
 const LOGGER: Logger = getLogger('GenericController');
 
+/*
 export interface IAction {
   action: string;
   id: string;
 }
+*/
 
 export class GenericController<T, R extends IDeviceDocument> implements IController {
   private loggingPrefix: string;

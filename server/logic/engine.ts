@@ -129,7 +129,7 @@ export class Engine {
           let analogDevice: IAnalogDevice = device as IAnalogDevice;
           if (analogDevice.port != (deviceInfo.device as IAnalogDevice).port) {
             this.removeDevice(device.id);
-            this.addAnalogDevice(device.id, deviceInfo.type);
+            this.addAnalogDevice(device, deviceInfo.type);
           }
           break;
       }
@@ -192,7 +192,17 @@ export class Engine {
     this.gpiosInUse.set(blindsDevice.id, ports);
 
     ports.keyUp.watch().subscribe((keyPressed: boolean) => {
-        let data: IBlindsData = {deviceId: blindsDevice.id, timestamp: Date.now(), state: this.getNewBlindsState(ports, BlindsState.OPENING)};
+        let data: IBlindsData = {deviceId: blindsDevice.id, timestamp: Date.now(), state: this.getNewBlindsState(ports, keyPressed ? BlindsState.OPENING: BlindsState.ANYWHERE)};
+        LOGGER.debug(`keyUp detected ${JSON.stringify(data)}`);
+        GenericDataController.getDataController(DeviceType.BLINDS).addDataRecord(data);
+      },
+      (err: any) => LOGGER.error(`${deviceTypeAsString(DeviceType.BLINDS)} device watching keyUp error ${err}`),
+      () => LOGGER.info(`${deviceTypeAsString(DeviceType.BLINDS)} device watching keyUp stopped`)
+    );
+
+    ports.keyDown.watch().subscribe((keyPressed: boolean) => {
+        let data: IBlindsData = {deviceId: blindsDevice.id, timestamp: Date.now(), state: this.getNewBlindsState(ports, keyPressed ? BlindsState.CLOSING : BlindsState.ANYWHERE)};
+        LOGGER.debug(`keyDown detected ${JSON.stringify(data)}`);
         GenericDataController.getDataController(DeviceType.BLINDS).addDataRecord(data);
       },
       (err: any) => LOGGER.error(`${deviceTypeAsString(DeviceType.BLINDS)} device watching keyUp error ${err}`),
