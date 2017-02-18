@@ -7,10 +7,15 @@ import {GenericService} from "../remote/generic.service";
 import {ClientSocketService} from "../remote/client-socket.service";
 import {BlindsDevice, blindsDevicesInfo, Port, portName} from '../device-pool';
 import {GenericDataService} from "../remote/generic-data.service";
+import {BlindsCommandService} from '../remote/blinds-command.service';
 import {IBlindsDevice} from "../../../../server/entities/device.interface";
 import {IBlindsData} from "../../../../server/entities/data.interface";
 import {BlindsDataObservablePipe} from './blinds-data-observable.pipe';
 import {BlindsDataFormatterPipe} from './blinds-data-formatter.pipe';
+import {IBlindsCommand} from '../../../../server/entities/blinds-comnnad.interface';
+import {IId} from "../../../../server/entities/id.interface";
+import {BlindsAction} from '../../../../server/entities/blinds-action';
+
 
 @Component({
   selector: 'app-blinds',
@@ -29,8 +34,8 @@ export class BlindsComponent implements OnInit {
   private dataServices: Map<BlindsDevice, GenericDataService<IBlindsData>> = new Map<BlindsDevice, GenericDataService<IBlindsData>>();
   private devicesState: Map<BlindsDevice, Observable<IBlindsData>> = new Map<BlindsDevice, Observable<IBlindsData>>();
 
-  constructor(private router: Router,
-              private socketService: ClientSocketService, private authHttp: AuthHttp) {
+  constructor(private router: Router, private socketService: ClientSocketService,
+              private authHttp: AuthHttp, private commandService: BlindsCommandService) {
   }
 
   ngOnInit() {
@@ -82,15 +87,27 @@ export class BlindsComponent implements OnInit {
   }
 
   keyUpAction(): void {
-
+    let cmd: IBlindsCommand = {
+      id: this.selectedDevice.id,
+      action: BlindsAction.OPEN
+    };
+    this.commandService.command(cmd).subscribe((done: boolean) => {}, (err: any) => this.message = JSON.stringify(err));
   }
 
   keyDownAction(): void {
-
+    let cmd: IBlindsCommand = {
+      id: this.selectedDevice.id,
+      action: BlindsAction.CLOSE
+    };
+    this.commandService.command(cmd).subscribe((done: boolean) => {}, (err: any) => this.message = JSON.stringify(err));
   }
 
   stopAction(): void {
-
+    let cmd: IBlindsCommand = {
+      id: this.selectedDevice.id,
+      action: BlindsAction.STOP
+    };
+    this.commandService.command(cmd).subscribe((done: boolean) => {}, (err: any) => this.message = JSON.stringify(err));
   }
 
 }
