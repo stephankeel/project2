@@ -9,29 +9,9 @@ import {DeviceType, deviceTypeAsString} from '../entities/device-type';
 import {PortsFactory} from '../hardware/ports-factory';
 import {Port} from '../hardware/port-map';
 import {IDevice, IAnalogDevice, ITemperatureDevice, IBlindsDevice} from '../entities/device.interface';
-import {BlindsState} from '../entities/blinds-state';
+import {BlindsState, blindsStateAsString} from '../entities/blinds-state';
 
 const LOGGER: Logger = getLogger('Engine');
-
-// for engine internal use only
-class DeviceInfo {
-  constructor(public device: IDevice, public type: DeviceType) {
-  }
-}
-
-class BlindsGPIOs {
-  public state: BlindsState = BlindsState.OPEN;
-  constructor(public keyUp: AbstractGPIO, public keyDown: AbstractGPIO, public actorUp: AbstractGPIO, public actorDown: AbstractGPIO) {
-  }
-
-  public reset(): void {
-    this.keyUp.reset();
-    this.keyDown.reset();
-    this.actorUp.reset();
-    this.actorDown.reset();
-  }
-}
-
 
 export class Engine {
   private portsFactory: PortsFactory;
@@ -39,6 +19,7 @@ export class Engine {
   private devices: Map<any, DeviceInfo> = new Map<any, DeviceInfo>();
   private ainInUse: Map<any, AbstractAIN> = new Map<any, AbstractAIN>();
   private gpiosInUse: Map<any, BlindsGPIOs> = new Map<any, BlindsGPIOs>();
+  private blindsEngines: Map<any, BlindsEngine> = new Map<any, BlindsEngine>();
 
   public constructor() {
     this.init();
@@ -72,25 +53,26 @@ export class Engine {
     deviceController.registerOnDelete((id: any) => this.removeDevice(id));
   }
 
-  private addBlindsDevice(device: IDevice) {
+  private addBlindsDevice(device: IDevice): void {
     let deviceInfo: DeviceInfo = new DeviceInfo(device, DeviceType.BLINDS);
     LOGGER.info(`addBlindsDevice: ${JSON.stringify(device)}`);
     let blindsDevice: IBlindsDevice = device as IBlindsDevice;
-    this.assignBlindsPorts(blindsDevice);
+    let ports: BlindsGPIOs = this.assignBlindsPorts(blindsDevice);
     this.devices.set(device.id, deviceInfo);
+    this.blindsEngines.set(device.id, new BlindsEngine(blindsDevice, ports));
   }
 
-  private addHumidityDevice(device: IDevice) {
+  private addHumidityDevice(device: IDevice): void {
     LOGGER.info(`addHumidityDevice: ${JSON.stringify(device)}`);
     this.addAnalogDevice(device, DeviceType.HUMIDITY);
   }
 
-  private addTemperatrueDevice(device: IDevice) {
+  private addTemperatrueDevice(device: IDevice): void {
     LOGGER.info(`addTemperatureDevice: ${JSON.stringify(device)}`);
     this.addAnalogDevice(device, DeviceType.TEMPERATURE);
   }
 
-  private addAnalogDevice(device: IDevice, deviceType: DeviceType) {
+  private addAnalogDevice(device: IDevice, deviceType: DeviceType): void {
     let deviceInfo: DeviceInfo = new DeviceInfo(device, deviceType);
     LOGGER.info(`addAnalogDevice: ${JSON.stringify(device)}`);
 
@@ -106,7 +88,7 @@ export class Engine {
     this.devices.set(device.id, deviceInfo);
   }
 
-  public updateDevice(device: IDevice) {
+  public updateDevice(device: IDevice): void {
     let deviceInfo: DeviceInfo = this.devices.get(device.id);
     if (deviceInfo) {
       LOGGER.info(`updateDevice: ${deviceTypeAsString(deviceInfo.type)}\n\tfrom: ${JSON.stringify(deviceInfo)}\n\tto.:${JSON.stringify(device)}`);
@@ -135,13 +117,14 @@ export class Engine {
     }
   }
 
-  public removeDevice(id: any) {
+  public removeDevice(id: any): void {
     let deviceInfo: DeviceInfo = this.devices.get(id);
     if (deviceInfo) {
       LOGGER.info(`removeDevice: ${deviceTypeAsString(deviceInfo.type)} ${deviceInfo.device.name} ${deviceInfo.device.id}`);
       switch (deviceInfo.type) {
         case DeviceType.BLINDS:
           this.releaseBlindsPorts(id);
+          this.blindsEngines.delete(id);
           break;
         case DeviceType.HUMIDITY:
         case DeviceType.TEMPERATURE:
@@ -188,18 +171,24 @@ export class Engine {
     this.gpiosInUse.set(blindsDevice.id, ports);
 
     ports.keyUp.watch().subscribe((keyPressed: boolean) => {
-        let data: IBlindsData = {deviceId: blindsDevice.id, timestamp: Date.now(), state: this.getNewBlindsState(ports, keyPressed ? BlindsState.OPENING: BlindsState.ANYWHERE)};
-        LOGGER.debug(`keyUp detected ${JSON.stringify(data)}`);
-        GenericDataController.getDataController(DeviceType.BLINDS).addDataRecord(data);
+        LOGGER.debug(`keyUp detected ${blindsDevice.name} -> state: ${keyPressed ? 'pressed' : 'released'}`);
+        if (keyPressed) {
+          this.openBlinds(blindsDevice);
+        } else {
+          this.stopBlinds(blindsDevice);
+        }
       },
       (err: any) => LOGGER.error(`${deviceTypeAsString(DeviceType.BLINDS)} device watching keyUp error ${err}`),
       () => LOGGER.info(`${deviceTypeAsString(DeviceType.BLINDS)} device watching keyUp stopped`)
     );
 
     ports.keyDown.watch().subscribe((keyPressed: boolean) => {
-        let data: IBlindsData = {deviceId: blindsDevice.id, timestamp: Date.now(), state: this.getNewBlindsState(ports, keyPressed ? BlindsState.CLOSING : BlindsState.ANYWHERE)};
-        LOGGER.debug(`keyDown detected ${JSON.stringify(data)}`);
-        GenericDataController.getDataController(DeviceType.BLINDS).addDataRecord(data);
+        LOGGER.debug(`keyDown detected ${blindsDevice.name} -> state: ${keyPressed ? 'pressed' : 'released'}`);
+        if (keyPressed) {
+          this.closeBlinds(blindsDevice);
+        } else {
+          this.stopBlinds(blindsDevice);
+        }
       },
       (err: any) => LOGGER.error(`${deviceTypeAsString(DeviceType.BLINDS)} device watching keyUp error ${err}`),
       () => LOGGER.info(`${deviceTypeAsString(DeviceType.BLINDS)} device watching keyUp stopped`)
@@ -218,35 +207,29 @@ export class Engine {
     }
   }
 
-  private getNewBlindsState(blindsInfo: BlindsGPIOs, movingState: BlindsState): BlindsState {
-    if (blindsInfo.state === BlindsState.OPEN && movingState === BlindsState.OPENING
-      || blindsInfo.state === BlindsState.CLOSED && movingState === BlindsState.CLOSING) {
-      // blinds are already in the requested end position
-    } else {
-      blindsInfo.state = movingState;
-      // TODO start timer to set the end state if timer completes
-    }
-    return blindsInfo.state;
+  //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  // Start: Blinds command controller part
+  //        If the id is not set, then the command is applied to all blindsDevices
+  //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+  public openBlindsCommand(id?: any): void {
+    this.getBlindsDevices(id).forEach(device => this.openBlinds(device));
   }
 
-  public openBlinds(id?: any) {
-      this.getBlindsDevices(id).forEach(device => LOGGER.error(`openBlind: ${device.name} ==> TO BE IMPLEMENTED`));
+  public closeBlindsCommand(id?: any): void {
+    this.getBlindsDevices(id).forEach(device => this.closeBlinds(device));
   }
 
-  public closeBlinds(id?: any) {
-    this.getBlindsDevices(id).forEach(device => LOGGER.error(`closeBlind: ${device.name} ==> TO BE IMPLEMENTED`));
-  }
-
-  public stopBlinds(id?: any) {
-    this.getBlindsDevices(id).forEach(device => LOGGER.error(`stopBlind: ${device.name} ==> TO BE IMPLEMENTED`));
+  public stopBlindsCommand(id?: any): void {
+    this.getBlindsDevices(id).forEach(device => this.stopBlinds(device));
   }
 
   private getBlindsDevices(id?: any): IBlindsDevice[] {
     let blindsDevices: IBlindsDevice[] = [];
     if (id) {
+      // Command for single blinds
       let deviceInfo: DeviceInfo = this.devices.get(id);
       if (deviceInfo) {
-        LOGGER.info(`getBlindsDevice: ${deviceTypeAsString(deviceInfo.type)} ${deviceInfo.device.name} ${deviceInfo.device.id}`);
         if (deviceInfo.type === DeviceType.BLINDS) {
           blindsDevices.push(deviceInfo.device)
         }
@@ -254,6 +237,7 @@ export class Engine {
         LOGGER.error(`getBlindsDevices: device with id ${id} not found`);
       }
     } else {
+      // Command for all blinds
       this.devices.forEach((deviceInfo: DeviceInfo, id: any, map: Map<any, DeviceInfo>) => {
         if (deviceInfo.type === DeviceType.BLINDS) {
           blindsDevices.push(deviceInfo.device);
@@ -262,9 +246,168 @@ export class Engine {
     }
     if (LOGGER.isDebugEnabled()) {
       LOGGER.debug(`getBlindsDevices of id: ${id}`);
-      blindsDevices.forEach(device => LOGGER.debug(`/t${device.name}`));
+      blindsDevices.forEach(device => LOGGER.debug(`\t${device.name}`));
     }
     return blindsDevices;
   }
 
+  //---------------------------------------------------------------------------------------
+  // End: Blinds command controller part
+  //---------------------------------------------------------------------------------------
+
+  private openBlinds(device: IBlindsDevice): void {
+    this.blindsEngines.get(device.id).open();
+  }
+
+  private closeBlinds(device: IBlindsDevice): void {
+    this.blindsEngines.get(device.id).close();
+  }
+
+  private stopBlinds(device: IBlindsDevice): void {
+    this.blindsEngines.get(device.id).stop();
+  }
+
 }
+
+
+//---------------------------------------------------------------------------------------
+// Classes just internally used (by the engine)
+//---------------------------------------------------------------------------------------
+
+class DeviceInfo {
+  constructor(public device: IDevice, public type: DeviceType) {
+  }
+}
+
+class BlindsGPIOs {
+  constructor(public keyUp: AbstractGPIO, public keyDown: AbstractGPIO, public actorUp: AbstractGPIO, public actorDown: AbstractGPIO) {
+  }
+
+  public reset(): void {
+    this.keyUp.reset();
+    this.keyDown.reset();
+    this.actorUp.reset();
+    this.actorDown.reset();
+  }
+}
+
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// Start: Blinds logic part
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+class BlindsEngine {
+  private state: BlindsState = BlindsState.ANYWHERE;
+  private secondsTowardsClosed: number = 0;
+  private timer: NodeJS.Timer;
+  private timeIncrement: number = 1;
+
+  constructor(private device: IBlindsDevice, private ports: BlindsGPIOs) {
+    // Init: drive the blinds to the closed position
+    this.close();
+  }
+
+  public open(): void {
+    if (this.state !== BlindsState.OPEN && this.state !== BlindsState.OPENING) {
+      this.process(BlindsState.OPENING);
+    } else {
+      LOGGER.debug(`openBlinds: ${this.device.name} already in state ${blindsStateAsString(this.state)}`)
+    }
+  }
+
+  public close(): void {
+    if (this.state !== BlindsState.CLOSED && this.state !== BlindsState.CLOSING) {
+      this.process(BlindsState.CLOSING);
+    } else {
+      LOGGER.debug(`closeBlinds: ${this.device.name} already in state ${blindsStateAsString(this.state)}`)
+    }
+  }
+
+  public stop(): void {
+    if (this.state === BlindsState.OPENING || this.state === BlindsState.CLOSING) {
+      this.process(BlindsState.ANYWHERE);
+    } else {
+      LOGGER.debug(`stopBlinds: ${this.device.name} already in state ${blindsStateAsString(this.state)}`)
+    }
+  }
+
+  private process(state: BlindsState): void {
+    if (this.timer) {
+      LOGGER.debug(`stopTimer: ${this.device.name}`);
+      clearInterval(this.timer);
+    }
+    this.state = state;
+    this.setActors(state);
+
+    switch(this.state) {
+      case BlindsState.OPENING:
+        this.timeIncrement = -1;
+        break;
+      case BlindsState.CLOSING:
+        this.timeIncrement = 1;
+        break;
+      default:
+        this.sendState();
+        return;
+    }
+
+    this.timer = setInterval(() => {
+      this.secondsTowardsClosed += this.timeIncrement;
+      if (this.secondsTowardsClosed < 0) {
+        LOGGER.debug(`stopTimer: ${this.device.name} --> blinds is open, secondsTowardsClosed: ${this.secondsTowardsClosed}`);
+        this.state = BlindsState.OPEN;
+        clearInterval(this.timer);
+      } else if (this.secondsTowardsClosed > this.device.runningSeconds) {
+        LOGGER.debug(`stopTimer: ${this.device.name} --> blinds is closed, secondsTowardsClosed: ${this.secondsTowardsClosed}`);
+        this.state = BlindsState.CLOSED;
+        clearInterval(this.timer);
+      }
+      this.sendState();
+    }, 1000);
+  }
+
+  private sendState(): void {
+    let data: IBlindsData = {
+      deviceId: this.device.id,
+      timestamp: Date.now(),
+      state: this.state,
+      percentageDown: this.getPercentage()
+    };
+    GenericDataController.getDataController(DeviceType.BLINDS).addDataRecord(data);
+  }
+
+  private getPercentage(): number {
+    let percentage: number = 100 - 100 * (this.device.runningSeconds - this.secondsTowardsClosed) / this.device.runningSeconds;
+    if (percentage > 100) {
+      return 100;
+    } else if (percentage < 0) {
+      return 0;
+    } else {
+      return Math.round(percentage);
+    }
+  }
+
+  /**
+   * Set the state of the two actors of a blinds.
+   */
+  private setActors(state: BlindsState) {
+    switch (state) {
+      case BlindsState.OPENING:
+        this.ports.actorDown.setState(false);
+        this.ports.actorUp.setState(true);
+        break;
+      case BlindsState.CLOSING:
+        this.ports.actorUp.setState(false);
+        this.ports.actorDown.setState(true);
+        break;
+      default:
+        this.ports.actorUp.setState(false);
+        this.ports.actorDown.setState(false);
+    }
+  }
+}
+
+//---------------------------------------------------------------------------------------
+// End: Blinds logic part
+//---------------------------------------------------------------------------------------
+
+

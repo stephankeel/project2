@@ -8,6 +8,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {LoginComponent} from './login/login.component';
 import {AuthenticationService} from './remote/authentication.service';
 import {ClientSocketService} from './remote/client-socket.service';
+import {BlindsCommandService} from './remote/blinds-command.service';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {BlindsComponent} from './blinds/blinds.component';
 import {TemperatureComponent} from './temperature/temperature.component';
@@ -59,6 +60,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     AdminOrStandardGuard,
     AuthenticationService,
     ClientSocketService,
+    BlindsCommandService,
     // providers used to create fake backend_helpers/index
     BaseRequestOptions,
   ],

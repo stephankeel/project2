@@ -61,7 +61,7 @@ export class SimulatedGPIO extends AbstractGPIO {
           let cmd: string = `${this.getName()}/value`;
           SimulatedGPIO.logger.info(`Simulation: watch ${cmd}`);
           this.doRead = true;
-          let prevState: boolean = !this.keyPressed;
+          let prevState: boolean = this.keyPressed;
           let intervalId = setInterval(() => {
             if (this.doRead) {
               if (this.keyPressed != prevState) {

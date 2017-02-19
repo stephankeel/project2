@@ -5,9 +5,7 @@ import {Engine} from '../logic/engine';
 
 export class BlindsCommandRouter {
   constructor(private controller: BlindsCommandController, private router: Router) {
-    router.route('/:id/open').put((req, res) => controller.openBlinds(req, res));
-    router.route('/:id/close').put((req, res) => controller.closeBlinds(req, res));
-    router.route('/:id/stop').put((req, res) => controller.stopBlinds(req, res));
+    router.route('/').put((req, res) => controller.executeCommand(req, res));
   }
 
   public getRouter(): Router {

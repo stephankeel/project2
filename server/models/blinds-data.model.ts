@@ -15,6 +15,12 @@ let BlindsDataSchema = new Schema({
     min: blindsStateValues[0],
     max: blindsStateValues[blindsStateValues.length - 1]
   },
+  percentageDown: {
+    type: Number,
+    required: true,
+    min: 0,
+    max: 100
+  }
 }, {
   versionKey: false, // avoids __v, i.e. the version key
 });

@@ -48,7 +48,7 @@ export class GenericDataController<T extends IData, R extends IDeviceDocument> i
     LOGGER.debug(`get latest ${this.loggingPrefix} record ${req.params.id}`);
     // TODO: check if deviceId is correct (changed from _id) DL
     let ref = {deviceId: req.params.id};
-    let sort = {timestamp: 1};
+    let sort = {timestamp: -1};
     this.model.findOne(ref).sort(sort).exec((err: any, data: R) => {
       if (err || !data) {
         res.status(404).json({error: `error retrieving latest ${this.loggingPrefix} record ${ref.deviceId}. ${err}`});
