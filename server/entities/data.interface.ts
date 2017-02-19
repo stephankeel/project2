@@ -8,6 +8,7 @@ export interface IData extends IId {
 
 export interface IBlindsData extends IData {
   state?: BlindsState;
+  percentageDown?: number;
 }
 
 export interface IAnalogData extends IData {

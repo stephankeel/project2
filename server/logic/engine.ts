@@ -369,9 +369,21 @@ class BlindsEngine {
     let data: IBlindsData = {
       deviceId: this.device.id,
       timestamp: Date.now(),
-      state: this.state
+      state: this.state,
+      percentageDown: this.getPercentage()
     };
     GenericDataController.getDataController(DeviceType.BLINDS).addDataRecord(data);
+  }
+
+  private getPercentage(): number {
+    let percentage: number = 100 - 100 * (this.device.runningSeconds - this.secondsTowardsClosed) / this.device.runningSeconds;
+    if (percentage > 100) {
+      return 100;
+    } else if (percentage < 0) {
+      return 0;
+    } else {
+      return Math.round(percentage);
+    }
   }
 
   /**
