@@ -21,7 +21,7 @@
     </div>
     <div class="deviceFormRow">
       <label class="deviceFormLabel">NAME</label>
-      <input [(ngModel)]="device.name" placeholder="name" class="deviceFormValue validatable deviceInput"
+      <input [(ngModel)]="device.name" placeholder="Name" class="deviceFormValue validatable deviceInput"
              type="text" (keydown)="clearMessage()" (focus)="clearMessage()"
              name="name" required minlength="2">
     </div>
@@ -50,10 +50,10 @@
       </select>
     </div>
     <div class="deviceFormRow">
-      <label class="deviceFormLabel">LAUFZEIT</label>
-      <input [(ngModel)]="device.runningSeconds" placeholder="runningSeconds" class="deviceFormValue validatable deviceInput"
+      <label class="deviceFormLabel">LAUFZEIT [s]</label>
+      <input [(ngModel)]="device.runningSeconds" placeholder="Laufzeit in Sekunden" class="deviceFormValue validatable deviceInput"
              type="number" (keydown)="clearMessage()" (focus)="clearMessage()"
-             name="runningSeconds" required min="10" max="120">
+             name="runningSeconds" required min="10" max="300">
     </div>
     <div *ngIf="message" id="deviceMessage">
       {{message}}

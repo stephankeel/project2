@@ -58,7 +58,7 @@ export class TemperatureSetupComponent implements OnInit {
     this.clearMessage();
     this.updatePortSet(device);
     this.selectedDevice = device;
-    this.device = new TemperatureDevice(this.selectedDevice.id, this.selectedDevice.name, this.selectedDevice.port);
+    this.device = new TemperatureDevice(this.selectedDevice.id, this.selectedDevice.name, this.selectedDevice.port, this.selectedDevice.pollingInterval);
   }
 
   updatePortSet(device?: TemperatureDevice): void {

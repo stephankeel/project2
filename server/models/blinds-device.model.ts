@@ -36,7 +36,7 @@ let BlindsDeviceSchema = new Schema({
     max: digitalOutputs[digitalOutputs.length - 1],
     unique: true
   },
-  runningSeconds: {type: Number, required: true, min: 10, max: 120}
+  runningSeconds: {type: Number, required: true, min: 10, max: 300}
 }, {
   versionKey: false, // avoids __v, i.e. the version key
 });

@@ -15,6 +15,7 @@ export interface IBlindsDevice extends IDevice {
 
 export interface IAnalogDevice extends IDevice {
   port?: Port;
+  pollingInterval?: number; // in seconds
 }
 
 export interface IHumidityDevice extends IAnalogDevice {
