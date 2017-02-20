@@ -17,7 +17,7 @@ export class HumiditySetupComponent implements OnInit {
   devices: HumidityDevice[] = [];
   device: HumidityDevice;
   selectedDevice: HumidityDevice;
-  ports: Port[] = humidityDevicesInfo.portSet;
+  ports: Port[];
   addActionEnabled: boolean = true;
   private genericService: GenericService<HumidityDevice>;
   message: string;
