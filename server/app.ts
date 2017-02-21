@@ -1,36 +1,39 @@
-import * as express from "express";
-import * as compression from "compression";
-import * as bodyParser from "body-parser";
-import * as createError from "http-errors";
-import * as log4js from "log4js";
-import {Logger, getLogger} from "./utils/logger";
-import {authenticationRoute} from "./routes/authentication";
-import {DBService} from "./models/db.service";
-import * as http from "http";
-import * as path from "path";
-import * as socketIo from "socket.io";
+import * as express from 'express';
+import * as compression from 'compression';
+import * as bodyParser from 'body-parser';
+import * as createError from 'http-errors';
+import * as log4js from 'log4js';
+import {Logger, getLogger} from './utils/logger';
+import {authenticationRoute} from './routes/authentication';
+import {DBService} from './models/db.service';
+import * as http from 'http';
+import * as path from 'path';
+import * as socketIo from 'socket.io';
 import {
   requiresAdmin,
   requiresAdminExceptForGet,
   requiresStandardOrAdmin,
   requiresAuthenticatedUser
-} from "./routes/authorization";
-import {GenericRouter} from "./routes/generic.router";
-import {UserController} from "./controllers/user.controller";
-import {TemperatureDeviceController} from "./controllers/temperature-device.controller";
-import {GenericDataRouter} from "./routes/generic-data.router";
-import {TemperatureDataController} from "./controllers/temperature-data.controller";
-import {HumidityDataController} from "./controllers/humidity-data.controller";
-import {HumidityDeviceController} from "./controllers/humidity-device.controller";
-import {BlindsDeviceController} from "./controllers/blinds-device.controller";
-import {BlindsDataController} from "./controllers/blinds-data.controller";
-import {BlindsCommandRouter} from "./routes/blinds-command.router";
-import {SocketService} from "./socket/socket-service";
-import {Engine} from "./logic/engine";
+} from './routes/authorization';
+import {GenericRouter} from './routes/generic.router';
+import {UserController} from './controllers/user.controller';
+import {TemperatureDeviceController} from './controllers/temperature-device.controller';
+import {GenericDataRouter} from './routes/generic-data.router';
+import {TemperatureDataController} from './controllers/temperature-data.controller';
+import {HumidityDataController} from './controllers/humidity-data.controller';
+import {HumidityDeviceController} from './controllers/humidity-device.controller';
+import {BlindsDeviceController} from './controllers/blinds-device.controller';
+import {BlindsDataController} from './controllers/blinds-data.controller';
+import {BlindsCommandRouter} from './routes/blinds-command.router';
+import {SocketService} from './socket/socket-service';
+import {Engine} from './logic/engine';
+import {Info} from './entities/info';
 
 const LOGGER: Logger = getLogger('Server');
+const VERSION: string = '0.8.0';
+const ABOUT: string = `Homeautomation V${VERSION} by D.Leuenberger and St.Keel`;
 
-var socketioJwt = require("socketio-jwt");
+var socketioJwt = require('socketio-jwt');
 
 declare var process: any, __dirname: any;
 
@@ -103,7 +106,7 @@ class Server {
     });
 
     this.app.use('/about', function (req: express.Request, res: express.Response, next: express.NextFunction) {
-      res.send('Homeautomation Project by D.Leuenberger and St.Keel');
+      res.send(ABOUT);
     });
 
     this.app.use(authenticationRoute);
@@ -131,6 +134,11 @@ class Server {
 
     // blinds device command handling
     this.app.use('/api/command/blinds', requiresStandardOrAdmin, BlindsCommandRouter.create(this.engine));
+
+    this.app.use('/api/info', requiresAuthenticatedUser, function (req: express.Request, res: express.Response, next: express.NextFunction) {
+      let info = new Info(ABOUT, process.version);
+      res.send(info);
+    });
 
     this.app.use('/api', function (req: express.Request, res: express.Response, next: express.NextFunction) {
       next(createError(404, `No route found for ${req.method} ${req.url}`));
@@ -166,12 +174,12 @@ class Server {
     this.server.listen(this.port);
 
     //add error handler
-    this.server.on("error", function (error: Error) {
+    this.server.on('error', function (error: Error) {
       LOGGER.error(`ERROR: ${error.stack}`);
     });
 
     //start listening on port
-    this.server.on("listening", () => {
+    this.server.on('listening', () => {
       LOGGER.info(`Homeautomation server running at http://${this.host}:${this.port}/`);
     });
 
