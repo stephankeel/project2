@@ -14,23 +14,7 @@
     </div>
   </div>
   <form class="deviceForm" *ngIf="device" (ngSubmit)="doAddOrUpdate()" #deviceForm="ngForm">
-    <div class="deviceFormRow">
-      <label class="deviceFormLabel">ID</label>
-      <label *ngIf="device.id" class="deviceFormValue">{{device.id}}</label>
-      <label *ngIf="!device.id" class="deviceFormValue">NEW</label>
-    </div>
-    <div class="deviceFormRow">
-      <label class="deviceFormLabel">NAME</label>
-      <input [(ngModel)]="device.name" placeholder="name" class="deviceFormValue validatable deviceInput"
-             type="text" (keydown)="clearMessage()" (focus)="clearMessage()"
-             name="name" required minlength="2">
-    </div>
-    <div class="deviceFormRow">
-      <label class="deviceFormLabel">PORT</label>
-      <select [(ngModel)]="device.port" class="deviceFormValue validatable deviceInput" name="port" (focus)="clearMessage()">
-        <option *ngFor="let port of ports" [value]="port" [selected]="port === device.port">{{getPortName(port)}}</option>
-      </select>
-    </div>
+    <app-analog-setup [device]="device" [ports]="ports" (clearMessageOnParent)="clearMessage($event)"></app-analog-setup>
     <div *ngIf="message" id="deviceMessage">
       {{message}}
     </div>

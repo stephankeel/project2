@@ -53,7 +53,7 @@ export class DashboardComponent implements OnInit {
 
   showInfo(): void {
     this.closeMenu();
-    // TODO: this.router.navigate(['/info']);
+    this.router.navigate(['/info']);
   }
 
   logout(): void {

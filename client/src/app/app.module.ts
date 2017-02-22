@@ -1,24 +1,25 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule} from '@angular/forms';
-// used to create fake backend
-import {HttpModule, BaseRequestOptions, RequestOptions, Http} from '@angular/http';
+import {HttpModule, RequestOptions, Http} from '@angular/http';
 import {AppComponent} from './app.component';
 import {AppRoutingModule} from './app-routing.module';
-import {LoginComponent} from './login/login.component';
 import {AuthenticationService} from './remote/authentication.service';
+import {AuthGuard} from './auth/auth-guard.service';
+import {AdminOrStandardGuard} from './auth/admin-or-standard-guard.service';
+import {AuthHttp, AuthConfig} from 'angular2-jwt';
 import {ClientSocketService} from './remote/client-socket.service';
-import {BlindsCommandService} from './remote/blinds-command.service';
+import {LoginComponent} from './login/login.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
+import {UsersComponent} from './users/users.component';
+import {BlindsCommandService} from './remote/blinds-command.service';
 import {BlindsComponent} from './blinds/blinds.component';
 import {TemperatureComponent} from './temperature/temperature.component';
-import {UsersComponent} from './users/users.component';
-import {AuthGuard} from './auth/auth-guard.service';
-import {AuthHttp, AuthConfig} from 'angular2-jwt';
 import {TemperatureViewComponent} from './temperature-view/temperature-view.component';
-import {AdminOrStandardGuard} from './auth/admin-or-standard-guard.service';
 import {BlindsDataObservablePipe} from './blinds/blinds-data-observable.pipe';
 import {BlindsDataFormatterPipe} from './blinds/blinds-data-formatter.pipe';
+import {InfoComponent} from './info/info.component';
+import {CommonRestService} from './remote/common-rest.service';
 
 // TODO: in welches File müsste diese Methode?
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
@@ -45,6 +46,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     TemperatureViewComponent,
     BlindsDataObservablePipe,
     BlindsDataFormatterPipe,
+    InfoComponent
   ],
   providers: [
     AuthGuard,
@@ -61,8 +63,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     AuthenticationService,
     ClientSocketService,
     BlindsCommandService,
-    // providers used to create fake backend_helpers/index
-    BaseRequestOptions,
+    CommonRestService
   ],
   bootstrap: [
     AppComponent,

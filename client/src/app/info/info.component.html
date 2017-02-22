@@ -1,0 +1,13 @@
+<header>
+  <img id="backIcon" class="headerAction" src="app/images/back.svg" alt="Back Icon" title="Back Icon"
+       (click)="backClicked()">
+  <h1 class="headerTitle">INFO</h1>
+</header>
+<main>
+  <table class="infoTable">
+    <tr class="infoRow" *ngFor="let info of infoList" class="infoItem">
+      <td class="infoItem">{{info.name}}</td>
+      <td class="infoItem">{{info.value}}</td>
+    </tr>
+  </table>
+</main>

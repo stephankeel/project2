@@ -78,7 +78,7 @@ export class Engine {
 
     let analogDevice: IAnalogDevice = device as ITemperatureDevice;
     let ain: AbstractAIN = this.assignAnalogInput(analogDevice.id, analogDevice.port);
-    ain.poll(2).subscribe((val: number) => {
+    ain.poll(analogDevice.pollingInterval).subscribe((val: number) => {
         let data: IAnalogData = {deviceId: device.id, timestamp: Date.now(), value: val};
         GenericDataController.getDataController(deviceType).addDataRecord(data);
       },
@@ -96,16 +96,18 @@ export class Engine {
         case DeviceType.BLINDS:
           let newBlindsDevice: IBlindsDevice = device as IBlindsDevice;
           let oldBlindsDevice: IBlindsDevice = deviceInfo.device as IBlindsDevice;
-          if (newBlindsDevice.keyUp != oldBlindsDevice.keyUp || newBlindsDevice.keyDown != oldBlindsDevice.keyDown ||
-            newBlindsDevice.actorUp != oldBlindsDevice.actorUp || newBlindsDevice.actorDown != oldBlindsDevice.actorDown) {
+          if (newBlindsDevice.keyUp !== oldBlindsDevice.keyUp || newBlindsDevice.keyDown !== oldBlindsDevice.keyDown ||
+            newBlindsDevice.actorUp !== oldBlindsDevice.actorUp || newBlindsDevice.actorDown !== oldBlindsDevice.actorDown ||
+            newBlindsDevice.runningSeconds !== oldBlindsDevice.runningSeconds) {
             this.removeDevice(device.id);
             this.addBlindsDevice(device);
           }
           break;
         case DeviceType.HUMIDITY:
         case DeviceType.TEMPERATURE:
-          let analogDevice: IAnalogDevice = device as IAnalogDevice;
-          if (analogDevice.port != (deviceInfo.device as IAnalogDevice).port) {
+          let newAnalogDevice: IAnalogDevice = device as IAnalogDevice;
+          let oldAnalogDevice: IAnalogDevice = deviceInfo.device as IAnalogDevice;
+          if (newAnalogDevice.port !== oldAnalogDevice.port || newAnalogDevice.pollingInterval !== oldAnalogDevice.pollingInterval) {
             this.removeDevice(device.id);
             this.addAnalogDevice(device, deviceInfo.type);
           }
@@ -338,7 +340,7 @@ class BlindsEngine {
     this.state = state;
     this.setActors(state);
 
-    switch(this.state) {
+    switch (this.state) {
       case BlindsState.OPENING:
         this.timeIncrement = -1;
         break;

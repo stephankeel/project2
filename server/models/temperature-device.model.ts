@@ -12,6 +12,7 @@ let TemperatureDeviceSchema = new Schema({
   id: String,
   name: {type: String, required: true, minlength: 4, unique: true},
   port: {type: Number, required: true, min: analogInputs[0], max: analogInputs[analogInputs.length - 1], unique: true},
+  pollingInterval: {type: Number, required: true, min: 1},
 }, {
   versionKey: false, // avoids __v, i.e. the version key
 });
@@ -38,6 +39,7 @@ export function initTemperatureDeviceWohnzimmer() {
 
     temperatureDevice.name = name;
     temperatureDevice.port = Port.AI_1;
+    temperatureDevice.pollingInterval = 2;
     LOGGER.info(`creating temperatureDevice 'Wohnzimmer': ${JSON.stringify(temperatureDevice)}`);
     temperatureDevice.save((err: any, temperatureDevice: ITemperatureDeviceDocument) => {
       if (err) {

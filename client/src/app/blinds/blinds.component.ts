@@ -43,6 +43,7 @@ export class BlindsComponent implements OnInit {
     this.genericService.items.subscribe(devices => {
       this.devices = devices.toArray();
       this.selectedDevice = null;
+      this.showAll();
     }, error => this.message = error.toString());
     this.genericService.getAll();
   }
@@ -56,7 +57,6 @@ export class BlindsComponent implements OnInit {
     let dataService: GenericDataService<IBlindsData> = new GenericDataService<IBlindsData>(this.authHttp, this.socketService, '/api/data/blinds', '/blinds', device.id);
     this.dataServices.set(device, dataService);
     this.devicesState.set(device, dataService.lastItem);
-//    dataService.getAll();
     dataService.getLatest();
   }
 
@@ -73,10 +73,19 @@ export class BlindsComponent implements OnInit {
     this.router.navigate(['/dashboard']);
   }
 
+  showAll(): void {
+    if (this.selectedDevice) {
+      this.releaseDevice(this.selectedDevice);
+    }
+    this.devices.forEach(device => this.subscribeDevice(device));
+  }
+
   selectDevice(device: BlindsDevice) {
     this.clearMessage();
     if (this.selectedDevice) {
       this.releaseDevice(this.selectedDevice);
+    } else {
+      this.devices.forEach(device => this.releaseDevice(device));
     }
     this.subscribeDevice(device);
     this.selectedDevice = device;
