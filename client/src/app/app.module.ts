@@ -1,8 +1,7 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule} from '@angular/forms';
-// used to create fake backend
-import {HttpModule, BaseRequestOptions, RequestOptions, Http} from '@angular/http';
+import {HttpModule, RequestOptions, Http} from '@angular/http';
 import {AppComponent} from './app.component';
 import {AppRoutingModule} from './app-routing.module';
 import {AuthenticationService} from './remote/authentication.service';
@@ -19,6 +18,8 @@ import {TemperatureComponent} from './temperature/temperature.component';
 import {TemperatureViewComponent} from './temperature-view/temperature-view.component';
 import {BlindsDataObservablePipe} from './blinds/blinds-data-observable.pipe';
 import {BlindsDataFormatterPipe} from './blinds/blinds-data-formatter.pipe';
+import {InfoComponent} from './info/info.component';
+import {CommonRestService} from './remote/common-rest.service';
 
 // TODO: in welches File müsste diese Methode?
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
@@ -45,6 +46,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     TemperatureViewComponent,
     BlindsDataObservablePipe,
     BlindsDataFormatterPipe,
+    InfoComponent
   ],
   providers: [
     AuthGuard,
@@ -61,8 +63,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     AuthenticationService,
     ClientSocketService,
     BlindsCommandService,
-    // providers used to create fake backend_helpers/index
-    BaseRequestOptions,
+    CommonRestService
   ],
   bootstrap: [
     AppComponent,
