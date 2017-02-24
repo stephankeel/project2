@@ -64,10 +64,12 @@ class Server {
   constructor() {
     const options = commandLineArgs(optionDefinitions);
     if (options.help) {
-      console.log('Homeautomation Commandline Help');
-      console.log('-h, --help: show this help');
-      console.log('-a, --admin password: create admin user with the given password');
-      console.log('-d, --db [mlab | hostname | locahost]: DB to use, default is localhost');
+      console.log(
+        'Homeautomation Commandline Help\n' +
+        '-h, --help            show this help\n' +
+        '-a, --admin password  create admin user with the given password\n' +
+        '-d, --db db-location  DB to use. Either of [mlab | IP-address | hostname | locahost],\n' +
+        '                      default is localhost');
       process.exit(0);
     }
 
@@ -176,7 +178,7 @@ class Server {
 
   // Configure databases
   private databases(option: string): void {
-    DBService.init('localhost');
+    DBService.init(option);
   }
 
   // Configure sockets
