@@ -28,7 +28,7 @@ let UserSchema = new Schema({
 
 export const UserModel: Model<IUserDocument> = model<IUserDocument>('User', UserSchema);
 
-export function initAdmin() {
+export function initAdmin(password: string) {
   let username: String = 'admin';
   let selector = {'username': username};
   UserModel.find(selector, (err, users) => {
@@ -42,7 +42,7 @@ export function initAdmin() {
     user.lastname = 'admin';
     user.type = UserType.ADMIN;
     user.username = 'admin';
-    user.password = '123456';
+    user.password = password;
     LOGGER.info(`creating admin user: ${JSON.stringify(user)}`);
     user.save((err: any, adminUser: IUserDocument) => {
       if (err) {

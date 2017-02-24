@@ -28,6 +28,8 @@ import {BlindsCommandRouter} from './routes/blinds-command.router';
 import {SocketService} from './socket/socket-service';
 import {Engine} from './logic/engine';
 import {Info} from './entities/info';
+import {initAdmin} from './models/user.model';
+
 
 const LOGGER: Logger = getLogger('Server');
 const VERSION: string = '0.8.0';
@@ -36,6 +38,13 @@ const ABOUT: string = `Homeautomation V${VERSION} by D.Leuenberger and St.Keel`;
 var socketioJwt = require('socketio-jwt');
 
 declare var process: any, __dirname: any;
+
+const commandLineArgs = require('command-line-args');
+const optionDefinitions = [
+  {name: 'admin', alias: 'a', type: String},
+  {name: 'db', alias: 'd', type: String},
+  {name: 'help', alias: 'h', type: Boolean}
+]
 
 class Server {
   public app: express.Express;
@@ -53,6 +62,9 @@ class Server {
   }
 
   constructor() {
+    const options = commandLineArgs(optionDefinitions);
+    console.log(JSON.stringify(options));
+
     // Create expressjs application
     this.app = express();
     this.app.use(compression());
@@ -64,7 +76,7 @@ class Server {
     this.socketService = new SocketService();
 
     // Create database connections
-    this.databases();
+    this.databases(options.db);
 
     // Start the hardware controller engine
     this.engine = new Engine();
@@ -80,6 +92,10 @@ class Server {
 
     // Start listening
     this.listen();
+
+    if (options.admin) {
+      initAdmin(options.admin);
+    }
   }
 
   private config(): void {
@@ -153,7 +169,7 @@ class Server {
   }
 
   // Configure databases
-  private databases(): void {
+  private databases(option: string): void {
     DBService.init('localhost');
   }
 
