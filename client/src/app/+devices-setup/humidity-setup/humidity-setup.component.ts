@@ -17,7 +17,7 @@ export class HumiditySetupComponent implements OnInit {
   devices: HumidityDevice[] = [];
   device: HumidityDevice;
   selectedDevice: HumidityDevice;
-  ports: Port[] = humidityDevicesInfo.portSet;
+  ports: Port[];
   addActionEnabled: boolean = true;
   private genericService: GenericService<HumidityDevice>;
   message: string;
@@ -57,7 +57,7 @@ export class HumiditySetupComponent implements OnInit {
     this.clearMessage();
     this.updatePortSet(device);
     this.selectedDevice = device;
-    this.device = new HumidityDevice(this.selectedDevice.id, this.selectedDevice.name, this.selectedDevice.port);
+    this.device = new HumidityDevice(this.selectedDevice.id, this.selectedDevice.name, this.selectedDevice.port, this.selectedDevice.pollingInterval);
   }
 
   updatePortSet(device?: HumidityDevice): void {

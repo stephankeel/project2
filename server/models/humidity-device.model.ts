@@ -9,6 +9,7 @@ let HumidityDeviceSchema = new Schema({
   id: String,
   name: {type: String, required: true, minlength: 4, unique: true},
   port: {type: Number, required: true, min: analogInputs[0], max: analogInputs[analogInputs.length - 1], unique: true},
+  pollingInterval: {type: Number, required: true, min: 1},
 }, {
   versionKey: false, // avoids __v, i.e. the version key
 });

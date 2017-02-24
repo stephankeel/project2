@@ -18,7 +18,6 @@ export class TemperatureSetupComponent implements OnInit {
   device: TemperatureDevice;
   selectedDevice: TemperatureDevice;
   ports: Port[];
-  selectedPort: Port;
   addActionEnabled: boolean = true;
   private genericService: GenericService<TemperatureDevice>;
   message: string;
@@ -36,6 +35,7 @@ export class TemperatureSetupComponent implements OnInit {
         this.updatePortSet();
         this.device = null;
         this.selectedDevice = null;
+        this.message = "got devices";
       }, error => this.message = error.toString());
     this.genericService.getAll();
   }
@@ -58,16 +58,12 @@ export class TemperatureSetupComponent implements OnInit {
     this.clearMessage();
     this.updatePortSet(device);
     this.selectedDevice = device;
-    this.device = new TemperatureDevice(this.selectedDevice.id, this.selectedDevice.name, this.selectedDevice.port);
+    this.device = new TemperatureDevice(this.selectedDevice.id, this.selectedDevice.name, this.selectedDevice.port, this.selectedDevice.pollingInterval);
   }
 
   updatePortSet(device?: TemperatureDevice): void {
     this.ports = temperatureDevicesInfo.portSet.filter(port => !AnalogDevicesInfo.analogPortsInUse.has(port) || device && port === device.port);
     this.addActionEnabled = device ? this.ports.length > 1 : this.ports.length > 0;
-  }
-
-  getPortName(port: Port): string {
-    return portName(port);
   }
 
   doAddOrUpdate(): void {

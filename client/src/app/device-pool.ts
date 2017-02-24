@@ -19,20 +19,23 @@ export class BlindsDevice implements IBlindsDevice {
 export class HumidityDevice implements IHumidityDevice {
   constructor(public id?: any,
               public name?: string,
-              public port?: Port) {
+              public port?: Port,
+              public pollingInterval?: number) {
   }
 }
 
 export class TemperatureDevice implements ITemperatureDevice {
   constructor(public id?: any,
               public name?: string,
-              public port?: Port) {
+              public port?: Port,
+              public pollingInterval?: number) {
   }
 }
 
 export abstract class DevicesInfo {
   count: number = 0;
-  constructor(public type: DeviceType, public displayName: string, public title: string, public css: string, public icon: string){
+
+  constructor(public type: DeviceType, public displayName: string, public title: string, public css: string, public icon: string) {
   }
 }
 
@@ -42,7 +45,7 @@ class BlindsDevicesInfo extends DevicesInfo {
   public inputPortsInUse: Set<Port> = new Set<Port>();
   public outputPortsInUse: Set<Port> = new Set<Port>();
 
-  constructor(){
+  constructor() {
     super(DeviceType.BLINDS, 'ROLLLADEN', 'Blinds', 'blinds', 'blinds.svg');
   }
 
@@ -66,11 +69,11 @@ export abstract class AnalogDevicesInfo extends DevicesInfo {
   static updateAnalogPortsInUse(devicesInfo: AnalogDevicesInfo, ports: Port[]) {
     devicesInfo.portSet.forEach(port => {
       // port added?
-      if (ports.indexOf(port) > -1 && !devicesInfo.portsInUse.has(port)){
+      if (ports.indexOf(port) > -1 && !devicesInfo.portsInUse.has(port)) {
         AnalogDevicesInfo.analogPortsInUse.add(port);
       }
       // port removed?
-      if (ports.indexOf(port) < 0 && devicesInfo.portsInUse.has(port)){
+      if (ports.indexOf(port) < 0 && devicesInfo.portsInUse.has(port)) {
         AnalogDevicesInfo.analogPortsInUse.delete(port);
       }
     });
@@ -80,13 +83,13 @@ export abstract class AnalogDevicesInfo extends DevicesInfo {
 }
 
 class HumidityDevicesInfo extends AnalogDevicesInfo {
-  constructor(){
+  constructor() {
     super(DeviceType.HUMIDITY, 'FEUCHTIGKEIT', 'Humidity', 'humidity', 'humidity.svg');
   }
 }
 
 class TemperatureDevicesInfo extends AnalogDevicesInfo {
-  constructor(){
+  constructor() {
     super(DeviceType.TEMPERATURE, 'TEMPERATUR', 'Temperature', 'temperature', 'temperature.svg');
   }
 }

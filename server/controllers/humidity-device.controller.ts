@@ -17,6 +17,7 @@ export class HumidityDeviceController extends GenericDeviceController<IHumidityD
   private static updateDocument(documentFromDb: IHumidityDeviceDocument, inputDocument: IHumidityDeviceDocument) {
     documentFromDb.name = inputDocument.name;
     documentFromDb.port = inputDocument.port;
+    documentFromDb.pollingInterval = inputDocument.pollingInterval;
   }
 }
 

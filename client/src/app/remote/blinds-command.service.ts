@@ -1,10 +1,8 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {handleError} from './error-utils';
 import {AuthHttp} from 'angular2-jwt';
-import {Observable} from "rxjs";
+import {Observable} from 'rxjs';
 import {IBlindsCommand} from '../../../../server/entities/blinds-comnnad.interface';
-import {IId} from "../../../../server/entities/id.interface";
-import {BlindsAction} from '../../../../server/entities/blinds-action';
 
 @Injectable()
 export class BlindsCommandService {

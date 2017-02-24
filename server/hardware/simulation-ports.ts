@@ -42,11 +42,8 @@ export class SimulatedGPIO extends AbstractGPIO {
   }
 
   watch(): Observable<boolean> {
-    SimulatedGPIO.logger.error(`watch 1 ${this.getName()}`);
     if (this.direction === Direction.INPUT) {
-      SimulatedGPIO.logger.error(`watch 2 ${this.getName()}`);
       if (this.outputObs === null) {
-        SimulatedGPIO.logger.error(`watch 3 ${this.getName()}`);
         this.cmdSubscription = commandListener('gpi', this.id, (cmd: string) => {
           let parts: string[] = cmd.split(' ');
           if (parts.length > 2 && parts[2]) {

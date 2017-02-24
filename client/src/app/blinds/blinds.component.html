@@ -5,12 +5,17 @@
 </header>
 <main>
   <div class="deviceList">
-    <div *ngFor="let device of devices" class="deviceListItem selectionListItem"
+    <div class="deviceListItem selectionListItem" *ngFor="let device of devices"
          [class.selected]="device === selectedDevice"
          (click)="selectDevice(device)">{{device.name}}
     </div>
   </div>
-  <div class="deviceControl">
+  <div class="deviceControl" *ngIf="!selectedDevice">
+    <div class="deviceGroupList" *ngFor="let device of devices">
+      <label class="status">{{device.name}}: {{device | blindsDataObservable:devicesState | async | blindsDataFormatter}}</label>
+    </div>
+  </div>
+  <div class="deviceControl" *ngIf="selectedDevice">
     <div class="buttonDiv, controlDiv">
       <button id="keyUp" type="button" [disabled]="!selectedDevice" (click)="keyUpAction()">ÖFFNEN</button>
     </div>
@@ -21,7 +26,7 @@
       <button id="keyDown" type="button" [disabled]="!selectedDevice" (click)="keyDownAction()">SCHLIESSEN</button>
     </div>
     <div class="statusDiv, controlDiv">
-      <label id="status">{{selectedDevice | blindsDataObservable:devicesState | async | blindsDataFormatter}}</label>
+      <label class="status">{{selectedDevice | blindsDataObservable:devicesState | async | blindsDataFormatter}}</label>
     </div>
   </div>
 </main>

@@ -17,6 +17,7 @@ export class TemperatureDeviceController extends GenericDeviceController<ITemper
   private static updateDocument(documentFromDb: ITemperatureDeviceDocument, inputDocument: ITemperatureDeviceDocument) {
     documentFromDb.name = inputDocument.name;
     documentFromDb.port = inputDocument.port;
+    documentFromDb.pollingInterval = inputDocument.pollingInterval;
   }
 
 }
