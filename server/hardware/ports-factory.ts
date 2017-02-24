@@ -28,7 +28,7 @@ export class PortsFactory {
     let boardInfoFile: string = '/sys/devices/platform/bone_capemgr/baseboard/board-name';
     if (fs.existsSync(boardInfoFile)) {
       let name: string = fs.readFileSync(boardInfoFile, 'utf-8');
-      if (name === 'A335BNLT') {
+      if (name.toUpperCase().startsWith('A335BNLT')) {
         LOGGER.info('BeagleBone Black detected!');
         return true;
       } else {
