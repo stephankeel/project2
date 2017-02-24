@@ -63,7 +63,13 @@ class Server {
 
   constructor() {
     const options = commandLineArgs(optionDefinitions);
-    console.log(JSON.stringify(options));
+    if (options.help) {
+      console.log('Homeautomation Commandline Help');
+      console.log('-h, --help: show this help');
+      console.log('-a, --admin password: create admin user with the given password');
+      console.log('-d, --db [mlab | hostname | locahost]: DB to use, default is localhost');
+      process.exit(0);
+    }
 
     // Create expressjs application
     this.app = express();
