@@ -4,18 +4,15 @@
 `npm install`
 
 ## Configure Database
-Use either of following options (to be selected in models/db.service.ts):
-* Use installed MongoDB, see https://docs.mongodb.com/manual/administration/install-community/
-* Use TingoDB, see http://www.tingodb.com/info/ (**NOTE:** not yet implemented)
-* Use internet based DB server: `mongodb://admin:hallihallo62@ds050879.mlab.com:50879/homeautomation`
+You may use a mongodb (port 27017) installed locally, on a remote host or by using the mlab mongodb service.
 
-## Optional: In case of Database Option [1]
-open terminal
-change to the root folder of the project 2
-```
-mkdir data
-"C:\Program Files\MongoDB\Server\3.4\bin\mongod" --dbpath .\data
-```
+Selecting the database is done by command line argument as follows:
+* --db localhost 
+* --db hostname or IP-address
+* --db mlab --> will use `mongodb://admin:hallihallo62@ds050879.mlab.com:50879/homeautomation`
+
+How to install a mongodb, see https://docs.mongodb.com/manual/administration/install-community/
+                                              
 
 ## MongoDB Terminal
 ```
@@ -27,12 +24,25 @@ mkdir data
 ```
 
 ## Start the server
-starting the server with continuous building of the typescript files
+Starting the server with continuous building of the typescript files
 ```
 open terminal
 change to project2/server folder
 npm start
 ```
+Starting the server directly
+```
+open terminal
+change to project2/server folder
+node app.js [--help | --db <option> | --admin <password>]
+```
+Command line attributes:
+```
+-h, --help              shows this help
+-d, --db <option>       see configure database above
+-a, --admin <pssword>   creates the user admin, if not yet existing, using the provided password
+```
+
 
 ## Debugging the server in Webstrom
 * Create a 'node.js' Run-Configuraton. 
@@ -45,9 +55,6 @@ continuous building, but not starting the server, i.e. for debugging in Webstorm
 ```
 gulp watch
 ```
-
-## Initial User
-If the homeautomation server is started, then admin user **admin**, password **1234546** will be created if not yet existing.
 
 ## Testing the REST Interface
 Server and test running in one terminal:
