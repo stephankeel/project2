@@ -21,14 +21,25 @@ export class InfoComponent implements OnInit {
       this.infoList.push(new InfoPair('Node Version', info.nodeVersion));
       this.infoList.push(new InfoPair('Anzahl CPUs', info.cpus.length.toString()));
       this.infoList.push(new InfoPair('CPU Modell', info.cpus[0].model));
-      this.infoList.push(new InfoPair('Speicher total', info.totalMem.toString()));
-      this.infoList.push(new InfoPair('Freier Speicher', info.freeMem.toString()));
+      this.infoList.push(new InfoPair('Speicher total', this.formatMemory(info.totalMem)));
+      this.infoList.push(new InfoPair('Freier Speicher', this.formatMemory(info.freeMem)));
     }, (error: any) => {});
+  }
+
+  private formatMemory(size: number): string {
+    if (size >= Math.pow(10, 9)) {
+      return (size / Math.pow(10, 9)).toFixed(3) + " GB";
+    } else if (size >= Math.pow(10, 6)) {
+      return (size / Math.pow(10, 6)).toFixed(3) + " MB";
+    } else {
+      return (size / 1000).toFixed(3) + " KB";
+    }
   }
 
   backClicked(): void {
     this.router.navigate(['/dashboard']);
   }
+
 
 }
 

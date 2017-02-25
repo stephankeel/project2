@@ -18,11 +18,6 @@ export class LoginComponent implements OnInit {
   message: string;
   loggedOut: boolean = true;
 
-  // TODO: change variable names?
-//  loaded = false;
-//  model: any = {};
-//  error : string = "";
-
   constructor(private authenticationService: AuthenticationService,
               private authGuard: AuthGuard,
               private router: Router) {
@@ -30,6 +25,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.authenticationService.logout();
+    AppComponent.log('Logged-out');
     this.loggedOut = !this.authenticationService.loggedIn();
   }
 
@@ -37,6 +33,7 @@ export class LoginComponent implements OnInit {
     this.authenticationService.login(this.username, this.password)
       .subscribe(result => {
         if (result === true) {
+          AppComponent.logUser( this.authenticationService);
           let url = this.authGuard.redirectUrl ? this.authGuard.redirectUrl : '/dashboard';
           this.router.navigate([url]);
         } else {
