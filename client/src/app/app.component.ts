@@ -10,19 +10,27 @@ import {AuthenticationService} from './remote/authentication.service';
 })
 export class AppComponent {
 
-  private logInfo: string;
+  private static logInfo: string;
 
-  log(info: string): void {
-    this.logInfo = info;
+  public static log(info: string): void {
+    AppComponent.logInfo = info;
+  }
+
+  public static logUser(authenticationService: AuthenticationService) {
+    AppComponent.log(`Benutzer: ${authenticationService.getLoggedInUsername()}`);
+  }
+
+  getLogInfo(): string {
+    return AppComponent.logInfo;
   }
 
   constructor(private router: Router, private authenticationService: AuthenticationService) {
-    this.log('Starting...');
+    AppComponent.log('Starting...');
     if (authenticationService.loggedIn()) {
-      this.log('Goto dashboard');
+      AppComponent.logUser(authenticationService);
       this.router.navigate(['/dashboard']);
     } else {
-      this.log('Goto login');
+      AppComponent.log('');
       this.router.navigate(['/login']);
     }
   }
