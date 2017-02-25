@@ -1,15 +1,17 @@
 import log4js = require('log4js');
 import {Logger, Level, levels} from 'log4js';
+import * as path from 'path';
 import fs = require('fs');
 
+let appPath: string = path.join(__dirname, '..');
 
 // create the log directory if not yet existing
-let path: string = 'logs';
-if (!fs.existsSync(path)) {
-  fs.mkdirSync(path);
+let logPpath: string = `${appPath}/logs`;
+if (!fs.existsSync(logPpath)) {
+  fs.mkdirSync(logPpath);
 }
 
-log4js.configure('log4js.json', {reloadSecs: 300});
+log4js.configure(`${appPath}/log4js.json`, {reloadSecs: 300});
 
 let allLevels: Level[] = [levels.DEBUG, levels.TRACE, levels.INFO, levels.WARN, levels.ERROR, levels.FATAL, levels.ALL];
 let loggers: Map<Logger, Level> = new Map<Logger, Level>();

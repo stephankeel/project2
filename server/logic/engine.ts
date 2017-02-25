@@ -35,6 +35,11 @@ export class Engine {
     led.heartbeat();
   }
 
+  private stopHeartbeatLED() {
+    let led: AbstractLED = this.portsFactory.getLED(3);
+    led.setState(0);
+  }
+
   public registerBlindsDeviceController(deviceController: BlindsDeviceController): void {
     deviceController.registerOnCreate((device: IDevice) => this.addBlindsDevice(device));
     deviceController.registerOnUpdate((device: IDevice) => this.updateDevice(device));
