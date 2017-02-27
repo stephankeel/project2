@@ -35,11 +35,6 @@ export class Engine {
     led.heartbeat();
   }
 
-  private stopHeartbeatLED() {
-    let led: AbstractLED = this.portsFactory.getLED(3);
-    led.setState(0);
-  }
-
   public registerBlindsDeviceController(deviceController: BlindsDeviceController): void {
     deviceController.registerOnCreate((device: IDevice) => this.addBlindsDevice(device));
     deviceController.registerOnUpdate((device: IDevice) => this.updateDevice(device));
@@ -363,10 +358,12 @@ class BlindsEngine {
         LOGGER.debug(`stopTimer: ${this.device.name} --> blinds is open, secondsTowardsClosed: ${this.secondsTowardsClosed}`);
         this.state = BlindsState.OPEN;
         clearInterval(this.timer);
+        this.setActors(this.state);
       } else if (this.secondsTowardsClosed > this.device.runningSeconds) {
         LOGGER.debug(`stopTimer: ${this.device.name} --> blinds is closed, secondsTowardsClosed: ${this.secondsTowardsClosed}`);
         this.state = BlindsState.CLOSED;
         clearInterval(this.timer);
+        this.setActors(this.state);
       }
       this.sendState();
     }, 1000);

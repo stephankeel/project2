@@ -12,8 +12,9 @@ export class GPIO extends AbstractGPIO {
   private static readonly EXPORT = GPIO.ROOT + 'export';
   private static readonly BASE_NAME = 'gpio';
 
-  private stateObservable: Observable<boolean> = null;
-  private doRead: boolean = true;
+  private outputObs: Observable<boolean> = null;
+  private intervalId: any = null;
+  private prevValue: number = 48; // ascii 0
 
   constructor(protected id: number, private direction: Direction) {
     super(id);
@@ -21,7 +22,6 @@ export class GPIO extends AbstractGPIO {
       throw new Error(`GPIO id ${id} is not valid!`);
     }
     let portName: string = this.getName();
-    GPIO.logger.debug(`setup port ${id}`);
     // activate port if not yet done
     if (!fs.existsSync(portName)) {
       let cmd: string = `${GPIO.ROOT}${GPIO.EXPORT}`;
@@ -35,8 +35,10 @@ export class GPIO extends AbstractGPIO {
     // if output then set mode to edge
     if (this.direction === Direction.INPUT) {
       cmd = `${portName}/edge`;
-      fs.writeFileSync(cmd, 'both');
+      fs.writeFileSync(cmd, 'none');
       GPIO.logger.debug(`port ${id} edge on both`);
+    } else {
+      this.setState(false);
     }
   }
 
@@ -58,7 +60,7 @@ export class GPIO extends AbstractGPIO {
   setState(on: boolean): void {
     if (this.direction === Direction.OUTPUT) {
       let cmd: string = `${this.getName()}/value`;
-      let state: number = on ? 1 : 0;
+      let state: number = on ? 0 : 1; // on = 0, off = 1, i.e. inverted
       GPIO.logger.debug(`setState ${cmd} to ${state}`);
       if (fs.existsSync(cmd)) {
         fs.writeFileSync(cmd, state);
@@ -73,12 +75,11 @@ export class GPIO extends AbstractGPIO {
 
   watch(): Observable<boolean> {
     if (this.direction === Direction.INPUT) {
-      if (this.stateObservable === null) {
-        this.stateObservable = Observable.create((subscriber: Subscriber<boolean>) => {
+      if (this.outputObs === null) {
+        this.outputObs = Observable.create((subscriber: Subscriber<boolean>) => {
           let cmd: string = `${this.getName()}/value`;
           GPIO.logger.debug(`watch ${cmd}`);
           if (fs.existsSync(cmd)) {
-            this.doRead = true;
             this.read(subscriber, cmd);
           } else {
             subscriber.error(`watch failed: ${cmd} does not exist`);
@@ -86,37 +87,38 @@ export class GPIO extends AbstractGPIO {
           }
         });
       }
-      return this.stateObservable;
+      return this.outputObs;
     } else {
       GPIO.logger.error(`watch ${this.getName()} not allowed for output pin`);
     }
   }
 
   private read(subscriber: Subscriber<boolean>, cmd: string, value?: boolean): void {
-    if (this.doRead) {
-      if (value != undefined) {
-        GPIO.logger.error(`${this.getName()} ==> ${value}`)
-        subscriber.next(value);
-      }
-      fs.readFile(cmd, (err, data) => {
-        if (err) {
-          let errStr: string = `read ${cmd} failed with ${err}`;
-          GPIO.logger.error(errStr);
-          subscriber.error(errStr);
-          subscriber.complete();
+    this.intervalId = setInterval(() => {
+      let data: Buffer = fs.readFileSync(cmd);
+      if (data) {
+        let val: number = data.readUInt8(0); // ascii value of 0 = 48, of 1 = 49
+        if (val !== this.prevValue) {
+          GPIO.logger.debug(`${this.getName()} input is ${val !== 48}`)
+          subscriber.next(val !== 48);
+          this.prevValue = val;
         }
-        let val: number = parseInt(data.toString());
-        this.read(subscriber, cmd, val != 0);
-      });
-    } else {
-      subscriber.complete();
-    }
+      } else {
+        let errStr: string = `read ${cmd} failed with no data`;
+        GPIO.logger.error(errStr);
+        subscriber.error(errStr);
+        subscriber.complete();
+        clearInterval(this.intervalId);
+      }
+    }, 100);
   }
 
   reset(): void {
     GPIO.logger.debug(`reset ${this.getName()} --> ${GPIO.UNEXPORT} for gpio${this.id}`);
     if (fs.existsSync(this.getName())) {
-      this.doRead = false;
+      if (this.intervalId !== null) {
+        clearInterval(this.intervalId);
+      }
       fs.writeFileSync(GPIO.UNEXPORT, this.id);
       GPIO.logger.debug('done');
     } else {
@@ -148,7 +150,7 @@ export class AIN extends AbstractAIN {
   private static readonly BASE_NAME = 'in_voltage';
   private static readonly POST_FIX = '_raw';
 
-  private valueObservable: Observable<number> = null;
+  private outputObs: Observable<number> = null;
   private intervalId: any = null;
   private doPoll: boolean = true;
 
@@ -164,8 +166,8 @@ export class AIN extends AbstractAIN {
   }
 
   poll(intervalSeconds: number): Observable<number> {
-    if (this.valueObservable === null) {
-      this.valueObservable = Observable.create((subscriber: Subscriber<number>) => {
+    if (this.outputObs === null) {
+      this.outputObs = Observable.create((subscriber: Subscriber<number>) => {
         AIN.logger.debug(`poll ${this.getName()} every ${intervalSeconds} second(s)`);
         if (fs.existsSync(this.getName())) {
           this.doPoll = true;
@@ -175,7 +177,7 @@ export class AIN extends AbstractAIN {
                 if (err) {
                   subscriber.error(`read ${this.getName()} failed with ${err}`);
                 } else {
-                  let val: number = parseInt(data.toString());
+                  let val: number = data.values()[0];
                   subscriber.next(val);
                 }
               });
@@ -189,11 +191,12 @@ export class AIN extends AbstractAIN {
         }
       });
     }
-    return this.valueObservable;
+    return this.outputObs;
   }
 
   stopPolling(): void {
     AIN.logger.debug(`stopPolling ${this.getName()}`);
+    clearInterval(this.intervalId);
     this.doPoll = false;
   }
 
