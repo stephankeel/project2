@@ -1,10 +1,6 @@
 import {Logger, getLogger} from '../utils/logger';
 import mongoose = require('mongoose');
-import {initAdmin} from './user.model';
-import {initTemperatureDeviceWohnzimmer} from "./temperature-device.model";
-// let tingodb = require('tingodb');
 
-const DB_OPTION: number = 1;
 const DB_PORT: number = 27017;
 const RETRY_SECONDS: number = 5;
 const LOGGER: Logger = getLogger('DBService');
@@ -15,7 +11,6 @@ const LOGGER: Logger = getLogger('DBService');
 export class DBService {
 
   private static instance: DBService = new DBService();
-  private static hostname: string;
 
   private db: mongoose.Connection = mongoose.connection;
   private dbLocation: any;
@@ -23,18 +18,16 @@ export class DBService {
   private constructor() {
   }
 
-  public static init(hostname: string): DBService {
-    DBService.hostname = hostname;
-
-    switch (DB_OPTION) {
-      case 1:
-        DBService.instance.dbLocation = `${DBService.hostname}:${DB_PORT}/homeautomation`;
-        break;
-      case 2:
-      // not yet provided: new tingodb.Db('./data-tingodb', {});
-      // break;
-      default:
+  public static init(option: string): DBService {
+    if (option) {
+      option = option.toLowerCase();
+      if (option === 'mlab') {
         DBService.instance.dbLocation = 'mongodb://admin:hallihallo62@ds050879.mlab.com:50879/homeautomation';
+      } else {
+        DBService.instance.dbLocation = `${option}:${DB_PORT}/homeautomation`;
+      }
+    } else {
+      DBService.instance.dbLocation = `localhost:${DB_PORT}/homeautomation`;
     }
 
     DBService.instance.db
@@ -54,13 +47,6 @@ export class DBService {
       });
 
     DBService.instance.connect(0);
-
-    // create admin user if not yet existing
-    initAdmin();
-    // create test temperature Device 'Wohnzimmer'
-    // NOTE: this will fail REST end to end tests
-    //initTemperatureDeviceWohnzimmer();
-
     return DBService.instance;
   }
 

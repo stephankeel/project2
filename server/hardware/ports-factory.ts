@@ -12,11 +12,10 @@ export class PortsFactory {
   private readonly USE_BBB_SCHEMA_FOR_SIMULATION = true;
 
   private static singleton: PortsFactory = new PortsFactory();
-  private isBBB: boolean = false;
+  private isBeagleBoneBlack: boolean = null;
   private portToBeagleBoneBlackId: Map<Port, number> = new Map<Port, number>();
 
   private constructor() {
-    this.isBBB = PortsFactory.isBeagleBoneBlack();
     this.createPortToPinMap();
   }
 
@@ -42,11 +41,18 @@ export class PortsFactory {
     return false;
   }
 
+  private isBBB(): boolean {
+    if (this.isBeagleBoneBlack === null) {
+      this.isBeagleBoneBlack = PortsFactory.isBeagleBoneBlack();
+    }
+    return this.isBeagleBoneBlack;
+  }
+
   public getAIN(port: Port): AbstractAIN {
     if (analogInputs.filter(p => p != port).length === 0) {
       throw new Error(`Port ${portName(port)} is not a valid anaog input`);
     }
-    if (this.isBBB) {
+    if (this.isBBB()) {
       return new AIN(this.portToBeagleBoneBlackId.get(port));
     } else {
       return new SimulatedAIN(this.translateSimulatedPort(port));
@@ -57,7 +63,7 @@ export class PortsFactory {
     if (digitalInputs.filter(p => p != port).length === 0) {
       throw new Error(`Port ${portName(port)} is not a valid digital input`);
     }
-    if (this.isBBB) {
+    if (this.isBBB()) {
       return new GPIO(this.portToBeagleBoneBlackId.get(port), Direction.INPUT);
     } else {
       return new SimulatedGPIO(this.translateSimulatedPort(port), Direction.INPUT);
@@ -68,7 +74,7 @@ export class PortsFactory {
     if (digitalOutputs.filter(p => p != port).length === 0) {
       throw new Error(`Port ${portName(port)} is not a valid digital output`);
     }
-    if (this.isBBB) {
+    if (this.isBBB()) {
       return new GPIO(this.portToBeagleBoneBlackId.get(port), Direction.OUTPUT);
     } else {
       return new SimulatedGPIO(this.translateSimulatedPort(port), Direction.OUTPUT);
@@ -76,7 +82,7 @@ export class PortsFactory {
   }
 
   public getLED(id: number): AbstractLED {
-    if (this.isBBB) {
+    if (this.isBBB()) {
       return new LED(id);
     } else {
       return new SimulatedLED(id);
