@@ -99,7 +99,7 @@ export class GPIO extends AbstractGPIO {
       if (data) {
         let val: number = data.readUInt8(0); // ascii value of 0 = 48, of 1 = 49
         if (val !== this.prevValue) {
-          GPIO.logger.debug(`${this.getName()} input is ${val !== 48}`)
+          GPIO.logger.debug(`${this.getName()} input is ${val !== 48}`);
           subscriber.next(val !== 48);
           this.prevValue = val;
         }
@@ -179,7 +179,7 @@ export class AIN extends AbstractAIN {
                   subscriber.error(`read ${this.getName()} failed with ${err}`);
                 } else {
                   let val: number = Number(data.toString());
-                  AIN.logger.debug(`${this.getName()}: data: ${JSON.stringify(data)} --> val: ${val}`);
+                  AIN.logger.debug(`${this.getName()}: value ${val}`);
                   subscriber.next(val);
                 }
               });

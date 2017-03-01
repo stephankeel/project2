@@ -79,13 +79,33 @@ export class Engine {
     let analogDevice: IAnalogDevice = device as ITemperatureDevice;
     let ain: AbstractAIN = this.assignAnalogInput(analogDevice.id, analogDevice.port);
     ain.poll(analogDevice.pollingInterval).subscribe((val: number) => {
-        let data: IAnalogData = {deviceId: device.id, timestamp: Date.now(), value: val};
+        let data: IAnalogData = {deviceId: device.id, timestamp: Date.now(), value: this.convertToDeviceUnits(deviceType, val)};
         GenericDataController.getDataController(deviceType).addDataRecord(data);
       },
       (err: any) => LOGGER.error(`${deviceTypeAsString(deviceType)} device polling error ${err}`),
       () => LOGGER.info(`${deviceTypeAsString(deviceType)} device polling stopped`)
     );
     this.devices.set(device.id, deviceInfo);
+  }
+
+  /**
+   * Converts the machine value to the range of device unit values
+   * @param deviceType the type of device
+   * @param value the machine value
+   * @returns {number} the value in the units of the device
+   */
+  private convertToDeviceUnits(deviceType: DeviceType, value: number): number {
+    if (this.portsFactory.isSimulation()) {
+      return value;
+    }
+    switch(deviceType) {
+      case DeviceType.HUMIDITY:
+        return value * 100 / PortsFactory.MAX_ANALOG_VALUE;
+      case DeviceType.TEMPERATURE:
+        return (value - PortsFactory.MAX_ANALOG_VALUE/2) / 40;
+      default:
+        return value;
+    }
   }
 
   public updateDevice(device: IDevice): void {
