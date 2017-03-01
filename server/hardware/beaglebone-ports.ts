@@ -24,7 +24,7 @@ export class GPIO extends AbstractGPIO {
     let portName: string = this.getName();
     // activate port if not yet done
     if (!fs.existsSync(portName)) {
-      let cmd: string = `${GPIO.ROOT}${GPIO.EXPORT}`;
+      let cmd: string = `${GPIO.EXPORT}`;
       fs.writeFileSync(cmd, id);
       GPIO.logger.debug(`enable port id ${id}`);
     }
@@ -99,7 +99,7 @@ export class GPIO extends AbstractGPIO {
       if (data) {
         let val: number = data.readUInt8(0); // ascii value of 0 = 48, of 1 = 49
         if (val !== this.prevValue) {
-          GPIO.logger.debug(`${this.getName()} input is ${val !== 48}`)
+          GPIO.logger.debug(`${this.getName()} input is ${val !== 48}`);
           subscriber.next(val !== 48);
           this.prevValue = val;
         }
@@ -133,7 +133,7 @@ export class GPIO extends AbstractGPIO {
       let edge = fs.readFileSync(`${portName}}/edge`);
       let str = `${portName}: direction ${direction} [${this.directionVerb()}]`;
       if (this.direction === Direction.OUTPUT) {
-        str += `, edge on ${edge} [both]`;
+        str += `, edge on ${edge} [none]`;
       }
       return str;
     } else {
@@ -145,6 +145,7 @@ export class GPIO extends AbstractGPIO {
 
 export class AIN extends AbstractAIN {
   public static readonly VALID_IDS: number[] = [0, 1, 2, 3, 4, 5, 6];
+  public static readonly MAX_VALUE: number = 4096;
   private static readonly logger: Logger = getLogger('AIN');
   private static readonly ROOT = '/sys/bus/iio/devices/iio:device0/';
   private static readonly BASE_NAME = 'in_voltage';
@@ -177,7 +178,8 @@ export class AIN extends AbstractAIN {
                 if (err) {
                   subscriber.error(`read ${this.getName()} failed with ${err}`);
                 } else {
-                  let val: number = data.values()[0];
+                  let val: number = Number(data.toString());
+                  AIN.logger.debug(`${this.getName()}: value ${val}`);
                   subscriber.next(val);
                 }
               });

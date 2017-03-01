@@ -11,6 +11,8 @@ const LOGGER: Logger = getLogger('PortsFactory');
 export class PortsFactory {
   private readonly USE_BBB_SCHEMA_FOR_SIMULATION = true;
 
+  public static readonly MAX_ANALOG_VALUE: number = AIN.MAX_VALUE;
+
   private static singleton: PortsFactory = new PortsFactory();
   private isBeagleBoneBlack: boolean = null;
   private portToBeagleBoneBlackId: Map<Port, number> = new Map<Port, number>();
@@ -98,6 +100,10 @@ export class PortsFactory {
     }
   }
 
+  public isSimulation(): boolean {
+    return !this.isBBB;
+  }
+
   private createPortToPinMap(): void {
     this.portToBeagleBoneBlackId.set(Port.AI_1, 0);
     this.portToBeagleBoneBlackId.set(Port.AI_2, 1);
@@ -114,7 +120,7 @@ export class PortsFactory {
     this.portToBeagleBoneBlackId.set(Port.DI_5, 46);
     this.portToBeagleBoneBlackId.set(Port.DI_6, 27);
     this.portToBeagleBoneBlackId.set(Port.DI_7, 65);
-    this.portToBeagleBoneBlackId.set(Port.DI_8, 61);
+    this.portToBeagleBoneBlackId.set(Port.DI_8, 22);
 
     this.portToBeagleBoneBlackId.set(Port.DO_1, 60);
     this.portToBeagleBoneBlackId.set(Port.DO_2, 48);
