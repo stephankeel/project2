@@ -108,7 +108,7 @@ export class PortsFactory {
     this.portToBeagleBoneBlackId.set(Port.DI_5, 46);
     this.portToBeagleBoneBlackId.set(Port.DI_6, 27);
     this.portToBeagleBoneBlackId.set(Port.DI_7, 65);
-    this.portToBeagleBoneBlackId.set(Port.DI_8, 61);
+    this.portToBeagleBoneBlackId.set(Port.DI_8, 22);
 
     this.portToBeagleBoneBlackId.set(Port.DO_1, 60);
     this.portToBeagleBoneBlackId.set(Port.DO_2, 48);
