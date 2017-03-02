@@ -12,7 +12,7 @@ import {IBlindsDevice} from "../../../../server/entities/device.interface";
 import {IBlindsData} from "../../../../server/entities/data.interface";
 import {BlindsDataObservablePipe} from './blinds-data-observable.pipe';
 import {BlindsDataFormatterPipe} from './blinds-data-formatter.pipe';
-import {IBlindsCommand} from '../../../../server/entities/blinds-comnnad.interface';
+import {IBlindsCommand} from '../../../../server/entities/blinds-command.interface';
 import {IId} from "../../../../server/entities/id.interface";
 import {BlindsAction} from '../../../../server/entities/blinds-action';
 

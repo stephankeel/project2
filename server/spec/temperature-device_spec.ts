@@ -1,5 +1,4 @@
 import {Logger, getLogger} from '../utils/logger';
-import {v4} from 'uuid';
 import {RequestResponse} from 'request';
 import {BASE_URL} from './constants';
 import {ITemperatureDevice} from '../entities/device.interface';
@@ -16,9 +15,6 @@ describe('REST API Roundtrip Test of Temperature-Device', function () {
   let request = require('request');
   let adminToken: string;
   let testTemperatureDeviceId: any;
-  let clientCtx: string = v4();
-
-  LOGGER.debug(`clientCtx: ${clientCtx}`);
 
   describe('Test login and creation of a temperature-device', function () {
     it('returns status code 200 - successfull authentication', function (done) {
@@ -36,6 +32,7 @@ describe('REST API Roundtrip Test of Temperature-Device', function () {
     let testTemperatureDevice: ITemperatureDevice = {
       name: TEST_TEMPERATURE_DEVICE,
       port: Port.AI_1,
+      pollingInterval: 10
     };
     LOGGER.debug(`request: ${JSON.stringify(testTemperatureDevice)}`);
     it('returns status code 201 - temperature-device created', function (done) {
@@ -81,6 +78,7 @@ describe('REST API Roundtrip Test of Temperature-Device', function () {
       id: testTemperatureDeviceId,
       name: NAME,
       port: Port.AI_1,
+      pollingInterval: 10
     };
     LOGGER.debug(`request: ${JSON.stringify(testTemperatureDevice)}`);
     it('returns status code 200 - temperature-device updated', function (done) {

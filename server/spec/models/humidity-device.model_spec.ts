@@ -68,8 +68,8 @@ describe('Humidity-Device-Model Test', function () {
     });
   });
 
-  it('should be valid if is name and port are set with valid values', done => {
-    let d = new HumidityDeviceModel({name: "abcde", port: analogInputs[2]});
+  it('should be valid if is name, port and pollingInterval are set with valid values', done => {
+    let d = new HumidityDeviceModel({name: "abcde", port: analogInputs[2], pollingInterval: 10});
     d.validate((err: any) => {
       expect(err).toBeNull();
       done();

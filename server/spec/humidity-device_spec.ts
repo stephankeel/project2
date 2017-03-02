@@ -1,5 +1,4 @@
 import {Logger, getLogger} from '../utils/logger';
-import {v4} from 'uuid';
 import {RequestResponse} from 'request';
 import {BASE_URL} from './constants';
 import {IHumidityDevice} from '../entities/device.interface';
@@ -16,9 +15,6 @@ describe('REST API Roundtrip Test of Humidity-Device', function () {
   let request = require('request');
   let adminToken: string;
   let testHumidityDeviceId: any;
-  let clientCtx: string = v4();
-
-  LOGGER.debug(`clientCtx: ${clientCtx}`);
 
   describe('Test login and creation of a humidity-device', function () {
     it('returns status code 200 - successfull authentication', function (done) {
@@ -36,6 +32,7 @@ describe('REST API Roundtrip Test of Humidity-Device', function () {
     let testHumidityDevice: IHumidityDevice = {
       name: TEST_HUMIDITY_DEVICE,
       port: Port.AI_1,
+      pollingInterval: 10
     };
     LOGGER.debug(`requestContent: ${JSON.stringify(testHumidityDevice)}`);
     it('returns status code 201 - humidity-device created', function (done) {
@@ -81,6 +78,7 @@ describe('REST API Roundtrip Test of Humidity-Device', function () {
       id: testHumidityDeviceId,
       name: NAME,
       port: Port.AI_1,
+      pollingInterval: 10
     };
     LOGGER.debug(`requestContent: ${JSON.stringify(testHumidityDevice)}`);
     it('returns status code 200 - humidity-device updated', function (done) {

@@ -1,5 +1,4 @@
 import {Logger, getLogger} from '../utils/logger';
-import {v4} from 'uuid';
 import {RequestResponse} from 'request';
 import {BASE_URL} from './constants';
 import {IBlindsDevice} from '../entities/device.interface';
@@ -16,9 +15,7 @@ describe('REST API Roundtrip Test of Blinds-Device', function () {
   let request = require('request');
   let adminToken: string;
   let testBlindsDeviceId: any;
-  let clientCtx: string = v4();
 
-  LOGGER.debug(`clientCtx: ${clientCtx}`);
 
   describe('Test login, adding a blinds-device and duplicate rejection', function () {
     it('returns status code 200 - successfull authentication', function (done) {

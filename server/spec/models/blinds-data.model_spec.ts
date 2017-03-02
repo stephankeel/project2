@@ -61,8 +61,8 @@ describe('Blinds-Data-Model Test', function () {
     });
   });
 
-  it('should be valid if is deviceId, timestamp and state are set with valid values', done => {
-    let d = new BlindsDataModel({deviceId: "12345", timestamp: 1000000, state: BlindsState.CLOSED});
+  it('should be valid if is deviceId, timestamp, state and percentageDown are set with valid values', done => {
+    let d = new BlindsDataModel({deviceId: "12345", timestamp: 1000000, state: BlindsState.CLOSED, percentageDown: 50});
     d.validate((err: any) => {
       expect(err).toBeNull();
       done();

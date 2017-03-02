@@ -1,7 +1,7 @@
 import {Logger, getLogger} from '../utils/logger';
 import express = require('express');
 import {Engine} from '../logic/engine';
-import {IBlindsCommand} from '../entities/blinds-comnnad.interface';
+import {IBlindsCommand} from '../entities/blinds-command.interface';
 import {BlindsAction} from '../entities/blinds-action';
 
 const LOGGER: Logger = getLogger('BlindsCommandController');
