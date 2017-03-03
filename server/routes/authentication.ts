@@ -6,6 +6,7 @@ import eJwt = require('express-jwt');
 import jwt = require('jsonwebtoken');
 import {IUserDocument, UserModel} from '../models/user.model'
 import {IUser} from '../entities/user.interface';
+import bcrypt = require('bcrypt');
 
 export let authenticationRoute = express.Router();
 
@@ -22,18 +23,24 @@ authenticationRoute.post('/api/authenticate', function (req: express.Request, re
       res.status(401).json({error: `username ${username} unknown. ${err}`});
     } else {
       // verify the password
-      if (users.length && users[0].password === password) {
-        let user: IUserDocument = users[0];
-        user.id = user._id;
-        // TODO: das Passwort 'secret' muss noch ersetzt werden. Am besten mit einem privaten und einem öffentlichen Schlüssel.
-        let authToken = jwt.sign({
-          id: user.id,
-          username: user.username,
-          type: user.type
-        }, "secret", {expiresIn: "1h"});
-        LOGGER.info(`user ${user.username} authenticated successfully`);
-        res.json({
-          token: authToken
+      if (users.length) {
+        bcrypt.compare(password, users[0].password, (err, result) => {
+          if (err || !result) {
+            res.status(401).json({error: `Incorrect username or password.`});
+          } else {
+            let user: IUserDocument = users[0];
+            user.id = user._id;
+            // TODO: das Passwort 'secret' muss noch ersetzt werden. Am besten mit einem privaten und einem öffentlichen Schlüssel.
+            let authToken = jwt.sign({
+              id: user.id,
+              username: user.username,
+              type: user.type
+            }, "secret", {expiresIn: "1h"});
+            LOGGER.info(`user ${user.username} authenticated successfully`);
+            res.json({
+              token: authToken
+            })
+          }
         });
       } else {
         res.status(401).json({error: `Incorrect username or password.`});
@@ -59,7 +66,7 @@ authenticationRoute.get('/api/authenticated', function (req: express.Request, re
 
 // Augmenting the express Request interface with user: IUser to have user access where ever express.Request is used.
 declare module '@types/express' {
-  export interface Request{
+  export interface Request {
     user?: IUser;
   }
 }
