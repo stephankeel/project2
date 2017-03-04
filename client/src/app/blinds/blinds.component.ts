@@ -28,6 +28,7 @@ export class BlindsComponent implements OnInit {
   private headerTitle: string = `${blindsDevicesInfo.displayName}-STEUERUNG`;
   private devices: BlindsDevice[] = [];
   private selectedDevice: BlindsDevice;
+  private selectedDevicePercentageDown: number = 33;
   private genericService: GenericService<BlindsDevice>;
   private statusText: string = 'stopped';
   private message: string;
@@ -41,8 +42,7 @@ export class BlindsComponent implements OnInit {
   ngOnInit() {
     this.genericService = new GenericService<BlindsDevice>(this.authHttp, this.socketService, "/api/devices/blinds", "/blinds");
     this.genericService.items.subscribe(devices => {
-      this.devices = devices.toArray();
-      this.selectedDevice = null;
+      this.devices = devices.toArray().sort((a, b) => a.name.localeCompare(b.name));
       this.showAll();
     }, error => this.message = error.toString());
     this.genericService.getAll();
@@ -61,7 +61,7 @@ export class BlindsComponent implements OnInit {
   }
 
   releaseDevice(device: BlindsDevice): void {
-    let dataService:  GenericDataService<IBlindsData> = this.dataServices.get(device);
+    let dataService: GenericDataService<IBlindsData> = this.dataServices.get(device);
     if (dataService) {
       dataService.disconnect();
       this.dataServices.delete(device);
@@ -73,10 +73,15 @@ export class BlindsComponent implements OnInit {
     this.router.navigate(['/dashboard']);
   }
 
+  showAllClicked(): void {
+    this.showAll();
+  }
+
   showAll(): void {
     if (this.selectedDevice) {
       this.releaseDevice(this.selectedDevice);
     }
+    this.selectedDevice = null;
     this.devices.forEach(device => this.subscribeDevice(device));
   }
 
@@ -89,6 +94,9 @@ export class BlindsComponent implements OnInit {
     }
     this.subscribeDevice(device);
     this.selectedDevice = device;
+    this.devicesState.get(device).subscribe((data: IBlindsData) => {
+      this.selectedDevicePercentageDown = data.percentageDown
+    });
   }
 
   clearMessage(): void {
@@ -100,7 +108,8 @@ export class BlindsComponent implements OnInit {
       id: this.selectedDevice.id,
       action: BlindsAction.OPEN
     };
-    this.commandService.command(cmd).subscribe((done: boolean) => {}, (err: any) => this.message = JSON.stringify(err));
+    this.commandService.command(cmd).subscribe((done: boolean) => {
+    }, (err: any) => this.message = JSON.stringify(err));
   }
 
   keyDownAction(): void {
@@ -108,7 +117,8 @@ export class BlindsComponent implements OnInit {
       id: this.selectedDevice.id,
       action: BlindsAction.CLOSE
     };
-    this.commandService.command(cmd).subscribe((done: boolean) => {}, (err: any) => this.message = JSON.stringify(err));
+    this.commandService.command(cmd).subscribe((done: boolean) => {
+    }, (err: any) => this.message = JSON.stringify(err));
   }
 
   stopAction(): void {
@@ -116,7 +126,8 @@ export class BlindsComponent implements OnInit {
       id: this.selectedDevice.id,
       action: BlindsAction.STOP
     };
-    this.commandService.command(cmd).subscribe((done: boolean) => {}, (err: any) => this.message = JSON.stringify(err));
+    this.commandService.command(cmd).subscribe((done: boolean) => {
+    }, (err: any) => this.message = JSON.stringify(err));
   }
 
 }
