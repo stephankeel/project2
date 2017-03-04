@@ -10,6 +10,7 @@ import {Info} from '../../../../server/entities/info';
 })
 export class InfoComponent implements OnInit {
 
+  private title: string;
   private infoList: InfoPair[] = [];
 
   constructor(private router: Router, private restService: CommonRestService) {
@@ -17,7 +18,7 @@ export class InfoComponent implements OnInit {
 
   ngOnInit() {
     this.restService.getInfo().subscribe((info: Info) => {
-      this.infoList.push(new InfoPair('Titel', info.title));
+      this.title = info.title;
       this.infoList.push(new InfoPair('Node Version', info.nodeVersion));
       this.infoList.push(new InfoPair('Anzahl CPUs', info.cpus.length.toString()));
       this.infoList.push(new InfoPair('CPU Modell', info.cpus[0].model));

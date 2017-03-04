@@ -1,3 +1,27 @@
+@mixin paddingAndMargin() {
+  margin: 0em;
+}
+
+h4 {
+  margin: 0.5em 0;
+}
+
 .infoTable {
-  margin: 0.5em;
+  @include paddingAndMargin;
+  border-collapse: collapse;
+  border-radius: 0.3em;
+  margin-bottom: 2em;
+}
+
+.infoTable td {
+  border: 1px solid white;
+  padding: 0.3em;
+  background-color: lightgrey;
+}
+
+.iconReferences {
+  @include paddingAndMargin;
+  padding-left: 1em;
+  margin-bottom: 0.5em;
+
 }
