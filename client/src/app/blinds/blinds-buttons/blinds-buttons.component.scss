@@ -1,26 +1,12 @@
-.controlDiv {
+.app-blinds-button-div {
   display: flex;
   flex-direction: column;
   height: 100%;
   width: auto;
   justify-content: space-between;
-  @media(max-width: 600px) {
-    flex-direction: row;
-    height: auto;
-    width: 100%;
-  }
 }
 
-.iconAction {
+.app-blinds-button {
   width: 40px;
   height: 40px;
-}
-
-.keyUp {
-}
-
-.keyDown {
-}
-
-.keyStop {
 }
