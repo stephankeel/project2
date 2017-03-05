@@ -39,14 +39,25 @@ header {
   text-shadow: 0.1em 0.1em 0.5em grey;
 }
 
-.ng-invalid:not(form) {
-  border: 0.2em solid red;
+.contextHeaderActionDiv {
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
 }
 
-.headerAction:hover {
+.headerAction:hover, .iconAction:active {
   transform: scale(1.25);
+}
+
+.headerIcon {
+  width: 32px;
+  height: 32px;
 }
 
 .selectionListItem.selected {
   background-color: lightgray;
+}
+
+.ng-invalid:not(form) {
+  border: 0.2em solid red;
 }

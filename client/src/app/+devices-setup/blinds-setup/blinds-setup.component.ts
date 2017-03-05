@@ -30,7 +30,7 @@ export class BlindsSetupComponent implements OnInit {
     this.genericService = new GenericService<BlindsDevice>(this.authHttp,
       this.socketService, "/api/devices/blinds", "/blinds");
     this.genericService.items.subscribe(devices => {
-      this.devices = devices.toArray();
+      this.devices = devices.toArray().sort((a, b) => a.name.localeCompare(b.name));
       blindsDevicesInfo.updatePortsInUse(devices.toArray());
       this.updatePortSet();
       this.device = null;

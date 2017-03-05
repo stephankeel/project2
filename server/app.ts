@@ -32,8 +32,8 @@ import {initAdmin} from './models/user.model';
 
 
 const LOGGER: Logger = getLogger('Server');
-const VERSION: string = '0.8.0';
-const ABOUT: string = `Homeautomation V${VERSION} by D.Leuenberger and St.Keel`;
+const VERSION: string = '1.0.0';
+const ABOUT: string = `Homeautomation V${VERSION} von D.Leuenberger und St.Keel`;
 
 var socketioJwt = require('socketio-jwt');
 
