@@ -93,10 +93,6 @@ export class BlindsComponent implements OnInit {
     });
   }
 
-  getDevicePercentageDown(device: BlindsDevice): Observable<IBlindsData> {
-    return this.devicesState.get(device);
-  }
-
   setMessage(str: string) {
     this.message = str;
   }
