@@ -10,7 +10,7 @@ import {BlindsCommandService} from '../../remote/blinds-command.service';
 })
 export class BlindsButtonsComponent implements OnInit {
 
-  @Input() deviceId: any;
+  @Input() deviceId?: any;
   @Output() message = new EventEmitter<string>();
 
   constructor(private commandService: BlindsCommandService) {

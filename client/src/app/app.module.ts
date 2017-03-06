@@ -18,6 +18,7 @@ import {TemperatureComponent} from './temperature/temperature.component';
 import {TemperatureViewComponent} from './temperature-view/temperature-view.component';
 import {BlindsDataObservablePipe} from './blinds/blinds-data-observable.pipe';
 import {BlindsDataFormatterPipe} from './blinds/blinds-data-formatter.pipe';
+import {BlindsPercentageDownPipe} from './blinds/blinds-percentage-down.pipe';
 import {InfoComponent} from './info/info.component';
 import {CommonRestService} from './remote/common-rest.service';
 import {BlindsButtonsComponent} from './blinds/blinds-buttons/blinds-buttons.component';
@@ -50,6 +51,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     TemperatureViewComponent,
     BlindsDataObservablePipe,
     BlindsDataFormatterPipe,
+    BlindsPercentageDownPipe,
     InfoComponent
   ],
   providers: [

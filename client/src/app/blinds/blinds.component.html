@@ -15,9 +15,9 @@
     </div>
   </div>
   <div class="deviceControl" *ngIf="!selectedDevice">
+    <app-blinds-buttons class="appBindsButtons" (setMessage)="message($event)"></app-blinds-buttons>
     <div class="deviceGroupList" *ngFor="let device of devices">
-      <label class="status">{{device.name}}: {{device | blindsDataObservable:devicesState | async |
-        blindsDataFormatter}}</label>
+      <app-moving-blinds class="appMovingBlinds" [percentageDown]="device | blindsDataObservable:devicesState | async | blindsPercentageDown" [name]="device.name"></app-moving-blinds>
     </div>
   </div>
   <div class="deviceControl" *ngIf="selectedDevice">
