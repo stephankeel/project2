@@ -8,8 +8,8 @@ import {ClientSocketService} from "../remote/client-socket.service";
 import {BlindsDevice, blindsDevicesInfo, Port, portName} from '../device-pool';
 import {GenericDataService} from "../remote/generic-data.service";
 import {IBlindsData} from "../../../../server/entities/data.interface";
-import {BlindsDataObservablePipe} from './blinds-data-observable.pipe';
-import {BlindsDataFormatterPipe} from './blinds-data-formatter.pipe';
+import {BlindsDataObservablePipe} from './pipes/blinds-data-observable.pipe';
+import {BlindsDataFormatterPipe} from './pipes/blinds-data-formatter.pipe';
 
 
 @Component({
