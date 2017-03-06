@@ -7,7 +7,6 @@ import {GenericService} from "../remote/generic.service";
 import {ClientSocketService} from "../remote/client-socket.service";
 import {BlindsDevice, blindsDevicesInfo, Port, portName} from '../device-pool';
 import {GenericDataService} from "../remote/generic-data.service";
-import {BlindsCommandService} from '../remote/blinds-command.service';
 import {IBlindsData} from "../../../../server/entities/data.interface";
 import {BlindsDataObservablePipe} from './blinds-data-observable.pipe';
 import {BlindsDataFormatterPipe} from './blinds-data-formatter.pipe';
@@ -31,7 +30,7 @@ export class BlindsComponent implements OnInit {
   private devicesState: Map<BlindsDevice, Observable<IBlindsData>> = new Map<BlindsDevice, Observable<IBlindsData>>();
 
   constructor(private router: Router, private socketService: ClientSocketService,
-              private authHttp: AuthHttp, private commandService: BlindsCommandService) {
+              private authHttp: AuthHttp) {
   }
 
   ngOnInit() {

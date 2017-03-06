@@ -21,11 +21,7 @@
     </div>
   </div>
   <div class="deviceControl" *ngIf="selectedDevice">
-    <div class="blindsDeviceDiv">
-      <div class="windowDiv">
-        <div class="blindsDiv" [style.height.%]="selectedDevicePercentageDown"></div>
-      </div>
-    </div>
+    <app-moving-blinds class="appMovingBlinds" [percentageDown]="selectedDevicePercentageDown" [name]="selectedDevice.name"></app-moving-blinds>
     <app-blinds-buttons class="appBindsButtons" [deviceId]="selectedDevice.id" (setMessage)="message($event)"></app-blinds-buttons>
   </div>
 </main>

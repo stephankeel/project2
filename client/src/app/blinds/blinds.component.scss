@@ -30,44 +30,28 @@ main {
 .blindsDeviceDiv {
 }
 
-.windowDiv {
-  z-index: 5;
+:host /deep/ app-moving-blinds .app-moving-blinds-window {
   width: $blindsDeviceWidth;
   height: $blindsDeviceHeight;
-  background-color: lightskyblue;
   border: $blindsDeviceBorder solid black;
 }
 
-.blindsDiv {
-  position: relative;
-  z-index: 10;
+:host /deep/ app-moving-blinds .app-moving-blinds-blinds {
   width: $blindsDeviceWidth -  2 * $blindsDeviceBorder;
-  height: 0%;
-  background-color: black;
-  border-radius: 0;
-}
-
-app-blinds-buttons {
-  display: flex;
-  flex-direction: column;
-  margin-left: 1em;
-  justify-content: space-between;
-  @media(max-width: $switchWidth) {
-    flex-direction: row;
-    margin-left: 0;
-    margin-top: 1em;
-    width: $blindsDeviceWidth;
-  }
 }
 
 :host /deep/ app-blinds-buttons .app-blinds-button-div {
   flex-direction: column;
-  height: 100%;
+  height: $blindsDeviceHeight;
   width: auto;
+  margin-left: 1em;
+  margin-top: 0em;
   @media(max-width: 600px) {
     flex-direction: row;
     height: auto;
-    width: 100%;
+    width: $blindsDeviceWidth;
+    margin-left: 0;
+    margin-top: 1em;
   }
 }
 
