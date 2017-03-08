@@ -7,14 +7,9 @@ import {GenericService} from "../remote/generic.service";
 import {ClientSocketService} from "../remote/client-socket.service";
 import {BlindsDevice, blindsDevicesInfo, Port, portName} from '../device-pool';
 import {GenericDataService} from "../remote/generic-data.service";
-import {BlindsCommandService} from '../remote/blinds-command.service';
-import {IBlindsDevice} from "../../../../server/entities/device.interface";
 import {IBlindsData} from "../../../../server/entities/data.interface";
-import {BlindsDataObservablePipe} from './blinds-data-observable.pipe';
-import {BlindsDataFormatterPipe} from './blinds-data-formatter.pipe';
-import {IBlindsCommand} from '../../../../server/entities/blinds-command.interface';
-import {IId} from "../../../../server/entities/id.interface";
-import {BlindsAction} from '../../../../server/entities/blinds-action';
+import {BlindsDataObservablePipe} from './pipes/blinds-data-observable.pipe';
+import {BlindsDataFormatterPipe} from './pipes/blinds-data-formatter.pipe';
 
 
 @Component({
@@ -30,13 +25,12 @@ export class BlindsComponent implements OnInit {
   private selectedDevice: BlindsDevice;
   private selectedDevicePercentageDown: number = 33;
   private genericService: GenericService<BlindsDevice>;
-  private statusText: string = 'stopped';
   private message: string;
   private dataServices: Map<BlindsDevice, GenericDataService<IBlindsData>> = new Map<BlindsDevice, GenericDataService<IBlindsData>>();
   private devicesState: Map<BlindsDevice, Observable<IBlindsData>> = new Map<BlindsDevice, Observable<IBlindsData>>();
 
   constructor(private router: Router, private socketService: ClientSocketService,
-              private authHttp: AuthHttp, private commandService: BlindsCommandService) {
+              private authHttp: AuthHttp) {
   }
 
   ngOnInit() {
@@ -99,35 +93,12 @@ export class BlindsComponent implements OnInit {
     });
   }
 
+  setMessage(str: string) {
+    this.message = str;
+  }
+
   clearMessage(): void {
     this.message = null;
-  }
-
-  keyUpAction(): void {
-    let cmd: IBlindsCommand = {
-      id: this.selectedDevice.id,
-      action: BlindsAction.OPEN
-    };
-    this.commandService.command(cmd).subscribe((done: boolean) => {
-    }, (err: any) => this.message = JSON.stringify(err));
-  }
-
-  keyDownAction(): void {
-    let cmd: IBlindsCommand = {
-      id: this.selectedDevice.id,
-      action: BlindsAction.CLOSE
-    };
-    this.commandService.command(cmd).subscribe((done: boolean) => {
-    }, (err: any) => this.message = JSON.stringify(err));
-  }
-
-  stopAction(): void {
-    let cmd: IBlindsCommand = {
-      id: this.selectedDevice.id,
-      action: BlindsAction.STOP
-    };
-    this.commandService.command(cmd).subscribe((done: boolean) => {
-    }, (err: any) => this.message = JSON.stringify(err));
   }
 
 }

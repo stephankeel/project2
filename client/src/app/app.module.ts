@@ -16,10 +16,16 @@ import {BlindsCommandService} from './remote/blinds-command.service';
 import {BlindsComponent} from './blinds/blinds.component';
 import {TemperatureComponent} from './temperature/temperature.component';
 import {TemperatureViewComponent} from './temperature-view/temperature-view.component';
-import {BlindsDataObservablePipe} from './blinds/blinds-data-observable.pipe';
-import {BlindsDataFormatterPipe} from './blinds/blinds-data-formatter.pipe';
+import {BlindsDataObservablePipe} from './blinds/pipes/blinds-data-observable.pipe';
+import {BlindsDataFormatterPipe} from './blinds/pipes/blinds-data-formatter.pipe';
+import {BlindsPercentageDownPipe} from './blinds/pipes/blinds-percentage-down.pipe';
 import {InfoComponent} from './info/info.component';
 import {CommonRestService} from './remote/common-rest.service';
+import {BlindsButtonsComponent} from './blinds/blinds-buttons/blinds-buttons.component';
+import {MovingBlindsComponent} from './blinds/moving-blinds/moving-blinds.component';
+import {SingleBlindsComponent} from './blinds/single-blinds/single-blinds.component';
+import {AllBlindsComponent} from './blinds/all-blinds/all-blinds.component';
+
 
 // TODO: in welches File müsste diese Methode?
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
@@ -42,10 +48,15 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     UsersComponent,
     LoginComponent,
     BlindsComponent,
+    AllBlindsComponent,
+    SingleBlindsComponent,
+    BlindsButtonsComponent,
+    MovingBlindsComponent,
     TemperatureComponent,
     TemperatureViewComponent,
     BlindsDataObservablePipe,
     BlindsDataFormatterPipe,
+    BlindsPercentageDownPipe,
     InfoComponent
   ],
   providers: [
