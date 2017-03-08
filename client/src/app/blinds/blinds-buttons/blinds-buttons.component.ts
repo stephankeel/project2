@@ -11,7 +11,7 @@ import {BlindsCommandService} from '../../remote/blinds-command.service';
 export class BlindsButtonsComponent implements OnInit {
 
   @Input() deviceId?: any;
-  @Output() message = new EventEmitter<string>();
+  @Output() message: EventEmitter<string> = new EventEmitter<string>();
 
   constructor(private commandService: BlindsCommandService) {
   }

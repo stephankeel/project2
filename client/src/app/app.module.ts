@@ -23,6 +23,9 @@ import {InfoComponent} from './info/info.component';
 import {CommonRestService} from './remote/common-rest.service';
 import {BlindsButtonsComponent} from './blinds/blinds-buttons/blinds-buttons.component';
 import {MovingBlindsComponent} from './blinds/moving-blinds/moving-blinds.component';
+import {SingleBlindsComponent} from './blinds/single-blinds/single-blinds.component';
+import {AllBlindsComponent} from './blinds/all-blinds/all-blinds.component';
+
 
 // TODO: in welches File müsste diese Methode?
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
@@ -45,6 +48,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     UsersComponent,
     LoginComponent,
     BlindsComponent,
+    AllBlindsComponent,
+    SingleBlindsComponent,
     BlindsButtonsComponent,
     MovingBlindsComponent,
     TemperatureComponent,
