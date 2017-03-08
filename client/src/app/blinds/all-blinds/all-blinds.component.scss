@@ -1,7 +1,7 @@
 $blindsDeviceWidth: 87px;
 $blindsDeviceHeight: 100px;
 $blindsDeviceBorder: 3px;
-$switchWidth: 650px;
+$switchWidth: 600px;
 $boxMinSize: 150px;
 
 .appAllBlinds {
@@ -22,10 +22,6 @@ $boxMinSize: 150px;
 }
 
 .appAllBlindsDevices {
-  --display: flex;
-  --flex: 1 0;
-  --flex-direction: row;
-  background-color: yellow;
 }
 
 :host /deep/ app-moving-blinds .app-moving-blinds-window {
@@ -33,6 +29,9 @@ $boxMinSize: 150px;
   width: $blindsDeviceWidth;
   height: $blindsDeviceHeight;
   border: $blindsDeviceBorder solid black;
+  @media(max-width: $switchWidth) {
+    margin: 4px;
+  }
 }
 
 :host /deep/ app-moving-blinds .app-moving-blinds-blinds {
@@ -40,7 +39,6 @@ $boxMinSize: 150px;
 }
 
 :host /deep/ app-blinds-buttons .app-blinds-button-div {
-  background-color: red;
   flex-direction: column;
   height: 100%;
   width: auto;
