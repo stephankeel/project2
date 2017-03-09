@@ -1,3 +1,24 @@
-<h1>
-  {{title}}
-</h1>
+<md-sidenav-container fullscreen>
+  <header class="header header--flex header--background-color header--no-padding">
+    <button md-icon-button (click)="sidenav.open()" class="header--zoom-on-hover button__menu">
+      <md-icon>menu</md-icon>
+    </button>
+    <h1 class="header__title">HOMEAUTOMATION</h1>
+  </header>
+  <md-sidenav [mode]="push" #sidenav class="sidenav-content">
+    <md-toolbar class="toolbar__header">Menu
+    </md-toolbar>
+    <md-nav-list>
+      <a md-list-item (click)="sidenav.close()">
+        <md-icon md-list-icon>home</md-icon>
+        <span md-line>Geräte</span>
+        <span md-line class="secondary">Geräte Konfiguration</span>
+      </a>
+    </md-nav-list>
+  </md-sidenav>
+  <div class="example-sidenav-content">content</div>
+  <footer class="footer footer--background-color footer--padding">
+    <p class='logArea'>logInfo</p>
+    <p class='copyright'>&copy; 2017 Homeautomation Team</p>
+  </footer>
+</md-sidenav-container>
