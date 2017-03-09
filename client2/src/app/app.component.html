@@ -1,8 +1,7 @@
 <md-sidenav-container fullscreen>
   <header class="header header--flex header--background-color header--no-padding">
-    <button md-icon-button (click)="sidenav.open()" class="header--zoom-on-hover button__menu">
-      <md-icon>menu</md-icon>
-    </button>
+    <img class="header--zoom-on-hover button__menu" src="assets/icons/menu.svg" alt="Menu Icon" title="Menu Icon"
+         (click)="sidenav.open()">
     <h1 class="header__title">HOMEAUTOMATION</h1>
   </header>
   <md-sidenav [mode]="push" #sidenav class="sidenav-content">
