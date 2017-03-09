@@ -1,4 +1,23 @@
-.home-container {
-  max-width: 500px;
+.toolbar__header {
+  background-color: #38b938;
+}
+
+.menu__separator {
+  height: 1em;
+}
+
+.button__menu {
   margin: 0.5em;
 }
+
+.sidenav-content {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.example-sidenav {
+  padding: 20px;
+}
+

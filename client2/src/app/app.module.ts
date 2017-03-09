@@ -4,13 +4,20 @@ import {FormsModule} from "@angular/forms";
 import {HttpModule} from "@angular/http";
 import {AppComponent} from "./app.component";
 import {MaterialModule} from "@angular/material";
-import {AppRouteModule} from "./router/app-route-module";
+import {AppRouteModule} from "./router/app-route.module";
 import {DashboardComponent} from "./dashboard/dashboard.component";
+import {LoginComponent} from "./login/login.component";
+import {AuthGuard} from "./auth/auth-guard.service";
+import {AuthenticationService} from "./remote/authentication.service";
+import {NoAuthGuard} from "./auth/no-auth-guard.service";
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    DashboardComponent
+    DashboardComponent,
+    LoginComponent,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,
@@ -19,7 +26,11 @@ import {DashboardComponent} from "./dashboard/dashboard.component";
     HttpModule,
     AppRouteModule,
   ],
-  providers: [],
+  providers: [
+    AuthGuard,
+    NoAuthGuard,
+    AuthenticationService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

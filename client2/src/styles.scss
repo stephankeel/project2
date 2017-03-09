@@ -12,3 +12,67 @@
 .fill-remaining-space {
   flex: 1 1 auto;
 }
+
+.header--zoom-on-hover:hover {
+  transform: scale(1.25);
+}
+
+.header--no-padding {
+  padding: 0;
+}
+
+.header--background-color {
+  background-color: lightgreen;
+}
+
+.header--flex {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.header__title {
+  margin: 10px;
+  text-shadow: 0.1em 0.1em 0.5em grey;
+}
+
+.div--full-width {
+  width: 100%;
+}
+
+.div--small-margins {
+  margin: 0.2em 0.5em 0.2em 0.5em;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  h1 {
+    margin: 0.2em;
+  }
+}
+
+.div--margins-05 {
+  margin: 0.5em;
+}
+
+.div--width500px {
+  max-width: 500px;
+}
+
+.grayButton {
+  background: #A6BAC5;
+}
+
+.form {
+  max-width: 500px;
+  background-color: #F7F7F7;
+  border-radius: 5px;
+}
+
+.div__button-row {
+  display: flex;
+}
+
