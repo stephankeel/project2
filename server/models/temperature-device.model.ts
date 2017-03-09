@@ -25,28 +25,3 @@ let TemperatureDeviceSchema = new Schema({
  */
 
 export const TemperatureDeviceModel: Model<ITemperatureDeviceDocument> = model<ITemperatureDeviceDocument>('TemperatureDevice', TemperatureDeviceSchema);
-
-export function initTemperatureDeviceWohnzimmer() {
-  let name: string = 'Wohnzimmer';
-  let selector = {'name': name};
-  TemperatureDeviceModel.find(selector, (err, temperatureDevices) => {
-    if (temperatureDevices.length) {
-      LOGGER.info(`tempteratureDevice 'Wohnzimmer' is ok. id = ${temperatureDevices[0]._id}`);
-      return;
-    }
-
-    let temperatureDevice: ITemperatureDeviceDocument = new TemperatureDeviceModel();
-
-    temperatureDevice.name = name;
-    temperatureDevice.port = Port.AI_1;
-    temperatureDevice.pollingInterval = 2;
-    LOGGER.info(`creating temperatureDevice 'Wohnzimmer': ${JSON.stringify(temperatureDevice)}`);
-    temperatureDevice.save((err: any, temperatureDevice: ITemperatureDeviceDocument) => {
-      if (err) {
-        throw new Error(err);
-      } else {
-        LOGGER.info(`temperatureDevice 'Wohnzimmer' created successfully: ${temperatureDevice}`)
-      }
-    });
-  });
-}

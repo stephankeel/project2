@@ -11,7 +11,7 @@ const METHODS_FOR_ADMIN: string = 'PUT POST DELETE';
 export function requiresAdmin(req: express.Request, res: express.Response, next: express.NextFunction) {
   let valid: boolean = req.user && (req.user.type == UserType.ADMIN);
   if (valid) {
-    LOGGER.info(`${req.user.username} is authorized to use ${req.baseUrl}`);
+    LOGGER.debug(`${req.user.username} is authorized to use ${req.baseUrl}`);
     next();
   } else {
     logError(req);
@@ -31,7 +31,7 @@ export function requiresAdminExceptForGet(req: express.Request, res: express.Res
 export function requiresStandardOrAdmin(req: express.Request, res: express.Response, next: express.NextFunction) {
   let valid: boolean = req.user && (req.user.type == UserType.STANDARD || req.user.type == UserType.ADMIN);
   if (valid) {
-    LOGGER.info(`${req.user.username} is authorized to use ${req.baseUrl}`);
+    LOGGER.debug(`${req.user.username} is authorized to use ${req.baseUrl}`);
     next();
   } else {
     logError(req);
@@ -42,7 +42,7 @@ export function requiresStandardOrAdmin(req: express.Request, res: express.Respo
 export function requiresAuthenticatedUser(req: express.Request, res: express.Response, next: express.NextFunction) {
   let valid: boolean = req.user && true;
   if (valid) {
-    LOGGER.info(`${req.user.username} is authorized to use ${req.baseUrl}`);
+    LOGGER.debug(`${req.user.username} is authorized to use ${req.baseUrl}`);
     next();
   } else {
     logError(req);
