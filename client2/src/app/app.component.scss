@@ -1,0 +1,71 @@
+
+@import '~@angular/material/core/theming/prebuilt/indigo-pink.css';
+
+/*
+.header__title {
+  margin: 10px;
+  text-shadow: 0.1em 0.1em 0.5em grey;
+}
+
+.header--zoom-on-hover:hover {
+  transform: scale(1.25);
+}
+.header--flex {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 80%;
+  width: 100%;
+}
+
+.header--no-padding, .footer--no-padding{
+  padding: 0;
+}
+.header--background-color, .footer--background-color{
+  background-color: lightgreen;
+}
+
+.sidenav-content {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.example-sidenav {
+  padding: 20px;
+}
+*/
+.example-sidenav-fab-container {
+  width: 500px;
+  height: 300px;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.example-sidenav-fab-container md-sidenav {
+  max-width: 200px;
+}
+
+.example-sidenav-fab-container .mat-sidenav-content,
+.example-sidenav-fab-container md-sidenav {
+  display: flex;
+  overflow: visible;
+}
+
+.example-scrolling-content {
+  overflow: auto;
+}
+
+.example-fab {
+  position: absolute;
+  right: 20px;
+  bottom: 10px;
+}
+
