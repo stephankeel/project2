@@ -30,7 +30,7 @@ export class HumiditySetupComponent implements OnInit {
     this.genericService = new GenericService<HumidityDevice>(this.authHttp,
       this.socketService, "/api/devices/humidity", "/humidity");
     this.genericService.items.subscribe(devices => {
-        this.devices = devices.toArray();
+        this.devices = devices.toArray().sort((a, b) => a.name.localeCompare(b.name));
         AnalogDevicesInfo.updateAnalogPortsInUse(humidityDevicesInfo, devices.toArray().map(device => device.port))
         this.updatePortSet();
         this.device = null;

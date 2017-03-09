@@ -1,7 +1,7 @@
 import {Pipe, PipeTransform} from "@angular/core";
 import {Observable} from "rxjs";
-import {BlindsDevice} from '../device-pool';
-import {IBlindsData} from "../../../../server/entities/data.interface";
+import {BlindsDevice} from '../../device-pool';
+import {IBlindsData} from "../../../../../server/entities/data.interface";
 
 @Pipe({
   name: 'blindsDataObservable'

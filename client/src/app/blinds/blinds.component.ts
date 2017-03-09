@@ -7,14 +7,9 @@ import {GenericService} from "../remote/generic.service";
 import {ClientSocketService} from "../remote/client-socket.service";
 import {BlindsDevice, blindsDevicesInfo, Port, portName} from '../device-pool';
 import {GenericDataService} from "../remote/generic-data.service";
-import {BlindsCommandService} from '../remote/blinds-command.service';
-import {IBlindsDevice} from "../../../../server/entities/device.interface";
 import {IBlindsData} from "../../../../server/entities/data.interface";
-import {BlindsDataObservablePipe} from './blinds-data-observable.pipe';
-import {BlindsDataFormatterPipe} from './blinds-data-formatter.pipe';
-import {IBlindsCommand} from '../../../../server/entities/blinds-command.interface';
-import {IId} from "../../../../server/entities/id.interface";
-import {BlindsAction} from '../../../../server/entities/blinds-action';
+import {BlindsDataObservablePipe} from './pipes/blinds-data-observable.pipe';
+import {BlindsDataFormatterPipe} from './pipes/blinds-data-formatter.pipe';
 
 
 @Component({
@@ -28,21 +23,20 @@ export class BlindsComponent implements OnInit {
   private headerTitle: string = `${blindsDevicesInfo.displayName}-STEUERUNG`;
   private devices: BlindsDevice[] = [];
   private selectedDevice: BlindsDevice;
+  private selectedDevicePercentageDown: number = 33;
   private genericService: GenericService<BlindsDevice>;
-  private statusText: string = 'stopped';
   private message: string;
   private dataServices: Map<BlindsDevice, GenericDataService<IBlindsData>> = new Map<BlindsDevice, GenericDataService<IBlindsData>>();
   private devicesState: Map<BlindsDevice, Observable<IBlindsData>> = new Map<BlindsDevice, Observable<IBlindsData>>();
 
   constructor(private router: Router, private socketService: ClientSocketService,
-              private authHttp: AuthHttp, private commandService: BlindsCommandService) {
+              private authHttp: AuthHttp) {
   }
 
   ngOnInit() {
     this.genericService = new GenericService<BlindsDevice>(this.authHttp, this.socketService, "/api/devices/blinds", "/blinds");
     this.genericService.items.subscribe(devices => {
-      this.devices = devices.toArray();
-      this.selectedDevice = null;
+      this.devices = devices.toArray().sort((a, b) => a.name.localeCompare(b.name));
       this.showAll();
     }, error => this.message = error.toString());
     this.genericService.getAll();
@@ -61,7 +55,7 @@ export class BlindsComponent implements OnInit {
   }
 
   releaseDevice(device: BlindsDevice): void {
-    let dataService:  GenericDataService<IBlindsData> = this.dataServices.get(device);
+    let dataService: GenericDataService<IBlindsData> = this.dataServices.get(device);
     if (dataService) {
       dataService.disconnect();
       this.dataServices.delete(device);
@@ -73,10 +67,15 @@ export class BlindsComponent implements OnInit {
     this.router.navigate(['/dashboard']);
   }
 
+  showAllClicked(): void {
+    this.showAll();
+  }
+
   showAll(): void {
     if (this.selectedDevice) {
       this.releaseDevice(this.selectedDevice);
     }
+    this.selectedDevice = null;
     this.devices.forEach(device => this.subscribeDevice(device));
   }
 
@@ -89,34 +88,17 @@ export class BlindsComponent implements OnInit {
     }
     this.subscribeDevice(device);
     this.selectedDevice = device;
+    this.devicesState.get(device).subscribe((data: IBlindsData) => {
+      this.selectedDevicePercentageDown = data.percentageDown
+    });
+  }
+
+  setMessage(str: string) {
+    this.message = str;
   }
 
   clearMessage(): void {
     this.message = null;
-  }
-
-  keyUpAction(): void {
-    let cmd: IBlindsCommand = {
-      id: this.selectedDevice.id,
-      action: BlindsAction.OPEN
-    };
-    this.commandService.command(cmd).subscribe((done: boolean) => {}, (err: any) => this.message = JSON.stringify(err));
-  }
-
-  keyDownAction(): void {
-    let cmd: IBlindsCommand = {
-      id: this.selectedDevice.id,
-      action: BlindsAction.CLOSE
-    };
-    this.commandService.command(cmd).subscribe((done: boolean) => {}, (err: any) => this.message = JSON.stringify(err));
-  }
-
-  stopAction(): void {
-    let cmd: IBlindsCommand = {
-      id: this.selectedDevice.id,
-      action: BlindsAction.STOP
-    };
-    this.commandService.command(cmd).subscribe((done: boolean) => {}, (err: any) => this.message = JSON.stringify(err));
   }
 
 }

@@ -101,7 +101,7 @@ export class PortsFactory {
   }
 
   public isSimulation(): boolean {
-    return !this.isBBB;
+    return !this.isBBB();
   }
 
   private createPortToPinMap(): void {

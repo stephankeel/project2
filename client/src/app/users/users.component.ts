@@ -35,7 +35,7 @@ export class UsersComponent implements OnInit {
     this.loggedInUsername = this.authenticationService.getLoggedInUsername();
     this.loggedInUserId = this.authenticationService.getLoggedInUserId();
     this.genericService.items.subscribe(users => {
-        this.users = users.toArray();
+        this.users = users.toArray().sort((a, b) => a.lastname.localeCompare(b.lastname));
         this.user = null;
         this.selectedUser = null;
       }, error => this.message = error.toString());

@@ -1,7 +1,11 @@
 <header>
-  <img id="backIcon" class="headerAction" src="app/images/back.svg" alt="Back Icon" title="Back Icon"
+  <img class="backIcon headerIcon headerAction" src="app/images/back.svg" alt="Back Icon" title="Back Icon"
        (click)="backClicked()">
   <h1 class="headerTitle">{{headerTitle}}</h1>
+  <div *ngIf="selectedDevice != null" class="contextHeaderActionDiv">
+    <img class="showAllIcon headerIcon headerAction contextHeaderAction" src="app/images/showall.svg" alt="Add Icon"
+         title="Show All Icon" (click)="showAllClicked()">
+  </div>
 </header>
 <main>
   <div class="deviceList">
@@ -10,23 +14,6 @@
          (click)="selectDevice(device)">{{device.name}}
     </div>
   </div>
-  <div class="deviceControl" *ngIf="!selectedDevice">
-    <div class="deviceGroupList" *ngFor="let device of devices">
-      <label class="status">{{device.name}}: {{device | blindsDataObservable:devicesState | async | blindsDataFormatter}}</label>
-    </div>
-  </div>
-  <div class="deviceControl" *ngIf="selectedDevice">
-    <div class="buttonDiv, controlDiv">
-      <button id="keyUp" type="button" [disabled]="!selectedDevice" (click)="keyUpAction()">ÖFFNEN</button>
-    </div>
-    <div class="buttonDiv, controlDiv">
-      <button id="stopBlinds" type="button" [disabled]="!selectedDevice" (click)="stopAction()">STOPP</button>
-    </div>
-    <div class="buttonDiv, controlDiv">
-      <button id="keyDown" type="button" [disabled]="!selectedDevice" (click)="keyDownAction()">SCHLIESSEN</button>
-    </div>
-    <div class="statusDiv, controlDiv">
-      <label class="status">{{selectedDevice | blindsDataObservable:devicesState | async | blindsDataFormatter}}</label>
-    </div>
-  </div>
+  <app-all-blinds class="appAllBlinds" *ngIf="!selectedDevice" [devices]="devices" [devicesState]="devicesState" (setMessage)="message($event)"></app-all-blinds>
+  <app-single-blinds class="appSingleBlinds" [device]="selectedDevice" [percentageDown]="selectedDevicePercentageDown" (setMessage)="message($event)"></app-single-blinds>
 </main>

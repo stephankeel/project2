@@ -30,7 +30,7 @@ export class TemperatureSetupComponent implements OnInit {
     this.genericService = new GenericService<TemperatureDevice>(this.authHttp,
       this.socketService, "/api/devices/temperature", "/temperature");
     this.genericService.items.subscribe(devices => {
-        this.devices = devices.toArray();
+        this.devices = devices.toArray().sort((a, b) => a.name.localeCompare(b.name));
         AnalogDevicesInfo.updateAnalogPortsInUse(temperatureDevicesInfo, devices.toArray().map(device => device.port));
         this.updatePortSet();
         this.device = null;
