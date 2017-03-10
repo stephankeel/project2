@@ -5,7 +5,7 @@ import {NoAuthGuard} from "../auth/no-auth-guard.service";
 import {AuthGuard} from "../auth/auth-guard.service";
 
 const routes: Routes = [
-  {path: '', redirectTo: '/dashboard', pathMatch: 'full'},
+  {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
   {path: 'login', canActivate: [NoAuthGuard], component: LoginComponent},
   {path: 'dashboard', canActivate: [AuthGuard], loadChildren: 'app/+dashboard/dashboard.module#DashboardModule'},
 ];
