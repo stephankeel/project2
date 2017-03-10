@@ -5,6 +5,7 @@ import {AuthHttp} from "angular2-jwt";
 import {GenericService} from "../../remote/generic.service";
 import {ClientSocketService} from "../../remote/client-socket.service";
 import {BlindsDevice, blindsDevicesInfo, Port, portName} from '../../device-pool';
+import {NotificationService} from '../../notification/notification.service';
 
 @Component({
   selector: 'app-blinds-setup',
@@ -23,12 +24,12 @@ export class BlindsSetupComponent implements OnInit {
   message: string;
 
   constructor(private router: Router,
-              private socketService: ClientSocketService, private authHttp: AuthHttp) {
+              private socketService: ClientSocketService, private authHttp: AuthHttp, private notificaitonService: NotificationService) {
   }
 
   ngOnInit() {
     this.genericService = new GenericService<BlindsDevice>(this.authHttp,
-      this.socketService, "/api/devices/blinds", "/blinds");
+      this.socketService, this.notificaitonService, "/api/devices/blinds", "/blinds");
     this.genericService.items.subscribe(devices => {
       this.devices = devices.toArray().sort((a, b) => a.name.localeCompare(b.name));
       blindsDevicesInfo.updatePortsInUse(devices.toArray());
@@ -87,7 +88,7 @@ export class BlindsSetupComponent implements OnInit {
   }
 
   clearMessage(): void {
-    this.message = null;
+    this.notificaitonService.clear();
   }
 
 }

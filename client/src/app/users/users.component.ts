@@ -5,6 +5,7 @@ import {User, UserType} from "../user";
 import {GenericService} from "../remote/generic.service";
 import {AuthHttp} from "angular2-jwt";
 import {ClientSocketService} from "../remote/client-socket.service";
+import {NotificationService} from '../notification/notification.service';
 
 @Component({
   selector: 'app-users',
@@ -26,12 +27,12 @@ export class UsersComponent implements OnInit {
 
   constructor(private authenticationService: AuthenticationService,
               private router: Router,
-              private socketService: ClientSocketService, private authHttp: AuthHttp) {
+              private socketService: ClientSocketService, private authHttp: AuthHttp, private notificationService: NotificationService) {
   }
 
   ngOnInit() {
     this.genericService = new GenericService<User>(this.authHttp,
-      this.socketService, "/api/users", "/users");
+      this.socketService, this.notificationService, "/api/users", "/users");
     this.loggedInUsername = this.authenticationService.getLoggedInUsername();
     this.loggedInUserId = this.authenticationService.getLoggedInUserId();
     this.genericService.items.subscribe(users => {
@@ -54,6 +55,7 @@ export class UsersComponent implements OnInit {
     this.user = new User();
     this.user.type = UserType.STANDARD;
     this.passwordConfirmation = null;
+    this.selectedUser = null;
   }
 
   selectUser(user: User) {
@@ -85,6 +87,6 @@ export class UsersComponent implements OnInit {
   }
 
   clearMessage(): void {
-    this.message = null;
+    this.notificationService.clear();
   }
 }

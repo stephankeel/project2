@@ -2,6 +2,7 @@ import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import {IBlindsCommand} from '../../../../../server/entities/blinds-command.interface';
 import {BlindsAction} from '../../../../../server/entities/blinds-action';
 import {BlindsCommandService} from '../../remote/blinds-command.service';
+import {NotificationService} from '../../notification/notification.service';
 
 @Component({
   selector: 'app-blinds-buttons',
@@ -13,7 +14,7 @@ export class BlindsButtonsComponent implements OnInit {
   @Input() deviceId?: any;
   @Output() message: EventEmitter<string> = new EventEmitter<string>();
 
-  constructor(private commandService: BlindsCommandService) {
+  constructor(private commandService: BlindsCommandService, private notificationService: NotificationService) {
   }
 
   ngOnInit() {
@@ -25,7 +26,7 @@ export class BlindsButtonsComponent implements OnInit {
       action: BlindsAction.OPEN
     };
     this.commandService.command(cmd).subscribe((done: boolean) => {
-    }, (err: any) => this.message.emit(JSON.stringify(err)));
+    }, (err: any) => this.notificationService.error(err.toString()));
   }
 
   keyDownAction(): void {
@@ -34,7 +35,7 @@ export class BlindsButtonsComponent implements OnInit {
       action: BlindsAction.CLOSE
     };
     this.commandService.command(cmd).subscribe((done: boolean) => {
-    }, (err: any) => this.message.emit(JSON.stringify(err)));
+    }, (err: any) => this.notificationService.error(err.toString()));
   }
 
   stopAction(): void {
@@ -43,7 +44,7 @@ export class BlindsButtonsComponent implements OnInit {
       action: BlindsAction.STOP
     };
     this.commandService.command(cmd).subscribe((done: boolean) => {
-    }, (err: any) => this.message.emit(JSON.stringify(err)));
+    }, (err: any) => this.notificationService.error(err.toString()));
   }
 
 }

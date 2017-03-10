@@ -12,16 +12,11 @@ export class AllBlindsComponent implements OnInit {
 
   @Input() devices: BlindsDevice[];
   @Input() devicesState: Map<BlindsDevice, Observable<IBlindsData>>;
-  @Output() message: EventEmitter<string> = new EventEmitter<string>();
 
   constructor() {
   }
 
   ngOnInit() {
-  }
-
-  setMessage(str: string) {
-    this.message.emit(str);
   }
 
 }

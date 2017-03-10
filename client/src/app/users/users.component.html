@@ -61,9 +61,6 @@
              type="password" (keydown)="clearMessage()" (focus)="clearMessage()"
              name="passwordConfirm" required minlength="4">
     </div>
-    <div *ngIf="message" id="userMessage">
-      {{message}}
-    </div>
     <div class="buttonDiv">
       <button id="okButton" type="submit"
               [disabled]="!userForm.form.valid || (passwordConfirmation != user.password)">OK

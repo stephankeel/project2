@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {NgModule, ErrorHandler} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule} from '@angular/forms';
 import {HttpModule, RequestOptions, Http} from '@angular/http';
@@ -25,7 +25,8 @@ import {BlindsButtonsComponent} from './blinds/blinds-buttons/blinds-buttons.com
 import {MovingBlindsComponent} from './blinds/moving-blinds/moving-blinds.component';
 import {SingleBlindsComponent} from './blinds/single-blinds/single-blinds.component';
 import {AllBlindsComponent} from './blinds/all-blinds/all-blinds.component';
-
+import {NotificationService} from './notification/notification.service';
+import { GrowlModule } from 'primeng/primeng';
 
 // TODO: in welches File müsste diese Methode?
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
@@ -40,6 +41,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     FormsModule,
     HttpModule,
     AppRoutingModule,
+    GrowlModule,
   ],
   declarations: [
     AppComponent,
@@ -70,6 +72,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
       provide: Window,
       useValue: window
     },
+    NotificationService,
     AdminOrStandardGuard,
     AuthenticationService,
     ClientSocketService,

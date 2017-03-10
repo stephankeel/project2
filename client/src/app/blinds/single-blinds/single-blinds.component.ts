@@ -10,7 +10,6 @@ export class SingleBlindsComponent implements OnInit {
 
   @Input() device: BlindsDevice;
   @Input() percentageDown: number;
-  @Output() message: EventEmitter<string> = new EventEmitter<string>();
 
   constructor() {
   }
@@ -18,7 +17,4 @@ export class SingleBlindsComponent implements OnInit {
   ngOnInit() {
   }
 
-  setMessage(str: string) {
-    this.message.emit(str);
-  }
 }

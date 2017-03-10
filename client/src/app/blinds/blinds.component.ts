@@ -10,7 +10,7 @@ import {GenericDataService} from "../remote/generic-data.service";
 import {IBlindsData} from "../../../../server/entities/data.interface";
 import {BlindsDataObservablePipe} from './pipes/blinds-data-observable.pipe';
 import {BlindsDataFormatterPipe} from './pipes/blinds-data-formatter.pipe';
-
+import {NotificationService} from '../notification/notification.service';
 
 @Component({
   selector: 'app-blinds',
@@ -30,11 +30,11 @@ export class BlindsComponent implements OnInit {
   private devicesState: Map<BlindsDevice, Observable<IBlindsData>> = new Map<BlindsDevice, Observable<IBlindsData>>();
 
   constructor(private router: Router, private socketService: ClientSocketService,
-              private authHttp: AuthHttp) {
+              private authHttp: AuthHttp, private notificationService: NotificationService) {
   }
 
   ngOnInit() {
-    this.genericService = new GenericService<BlindsDevice>(this.authHttp, this.socketService, "/api/devices/blinds", "/blinds");
+    this.genericService = new GenericService<BlindsDevice>(this.authHttp, this.socketService, this.notificationService, "/api/devices/blinds", "/blinds");
     this.genericService.items.subscribe(devices => {
       this.devices = devices.toArray().sort((a, b) => a.name.localeCompare(b.name));
       this.showAll();
@@ -98,7 +98,7 @@ export class BlindsComponent implements OnInit {
   }
 
   clearMessage(): void {
-    this.message = null;
+    this.notificationService.clear();
   }
 
 }
