@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {DeviceType, DevicesInfo, devicePool} from '../../misc/device-pool';
-import {Router} from "@angular/router";
+import {Router, ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-device-overview',
@@ -10,7 +10,7 @@ import {Router} from "@angular/router";
 export class DeviceOverviewComponent implements OnInit {
   devices: DevicesInfo[] = devicePool;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private r: ActivatedRoute) {
   }
 
   ngOnInit() {
@@ -19,13 +19,13 @@ export class DeviceOverviewComponent implements OnInit {
   clickAction(device: DevicesInfo): void {
     switch (device.type) {
       case DeviceType.BLINDS:
-        this.router.navigate(['/dashboard/blinds-overview']);
+        this.router.navigate(['../blinds-overview'], {relativeTo: this.r});
         break;
       case DeviceType.HUMIDITY:
-        this.router.navigate(['/dashboard/humidity-overview']);
+        this.router.navigate(['../humidity-overview'], {relativeTo: this.r});
         break;
       case DeviceType.TEMPERATURE:
-        this.router.navigate(['/dashboard/temperature-overview']);
+        this.router.navigate(['../temperature-overview'], {relativeTo: this.r});
         break;
     }
   }
