@@ -34,7 +34,6 @@
   display: flex;
   width: 100%;
   align-items: center;
-  justify-content: flex-start;
   flex-wrap: wrap;
 }
 
@@ -63,6 +62,10 @@
   margin: 0.5em;
 }
 
+.div--no-margins {
+  margin: 0;
+}
+
 .div--width500px {
   max-width: 500px;
 }
@@ -81,3 +84,6 @@
   display: flex;
 }
 
+.div__subheader--color {
+  background-color: #38b938;
+}

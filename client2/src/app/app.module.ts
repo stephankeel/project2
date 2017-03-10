@@ -10,11 +10,13 @@ import {AuthGuard} from "./auth/auth-guard.service";
 import {AuthenticationService} from "./remote/authentication.service";
 import {NoAuthGuard} from "./auth/no-auth-guard.service";
 import {FooterModule} from "./footer/footer.module";
+import {LogoutComponent} from './logout/logout.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
+    LogoutComponent,
   ],
   imports: [
     BrowserModule,
