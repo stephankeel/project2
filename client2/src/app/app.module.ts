@@ -9,7 +9,7 @@ import {LoginComponent} from "./login/login.component";
 import {AuthGuard} from "./auth/auth-guard.service";
 import {AuthenticationService} from "./remote/authentication.service";
 import {NoAuthGuard} from "./auth/no-auth-guard.service";
-import { FooterComponent } from './footer/footer.component';
+import {FooterComponent} from './footer/footer.component';
 
 @NgModule({
   declarations: [
