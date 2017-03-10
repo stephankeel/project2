@@ -6,6 +6,9 @@ import {AuthGuard} from "../auth/auth-guard.service";
 import {DeviceOverviewComponent} from "./device-overview/device-overview.component";
 import {MaterialModule} from "@angular/material";
 import {FooterModule} from "../footer/footer.module";
+import { TemperatureOverviewComponent } from './temperature-overview/temperature-overview.component';
+import { BlindsOverviewComponent } from './blinds-overview/blinds-overview.component';
+import { HumidityOverviewComponent } from './humidity-overview/humidity-overview.component';
 
 @NgModule({
   imports: [
@@ -17,6 +20,9 @@ import {FooterModule} from "../footer/footer.module";
   declarations: [
     DashboardComponent,
     DeviceOverviewComponent,
+    TemperatureOverviewComponent,
+    BlindsOverviewComponent,
+    HumidityOverviewComponent,
   ],
   providers: [
     AuthGuard,
