@@ -15,10 +15,10 @@
         <span md-line>Übersicht</span>
         <span md-line class="secondary">Geräteübersicht</span>
       </a>
-      <a md-list-item (click)="sidenav.close()">
-        <md-icon md-list-icon>home</md-icon>
-        <span md-line>Geräte</span>
-        <span md-line class="secondary">Geräte Konfiguration</span>
+      <a md-list-item (click)="sidenav.close()" [routerLink]="['user-management']">
+        <md-icon md-list-icon>people</md-icon>
+        <span md-line>Benutzer</span>
+        <span md-line class="secondary">Benuterverwaltung</span>
       </a>
     </md-nav-list>
   </md-sidenav>

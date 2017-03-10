@@ -14,7 +14,8 @@ const routes: Routes = [{
     {path: 'temperature-overview', canActivate: [AuthGuard], component: TemperatureOverviewComponent},
     {path: 'blinds-overview', canActivate: [AuthGuard], component: BlindsOverviewComponent},
     {path: 'humidity-overview', canActivate: [AuthGuard], component: HumidityOverviewComponent},
-    {path: '', redirectTo: 'overview', pathMatch: 'full'},
+    {path: 'user-management', canActivate: [AuthGuard], loadChildren: 'app/+user-management/user-management.module#UserManagementModule'},
+    {path: '', redirectTo: 'overview', pathMatch: 'full'}
   ]
 }];
 
