@@ -55,9 +55,6 @@
              type="number" (keydown)="clearMessage()" (focus)="clearMessage()"
              name="runningSeconds" required min="10" max="300">
     </div>
-    <div *ngIf="message" id="deviceMessage">
-      {{message}}
-    </div>
     <div class="buttonDiv">
       <button id="okButton" type="submit"
               [disabled]="!deviceForm.form.valid">OK

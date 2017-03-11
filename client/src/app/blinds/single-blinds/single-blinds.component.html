@@ -1,4 +1,4 @@
 <div class="appSingleBlinds" *ngIf="device">
   <app-moving-blinds class="appMovingBlinds" [percentageDown]="percentageDown" [name]="device.name"></app-moving-blinds>
-  <app-blinds-buttons class="appBindsButtons" [deviceId]="device.id" (setMessage)="message($event)"></app-blinds-buttons>
+  <app-blinds-buttons class="appBindsButtons" [deviceId]="device.id"></app-blinds-buttons>
 </div>

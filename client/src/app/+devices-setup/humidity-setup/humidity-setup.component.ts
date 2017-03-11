@@ -5,7 +5,7 @@ import {AuthHttp} from "angular2-jwt";
 import {GenericService} from "../../remote/generic.service";
 import {ClientSocketService} from "../../remote/client-socket.service";
 import {HumidityDevice, humidityDevicesInfo, AnalogDevicesInfo, Port, portName} from '../../device-pool';
-
+import {NotificationService} from '../../notification/notification.service';
 
 @Component({
   selector: 'app-humidity-config',
@@ -23,12 +23,12 @@ export class HumiditySetupComponent implements OnInit {
   message: string;
 
   constructor(private router: Router,
-              private socketService: ClientSocketService, private authHttp: AuthHttp) {
+              private socketService: ClientSocketService, private authHttp: AuthHttp, private notificationService: NotificationService) {
   }
 
   ngOnInit() {
     this.genericService = new GenericService<HumidityDevice>(this.authHttp,
-      this.socketService, "/api/devices/humidity", "/humidity");
+      this.socketService, this.notificationService, "/api/devices/humidity", "/humidity");
     this.genericService.items.subscribe(devices => {
         this.devices = devices.toArray().sort((a, b) => a.name.localeCompare(b.name));
         AnalogDevicesInfo.updateAnalogPortsInUse(humidityDevicesInfo, devices.toArray().map(device => device.port))
@@ -86,7 +86,7 @@ export class HumiditySetupComponent implements OnInit {
   }
 
   clearMessage(): void {
-    this.message = null;
+    this.notificationService.clear();
   }
 
 }

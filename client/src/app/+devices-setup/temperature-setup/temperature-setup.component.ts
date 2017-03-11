@@ -5,7 +5,7 @@ import {AuthHttp} from "angular2-jwt";
 import {GenericService} from "../../remote/generic.service";
 import {ClientSocketService} from "../../remote/client-socket.service";
 import {TemperatureDevice, temperatureDevicesInfo, AnalogDevicesInfo, Port, portName} from '../../device-pool';
-
+import {NotificationService} from '../../notification/notification.service';
 
 @Component({
   selector: 'app-temperature-config',
@@ -23,12 +23,12 @@ export class TemperatureSetupComponent implements OnInit {
   message: string;
 
   constructor(private router: Router,
-              private socketService: ClientSocketService, private authHttp: AuthHttp) {
+              private socketService: ClientSocketService, private authHttp: AuthHttp, private notificationService: NotificationService) {
   }
 
   ngOnInit() {
     this.genericService = new GenericService<TemperatureDevice>(this.authHttp,
-      this.socketService, "/api/devices/temperature", "/temperature");
+      this.socketService, this.notificationService, "/api/devices/temperature", "/temperature");
     this.genericService.items.subscribe(devices => {
         this.devices = devices.toArray().sort((a, b) => a.name.localeCompare(b.name));
         AnalogDevicesInfo.updateAnalogPortsInUse(temperatureDevicesInfo, devices.toArray().map(device => device.port));
@@ -83,7 +83,7 @@ export class TemperatureSetupComponent implements OnInit {
   }
 
   clearMessage(): void {
-    this.message = null;
+    this.notificationService.clear();
   }
 
 }

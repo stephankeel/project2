@@ -14,10 +14,7 @@
     </div>
   </div>
   <form class="deviceForm" *ngIf="device" (ngSubmit)="doAddOrUpdate()" #deviceForm="ngForm">
-    <app-analog-setup [device]="device" [ports]="ports" (clearMessageOnParent)="clearMessage($event)"></app-analog-setup>
-    <div *ngIf="message" id="deviceMessage">
-      {{message}}
-    </div>
+    <app-analog-setup [device]="device" [ports]="ports"></app-analog-setup>
     <div class="buttonDiv">
       <button id="okButton" type="submit"
               [disabled]="!deviceForm.form.valid">OK

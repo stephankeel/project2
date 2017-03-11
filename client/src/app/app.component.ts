@@ -2,6 +2,9 @@ import {Component} from '@angular/core';
 import {Router}   from '@angular/router';
 
 import {AuthenticationService} from './remote/authentication.service';
+import {Message} from 'primeng/primeng';
+import {NotificationService} from './notification/notification.service';
+
 
 @Component({
   selector: 'app-root',
@@ -24,7 +27,7 @@ export class AppComponent {
     return AppComponent.logInfo;
   }
 
-  constructor(private router: Router, private authenticationService: AuthenticationService) {
+  constructor(private router: Router, private authenticationService: AuthenticationService, private notificationService: NotificationService) {
     AppComponent.log('Starting...');
     if (authenticationService.loggedIn()) {
       AppComponent.logUser(authenticationService);
@@ -33,6 +36,10 @@ export class AppComponent {
       AppComponent.log('');
       this.router.navigate(['/login']);
     }
+  }
+
+  getMessages(): Message[] {
+    return this.notificationService.message;
   }
 
 }
