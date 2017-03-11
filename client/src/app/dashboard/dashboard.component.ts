@@ -8,11 +8,12 @@ import {AuthenticationService} from '../remote/authentication.service';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  styleUrls: ['dashboard.component.scss']
 })
 
 export class DashboardComponent implements OnInit {
   cssMenuClass: string = 'hideMenu';
+  cssMenuItemClass: string = 'hideMenuItem';
   devices: DevicesInfo[] = devicePool;
   isAdmin: boolean;
 
@@ -28,8 +29,10 @@ export class DashboardComponent implements OnInit {
     console.log('Menu clicked ' + this.cssMenuClass);
     if (this.cssMenuClass === 'hideMenu') {
       this.cssMenuClass = 'showMenu';
+      this.cssMenuItemClass = 'showMenuItem';
     } else {
       this.cssMenuClass = 'hideMenu';
+      this.cssMenuItemClass = 'hideMenuItem';
     }
   }
 

@@ -1,13 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {AuthHttp} from "angular2-jwt";
-import {Observable} from "rxjs";
-
 import {GenericService} from "../remote/generic.service";
 import {ClientSocketService} from "../remote/client-socket.service";
-import {BlindsDevice, blindsDevicesInfo, Port, portName} from '../device-pool';
-import {GenericDataService} from "../remote/generic-data.service";
-import {IBlindsData} from "../../../../server/entities/data.interface";
+import {BlindsDevice, blindsDevicesInfo} from '../device-pool';
 import {BlindsDataObservablePipe} from './pipes/blinds-data-observable.pipe';
 import {BlindsDataFormatterPipe} from './pipes/blinds-data-formatter.pipe';
 import {NotificationService} from '../notification/notification.service';
@@ -23,11 +19,7 @@ export class BlindsComponent implements OnInit {
   private headerTitle: string = `${blindsDevicesInfo.displayName}-STEUERUNG`;
   private devices: BlindsDevice[] = [];
   private selectedDevice: BlindsDevice;
-  private selectedDevicePercentageDown: number = 33;
   private genericService: GenericService<BlindsDevice>;
-  private message: string;
-  private dataServices: Map<BlindsDevice, GenericDataService<IBlindsData>> = new Map<BlindsDevice, GenericDataService<IBlindsData>>();
-  private devicesState: Map<BlindsDevice, Observable<IBlindsData>> = new Map<BlindsDevice, Observable<IBlindsData>>();
 
   constructor(private router: Router, private socketService: ClientSocketService,
               private authHttp: AuthHttp, private notificationService: NotificationService) {
@@ -38,29 +30,13 @@ export class BlindsComponent implements OnInit {
     this.genericService.items.subscribe(devices => {
       this.devices = devices.toArray().sort((a, b) => a.name.localeCompare(b.name));
       this.showAll();
-    }, error => this.message = error.toString());
+    }, error => this.notificationService.error(error.toString()));
     this.genericService.getAll();
   }
 
   ngOnDestroy() {
     this.genericService.disconnect();
-    this.devices.forEach(device => this.releaseDevice(device));
-  }
-
-  subscribeDevice(device: BlindsDevice): void {
-    let dataService: GenericDataService<IBlindsData> = new GenericDataService<IBlindsData>(this.authHttp, this.socketService, '/api/data/blinds', '/blinds', device.id);
-    this.dataServices.set(device, dataService);
-    this.devicesState.set(device, dataService.lastItem);
-    dataService.getLatest();
-  }
-
-  releaseDevice(device: BlindsDevice): void {
-    let dataService: GenericDataService<IBlindsData> = this.dataServices.get(device);
-    if (dataService) {
-      dataService.disconnect();
-      this.dataServices.delete(device);
-      this.devicesState.delete(device);
-    }
+    this.devices = [];
   }
 
   backClicked(): void {
@@ -72,29 +48,14 @@ export class BlindsComponent implements OnInit {
   }
 
   showAll(): void {
-    if (this.selectedDevice) {
-      this.releaseDevice(this.selectedDevice);
-    }
     this.selectedDevice = null;
-    this.devices.forEach(device => this.subscribeDevice(device));
+    this.router.navigate(['/blinds']);
   }
 
   selectDevice(device: BlindsDevice) {
-    this.clearMessage();
-    if (this.selectedDevice) {
-      this.releaseDevice(this.selectedDevice);
-    } else {
-      this.devices.forEach(device => this.releaseDevice(device));
-    }
-    this.subscribeDevice(device);
     this.selectedDevice = device;
-    this.devicesState.get(device).subscribe((data: IBlindsData) => {
-      this.selectedDevicePercentageDown = data.percentageDown
-    });
-  }
-
-  setMessage(str: string) {
-    this.message = str;
+    this.clearMessage();
+    this.router.navigate(['/blinds', device.id]);
   }
 
   clearMessage(): void {

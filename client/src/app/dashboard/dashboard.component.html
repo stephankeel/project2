@@ -1,9 +1,9 @@
 <div id="dashboard">
   <div class="dashboardMenu {{cssMenuClass}}">
-    <div id="compoentMenuItem" class="menuItem" *ngIf="isAdmin" (click)="deviceSetup()">KOMPONENTEN</div>
-    <div id="userMenuItem" class="menuItem" *ngIf="isAdmin" (click)="manageUsers()">BENUTZER</div>
-    <div id="infoMenuItem" class="menuItem" (click)="showInfo()">INFO</div>
-    <div id="logoutMenuItem" class="menuItem" (click)="logout()">ABMELDEN</div>
+    <div id="compoentMenuItem" class="menuItem {{cssMenuItemClass}}" *ngIf="isAdmin" (click)="deviceSetup()">KOMPONENTEN</div>
+    <div id="userMenuItem" class="menuItem {{cssMenuItemClass}}" *ngIf="isAdmin" (click)="manageUsers()">BENUTZER</div>
+    <div id="infoMenuItem" class="menuItem {{cssMenuItemClass}}" (click)="showInfo()">INFO</div>
+    <div id="logoutMenuItem" class="menuItem {{cssMenuItemClass}}" (click)="logout()">ABMELDEN</div>
   </div>
   <div id="dashboardContent">
     <header>
