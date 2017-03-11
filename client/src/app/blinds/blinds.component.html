@@ -14,6 +14,5 @@
          (click)="selectDevice(device)">{{device.name}}
     </div>
   </div>
-  <app-all-blinds class="appAllBlinds" *ngIf="!selectedDevice && devices.length > 0" [devices]="devices" [devicesState]="devicesState"></app-all-blinds>
-  <app-single-blinds class="appSingleBlinds" [device]="selectedDevice" [percentageDown]="selectedDevicePercentageDown"></app-single-blinds>
+  <router-outlet></router-outlet>
 </main>
