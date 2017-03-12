@@ -46,6 +46,10 @@
   width: 100%;
 }
 
+.div--maxwith {
+  max-width: 700px;
+}
+
 .div--small-margins {
   margin: 0.2em 0 0.2em 0;
 }
@@ -62,16 +66,34 @@
   margin: 0.5em;
 }
 
+.div--font {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
 .div--no-margins {
   margin: 0;
+}
+
+.div--minwidth {
+  min-width: 400px;
 }
 
 .div--width500px {
   max-width: 500px;
 }
+.div--autogrow {
+  flex: 1 1 auto;
+}
 
-.grayButton {
+.button--gray {
   background: #A6BAC5;
+}
+
+.button--responsive {
+  min-width: 10px;
+  margin: 0.2em;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
 }
 
 .form {
@@ -84,8 +106,28 @@
   display: flex;
 }
 
+.button-container--small-margins {
+  margin: 0.2em 0.5em 0.2em 0.5em;
+}
+
+.input-section--flex {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  align-items: baseline;
+  min-height: 3em;
+}
+
+.full-width {
+  width: 100%;
+}
+
 .div__subheader--color {
   background-color: #38b938;
+}
+
+.div__subsubheader--color {
+  background-color: #189918;
 }
 
 .h3--no-margins {
@@ -95,3 +137,33 @@
 .h3--padding {
   padding: 0.5em;
 }
+
+.span__gray {
+  background: #DDDDDD;
+  border-radius: 4px;
+  padding: 0.5em;
+  margin: 0.2em;
+  flex: 1 1 auto;
+  min-width: 180px;
+}
+
+.div--flex {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.size-xs {
+  display: none;
+}
+
+@media screen and (max-width: 1000px) {
+  .size-xl {
+    display: none;
+  }
+
+  .size-xs {
+    display: block;
+  }
+}
+
+

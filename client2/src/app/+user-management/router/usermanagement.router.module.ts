@@ -4,12 +4,17 @@ import {Routes, RouterModule} from "@angular/router";
 import {AuthGuard} from "../../auth/auth-guard.service";
 import {UsersComponent} from "../users/users.component";
 import {UserChangeComponent} from "../user-change/user-change.component";
+import {UserDetailComponent} from "../user-detail/user-detail.component";
+import {UserDeleteComponent} from "../user-delete/user-delete.component";
 
 const routes: Routes = [
-  {path: '', redirectTo: 'users'},
+  {path: '', redirectTo: 'users', pathMatch: 'full'},
   {
     path: 'users', canActivate: [AuthGuard], component: UsersComponent, children: [
-    {path: ':id', canActivate: [AuthGuard], component: UserChangeComponent},
+    {path: 'edit/:id', canActivate: [AuthGuard], component: UserChangeComponent},
+    {path: 'detail/:id', canActivate: [AuthGuard], component: UserDetailComponent},
+    {path: 'delete/:id', canActivate: [AuthGuard], component: UserDeleteComponent},
+    {path: 'create', canActivate: [AuthGuard], component: UserChangeComponent},
   ]
   }];
 
