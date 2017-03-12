@@ -51,6 +51,7 @@ export class HumiditySetupComponent implements OnInit {
     this.selectedDevice = null;
     this.updatePortSet();
     this.device = new HumidityDevice();
+    this.device.port = this.ports[0];
   }
 
   selectDevice(device: HumidityDevice) {
