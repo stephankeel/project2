@@ -1,7 +1,10 @@
 {
-  "name": "homeautomation-client",
-  "version": "0.0.0",
-  "license": "MIT",
+  "name": "project2-client",
+  "version": "0.2.0",
+  "description": "Home Automation Project CAS FEE, HSR, 2 2017",
+  "main": "index.html",
+  "license": "GPL-3.0",
+  "angular-cli": {},
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -10,6 +13,15 @@
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dleuenbe/project2.git"
+  },
+  "author": "Team Home Automation",
+  "bugs": {
+    "url": "https://github.com/dleuenbe/project2/issues"
+  },
+  "homepage": "https://github.com/dleuenbe/project2#readme",
   "private": true,
   "dependencies": {
     "@angular/common": "^2.4.0",
