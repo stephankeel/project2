@@ -7,6 +7,8 @@ import {DeviceOverviewComponent} from "../device-overview/device-overview.compon
 import {TemperatureOverviewComponent} from "../temperature-overview/temperature-overview.component";
 import {BlindsOverviewComponent} from "../blinds-overview/blinds-overview.component";
 import {HumidityOverviewComponent} from "../humidity-overview/humidity-overview.component";
+import {PasswordChangeConfirmationComponent} from "../password-change-confirmation/password-change-confirmation.component";
+import {PasswordChangeComponent} from "../password-change/password-change.component";
 
 const routes: Routes = [{
   path: '', canActivate: [AuthGuard], component: DashboardComponent, children: [
@@ -15,6 +17,12 @@ const routes: Routes = [{
     {path: 'blinds-overview', canActivate: [AuthGuard], component: BlindsOverviewComponent},
     {path: 'humidity-overview', canActivate: [AuthGuard], component: HumidityOverviewComponent},
     {path: 'user-management', canActivate: [AuthGuard], loadChildren: 'app/+user-management/user-management.module#UserManagementModule'},
+    {path: 'password-change', canActivate: [AuthGuard], component: PasswordChangeComponent},
+    {
+      path: 'password-confirmation',
+      canActivate: [AuthGuard],
+      component: PasswordChangeConfirmationComponent,
+    },
     {path: '', redirectTo: 'overview', pathMatch: 'full'}
   ]
 }];

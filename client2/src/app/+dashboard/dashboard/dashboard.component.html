@@ -4,6 +4,7 @@
          (click)="sidenav.open()">
     <h1 class="header__title">HOMEAUTOMATION</h1>
     <span class="fill-remaining-space"></span>
+    <button md-button [routerLink]="['password-change']">Passwort ändern</button>
     <button md-button (click)="logout()">Logout</button>
   </header>
   <md-sidenav [mode]="push" #sidenav class="sidenav-content">
