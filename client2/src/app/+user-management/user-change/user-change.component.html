@@ -6,24 +6,28 @@
       <button md-button class="size-xs button--responsive" (click)="cancel()">
         <md-icon>undo</md-icon>
       </button>
-      <button md-button type="submit" class="size-xs button--responsive">
+      <button md-button type="submit" class="size-xs button--responsive" [disabled]="!f.valid">
         <md-icon>save</md-icon>
       </button>
     </div>
     <div class="div--margins-05 div--font div--maxwith">
       <section class="input-section--flex">
         <md-input-container class="full-width button-container--small-margins input-container--middle-size">
-          <input mdInput placeholder="Benutzername" name="username" required #usernameControl="ngModel"
+          <input mdInput placeholder="Benutzername" name="username" required minlength="4" #usernameControl="ngModel"
                  [ngModel]="user.username">
-          <md-hint *ngIf="!usernameControl.valid" [ngStyle]="{'color': 'red'}" align="start">erforderlich
+          <md-hint *ngIf="!usernameControl.valid" [ngStyle]="{'color': 'red'}" align="start">erforderlich, mind. 4
+            Zeichen lang
           </md-hint>
         </md-input-container>
         <div class="div--margins-05">
-          <md-select placeholder="Benutzertype" name="type" #typeControl="ngModel" [ngModel]="user.type">
-            <md-option *ngFor="let t of userTypes" [value]="t.key">
-              {{t.value}}
-            </md-option>
-          </md-select>
+          <div class="div--margins-05 div--flex div--flex-dir-column">
+            <md-select placeholder="Benutzertype" required name="type" #typeControl="ngModel" [ngModel]="user.type">
+              <md-option *ngFor="let t of userTypes" [value]="t.key">
+                {{t.value}}
+              </md-option>
+            </md-select>
+            <p class="div__select--hint" *ngIf="!typeControl.valid">erforderlich</p>
+          </div>
         </div>
       </section>
       <section class="input-section--flex">
