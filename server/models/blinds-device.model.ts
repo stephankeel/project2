@@ -7,7 +7,7 @@ export interface IBlindsDeviceDocument extends IBlindsDevice, Document {
 
 let BlindsDeviceSchema = new Schema({
   id: String,
-  name: {type: String, required: true, minlength: 4, unique: true},
+  name: {type: String, required: true, minlength: 4, maxlength: 20, unique: true},
   keyUp: {
     type: Number,
     required: true,
