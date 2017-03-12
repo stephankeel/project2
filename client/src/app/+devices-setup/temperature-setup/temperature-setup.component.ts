@@ -4,7 +4,7 @@ import {AuthHttp} from "angular2-jwt";
 
 import {GenericService} from "../../remote/generic.service";
 import {ClientSocketService} from "../../remote/client-socket.service";
-import {TemperatureDevice, temperatureDevicesInfo, AnalogDevicesInfo, Port, portName} from '../../device-pool';
+import {TemperatureDevice, temperatureDevicesInfo, AnalogDevicesInfo, Port} from '../../device-pool';
 import {NotificationService} from '../../notification/notification.service';
 
 @Component({
@@ -52,6 +52,7 @@ export class TemperatureSetupComponent implements OnInit {
     this.selectedDevice = null;
     this.updatePortSet();
     this.device = new TemperatureDevice();
+    this.device.port = this.ports[0];
   }
 
   selectDevice(device: TemperatureDevice) {

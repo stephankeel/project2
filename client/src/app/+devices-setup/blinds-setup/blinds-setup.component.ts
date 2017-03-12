@@ -52,6 +52,10 @@ export class BlindsSetupComponent implements OnInit {
     this.selectedDevice = null;
     this.updatePortSet();
     this.device = new BlindsDevice();
+    this.device.keyUp = this.keyPorts[0];
+    this.device.keyDown = this.keyPorts[1];
+    this.device.actorUp = this.actorPorts[0];
+    this.device.actorDown = this.actorPorts[1];
   }
 
   selectDevice(device: BlindsDevice) {
