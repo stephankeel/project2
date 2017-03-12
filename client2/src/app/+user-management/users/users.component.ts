@@ -8,6 +8,7 @@ import {UsersService} from "../service/user.service";
 import {ReplaySubject, Observable} from "rxjs";
 import {List} from "immutable";
 import {Router, ActivatedRoute} from "@angular/router";
+import {AuthenticationService} from "../../remote/authentication.service";
 
 @Component({
   selector: 'app-users',
@@ -17,7 +18,7 @@ import {Router, ActivatedRoute} from "@angular/router";
 export class UsersComponent implements OnInit {
   private items: Observable<List<IUser>> = new ReplaySubject<List<IUser>>(1);
 
-  constructor(private userService: UsersService, private router: Router, private r: ActivatedRoute) {
+  constructor(private userService: UsersService, private router: Router, private r: ActivatedRoute, private authenticationService: AuthenticationService) {
   }
 
   ngOnInit() {
@@ -36,6 +37,10 @@ export class UsersComponent implements OnInit {
 
   deleteUser(user: IUser) {
     this.router.navigate(['delete', user.id], {relativeTo: this.r});
+  }
+
+  isLoggedInUser(user: IUser) {
+    return user.username === this.authenticationService.getLoggedInUsername();
   }
 
   createUser() {

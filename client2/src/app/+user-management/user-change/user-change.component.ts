@@ -4,6 +4,7 @@ import {IUser} from "../../../../../server/entities/user.interface";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Subscription} from "rxjs";
 import {UserTypesArray} from "../../../../../server/entities/user-type";
+import {AuthenticationService} from "../../remote/authentication.service";
 
 @Component({
   selector: 'app-user-change',
@@ -17,7 +18,7 @@ export class UserChangeComponent implements OnInit {
   private title: string;
   private userTypes: any[];
 
-  constructor(private userService: UsersService, private route: ActivatedRoute, private router: Router) {
+  constructor(private userService: UsersService, private route: ActivatedRoute, private router: Router, private authenticationService: AuthenticationService) {
     this.userTypes = UserTypesArray;
   }
 
@@ -64,4 +65,7 @@ export class UserChangeComponent implements OnInit {
     this.router.navigate(['../../'], {relativeTo: this.route});
   }
 
+  isLoggedInUser(user: IUser) {
+    return user.username === this.authenticationService.getLoggedInUsername();
+  }
 }

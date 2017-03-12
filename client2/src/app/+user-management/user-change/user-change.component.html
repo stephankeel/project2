@@ -21,12 +21,13 @@
         </md-input-container>
         <div class="div--margins-05">
           <div class="div--margins-05 div--flex div--flex-dir-column">
-            <md-select placeholder="Benutzertype" required name="type" #typeControl="ngModel" [ngModel]="user.type">
+            <md-select placeholder="Benutzertype" required name="type" #typeControl="ngModel" [ngModel]="user.type"
+                       [disabled]="isLoggedInUser(user)">
               <md-option *ngFor="let t of userTypes" [value]="t.key">
                 {{t.value}}
               </md-option>
             </md-select>
-            <p class="div__select--hint" *ngIf="!typeControl.valid">erforderlich</p>
+            <p class="div__select--hint" *ngIf="!typeControl.valid && !isLoggedInUser(user)">erforderlich</p>
           </div>
         </div>
       </section>
