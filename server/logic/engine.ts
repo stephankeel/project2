@@ -74,7 +74,7 @@ export class Engine {
 
   private addAnalogDevice(device: IDevice, deviceType: DeviceType): void {
     let deviceInfo: DeviceInfo = new DeviceInfo(device, deviceType);
-    LOGGER.info(`addAnalogDevice: ${JSON.stringify(device)}`);
+    LOGGER.debug(`addAnalogDevice: ${JSON.stringify(device)}`);
 
     let analogDevice: IAnalogDevice = device as ITemperatureDevice;
     let ain: AbstractAIN = this.assignAnalogInput(analogDevice.id, analogDevice.port);
@@ -83,7 +83,7 @@ export class Engine {
         GenericDataController.getDataController(deviceType).addDataRecord(data);
       },
       (err: any) => LOGGER.error(`${deviceTypeAsString(deviceType)} device polling error ${err}`),
-      () => LOGGER.info(`${deviceTypeAsString(deviceType)} device polling stopped`)
+      () => LOGGER.debug(`${deviceTypeAsString(deviceType)} device polling stopped`)
     );
     this.devices.set(device.id, deviceInfo);
   }
@@ -111,7 +111,7 @@ export class Engine {
   public updateDevice(device: IDevice): void {
     let deviceInfo: DeviceInfo = this.devices.get(device.id);
     if (deviceInfo) {
-      LOGGER.info(`updateDevice: ${deviceTypeAsString(deviceInfo.type)}\n\tfrom: ${JSON.stringify(deviceInfo)}\n\tto.:${JSON.stringify(device)}`);
+      LOGGER.debug(`updateDevice: ${deviceTypeAsString(deviceInfo.type)}\n\tfrom: ${JSON.stringify(deviceInfo)}\n\tto.:${JSON.stringify(device)}`);
       switch (deviceInfo.type) {
         case DeviceType.BLINDS:
           let newBlindsDevice: IBlindsDevice = device as IBlindsDevice;
@@ -201,7 +201,7 @@ export class Engine {
         }
       },
       (err: any) => LOGGER.error(`${deviceTypeAsString(DeviceType.BLINDS)} device watching keyUp error ${err}`),
-      () => LOGGER.info(`${deviceTypeAsString(DeviceType.BLINDS)} device watching keyUp stopped`)
+      () => LOGGER.debug(`${deviceTypeAsString(DeviceType.BLINDS)} device watching keyUp stopped`)
     );
 
     ports.keyDown.watch().subscribe((keyPressed: boolean) => {
@@ -213,7 +213,7 @@ export class Engine {
         }
       },
       (err: any) => LOGGER.error(`${deviceTypeAsString(DeviceType.BLINDS)} device watching keyUp error ${err}`),
-      () => LOGGER.info(`${deviceTypeAsString(DeviceType.BLINDS)} device watching keyUp stopped`)
+      () => LOGGER.debug(`${deviceTypeAsString(DeviceType.BLINDS)} device watching keyUp stopped`)
     );
 
     return ports;

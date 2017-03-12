@@ -63,7 +63,7 @@ export class GenericDataController<T extends IData, R extends IDeviceDocument> i
 
   public addDataRecord(data: T) {
     let dataModel: R = this.createDocument(data);
-    LOGGER.info(`add ${this.loggingPrefix}: ${JSON.stringify(data)}`);
+    LOGGER.debug(`add ${this.loggingPrefix}: ${JSON.stringify(data)}`);
     dataModel.save((err: any, addedData: R) => {
       if (err) {
         LOGGER.error(`error adding ${this.loggingPrefix} ${JSON.stringify(data)}. ${err}`);
@@ -86,7 +86,7 @@ export class GenericDataController<T extends IData, R extends IDeviceDocument> i
       } else {
         // delete all entries with given deviceId
         data.forEach((rec) => {
-          LOGGER.info(`delete ${this.loggingPrefix} ${rec._id}`);
+          LOGGER.debug(`delete ${this.loggingPrefix} ${rec._id}`);
           let ref = {_id: rec._id};
           this.model.remove(ref);
         });

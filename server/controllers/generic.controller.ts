@@ -59,7 +59,7 @@ export class GenericController<T, R extends IDeviceDocument> implements IControl
 
   public add(req: express.Request, res: express.Response) {
     let item: T = req.body;
-    LOGGER.info(`create ${this.loggingPrefix}: ${JSON.stringify(item)}`);
+    LOGGER.debug(`create ${this.loggingPrefix}: ${JSON.stringify(item)}`);
     let device: R = this.createDocument(item);
     device.save((err: any, addedDevice: R) => {
       if (err) {
@@ -108,7 +108,7 @@ export class GenericController<T, R extends IDeviceDocument> implements IControl
   }
 
   public del(req: express.Request, res: express.Response) {
-    LOGGER.info(`delete ${this.loggingPrefix} ${req.params.id}`);
+    LOGGER.debug(`delete ${this.loggingPrefix} ${req.params.id}`);
     let ref = {_id: req.params.id};
     this.model.remove(ref, (err: any) => {
       if (err) {
@@ -124,7 +124,7 @@ export class GenericController<T, R extends IDeviceDocument> implements IControl
 
   public update(req: express.Request, res: express.Response) {
     let id = req.params.id;
-    LOGGER.info(`update ${this.loggingPrefix} [${id}]: ${JSON.stringify(req.body)}`);
+    LOGGER.debug(`update ${this.loggingPrefix} [${id}]: ${JSON.stringify(req.body)}`);
     this.model.findById(id, (err: any, deviceFromDb: R) => {
       if (err) {
         res.status(404).json({error: `${this.loggingPrefix} ${id} not found. ${err}`});
