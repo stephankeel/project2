@@ -24,7 +24,20 @@ export class AuthenticationService {
     }
   }
 
-  login(username: string, password: string): Observable<boolean> {
+  public login(email: string, password: string): Observable<boolean> {
+    return this.loginInternal(email, password, (token: string) => {
+      // store jwt token in local storage to keep user logged in between page refreshes
+      localStorage.setItem(AuthenticationService.tokenKey, token);
+      this.decodeToken(token);
+      console.log(`login succeeded. username: ${this.username}`);
+    });
+  }
+
+  public loginCheckonly(username: string, password: string): Observable<boolean> {
+    return this.loginInternal(username, password, () => {});
+  }
+
+  private loginInternal(username: string, password: string, processCallback: (token: string) => void): Observable<boolean> {
     return this.http.post('/api/authenticate', JSON.stringify({
       username: username,
       password: password
@@ -33,10 +46,7 @@ export class AuthenticationService {
         // login successful if there's a jwt token in the response
         let token: string = response.json() && response.json().token as string;
         if (token) {
-          // store jwt token in local storage to keep user logged in between page refreshes
-          localStorage.setItem(AuthenticationService.tokenKey, token);
-          this.decodeToken(token);
-          console.log(`login succeeded. username: ${this.username}`);
+          processCallback(token);
           return true;
         } else {
           return false;
