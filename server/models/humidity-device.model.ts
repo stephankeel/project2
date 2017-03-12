@@ -7,7 +7,7 @@ export interface IHumidityDeviceDocument extends IHumidityDevice, Document {
 
 let HumidityDeviceSchema = new Schema({
   id: String,
-  name: {type: String, required: true, minlength: 4, unique: true},
+  name: {type: String, required: true, minlength: 4, maxlength: 20, unique: true},
   port: {type: Number, required: true, min: analogInputs[0], max: analogInputs[analogInputs.length - 1], unique: true},
   pollingInterval: {type: Number, required: true, min: 1},
 }, {

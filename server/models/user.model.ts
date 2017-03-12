@@ -11,10 +11,10 @@ export interface IUserDocument extends IUser, Document {
 
 let UserSchema = new Schema({
   id: String,
-  firstname: String,
-  lastname: String,
+  firstname: {type: String, required: true, minlength: 2, maxlength: 20},
+  lastname: {type: String, required: true, minlength: 2, maxlength: 20},
   type: {type: Number, required: true, min: UserType.GUEST, max: UserType.ADMIN},
-  username: {type: String, required: true, minlength: 4, unique: true},
+  username: {type: String, required: true, minlength: 4, maxlength: 20, unique: true},
   password: {type: String, required: true, minlength: 4}
 }, {
   versionKey: false, // avoids __v, i.e. the version key
