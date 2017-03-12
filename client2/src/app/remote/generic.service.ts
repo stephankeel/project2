@@ -1,4 +1,4 @@
-import {ReplaySubject, Subscription} from "rxjs";
+import {ReplaySubject, Subscription, Observable, Subject} from "rxjs";
 import {ClientSocketService} from "./client-socket.service";
 import {List} from "immutable";
 import {IId} from "../../../../server/entities/id.interface";
@@ -21,6 +21,14 @@ export class GenericService<T extends IId> {
 
   public disconnect() {
     this.dataSubscription.unsubscribe();
+  }
+
+  public getCache(id: string) {
+    return this.currentItems.get(id);
+  }
+
+  public getRestService() {
+    return this.restService;
   }
 
   private processItem(packet: ISocketItem) {
@@ -51,10 +59,17 @@ export class GenericService<T extends IId> {
     }, (err: any) => this.items.error(err));
   }
 
-  public getAll() {
+  public getAll(): Observable<T[]> {
+    let subject = new Subject<T[]>();
     this.restService.getAll().subscribe((items: T[]) => {
       this.addAll(items);
-    }, (err: any) => this.items.error(err));
+      subject.next(items);
+      subject.complete();
+    }, (err: any) => {
+      this.items.error(err);
+      subject.error(err);
+    });
+    return subject;
   }
 
   private addAll(items: T[]) {
