@@ -1,0 +1,30 @@
+<div class="div--maxwith div--autogrow div--no-margins">
+  <form #f="ngForm" novalidate (ngSubmit)="cancel()">
+    <div class="header--flex div--no-margins div__subsubheader--color">
+      <h3 class="h3--no-margins h3--padding">Benutzer löschen</h3>
+      <span class="fill-remaining-space"></span>
+      <button md-button type="submit" class="size-xs button--responsive">
+        <md-icon>cancel</md-icon>
+      </button>
+      <button md-button class="size-xs button--responsive" (click)="deleteUser()">
+        <md-icon>check</md-icon>
+      </button>
+    </div>
+
+    <div class="div--margins-05 div--font div--maxwith">
+      <div class="div--flex div--flex-justify-content-center">
+        <p>Benutzer <i>{{user.username}}</i> löschen?</p>
+      </div>
+      <div class="div--flex div--flex-justify-content-center">
+        <button md-button type="submit" class="size-xs button--responsive">
+          <md-icon>cancel</md-icon>
+          <span>Nein</span>
+        </button>
+        <button md-button class="size-xs button--responsive" (click)="deleteUser()">
+          <md-icon>check</md-icon>
+          <span>Ja</span>
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

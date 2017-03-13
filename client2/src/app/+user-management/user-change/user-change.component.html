@@ -1,0 +1,61 @@
+<div class="div--maxwith div--autogrow div--no-margins">
+  <form #f="ngForm" novalidate (ngSubmit)="submit(f.value)">
+    <div class="header--flex div--no-margins div__subsubheader--color">
+      <h3 class="h3--no-margins h3--padding">{{title}}</h3>
+      <span class="fill-remaining-space"></span>
+      <button md-button class="size-xs button--responsive" (click)="cancel()">
+        <md-icon>undo</md-icon>
+      </button>
+      <button md-button type="submit" class="size-xs button--responsive" [disabled]="!f.valid">
+        <md-icon>save</md-icon>
+      </button>
+    </div>
+    <div class="div--margins-05 div--font div--maxwith">
+      <section class="input-section--flex">
+        <md-input-container class="full-width button-container--small-margins input-container--middle-size">
+          <input mdInput placeholder="Benutzername" name="username" required minlength="4" #usernameControl="ngModel"
+                 [ngModel]="user.username">
+          <md-hint *ngIf="!usernameControl.valid" [ngStyle]="{'color': 'red'}" align="start">erforderlich, mind. 4
+            Zeichen lang
+          </md-hint>
+        </md-input-container>
+        <div class="div--margins-05">
+          <div class="div--margins-05 div--flex div--flex-dir-column">
+            <md-select placeholder="Benutzertype" required name="type" #typeControl="ngModel" [ngModel]="user.type"
+                       [disabled]="isLoggedInUser(user)">
+              <md-option *ngFor="let t of userTypes" [value]="t.key">
+                {{t.value}}
+              </md-option>
+            </md-select>
+            <p class="div__select--hint" *ngIf="!typeControl.valid && !isLoggedInUser(user)">erforderlich</p>
+          </div>
+        </div>
+      </section>
+      <section class="input-section--flex">
+        <md-input-container class="full-width button-container--small-margins input-container--middle-size">
+          <input mdInput placeholder="Vorname" name="firstname" required #firstnameControl="ngModel"
+                 [ngModel]="user.firstname">
+          <md-hint *ngIf="!firstnameControl.valid" [ngStyle]="{'color': 'red'}" align="start">erforderlich
+          </md-hint>
+        </md-input-container>
+        <md-input-container class="full-width button-container--small-margins input-container--middle-size">
+          <input mdInput placeholder="Nachname" name="lastname" required #lastnameControl="ngModel"
+                 [ngModel]="user.lastname">
+          <md-hint *ngIf="!lastnameControl.valid" [ngStyle]="{'color': 'red'}" align="start">erforderlich
+          </md-hint>
+        </md-input-container>
+      </section>
+      <section class="input-section--flex">
+        <md-input-container class="full-width button-container--small-margins">
+          <input mdInput placeholder="Passwort" name="password" type="password" #passwordControl="ngModel"
+                 [ngModel]="user.password" required minlength="8" password [digitCharacter]="1"
+                 [lowercaseCharacter]="1"
+                 [uppercaseCharacter]="1" [disabled]="isLoggedInUser(user)">
+          <md-hint *ngIf="!passwordControl.valid && !isLoggedInUser(user)" [ngStyle]="{'color': 'red'}" align="start">Klein & Gross & Zahl, mind.
+            8 Zeichen
+          </md-hint>
+        </md-input-container>
+      </section>
+    </div>
+  </form>
+</div>
