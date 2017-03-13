@@ -1,4 +1,6 @@
 import {Component} from "@angular/core";
+import {Message} from 'primeng/primeng';
+import {NotificationService} from './notification/notification.service';
 
 @Component({
   selector: 'app-root',
@@ -6,4 +8,10 @@ import {Component} from "@angular/core";
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
+  constructor(private notificationService: NotificationService) {
+  }
+
+  getMessages(): Message[] {
+    return this.notificationService.message;
+  }
 }

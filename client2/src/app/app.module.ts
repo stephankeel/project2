@@ -11,6 +11,9 @@ import {AuthenticationService} from "./remote/authentication.service";
 import {NoAuthGuard} from "./auth/no-auth-guard.service";
 import {FooterModule} from "./footer/footer.module";
 import {LogoutComponent} from './logout/logout.component';
+import {NotificationService} from './notification/notification.service';
+import {GrowlModule} from 'primeng/primeng';
+
 
 @NgModule({
   declarations: [
@@ -25,11 +28,13 @@ import {LogoutComponent} from './logout/logout.component';
     HttpModule,
     AppRouteModule,
     FooterModule,
+    GrowlModule,
   ],
   providers: [
     AuthGuard,
     NoAuthGuard,
     AuthenticationService,
+    NotificationService,
   ],
   bootstrap: [AppComponent]
 })

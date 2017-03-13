@@ -20,9 +20,6 @@
         <md-hint *ngIf="!passwordControl.valid" [ngStyle]="{'color': 'red'}" align="start">erforderlich</md-hint>
       </md-input-container>
     </section>
-    <div *ngIf="message" class="input__login-message">
-      {{message}}
-    </div>
     <div class="div__button-row">
       <span class="fill-remaining-space"></span>
       <button md-button type="submit" (click)="doLogin()" [disabled]="!f.valid" class="button--gray">Login
