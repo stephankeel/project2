@@ -13,7 +13,6 @@ export class LoginComponent implements OnInit {
 
   username: string;
   password: string;
-  message: string;
   loggedOut: boolean = true;
 
   constructor(private authenticationService: AuthenticationService,
@@ -37,16 +36,13 @@ export class LoginComponent implements OnInit {
           this.router.navigate([url]);
         } else {
           this.notificationService.error('Benutzername oder Passwort ist nicht korrekt');
-          this.message = 'Benutzername oder Passwort ist nicht korrekt.';
         }
       }, error => {
         this.notificationService.error(error.toString());
-        this.message = <any>error;
       });
   }
 
   clearMessage(): void {
     this.notificationService.clear();
-    this.message = null;
   }
 }
