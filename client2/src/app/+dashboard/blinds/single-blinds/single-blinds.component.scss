@@ -8,8 +8,8 @@ $switchWidth: 600px;
   flex: 1 0;
   flex-direction: row;
   flex-wrap: wrap;
-  margin: 0.5em;
-  padding: 0.5em;
+  margin: 0.3em;
+  padding: 0.3em;
   align-items: center;
   @media(max-width: $switchWidth) {
     flex-direction: column;
@@ -31,13 +31,13 @@ $switchWidth: 600px;
   flex-direction: column;
   height: $blindsDeviceHeight;
   width: auto;
-  margin-left: 1em;
+  margin-left: 0.6em;
   margin-top: 0em;
   @media(max-width: 600px) {
     flex-direction: row;
     height: auto;
     width: $blindsDeviceWidth;
     margin-left: 0;
-    margin-top: 1em;
+    margin-top: 0.6em;
   }
 }

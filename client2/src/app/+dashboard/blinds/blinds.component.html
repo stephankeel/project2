@@ -1,14 +1,14 @@
 <div class="header--flex div--no-margins div__subheader--color">
   <h3 class="h3--no-margins h3--padding">Rollladen-Steuerung</h3>
   <span class="fill-remaining-space"></span>
-  <div *ngIf="selectedDevice" class="allDevicesIconDiv action--button" (click)="showAllClicked()">
-    <img class="showAllIcon" src="assets/icons/showall.svg" alt="All Icon" title="Show All Icon">
-    <span class="size-xl showAllText">alle</span>
-  </div>
+  <button *ngIf="selectedDevice" md-button class="button--responsive" (click)="showAll()">
+    <md-icon>content_copy</md-icon>
+    <span class="size-xl">alle</span>
+  </button>
 </div>
 <div class="blindsDiv">
   <div class="deviceList">
-    <span class="span__gray div--flex" *ngFor="let device of devices" [class.selected]="device === selectedDevice"
+    <span class="span__gray div--flex selection-list-item" *ngFor="let device of devices" [class.selected]="device === selectedDevice"
           (click)="selectDevice(device)">
       {{device.name}}
     </span>
