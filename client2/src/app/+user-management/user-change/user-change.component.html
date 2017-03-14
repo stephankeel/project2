@@ -48,7 +48,7 @@
       <section class="input-section--flex">
         <md-input-container class="full-width button-container--small-margins">
           <input mdInput placeholder="Passwort" name="password" type="password" #passwordControl="ngModel"
-                 [ngModel]="user.password" required minlength="8" password [digitCharacter]="1"
+                 [ngModel]="user.password" minlength="8" password [digitCharacter]="1"
                  [lowercaseCharacter]="1"
                  [uppercaseCharacter]="1" [disabled]="isLoggedInUser(user)">
           <md-hint *ngIf="!passwordControl.valid && !isLoggedInUser(user)" [ngStyle]="{'color': 'red'}" align="start">Klein & Gross & Zahl, mind.
