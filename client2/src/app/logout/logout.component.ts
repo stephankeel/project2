@@ -9,7 +9,7 @@ import {AuthenticationService} from "../remote/authentication.service";
 })
 export class LogoutComponent implements OnInit {
 
-  constructor(private router: Router, private r: ActivatedRoute, private auhtService : AuthenticationService) {
+  constructor(private router: Router, private route: ActivatedRoute, private auhtService : AuthenticationService) {
   }
 
   ngOnInit() {
@@ -17,7 +17,7 @@ export class LogoutComponent implements OnInit {
   }
 
   dashboard() {
-    this.router.navigate(['../dashboard'], {relativeTo: this.r});
+    this.router.navigate(['../dashboard'], {relativeTo: this.route});
   }
 
 }
