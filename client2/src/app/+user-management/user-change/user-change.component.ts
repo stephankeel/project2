@@ -3,7 +3,7 @@ import {UsersService} from "../service/user.service";
 import {IUser} from "../../../../../server/entities/user.interface";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Subscription} from "rxjs";
-import {UserTypesArray} from "../../../../../server/entities/user-type";
+import {UserTypesArray, UserType} from "../../../../../server/entities/user-type";
 import {AuthenticationService} from "../../remote/authentication.service";
 
 @Component({
@@ -14,7 +14,7 @@ import {AuthenticationService} from "../../remote/authentication.service";
 export class UserChangeComponent implements OnInit {
 
   private sub: Subscription;
-  private user: IUser = {};
+  private user: IUser = {type: UserType.STANDARD};
   private title: string;
   private userTypes: any[];
 
@@ -46,14 +46,14 @@ export class UserChangeComponent implements OnInit {
         user.id = this.user.id;
         dataService.getRestService().update(user).subscribe(user => {
           console.log(`user updated: ${JSON.stringify(user)}`);
-          this.router.navigate(['../../'], {relativeTo: this.route});
+          this.router.navigate(['../../users'], {relativeTo: this.route});
         }, error => {
           console.log(`Error: user updated ${JSON.stringify(error)}`);
         });
       } else {
         dataService.getRestService().add(user).subscribe(user => {
           console.log(`user created: ${JSON.stringify(user)}`);
-          this.router.navigate(['../../'], {relativeTo: this.route});
+          this.router.navigate(['../users'], {relativeTo: this.route});
         }, error => {
           console.log(`Error: user created ${JSON.stringify(error)}`);
         });
@@ -62,7 +62,11 @@ export class UserChangeComponent implements OnInit {
   }
 
   cancel() {
-    this.router.navigate(['../../'], {relativeTo: this.route});
+    if (this.user.id) {
+      this.router.navigate(['../../users'], {relativeTo: this.route});
+    } else {
+      this.router.navigate(['../users'], {relativeTo: this.route});
+    }
   }
 
   isLoggedInUser(user: IUser) {

@@ -36,7 +36,7 @@ export class UserDeleteComponent implements OnInit, OnDestroy {
       if (this.user.id) {
         dataService.getRestService().del(this.user.id).subscribe(user => {
           console.log(`user delete: ${JSON.stringify(this.user)}`);
-          this.router.navigate(['../../'], {relativeTo: this.route});
+          this.router.navigate(['../../users'], {relativeTo: this.route});
         }, error => {
           console.log(`Error: user updated ${JSON.stringify(error)}`);
         });
@@ -45,7 +45,7 @@ export class UserDeleteComponent implements OnInit, OnDestroy {
   }
 
   cancel() {
-    this.router.navigate(['../../'], {relativeTo: this.route});
+    this.router.navigate(['../../users'], {relativeTo: this.route});
   }
 }
 
