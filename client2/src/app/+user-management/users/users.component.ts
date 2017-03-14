@@ -18,7 +18,7 @@ import {AuthenticationService} from "../../remote/authentication.service";
 export class UsersComponent implements OnInit {
   private items: Observable<List<IUser>> = new ReplaySubject<List<IUser>>(1);
 
-  constructor(private userService: UsersService, private router: Router, private r: ActivatedRoute, private authenticationService: AuthenticationService) {
+  constructor(private userService: UsersService, private router: Router, private route: ActivatedRoute, private authenticationService: AuthenticationService) {
   }
 
   ngOnInit() {
@@ -28,15 +28,15 @@ export class UsersComponent implements OnInit {
   }
 
   editUser(user: IUser) {
-    this.router.navigate(['edit', user.id], {relativeTo: this.r});
+    this.router.navigate(['../edit', user.id], {relativeTo: this.route});
   }
 
   showDetails(user: IUser) {
-    this.router.navigate(['detail', user.id], {relativeTo: this.r});
+    this.router.navigate(['../detail', user.id], {relativeTo: this.route});
   }
 
   deleteUser(user: IUser) {
-    this.router.navigate(['delete', user.id], {relativeTo: this.r});
+    this.router.navigate(['../delete', user.id], {relativeTo: this.route});
   }
 
   isLoggedInUser(user: IUser) {
@@ -44,6 +44,6 @@ export class UsersComponent implements OnInit {
   }
 
   createUser() {
-    this.router.navigate(['create'], {relativeTo: this.r});
+    this.router.navigate(['../create'], {relativeTo: this.route});
   }
 }
