@@ -1,0 +1,29 @@
+.blindsDiv {
+  display: flex;
+  flex-direction: row;
+}
+
+.deviceList {
+  flex-direction: column;
+  margin: 0.5em;
+}
+
+.allDevicesIconDiv {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.2em 0.4em;
+  margin-right: 0.2em;
+  border-radius: 2px;
+}
+
+.showAllIcon {
+  width: 28px;
+  height: 28px;
+}
+
+.showAllText {
+  margin-left: 0.5em;
+}
+
+

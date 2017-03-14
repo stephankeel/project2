@@ -1,0 +1,6 @@
+<div class="appAllBlinds" *ngIf="devices">
+  <app-blinds-buttons class="appBindsButtons"></app-blinds-buttons>
+  <div class="appAllBlindsDevices" *ngFor="let device of devices">
+    <app-moving-blinds class="appMovingBlinds" [percentageDown]="device | blindsDataObservable:devicesState | async | blindsPercentageDown" [name]="device.name"></app-moving-blinds>
+  </div>
+</div>

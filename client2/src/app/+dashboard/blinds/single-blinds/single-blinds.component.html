@@ -1,0 +1,4 @@
+<div class="appSingleBlinds" *ngIf="device">
+  <app-moving-blinds class="appMovingBlinds" [percentageDown]="deviceState | async | blindsPercentageDown" [name]="device.name"></app-moving-blinds>
+  <app-blinds-buttons class="appBindsButtons" [deviceId]="device.id"></app-blinds-buttons>
+</div>
