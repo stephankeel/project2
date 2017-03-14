@@ -1,30 +1,27 @@
-<div class="div--flex">
-  <div class="div--maxwith div--autogrow">
-    <div class="header--flex div--no-margins div__subheader--color">
-      <h3 class="h3--no-margins h3--padding">Benutzer</h3>
-      <span class="fill-remaining-space"></span>
-      <button md-button class="button--responsive" (click)="createUser()">
-        <md-icon>add</md-icon>
-      </button>
-    </div>
-    <div class="div--margins-05 div--maxwith div--autogrow">
-      <!--  <div class="line" *ngFor="let user of ((userService.getDataService() | async).items) | async">-->
-      <div class="div--flex" *ngFor="let user of items | async">
-        <button md-button class="button--responsive button--gray" (click)="editUser(user)">
-          <md-icon>edit</md-icon>
-          <span class="size-xl">ändern</span></button>
-        <button md-button class="button--responsive button--gray" (click)="showDetails(user)">
-          <md-icon>details</md-icon>
-          <span class="size-xl">Details</span></button>
-        <button md-button class="button--responsive button--gray" (click)="deleteUser(user)" [disabled]="isLoggedInUser(user)">
-          <md-icon>delete</md-icon>
-          <span class="size-xl">löschen</span></button>
-        <span
-          class="span__gray">{{user.firstname}} {{user.lastname}} ({{user.username}})</span>
-      </div>
-    </div>
+<div class="div--maxwith">
+  <div class="header--flex div--no-margins div__subheader--color">
+    <h3 class="h3--no-margins h3--padding">Benutzerverwaltung</h3>
+    <span class="fill-remaining-space"></span>
+    <button md-button class="button--responsive" (click)="createUser()">
+      <md-icon>add</md-icon>
+      <span class="size-xl">erstellen</span>
+    </button>
   </div>
-  <div class="div--maxwith div--autogrow div--no-margins">
-    <router-outlet></router-outlet>
+  <div class="div--margins-05 div--maxwith">
+    <!--  <div class="line" *ngFor="let user of ((userService.getDataService() | async).items) | async">-->
+    <div class="div--flex" *ngFor="let user of items | async">
+      <button md-button class="button--responsive button--gray" (click)="editUser(user)">
+        <md-icon>edit</md-icon>
+        <span class="size-xl">ändern</span></button>
+      <button md-button class="button--responsive button--gray" (click)="showDetails(user)">
+        <md-icon>details</md-icon>
+        <span class="size-xl">Details</span></button>
+      <button md-button class="button--responsive button--gray" (click)="deleteUser(user)"
+              [disabled]="isLoggedInUser(user)">
+        <md-icon>delete</md-icon>
+        <span class="size-xl">löschen</span></button>
+      <span
+        class="span__gray">{{user.firstname}} {{user.lastname}} ({{user.username}})</span>
+    </div>
   </div>
 </div>
