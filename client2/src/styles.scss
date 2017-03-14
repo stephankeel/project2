@@ -21,6 +21,10 @@
   transform: scale(1.25);
 }
 
+.action--button:hover, .app-blinds-button:hover {
+  background-color: rgba(0, 0, 0, 0.15);
+}
+
 .img__icon--big-width {
   width: 5em;
 }

@@ -7,7 +7,6 @@ import {DeviceOverviewComponent} from "./device-overview/device-overview.compone
 import {MaterialModule} from "@angular/material";
 import {FooterModule} from "../footer/footer.module";
 import {TemperatureOverviewComponent} from "./temperature-overview/temperature-overview.component";
-import {BlindsOverviewComponent} from "./blinds-overview/blinds-overview.component";
 import {HumidityOverviewComponent} from "./humidity-overview/humidity-overview.component";
 import {PasswordChangeComponent} from "./password-change/password-change.component";
 import {FormsModule} from "@angular/forms";
@@ -35,7 +34,6 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     DashboardComponent,
     DeviceOverviewComponent,
     TemperatureOverviewComponent,
-    BlindsOverviewComponent,
     HumidityOverviewComponent,
     PasswordChangeComponent,
     PasswordChangeConfirmationComponent,
