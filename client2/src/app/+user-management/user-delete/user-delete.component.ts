@@ -45,7 +45,7 @@ export class UserDeleteComponent implements OnInit, OnDestroy {
   }
 
   cancel() {
-    this.router.navigate(['../users'], {relativeTo: this.route});
+    this.router.navigate(['../../users'], {relativeTo: this.route});
   }
 }
 
