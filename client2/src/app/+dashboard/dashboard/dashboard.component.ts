@@ -1,5 +1,6 @@
 import {Component} from "@angular/core";
 import {Router, ActivatedRoute} from "@angular/router";
+import {AuthenticationService} from "../../remote/authentication.service";
 
 @Component({
   selector: 'app-dashboard',
@@ -7,7 +8,7 @@ import {Router, ActivatedRoute} from "@angular/router";
   styleUrls: ['dashboard.component.scss']
 })
 export class DashboardComponent {
-  constructor(private router: Router, private r: ActivatedRoute) {
+  constructor(private router: Router, private r: ActivatedRoute,private authenticationService: AuthenticationService) {
   }
 
   logout() {
