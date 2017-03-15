@@ -86,7 +86,7 @@ describe('User-Model Test', function () {
   });
 
   it('should be valid if empty', done => {
-    let d = new UserModel({type: 1, username: "abcd", password: "abcd"});
+    let d = new UserModel({type: 1, username: "abcd", password: "abcd", firstname:"ab", lastname: "cd"});
     d.validate((err: any) => {
       expect(err).toBeNull();
       done();

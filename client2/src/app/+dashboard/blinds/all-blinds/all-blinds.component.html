@@ -1,6 +1,13 @@
+<div class="header--flex div--no-margins div__subheader--color">
+  <h3 class="h3--no-margins h3--padding">Rollladen-Steuerung (alle)</h3>
+</div>
 <div class="appAllBlinds" *ngIf="devices">
   <app-blinds-buttons class="appBindsButtons"></app-blinds-buttons>
-  <div class="appAllBlindsDevices" *ngFor="let device of devices">
-    <app-moving-blinds class="appMovingBlinds" [percentageDown]="device | blindsDataObservable:devicesState | async | blindsPercentageDown" [name]="device.name"></app-moving-blinds>
+  <div class="appAllBlindsDevices">
+    <div class=" action--button" *ngFor="let device of devices" (click)="select(device)">
+      <app-moving-blinds class="appMovingBlinds"
+                         [percentageDown]="device | blindsDataObservable:devicesState | async | blindsPercentageDown"
+                         [name]="device.name"></app-moving-blinds>
+    </div>
   </div>
 </div>
