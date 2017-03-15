@@ -30,7 +30,7 @@ export class GenericService<T extends IId> {
   }
 
   public getAllFromCache(): T[] {
-    let ret: T[] = [];
+      let ret: T[] = [];
     this.currentItems.forEach((v: T) => ret.push(v));
     return ret;
   }

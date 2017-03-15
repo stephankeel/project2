@@ -2,7 +2,7 @@
   <div *ngFor="let device of devicePool" class="div__devices" (click)="clickAction(device)">
     <img class="img__icon--big-width img__icon--right-margin" src="assets/icons/{{device.icon}}" alt="{{device.title}} Icon" title="{{device.title}} Icon">
     <div class="div__device-text">
-      <div class="div__device-label">{{device.displayName}}-SETUP</div>
+      <div class="div__device-label">{{device.displayName}}</div>
       <div class="div__device-label">Anzahl {{device.count}}</div>
     </div>
   </div>

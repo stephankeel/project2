@@ -19,7 +19,7 @@ import {HumidityDeviceCacheService} from "../../cache/humidity-device.cache.serv
   styleUrls: ['./device-overview.component.scss']
 })
 export class DeviceOverviewComponent implements OnInit, OnDestroy {
-  devices: DevicesInfo[] = devicePool;
+  devicePool: DevicesInfo[] = devicePool;
   blindsDeviceService: GenericService<IBlindsDevice>;
   humidityDeviceService: GenericService<IHumidityDevice>;
   temperatureDeviceService: GenericService<ITemperatureDevice>;
