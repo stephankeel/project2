@@ -3,9 +3,6 @@
     <img class="header--zoom-on-hover button__menu" src="assets/icons/menu.svg" alt="Menu Icon" title="Menu Icon"
          (click)="sidenav.open()">
     <h1 class="header__title">HOMEAUTOMATION</h1>
-    <span class="fill-remaining-space"></span>
-    <button md-button [routerLink]="['password-change']">Passwort ändern</button>
-    <button md-button (click)="logout()">Logout</button>
   </header>
   <md-sidenav [mode]="push" #sidenav class="sidenav-content">
     <md-toolbar class="toolbar__header">Menu
@@ -21,6 +18,18 @@
         <md-icon md-list-icon>people</md-icon>
         <span md-line>Benutzer</span>
         <span md-line class="secondary">Benuterverwaltung</span>
+      </a>
+      <div class="menu__separator"></div>
+      <a md-list-item *ngIf="authenticationService.loggedIn()" (click)="sidenav.close()"
+         [routerLink]="['password-change']">
+        <md-icon md-list-icon>lock</md-icon>
+        <span md-line>Passwort</span>
+        <span md-line class="secondary">Passwort ändern</span>
+      </a>
+      <div class="menu__separator"></div>
+      <a md-list-item *ngIf="authenticationService.loggedIn()" (click)="sidenav.close()" (click)="logout()">
+        <md-icon md-list-icon>clear</md-icon>
+        <span md-line>Abmelden</span>
       </a>
     </md-nav-list>
   </md-sidenav>
