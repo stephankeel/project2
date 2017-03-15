@@ -3,7 +3,7 @@ import {CommonModule} from "@angular/common";
 import {RouterModule, Routes} from "@angular/router";
 import {DashboardComponent} from "../dashboard/dashboard.component";
 import {AuthGuard} from "../../auth/auth-guard.service";
-import {DeviceOverviewComponent} from "../device-overview/device-overview.component";
+import {DeviceOverviewComponent} from "../../device-overview/device-overview/device-overview.component";
 import {TemperatureOverviewComponent} from "../temperature-overview/temperature-overview.component";
 import {HumidityOverviewComponent} from "../humidity-overview/humidity-overview.component";
 import {PasswordChangeConfirmationComponent} from "../password-change-confirmation/password-change-confirmation.component";
