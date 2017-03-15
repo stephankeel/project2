@@ -22,7 +22,7 @@ export class AllBlindsComponent implements OnInit {
   devices: BlindsDevice[] = [];
   devicesState: Map<BlindsDevice, Observable<IBlindsData>> = new Map<BlindsDevice, Observable<IBlindsData>>();
 
-  constructor(private route: ActivatedRoute, private router: Router, private socketService: ClientSocketService,
+  constructor(private r: ActivatedRoute, private router: Router, private socketService: ClientSocketService,
               private authHttp: AuthHttp, private notificationService: NotificationService) {
   }
 
@@ -65,4 +65,7 @@ export class AllBlindsComponent implements OnInit {
     }
   }
 
+  select(device: BlindsDevice): void {
+    this.router.navigate(['../blinds', device.id], {relativeTo: this.r});
+  }
 }

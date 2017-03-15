@@ -6,19 +6,20 @@ $boxMinSize: 150px;
 
 .appAllBlinds {
   display: flex;
-  flex: 1 0;
+  flex: 0 0 auto;
   flex-direction: row;
   align-items: center;
   font-size: 67%;
-  min-height: $boxMinSize;
-  min-width: $boxMinSize;
-  @media(max-width: $switchWidth) {
-    flex-direction: column;
-    margin-top: 0.5em;
-  }
+  padding: 0.5em;
 }
 
 .appAllBlindsDevices {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  width: 100%;
+  margin: 0.2em;
 }
 
 :host /deep/ app-moving-blinds .app-moving-blinds-window {
@@ -26,9 +27,6 @@ $boxMinSize: 150px;
   width: $blindsDeviceWidth;
   height: $blindsDeviceHeight;
   border: $blindsDeviceBorder solid black;
-  @media(max-width: $switchWidth) {
-    margin: 4px;
-  }
 }
 
 :host /deep/ app-moving-blinds .app-moving-blinds-blinds {
@@ -41,12 +39,6 @@ $boxMinSize: 150px;
   width: auto;
   margin-left: 0;
   margin-top: 0;
-  @media(max-width: $switchWidth) {
-    flex-direction: row;
-    height: auto;
-    width: 100%;
-    margin-bottom: 0.3em;
-  }
 }
 
 :host /deep/ .app-blinds-button {
