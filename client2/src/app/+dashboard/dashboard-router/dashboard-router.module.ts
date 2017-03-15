@@ -13,16 +13,20 @@ const routes: Routes = [{
   path: '', canActivate: [AuthGuard], component: DashboardComponent, children: [
     {path: 'overview', canActivate: [AuthGuard], component: DeviceOverviewComponent},
     {path: 'temperature-overview', canActivate: [AuthGuard], component: TemperatureOverviewComponent},
-    {path: 'blinds-overview', canActivate: [AuthGuard], loadChildren: 'app/+dashboard/blinds/blinds.module#BlindsModule'},
-    {path: 'humidity-overview', canActivate: [AuthGuard], component: HumidityOverviewComponent},
-    {path: 'user-management', canActivate: [AuthGuard], loadChildren: 'app/+user-management/user-management.module#UserManagementModule'},
-    {path: 'password-change', canActivate: [AuthGuard], component: PasswordChangeComponent},
     {
-      path: 'password-confirmation',
+      path: 'blinds-overview',
       canActivate: [AuthGuard],
-      component: PasswordChangeConfirmationComponent,
+      loadChildren: 'app/+dashboard/blinds/blinds.module#BlindsModule'
     },
-    {path: '', redirectTo: 'overview', pathMatch: 'full'}
+    {path: 'humidity-overview', canActivate: [AuthGuard], component: HumidityOverviewComponent},
+    {path: 'password-change', canActivate: [AuthGuard], component: PasswordChangeComponent},
+    {path: 'password-confirmation', canActivate: [AuthGuard], component: PasswordChangeConfirmationComponent},
+    {path: '', redirectTo: 'overview', pathMatch: 'full'},
+    {
+      path: 'user-management',
+      canActivate: [AuthGuard],
+      loadChildren: 'app/+user-management/user-management.module#UserManagementModule'
+    },
   ]
 }];
 
