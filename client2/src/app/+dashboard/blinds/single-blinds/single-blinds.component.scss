@@ -1,0 +1,43 @@
+$blindsDeviceWidth: 130px;
+$blindsDeviceHeight: 150px;
+$blindsDeviceBorder: 5px;
+$switchWidth: 600px;
+
+.appSingleBlinds {
+  display: flex;
+  flex: 1 0;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 0.3em;
+  padding: 0.3em;
+  align-items: center;
+  @media(max-width: $switchWidth) {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+:host /deep/ app-moving-blinds .app-moving-blinds-window {
+  width: $blindsDeviceWidth;
+  height: $blindsDeviceHeight;
+  border: $blindsDeviceBorder solid black;
+}
+
+:host /deep/ app-moving-blinds .app-moving-blinds-blinds {
+  width: $blindsDeviceWidth;
+}
+
+:host /deep/ app-blinds-buttons .app-blinds-button-div {
+  flex-direction: column;
+  height: $blindsDeviceHeight;
+  width: auto;
+  margin-left: 0.6em;
+  margin-top: 0em;
+  @media(max-width: 600px) {
+    flex-direction: row;
+    height: auto;
+    width: $blindsDeviceWidth;
+    margin-left: 0;
+    margin-top: 0.6em;
+  }
+}

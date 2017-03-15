@@ -34,7 +34,8 @@ export class AuthenticationService {
   }
 
   public loginCheckonly(username: string, password: string): Observable<boolean> {
-    return this.loginInternal(username, password, () => {});
+    return this.loginInternal(username, password, () => {
+    });
   }
 
   private loginInternal(username: string, password: string, processCallback: (token: string) => void): Observable<boolean> {
@@ -85,5 +86,9 @@ export class AuthenticationService {
 
   getLoggedInUserType(): UserType {
     return this.loggedIn() ? this.userType : null;
+  }
+
+  public isAdmin(): boolean {
+    return this.loggedIn() && this.userType === UserType.ADMIN;
   }
 }

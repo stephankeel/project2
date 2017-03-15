@@ -21,6 +21,10 @@
   transform: scale(1.25);
 }
 
+.action--button:hover, .app-blinds-button:hover {
+  background-color: rgba(0, 0, 0, 0.15);
+}
+
 .img__icon--big-width {
   width: 5em;
 }
@@ -176,6 +180,10 @@
   .size-xs {
     display: block;
   }
+}
+
+.selection-list-item.selected {
+  border: solid black 1px;
 }
 
 

@@ -1,0 +1,14 @@
+.blindsDiv {
+  display: flex;
+  flex-direction: row;
+}
+
+.deviceList {
+  flex-direction: column;
+  margin: 0.5em;
+}
+
+
+.selection-list-item {
+  min-width: 10em;
+}
