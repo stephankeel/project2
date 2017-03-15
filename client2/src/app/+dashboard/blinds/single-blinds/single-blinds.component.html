@@ -1,4 +1,22 @@
-<div class="appSingleBlinds" *ngIf="device">
-  <app-moving-blinds class="appMovingBlinds" [percentageDown]="deviceState | async | blindsPercentageDown" [name]="device.name"></app-moving-blinds>
-  <app-blinds-buttons class="appBindsButtons" [deviceId]="device.id"></app-blinds-buttons>
+<div class="header--flex div--no-margins div__subheader--color">
+  <h3 class="h3--no-margins h3--padding">Rollladen-Steuerung (einzeln)</h3>
+  <span class="fill-remaining-space"></span>
+  <button md-button class="button--responsive" (click)="showAll()">
+    <md-icon>content_copy</md-icon>
+    <span class="size-xl">alle</span>
+  </button>
+</div>
+<div class="singleBlindsDiv">
+  <div class="deviceList">
+    <span class="span__gray div--flex selection-list-item" *ngFor="let device of allDevices"
+          [class.selected]="device === selectedDevice"
+          (click)="selectDevice(device)">
+      {{device.name}}
+    </span>
+  </div>
+  <div class="appSingleBlinds" *ngIf="selectedDevice">
+    <app-moving-blinds class="appMovingBlinds" [percentageDown]="deviceState | async | blindsPercentageDown"
+                       [name]="selectedDevice.name"></app-moving-blinds>
+    <app-blinds-buttons class="appBindsButtons" [deviceId]="selectedDevice.id"></app-blinds-buttons>
+  </div>
 </div>

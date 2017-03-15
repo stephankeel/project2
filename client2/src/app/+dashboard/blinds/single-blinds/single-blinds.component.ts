@@ -19,24 +19,24 @@ export class SingleBlindsComponent implements OnInit {
   private genericService: GenericService<BlindsDevice>;
   private dataService: GenericDataService<IBlindsData>;
   id: any;
-  device: BlindsDevice;
+  selectedDevice: BlindsDevice;
   allDevices: BlindsDevice[] = [];
   deviceState: Observable<IBlindsData>;
 
-  constructor(private route: ActivatedRoute, private router: Router, private socketService: ClientSocketService,
+  constructor(private r: ActivatedRoute, private router: Router, private socketService: ClientSocketService,
               private authHttp: AuthHttp, private notificationService: NotificationService) {
   }
 
   ngOnInit() {
     this.genericService = new GenericService<BlindsDevice>(this.authHttp, this.socketService, "/api/devices/blinds", "/blinds");
     this.genericService.items.subscribe(devices => {
-      this.allDevices = devices.toArray();
+      this.allDevices = devices.toArray().sort((a, b) => a.name.localeCompare(b.name));
       this.resubscribe();
     }, error => this.notificationService.error(error.toString()));
     this.genericService.getAll();
 
-    // list for route id changes
-    this.route.params.subscribe((params: Params) => {
+    // listen for route id changes
+    this.r.params.subscribe((params: Params) => {
       this.id = params['id'];
       this.resubscribe();
     });
@@ -52,15 +52,15 @@ export class SingleBlindsComponent implements OnInit {
     if (this.allDevices.length > 0 && this.id) {
       let matchingDevices: BlindsDevice[] = this.allDevices.filter(device => device.id == this.id);
       if (matchingDevices.length > 0) {
-        this.device = matchingDevices[0];
+        this.selectedDevice = matchingDevices[0];
         this.subscribeDevice();
       }
     }
   }
 
   subscribeDevice(): void {
-    if (this.device) {
-      let dataService: GenericDataService<IBlindsData> = new GenericDataService<IBlindsData>(this.authHttp, this.socketService, '/api/data/blinds', '/blinds', this.device.id);
+    if (this.selectedDevice) {
+      let dataService: GenericDataService<IBlindsData> = new GenericDataService<IBlindsData>(this.authHttp, this.socketService, '/api/data/blinds', '/blinds', this.selectedDevice.id);
       this.dataService = dataService;
       this.deviceState = dataService.lastItem;
       dataService.getLatest();
@@ -68,7 +68,7 @@ export class SingleBlindsComponent implements OnInit {
   }
 
   releaseDevice(): void {
-    if (this.device) {
+    if (this.selectedDevice) {
       let dataService: GenericDataService<IBlindsData> = this.dataService;
       if (dataService) {
         dataService.disconnect();
@@ -76,6 +76,21 @@ export class SingleBlindsComponent implements OnInit {
         this.deviceState = null;
       }
     }
+  }
+  showAll() {
+    this.selectedDevice = null;
+    this.clearMessage();
+    this.router.navigate(['../'], {relativeTo: this.r});
+  }
+
+  selectDevice(device: BlindsDevice) {
+    this.selectedDevice = device;
+    this.clearMessage();
+    this.router.navigate(['blinds', device.id], {relativeTo: this.r});
+  }
+
+  clearMessage(): void {
+    this.notificationService.clear();
   }
 
 }
