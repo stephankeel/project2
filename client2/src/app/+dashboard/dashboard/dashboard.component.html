@@ -19,6 +19,12 @@
         <span md-line>Benutzer</span>
         <span md-line class="secondary">Benuterverwaltung</span>
       </a>
+      <a md-list-item *ngIf="authenticationService.isAdmin()" (click)="sidenav.close()"
+         [routerLink]="['device-management']">
+        <md-icon md-list-icon>people</md-icon>
+        <span md-line>Geräte</span>
+        <span md-line class="secondary">Geräteverwaltung</span>
+      </a>
       <div class="menu__separator"></div>
       <a md-list-item *ngIf="authenticationService.loggedIn()" (click)="sidenav.close()"
          [routerLink]="['password-change']">
