@@ -3,6 +3,13 @@ $blindsDeviceHeight: 150px;
 $blindsDeviceBorder: 5px;
 $switchWidth: 600px;
 
+.button--responsive {
+  min-width: 10px;
+  margin: 0.2em;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+}
+
 .singleBlindsDiv {
   display: flex;
   flex-direction: row;
