@@ -39,10 +39,6 @@ export class BlindsComponent implements OnInit {
     this.devices = [];
   }
 
-  showAllClicked(): void {
-    this.showAll();
-  }
-
   showAll(): void {
     this.selectedDevice = null;
     this.router.navigate(['blinds'], {relativeTo: this.r});

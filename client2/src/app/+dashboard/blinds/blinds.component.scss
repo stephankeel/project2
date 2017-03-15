@@ -8,22 +8,7 @@
   margin: 0.5em;
 }
 
-.allDevicesIconDiv {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.2em 0.4em;
-  margin-right: 0.2em;
-  border-radius: 2px;
+
+.selection-list-item {
+  min-width: 10em;
 }
-
-.showAllIcon {
-  width: 28px;
-  height: 28px;
-}
-
-.showAllText {
-  margin-left: 0.5em;
-}
-
-

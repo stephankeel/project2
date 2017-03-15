@@ -1,5 +1,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
+import {MaterialModule} from "@angular/material";
 import {ClientSocketService} from '../../remote/client-socket.service';
 import {BlindsRouterModule} from './blinds-router/blinds-router.module';
 import {AllBlindsComponent} from './all-blinds/all-blinds.component';
@@ -16,6 +17,7 @@ import {BlindsCommandService} from '../../remote/blinds-command.service';
 @NgModule({
   imports: [
     CommonModule,
+    MaterialModule,
     BlindsRouterModule,
   ],
   declarations: [
