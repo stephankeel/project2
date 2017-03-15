@@ -49,7 +49,7 @@ class BlindsDevicesInfo extends DevicesInfo {
     super(DeviceType.BLINDS, 'ROLLLADEN', 'Blinds', 'blinds', 'blinds.svg');
   }
 
-  updatePortsInUse(devices: BlindsDevice[]): void {
+  updatePortsInUse(devices: IBlindsDevice[]): void {
     blindsDevicesInfo.inputPortsInUse.clear();
     blindsDevicesInfo.outputPortsInUse.clear();
     devices.forEach(device => {
