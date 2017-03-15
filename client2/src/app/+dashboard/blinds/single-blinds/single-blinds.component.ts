@@ -28,7 +28,7 @@ export class SingleBlindsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.genericService = new GenericService<BlindsDevice>(this.authHttp, this.socketService, "/api/devices/blinds", "/blinds");
+    this.genericService = new GenericService<BlindsDevice>(this.authHttp, this.socketService, this.notificationService, "/api/devices/blinds", "/blinds");
     this.genericService.items.subscribe(devices => {
       this.allDevices = devices.toArray();
       this.resubscribe();

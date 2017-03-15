@@ -1,10 +1,11 @@
 import {ReplaySubject, Subscription, Observable, Subject} from "rxjs";
 import {ClientSocketService} from "./client-socket.service";
-import {List} from "immutable";
+import {List, Seq, Iterator} from "immutable";
 import {IId} from "../../../../server/entities/id.interface";
 import {AuthHttp} from "angular2-jwt";
 import {ISocketItem} from "../../../../server/entities/socket-item.model";
 import {GenericRestService} from "./generic-rest.service";
+import {NotificationService} from "../notification/notification.service";
 
 export class GenericService<T extends IId> {
   items: ReplaySubject<List<T>> = new ReplaySubject<List<T>>(1);
@@ -13,6 +14,7 @@ export class GenericService<T extends IId> {
   private restService: GenericRestService<T>;
 
   constructor(private authHttp: AuthHttp, private socketService: ClientSocketService,
+              private notificationService: NotificationService,
               private restUrl: string, private socketNamespace: string) {
     this.restService = new GenericRestService<T>(authHttp, restUrl);
     let observable = socketService.get(socketNamespace);
@@ -23,11 +25,21 @@ export class GenericService<T extends IId> {
     this.dataSubscription.unsubscribe();
   }
 
-  public getCache(id: string) {
+  public getCache(id: string): T {
     return this.currentItems.get(id);
   }
 
-  public getRestService() {
+  public getAllFromCache(): T[] {
+    let ret: T[] = [];
+    this.currentItems.forEach((v: T) => ret.push(v));
+    return ret;
+  }
+
+  public getCount(): number {
+    return this.currentItems.size;
+  }
+
+  public getRestService(): GenericRestService<T> {
     return this.restService;
   }
 
@@ -43,20 +55,32 @@ export class GenericService<T extends IId> {
 
   public create(item: T) {
     this.restService.add(item).subscribe((item: T) => {
+      this.notificationService.success('Created successfully');
       this.addItem(item);
-    }, (err: any) => this.items.error(err));
+    }, (err: any) => {
+      this.notificationService.error(err.toString(), 'Creation failed');
+      this.items.error(err);
+    });
   }
 
   public update(item: T) {
     this.restService.update(item).subscribe((item: T) => {
+      this.notificationService.success('Updated successfully');
       this.updateItem(item);
-    }, (err: any) => this.items.error(err));
+    }, (err: any) => {
+      this.notificationService.error(err.toString(), 'Update failed');
+      this.items.error(err);
+    });
   }
 
   public del(id: string) {
     this.restService.del(id).subscribe((id: string) => {
+      this.notificationService.success('Deleted successfully');
       this.deleteItem(id);
-    }, (err: any) => this.items.error(err));
+    }, (err: any) => {
+      this.notificationService.error(err.toString(), 'Deletion failed');
+      this.items.error(err);
+    });
   }
 
   public getAll(): Observable<T[]> {
@@ -66,6 +90,7 @@ export class GenericService<T extends IId> {
       subject.next(items);
       subject.complete();
     }, (err: any) => {
+      this.notificationService.error(`getAll failed with ${err.toString()}`);
       this.items.error(err);
       subject.error(err);
     });
