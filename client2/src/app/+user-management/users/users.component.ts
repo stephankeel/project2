@@ -27,18 +27,6 @@ export class UsersComponent implements OnInit {
     })
   }
 
-  editUser(user: IUser) {
-    this.router.navigate(['../edit', user.id], {relativeTo: this.route});
-  }
-
-  showDetails(user: IUser) {
-    this.router.navigate(['../detail', user.id], {relativeTo: this.route});
-  }
-
-  deleteUser(user: IUser) {
-    this.router.navigate(['../delete', user.id], {relativeTo: this.route});
-  }
-
   isLoggedInUser(user: IUser) {
     return user.username === this.authenticationService.getLoggedInUsername();
   }

@@ -8,20 +8,7 @@
     </button>
   </div>
   <div class="div--margins-05 div--maxwith">
-    <!--  <div class="line" *ngFor="let user of ((userService.getDataService() | async).items) | async">-->
-    <div class="div--flex" *ngFor="let user of items | async">
-      <button md-button class="button--responsive button--gray" (click)="editUser(user)">
-        <md-icon>edit</md-icon>
-        <span class="size-xl">ändern</span></button>
-      <button md-button class="button--responsive button--gray" (click)="showDetails(user)">
-        <md-icon>details</md-icon>
-        <span class="size-xl">Details</span></button>
-      <button md-button class="button--responsive button--gray" (click)="deleteUser(user)"
-              [disabled]="isLoggedInUser(user)">
-        <md-icon>delete</md-icon>
-        <span class="size-xl">löschen</span></button>
-      <span
-        class="span__gray">{{user.firstname}} {{user.lastname}} ({{user.username}})</span>
-    </div>
+    <app-line class="div--flex" *ngFor="let user of items | async"
+              [disableDelete]="isLoggedInUser(user)" [id]="user.id" [desc]="user | userListFormatter"></app-line>
   </div>
 </div>

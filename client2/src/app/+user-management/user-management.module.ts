@@ -12,6 +12,8 @@ import {UserDetailComponent} from './user-detail/user-detail.component';
 import {UserDeleteComponent} from './user-delete/user-delete.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {ValidatorsModule} from "ng2-validators";
+import {ListSupportModule} from "../list-support/list-support.module";
+import { UserListFormatterPipe } from './users/user-list-formatter.pipe';
 
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
@@ -28,12 +30,14 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     FormsModule,
     ReactiveFormsModule,
     ValidatorsModule,
+    ListSupportModule,
   ],
   declarations: [
     UsersComponent,
     UserChangeComponent,
     UserDetailComponent,
     UserDeleteComponent,
+    UserListFormatterPipe,
   ],
   providers: [
     {
