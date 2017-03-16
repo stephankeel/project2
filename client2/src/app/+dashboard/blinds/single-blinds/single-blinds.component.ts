@@ -86,7 +86,7 @@ export class SingleBlindsComponent implements OnInit {
   selectDevice(device: BlindsDevice) {
     this.selectedDevice = device;
     this.clearMessage();
-    this.router.navigate(['blinds', device.id], {relativeTo: this.r});
+    this.router.navigate(['../', device.id], {relativeTo: this.r});
   }
 
   clearMessage(): void {
