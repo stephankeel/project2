@@ -15,8 +15,8 @@ import {HumidityDeviceCacheService} from "../../cache/humidity-device.cache.serv
 
 @Component({
   selector: 'app-device-overview',
-  templateUrl: './device-overview.component.html',
-  styleUrls: ['./device-overview.component.scss']
+  templateUrl: 'device-overview.component.html',
+  styleUrls: ['device-overview.component.scss']
 })
 export class DeviceOverviewComponent implements OnInit, OnDestroy {
   devicePool: DevicesInfo[] = devicePool;
