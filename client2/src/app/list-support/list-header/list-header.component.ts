@@ -9,8 +9,9 @@ import {Router, ActivatedRoute} from "@angular/router";
 export class ListHeaderComponent implements OnInit {
   @Input() private title: string;
   @Input() private backlink: string;
-  @Input() private hideBack: boolean;
-  @Input() private hideCreate: boolean;
+  @Input() private showBack: boolean;
+  @Input() private showCreate: boolean;
+  @Input() private showAll: boolean;
 
   constructor(private router: Router, private route: ActivatedRoute) {
   }
@@ -24,5 +25,9 @@ export class ListHeaderComponent implements OnInit {
 
   create() {
     this.router.navigate(['create'], {relativeTo: this.route});
+  }
+
+  showAll() {
+    this.router.navigate(['showall'], {relativeTo: this.route});
   }
 }

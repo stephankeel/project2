@@ -1,5 +1,5 @@
 <div class="div--maxwith">
-  <app-list-header [title]="'Feuchtigkeitssensorenverwaltung'"></app-list-header>
+  <app-list-header [title]="'Feuchtigkeitssensorenverwaltung'" [showCreate]="true" [showBack]="true"></app-list-header>
   <div class="div--margins-05 div--maxwith">
     <app-line class="div--flex" *ngFor="let humidity of items | async" [id]="humidity.id"
               [desc]="humidity | humidityListitemFormatter"></app-line>
