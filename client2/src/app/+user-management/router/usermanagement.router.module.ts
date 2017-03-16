@@ -10,10 +10,10 @@ import {UserDeleteComponent} from "../user-delete/user-delete.component";
 const routes: Routes = [
   {path: '', redirectTo: 'users', pathMatch: 'full'},
   {path: 'users', canActivate: [AuthGuard], component: UsersComponent},
-  {path: 'edit/:id', canActivate: [AuthGuard], component: UserChangeComponent},
-  {path: 'detail/:id', canActivate: [AuthGuard], component: UserDetailComponent},
-  {path: 'delete/:id', canActivate: [AuthGuard], component: UserDeleteComponent},
-  {path: 'create', canActivate: [AuthGuard], component: UserChangeComponent}];
+  {path: 'users/edit/:id', canActivate: [AuthGuard], component: UserChangeComponent},
+  {path: 'users/detail/:id', canActivate: [AuthGuard], component: UserDetailComponent},
+  {path: 'users/delete/:id', canActivate: [AuthGuard], component: UserDeleteComponent},
+  {path: 'users/create', canActivate: [AuthGuard], component: UserChangeComponent}];
 
 @NgModule({
   imports: [

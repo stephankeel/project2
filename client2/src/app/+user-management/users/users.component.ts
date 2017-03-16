@@ -30,8 +30,4 @@ export class UsersComponent implements OnInit {
   isLoggedInUser(user: IUser) {
     return user.username === this.authenticationService.getLoggedInUsername();
   }
-
-  createUser() {
-    this.router.navigate(['../create'], {relativeTo: this.route});
-  }
 }
