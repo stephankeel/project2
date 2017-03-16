@@ -51,14 +51,14 @@ export class UserChangeComponent implements OnInit {
         }
         dataService.getRestService().update(user).subscribe(user => {
           console.log(`user updated: ${JSON.stringify(user)}`);
-          this.router.navigate(['../../users'], {relativeTo: this.route});
+          this.router.navigate(['../..'], {relativeTo: this.route});
         }, error => {
           console.log(`Error: user updated ${JSON.stringify(error)}`);
         });
       } else {
         dataService.getRestService().add(user).subscribe(user => {
           console.log(`user created: ${JSON.stringify(user)}`);
-          this.router.navigate(['../users'], {relativeTo: this.route});
+          this.router.navigate(['..'], {relativeTo: this.route});
         }, error => {
           console.log(`Error: user created ${JSON.stringify(error)}`);
         });

@@ -24,14 +24,14 @@ export class LineComponent implements OnInit {
   }
 
   edit(id: string) {
-    this.router.navigate(['../edit', id], {relativeTo: this.route});
+    this.router.navigate(['edit', id], {relativeTo: this.route});
   }
 
   details(id: string) {
-    this.router.navigate(['../detail', id], {relativeTo: this.route});
+    this.router.navigate(['detail', id], {relativeTo: this.route});
   }
 
   del(id: string) {
-    this.router.navigate(['../delete', id], {relativeTo: this.route});
+    this.router.navigate(['delete', id], {relativeTo: this.route});
   }
 }

@@ -33,7 +33,7 @@ export class UserDetailComponent implements OnInit {
   }
 
   back() {
-    this.router.navigate(['../../users'], {relativeTo: this.route});
+    this.router.navigate(['../..'], {relativeTo: this.route});
   }
 
   userTypeAsString(type: UserType) : string{
