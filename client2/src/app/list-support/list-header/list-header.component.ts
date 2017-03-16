@@ -9,6 +9,7 @@ import {Router, ActivatedRoute} from "@angular/router";
 export class ListHeaderComponent implements OnInit {
   @Input() private title: string;
   @Input() private backlink: string;
+  @Input() private hideBack: boolean;
   @Input() private hideCreate: boolean;
 
   constructor(private router: Router, private route: ActivatedRoute) {
@@ -18,7 +19,7 @@ export class ListHeaderComponent implements OnInit {
   }
 
   back() {
-    this.router.navigate([this.backlink], {relativeTo: this.route});
+    this.router.navigate([this.backlink ? this.backlink : '..'], {relativeTo: this.route});
   }
 
   create() {

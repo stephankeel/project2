@@ -10,6 +10,8 @@ import {BlindsSetupOverviewComponent} from './blinds-setup-overview/blinds-setup
 import {TemperatureSetupOverviewComponent} from './temperature-setup-overview/temperature-setup-overview.component';
 import {HumiditySetupOverviewComponent} from './humidity-setup-overview/humidity-setup-overview.component';
 import {MaterialModule} from "@angular/material";
+import { BlindListentryFormatterPipe } from './blinds-setup-overview/blind-listentry-formatter.pipe';
+import {ListSupportModule} from "../list-support/list-support.module";
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -23,12 +25,14 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     DeviceManagementRouterModule,
     DeviceOverviewModule,
     MaterialModule,
+    ListSupportModule,
   ],
   declarations: [
     DeviceManagementComponent,
     BlindsSetupOverviewComponent,
     TemperatureSetupOverviewComponent,
     HumiditySetupOverviewComponent,
+    BlindListentryFormatterPipe,
   ],
   providers: [
     AuthGuard,
