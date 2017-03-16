@@ -1,7 +1,8 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {LineComponent} from './line/line.component';
+import {NgModule} from "@angular/core";
+import {CommonModule} from "@angular/common";
+import {LineComponent} from "./line/line.component";
 import {MaterialModule} from "@angular/material";
+import {ListHeaderComponent} from "./list-header/list-header.component";
 
 @NgModule({
   imports: [
@@ -9,10 +10,12 @@ import {MaterialModule} from "@angular/material";
     MaterialModule,
   ],
   declarations: [
-    LineComponent
+    LineComponent,
+    ListHeaderComponent
   ],
   exports: [
     LineComponent,
+    ListHeaderComponent,
   ]
 })
 export class ListSupportModule {

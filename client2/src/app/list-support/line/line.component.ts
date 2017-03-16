@@ -34,6 +34,4 @@ export class LineComponent implements OnInit {
   del(id: string) {
     this.router.navigate(['../delete', id], {relativeTo: this.route});
   }
-
-
 }

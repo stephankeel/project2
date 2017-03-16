@@ -1,14 +1,7 @@
 <div class="div--maxwith">
-  <div class="header--flex div--no-margins div__subheader--color">
-    <h3 class="h3--no-margins h3--padding">Benutzerverwaltung</h3>
-    <span class="fill-remaining-space"></span>
-    <button md-button class="button--responsive" (click)="createUser()">
-      <md-icon>add</md-icon>
-      <span class="size-xl">erstellen</span>
-    </button>
-  </div>
+  <app-list-header [title]="'Benutzerverwaltung'"></app-list-header>
   <div class="div--margins-05 div--maxwith">
-    <app-line class="div--flex" *ngFor="let user of items | async"
-              [disableDelete]="isLoggedInUser(user)" [id]="user.id" [desc]="user | userListFormatter"></app-line>
+    <app-line class="div--flex" *ngFor="let user of items | async" [disableDelete]="isLoggedInUser(user)" [id]="user.id"
+              [desc]="user | userListFormatter"></app-line>
   </div>
 </div>
