@@ -6,6 +6,10 @@ import {Http, RequestOptions} from "@angular/http";
 import {DeviceOverviewModule} from "../device-overview/device-overview.module";
 import {DeviceManagementRouterModule} from "./device-management-router/device-management-router.module";
 import {DeviceManagementComponent} from './device-management/device-management.component';
+import {BlindsSetupOverviewComponent} from './blinds-setup-overview/blinds-setup-overview.component';
+import {TemperatureSetupOverviewComponent} from './temperature-setup-overview/temperature-setup-overview.component';
+import {HumiditySetupOverviewComponent} from './humidity-setup-overview/humidity-setup-overview.component';
+import {MaterialModule} from "@angular/material";
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -18,8 +22,14 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     CommonModule,
     DeviceManagementRouterModule,
     DeviceOverviewModule,
+    MaterialModule,
   ],
-  declarations: [DeviceManagementComponent],
+  declarations: [
+    DeviceManagementComponent,
+    BlindsSetupOverviewComponent,
+    TemperatureSetupOverviewComponent,
+    HumiditySetupOverviewComponent,
+  ],
   providers: [
     AuthGuard,
     {
