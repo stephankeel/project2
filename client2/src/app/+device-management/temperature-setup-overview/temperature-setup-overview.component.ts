@@ -1,5 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {Router, ActivatedRoute} from "@angular/router";
+import {Component, OnInit} from "@angular/core";
+import {ITemperatureDevice} from "../../../../../server/entities/device.interface";
+import {ReplaySubject, Observable} from "rxjs";
+import {List} from "immutable";
+import {TemperatureDeviceCacheService} from "../../cache/temperature-device.cache.service";
 
 @Component({
   selector: 'app-temperature-setup-overview',
@@ -8,18 +11,14 @@ import {Router, ActivatedRoute} from "@angular/router";
 })
 export class TemperatureSetupOverviewComponent implements OnInit {
 
-  constructor(private router: Router, private route: ActivatedRoute) {
+  private items: Observable<List<ITemperatureDevice>> = new ReplaySubject<List<ITemperatureDevice>>(1);
+
+  constructor(private temperatureDeviceCacheService: TemperatureDeviceCacheService) {
   }
 
   ngOnInit() {
+    this.temperatureDeviceCacheService.getDataService().subscribe(temperatureService => {
+      this.items = temperatureService.items;
+    })
   }
-
-  back() {
-    this.router.navigate(['../overview'], {relativeTo: this.route});
-  }
-
-  createTemperature() {
-    this.router.navigate(['../overview'], {relativeTo: this.route});
-  }
-
 }

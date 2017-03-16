@@ -1,5 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {Router, ActivatedRoute} from "@angular/router";
+import {Component, OnInit} from "@angular/core";
+import {IHumidityDevice} from "../../../../../server/entities/device.interface";
+import {HumidityDeviceCacheService} from "../../cache/humidity-device.cache.service";
+import {ReplaySubject, Observable} from "rxjs";
+import {List} from "immutable";
 
 @Component({
   selector: 'app-humidity-setup-overview',
@@ -7,17 +10,15 @@ import {Router, ActivatedRoute} from "@angular/router";
   styleUrls: ['./humidity-setup-overview.component.scss']
 })
 export class HumiditySetupOverviewComponent implements OnInit {
-  constructor(private router: Router, private route: ActivatedRoute) {
+
+  private items: Observable<List<IHumidityDevice>> = new ReplaySubject<List<IHumidityDevice>>(1);
+
+  constructor(private humidityDeviceCacheService: HumidityDeviceCacheService) {
   }
 
   ngOnInit() {
-  }
-
-  back() {
-    this.router.navigate(['../overview'], {relativeTo: this.route});
-  }
-
-  createHimidity() {
-    this.router.navigate(['../overview'], {relativeTo: this.route});
+    this.humidityDeviceCacheService.getDataService().subscribe(humidityService => {
+      this.items = humidityService.items;
+    })
   }
 }
