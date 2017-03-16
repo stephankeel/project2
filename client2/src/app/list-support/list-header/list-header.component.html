@@ -1,0 +1,11 @@
+<div class="header--flex div--no-margins div__subheader--color">
+  <button md-button type="button" class="size-xs button--responsive" (click)="back()" *ngIf="backlink">
+    <md-icon>arrow_back</md-icon>
+  </button>
+  <h3 class="h3--no-margins h3--padding">{{title}}</h3>
+  <span class="fill-remaining-space"></span>
+  <button md-button class="button--responsive" (click)="create()" *ngIf="!hideCreate">
+    <md-icon>add</md-icon>
+    <span class="size-xl">erstellen</span>
+  </button>
+</div>
