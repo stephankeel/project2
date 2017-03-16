@@ -4,11 +4,11 @@
   </button>
   <h3 class="h3--no-margins h3--padding">{{title}}</h3>
   <span class="fill-remaining-space"></span>
-  <button md-button class="button--responsive" (click)="showAll()" *ngIf="showCreate">
+  <button md-button class="button--responsive" (click)="showAll()" *ngIf="showShowAll">
     <md-icon>content_copy</md-icon>
     <span class="size-xl">alle</span>
   </button>
-  <button md-button class="button--responsive" (click)="create()" *ngIf="showShowAll">
+  <button md-button class="button--responsive" (click)="create()" *ngIf="showCreate">
     <md-icon>add</md-icon>
     <span class="size-xl">erstellen</span>
   </button>
