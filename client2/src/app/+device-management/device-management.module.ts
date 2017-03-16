@@ -12,6 +12,8 @@ import {HumiditySetupOverviewComponent} from './humidity-setup-overview/humidity
 import {MaterialModule} from "@angular/material";
 import { BlindListentryFormatterPipe } from './blinds-setup-overview/blind-listentry-formatter.pipe';
 import {ListSupportModule} from "../list-support/list-support.module";
+import { HumidityListitemFormatterPipe } from './humidity-setup-overview/humidity-listitem-formatter.pipe';
+import { TemperatureListitemFormatterPipe } from './temperature-setup-overview/temperature-listitem-formatter.pipe';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -33,6 +35,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     TemperatureSetupOverviewComponent,
     HumiditySetupOverviewComponent,
     BlindListentryFormatterPipe,
+    HumidityListitemFormatterPipe,
+    TemperatureListitemFormatterPipe,
   ],
   providers: [
     AuthGuard,
