@@ -27,6 +27,11 @@ const routes: Routes = [{
       canActivate: [AuthGuard],
       loadChildren: 'app/+user-management/user-management.module#UserManagementModule'
     },
+    {
+      path: 'device-management',
+      canActivate: [AuthGuard],
+      loadChildren: 'app/+device-management/device-management.module#DeviceManagementModule'
+    },
   ]
 }];
 
