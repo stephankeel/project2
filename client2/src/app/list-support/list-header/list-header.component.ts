@@ -11,7 +11,7 @@ export class ListHeaderComponent implements OnInit {
   @Input() private backlink: string;
   @Input() private showBack: boolean;
   @Input() private showCreate: boolean;
-  @Input() private showAll: boolean;
+  @Input() private showShowAll: boolean;
 
   constructor(private router: Router, private route: ActivatedRoute) {
   }
