@@ -23,6 +23,6 @@ export class ListHeaderComponent implements OnInit {
   }
 
   create() {
-    this.router.navigate(['create']);
+    this.router.navigate(['create'], {relativeTo: this.route});
   }
 }

@@ -68,9 +68,9 @@ export class UserChangeComponent implements OnInit {
 
   cancel() {
     if (this.user.id) {
-      this.router.navigate(['../../users'], {relativeTo: this.route});
+      this.router.navigate(['../..'], {relativeTo: this.route});
     } else {
-      this.router.navigate(['../users'], {relativeTo: this.route});
+      this.router.navigate(['..'], {relativeTo: this.route});
     }
   }
 
