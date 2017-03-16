@@ -14,6 +14,10 @@ import {AuthHttp, AuthConfig} from "angular2-jwt";
 import {Http, RequestOptions} from "@angular/http";
 import {PasswordChangeConfirmationComponent} from "./password-change-confirmation/password-change-confirmation.component";
 import {DeviceOverviewModule} from "../device-overview/device-overview.module";
+import {ClientSocketService} from "../remote/client-socket.service";
+import {BlindsDeviceCacheService} from "../cache/blinds-device.cache.service";
+import {TemperatureDeviceCacheService} from "../cache/temperature-device.cache.service";
+import {HumidityDeviceCacheService} from "../cache/humidity-device.cache.service";
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -45,6 +49,10 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
       useFactory: authHttpServiceFactory,
       deps: [Http, RequestOptions]
     },
+    ClientSocketService,
+    BlindsDeviceCacheService,
+    TemperatureDeviceCacheService,
+    HumidityDeviceCacheService,
   ],
 })
 export class DashboardModule {
