@@ -1,5 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
+import {BlindsDeviceCacheService} from "../../cache/blinds-device.cache.service";
+import {Observable, ReplaySubject} from "rxjs";
+import {AuthenticationService} from "../../remote/authentication.service";
+import {List} from "immutable";
+import {IBlindsDevice} from "../../../../../server/entities/device.interface";
 
 @Component({
   selector: 'app-blinds-setup-overview',
@@ -8,18 +13,14 @@ import {ActivatedRoute, Router} from "@angular/router";
 })
 export class BlindsSetupOverviewComponent implements OnInit {
 
-  constructor(private router: Router, private route: ActivatedRoute) {
+  private items: Observable<List<IBlindsDevice>> = new ReplaySubject<List<IBlindsDevice>>(1);
+
+  constructor(private blindsDeviceCacheService: BlindsDeviceCacheService) {
   }
 
   ngOnInit() {
+    this.blindsDeviceCacheService.getDataService().subscribe(blindsService => {
+      this.items = blindsService.items;
+    })
   }
-
-  back() {
-    this.router.navigate(['../overview'], {relativeTo: this.route});
-  }
-
-  createBlind() {
-    this.router.navigate(['../overview'], {relativeTo: this.route});
-  }
-
 }

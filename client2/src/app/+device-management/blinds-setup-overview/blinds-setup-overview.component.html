@@ -1,14 +1,7 @@
-<div class="header--flex div--no-margins div__subheader--color">
-  <button md-button type="button" class="size-xs button--responsive" (click)="back()">
-    <md-icon>arrow_back</md-icon>
-  </button>
-  <h3 class="h3--no-margins h3--padding">Rollladenverwaltung</h3>
-  <span class="fill-remaining-space"></span>
-  <button md-button class="button--responsive" (click)="createBlind()">
-    <md-icon>add</md-icon>
-    <span class="size-xl">erstellen</span>
-  </button>
+<div class="div--maxwith">
+  <app-list-header [title]="'Rollladenverwaltung'"></app-list-header>
+  <div class="div--margins-05 div--maxwith">
+    <app-line class="div--flex" *ngFor="let blind of items | async" [id]="blind.id"
+              [desc]="blind | blindListentryFormatter"></app-line>
+  </div>
 </div>
-<p>
-  blinds-setup-overview works!
-</p>
