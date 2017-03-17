@@ -33,7 +33,6 @@ import {BlindsCommandService} from '../../remote/blinds-command.service';
   providers: [
     AuthGuard,
     BlindsCommandService,
-    ClientSocketService,
   ],
 })
 export class BlindsModule {

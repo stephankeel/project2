@@ -1,0 +1,33 @@
+.app-analog-view {
+  display: flex;
+  flex-direction: column;
+  background-color: violet;
+}
+
+.app-analog-view--name {
+  background-color: red;
+}
+
+.analog-view--value__box {
+  display: flex;
+  flex-direction: row;
+  background-color: yellow;
+}
+
+.app-analog-view--value-left {
+  background-color: lightskyblue;
+}
+
+.app-analog-view--value-right {
+  font-size: 50%;
+  background-color: greenyellow;
+}
+
+.app-analog-view--value-units {
+
+}
+
+.app-analog-view--time {
+  font-size: 70%;
+  background-color: orange;
+}
