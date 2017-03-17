@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AllAnalogDevicesComponent } from './all-analog-devices.component';
+import { AllTemperaturesComponent } from './all-temperatures.component';
 
-describe('AllAnalogDevicesComponent', () => {
-  let component: AllAnalogDevicesComponent;
-  let fixture: ComponentFixture<AllAnalogDevicesComponent>;
+describe('AllTemperaturesComponent', () => {
+  let component: AllTemperaturesComponent;
+  let fixture: ComponentFixture<AllTemperaturesComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AllAnalogDevicesComponent ]
+      declarations: [ AllTemperaturesComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AllAnalogDevicesComponent);
+    fixture = TestBed.createComponent(AllTemperaturesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

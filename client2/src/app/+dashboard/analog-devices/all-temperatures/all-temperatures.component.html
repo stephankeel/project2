@@ -1,0 +1,9 @@
+<div class="header--flex div--no-margins div__subheader--color">
+  <h3 class="h3--no-margins h3--padding">Temperatur-Übersicht</h3>
+</div>
+<div class="app-temperatures--div" *ngIf="devices">
+  <div class=" action--button" *ngFor="let device of devices" (click)="select(device)">
+    <app-analog-view class="app-analog-view" [name]="device.name" [value]="getDataObservable(device) | async | value"
+                     [units]="'°C'" [timestamp]="getDataObservable(device) | async | timestamp"></app-analog-view>
+  </div>
+</div>

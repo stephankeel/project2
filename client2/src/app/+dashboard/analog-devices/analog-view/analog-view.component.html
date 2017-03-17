@@ -1,9 +1,9 @@
 <div class="app-analog-view">
   <div class="app-analog-view--name">{{name}}</div>
-  <div class="app-analog-view--value__box">
-    <div class="app-analog-view--value-left">{{value}}.</div>
-    <div class="app-analog-view--value-right">{{value}}</div>
-    <div class="app-analog-view--value-units">{{units}}</div>
+  <div class="app-analog-view--value--box">
+    <div class="app-analog-view-value-left">{{value}}.</div>
+    <div class="app-analog-view-value-right">{{value}}</div>
+    <div class="app-analog-view-value-units">{{units}}</div>
   </div>
-  <div class=""app-analog-view--time>{{time | }}</div>
+  <div class="app-analog-view--time">{{timestamp | timestampFormatter}}</div>
 </div>

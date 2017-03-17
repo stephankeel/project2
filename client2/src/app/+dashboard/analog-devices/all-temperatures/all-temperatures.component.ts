@@ -1,8 +1,8 @@
 import {ActivatedRoute, Router} from '@angular/router';
 import {Component, OnInit, Input} from '@angular/core';
 import {Observable} from 'rxjs';
-import {BlindsDevice} from '../../../misc/device-pool';
-import {IBlindsData} from "../../../../../../server/entities/data.interface";
+import {TemperatureDevice} from "../../../misc/device-pool";
+import {ITemperatureData} from "../../../../../../server/entities/data.interface";
 import {AuthHttp} from "angular2-jwt";
 import {GenericService} from "../../../remote/generic.service";
 import {ClientSocketService} from "../../../remote/client-socket.service";
@@ -11,26 +11,23 @@ import {NotificationService} from '../../../notification/notification.service';
 
 
 @Component({
-  selector: 'app-all-analog-devices',
-  templateUrl: './all-analog-devices.component.html',
-  styleUrls: ['./all-analog-devices.component.scss']
+  selector: 'app-all-temperatures',
+  templateUrl: 'all-temperatures.component.html',
+  styleUrls: ['all-temperatures.component.scss']
 })
-export class AllAnalogDevicesComponent implements OnInit {
+export class AllTemperaturesComponent implements OnInit {
 
-  @Input() units: string;
-
-
-  private genericService: GenericService<BlindsDevice>;
-  private dataServices: Map<BlindsDevice, GenericDataService<IBlindsData>> = new Map<BlindsDevice, GenericDataService<IBlindsData>>();
-  devices: BlindsDevice[] = [];
-  devicesState: Map<BlindsDevice, Observable<IBlindsData>> = new Map<BlindsDevice, Observable<IBlindsData>>();
+  private genericService: GenericService<TemperatureDevice>;
+  private dataServices: Map<TemperatureDevice, GenericDataService<ITemperatureData>> = new Map<TemperatureDevice, GenericDataService<ITemperatureData>>();
+  devices: TemperatureDevice[] = [];
+  devicesState: Map<TemperatureDevice, Observable<ITemperatureData>> = new Map<TemperatureDevice, Observable<ITemperatureData>>();
 
   constructor(private r: ActivatedRoute, private router: Router, private socketService: ClientSocketService,
               private authHttp: AuthHttp, private notificationService: NotificationService) {
   }
 
   ngOnInit() {
-    this.genericService = new GenericService<BlindsDevice>(this.authHttp, this.socketService, this.notificationService, "/api/devices/blinds", "/blinds");
+    this.genericService = new GenericService<TemperatureDevice>(this.authHttp, this.socketService, this.notificationService, "/api/devices/temperature", "/temperature");
     this.genericService.items.subscribe(devices => {
       this.unsubscribeAll();
       this.devices = devices.toArray().sort((a, b) => a.name.localeCompare(b.name));
@@ -52,15 +49,15 @@ export class AllAnalogDevicesComponent implements OnInit {
     this.devices.forEach(device => this.releaseDevice(device));
   }
 
-  subscribeDevice(device: BlindsDevice): void {
-    let dataService: GenericDataService<IBlindsData> = new GenericDataService<IBlindsData>(this.authHttp, this.socketService, '/api/data/blinds', '/blinds', device.id);
+  subscribeDevice(device: TemperatureDevice): void {
+    let dataService: GenericDataService<ITemperatureData> = new GenericDataService<ITemperatureData>(this.authHttp, this.socketService, '/api/data/temperature', '/temperature', device.id);
     this.dataServices.set(device, dataService);
     this.devicesState.set(device, dataService.lastItem);
     dataService.getLatest();
   }
 
-  releaseDevice(device: BlindsDevice): void {
-    let dataService: GenericDataService<IBlindsData> = this.dataServices.get(device);
+  releaseDevice(device: TemperatureDevice): void {
+    let dataService: GenericDataService<ITemperatureData> = this.dataServices.get(device);
     if (dataService) {
       dataService.disconnect();
       this.dataServices.delete(device);
@@ -68,8 +65,12 @@ export class AllAnalogDevicesComponent implements OnInit {
     }
   }
 
-  select(device: BlindsDevice): void {
-    this.router.navigate(['../blinds', device.id], {relativeTo: this.r});
+  select(device: TemperatureDevice): void {
+    this.router.navigate(['../temperature', device.id], {relativeTo: this.r});
+  }
+
+  getDataObservable(device: TemperatureDevice): Observable<ITemperatureData> {
+    return this.devicesState.get(device);
   }
 
 }

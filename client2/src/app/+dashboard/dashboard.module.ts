@@ -5,7 +5,6 @@ import {DashboardRouterModule} from "./dashboard-router/dashboard-router.module"
 import {AuthGuard} from "../auth/auth-guard.service";
 import {MaterialModule} from "@angular/material";
 import {FooterModule} from "../footer/footer.module";
-import {TemperatureOverviewComponent} from "./temperature-overview/temperature-overview.component";
 import {HumidityOverviewComponent} from "./humidity-overview/humidity-overview.component";
 import {PasswordChangeComponent} from "./password-change/password-change.component";
 import {FormsModule} from "@angular/forms";
@@ -37,7 +36,6 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   ],
   declarations: [
     DashboardComponent,
-    TemperatureOverviewComponent,
     HumidityOverviewComponent,
     PasswordChangeComponent,
     PasswordChangeConfirmationComponent,

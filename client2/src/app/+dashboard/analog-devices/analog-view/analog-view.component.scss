@@ -1,30 +1,35 @@
 .app-analog-view {
   display: flex;
+  flex: 1 1 auto;
   flex-direction: column;
   background-color: violet;
+  margin: 0.5em;
+  width: 150px;
 }
 
 .app-analog-view--name {
   background-color: red;
 }
 
-.analog-view--value__box {
+.app-analog-view-value--box {
   display: flex;
+  flex: 1 1 auto;
   flex-direction: row;
   background-color: yellow;
+  margin: 0.5em;
 }
 
-.app-analog-view--value-left {
+.app-analog-view-value-left {
   background-color: lightskyblue;
 }
 
-.app-analog-view--value-right {
-  font-size: 50%;
+.app-analog-view-value-right {
+  font-size: 70%;
   background-color: greenyellow;
 }
 
-.app-analog-view--value-units {
-
+.app-analog-view-value-units {
+  background-color: lightpink;
 }
 
 .app-analog-view--time {
