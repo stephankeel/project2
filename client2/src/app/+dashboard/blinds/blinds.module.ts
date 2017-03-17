@@ -13,12 +13,14 @@ import {BlindsPercentageDownPipe} from './pipes/blinds-percentage-down.pipe';
 import {AuthGuard} from '../../auth/auth-guard.service';
 import {BlindsComponent} from './blinds.component';
 import {BlindsCommandService} from '../../remote/blinds-command.service';
+import {ListSupportModule} from "../../list-support/list-support.module";
 
 @NgModule({
   imports: [
     CommonModule,
     MaterialModule,
     BlindsRouterModule,
+    ListSupportModule,
   ],
   declarations: [
     BlindsComponent,

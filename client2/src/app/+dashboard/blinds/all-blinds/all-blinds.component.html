@@ -1,6 +1,4 @@
-<div class="header--flex div--no-margins div__subheader--color">
-  <h3 class="h3--no-margins h3--padding">Rollladen-Steuerung (alle)</h3>
-</div>
+<app-list-header [title]="'Rollladen-Steuerung (alle)'" [showBack]="true" [backlink]="'/dashboard'"></app-list-header>
 <div class="appAllBlinds" *ngIf="devices">
   <app-blinds-buttons class="appBindsButtons"></app-blinds-buttons>
   <div class="appAllBlindsDevices">
