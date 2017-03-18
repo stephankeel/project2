@@ -5,15 +5,21 @@ import {AuthHttp, AuthConfig} from "angular2-jwt";
 import {Http, RequestOptions} from "@angular/http";
 import {DeviceOverviewModule} from "../device-overview/device-overview.module";
 import {DeviceManagementRouterModule} from "./device-management-router/device-management-router.module";
-import {DeviceManagementComponent} from './device-management/device-management.component';
-import {BlindsSetupOverviewComponent} from './blinds-setup-overview/blinds-setup-overview.component';
-import {TemperatureSetupOverviewComponent} from './temperature-setup-overview/temperature-setup-overview.component';
-import {HumiditySetupOverviewComponent} from './humidity-setup-overview/humidity-setup-overview.component';
+import {DeviceManagementComponent} from "./device-management/device-management.component";
+import {BlindsSetupOverviewComponent} from "./blinds-setup-overview/blinds-setup-overview.component";
+import {TemperatureSetupOverviewComponent} from "./temperature-setup-overview/temperature-setup-overview.component";
+import {HumiditySetupOverviewComponent} from "./humidity-setup-overview/humidity-setup-overview.component";
 import {MaterialModule} from "@angular/material";
-import { BlindListentryFormatterPipe } from './blinds-setup-overview/blind-listentry-formatter.pipe';
+import {BlindListentryFormatterPipe} from "./blinds-setup-overview/blind-listentry-formatter.pipe";
 import {ListSupportModule} from "../list-support/list-support.module";
-import { HumidityListitemFormatterPipe } from './humidity-setup-overview/humidity-listitem-formatter.pipe';
-import { TemperatureListitemFormatterPipe } from './temperature-setup-overview/temperature-listitem-formatter.pipe';
+import {HumidityListitemFormatterPipe} from "./humidity-setup-overview/humidity-listitem-formatter.pipe";
+import {TemperatureListitemFormatterPipe} from "./temperature-setup-overview/temperature-listitem-formatter.pipe";
+import {BlindsdeviceDetailsComponent} from "./blinds-setup-overview/blindsdevice-details/blindsdevice-details.component";
+import {BlindsdeviceChangeComponent} from './blinds-setup-overview/blindsdevice-change/blindsdevice-change.component';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {AnalogPortService} from "./service/analog-port.service";
+import {DigitalPortService} from "./service/digital-port.service";
+import { BlindsdeviceDeleteComponent } from './blinds-setup-overview/blindsdevice-delete/blindsdevice-delete.component';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -28,6 +34,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     DeviceOverviewModule,
     MaterialModule,
     ListSupportModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   declarations: [
     DeviceManagementComponent,
@@ -37,6 +45,9 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     BlindListentryFormatterPipe,
     HumidityListitemFormatterPipe,
     TemperatureListitemFormatterPipe,
+    BlindsdeviceDetailsComponent,
+    BlindsdeviceChangeComponent,
+    BlindsdeviceDeleteComponent,
   ],
   providers: [
     AuthGuard,
@@ -45,6 +56,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
       useFactory: authHttpServiceFactory,
       deps: [Http, RequestOptions]
     },
+    DigitalPortService,
+    AnalogPortService,
   ],
 })
 export class DeviceManagementModule {

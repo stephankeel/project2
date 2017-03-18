@@ -1,4 +1,4 @@
-import {Injectable, OnDestroy} from "@angular/core";
+import {Injectable} from "@angular/core";
 import {GenericService} from "../remote/generic.service";
 import {AuthHttp} from "angular2-jwt";
 import {Observable, ReplaySubject} from "rxjs";
