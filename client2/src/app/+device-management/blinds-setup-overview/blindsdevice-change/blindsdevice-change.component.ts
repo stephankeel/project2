@@ -26,7 +26,6 @@ export class BlindsdeviceChangeComponent implements OnInit {
               private router: Router,
               private notificationService: NotificationService,
               private digitalPortService: DigitalPortService) {
-    this.blind = {name: "test", actorUp: Port.DI_3};
   }
 
   ngOnInit() {
