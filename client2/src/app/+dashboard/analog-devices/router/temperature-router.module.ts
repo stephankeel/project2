@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import {RouterModule, Routes} from '@angular/router';
 import {AuthGuard} from '../../../auth/auth-guard.service';
 import {TemperatureComponent} from "../temperature/temperature.component";
-import {AllTemperaturesComponent} from '../all-temperatures/all-temperatures.component';
+import {AllTemperaturesComponent} from '../temperature/all-temperatures/all-temperatures.component';
 
 const routes: Routes = [{
   path: '', canActivate: [AuthGuard], component: TemperatureComponent, children: [
