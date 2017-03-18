@@ -22,8 +22,9 @@ export class SingleTemperatureComponent implements OnInit {
   selectedDevice: TemperatureDevice;
   allDevices: TemperatureDevice[] = [];
   deviceData: Observable<ITemperatureData>;
+  deviceDataHistory: Observable<ITemperatureData[]>;
 
-  constructor(private r: ActivatedRoute, private router: Router, private socketService: ClientSocketService,
+  constructor(private route: ActivatedRoute, private router: Router, private socketService: ClientSocketService,
               private authHttp: AuthHttp, private notificationService: NotificationService) {
   }
 
@@ -36,7 +37,7 @@ export class SingleTemperatureComponent implements OnInit {
     this.genericService.getAll();
 
     // listen for route id changes
-    this.r.params.subscribe((params: Params) => {
+    this.route.params.subscribe((params: Params) => {
       this.id = params['id'];
       this.resubscribe();
     });
@@ -63,7 +64,9 @@ export class SingleTemperatureComponent implements OnInit {
       let dataService: GenericDataService<ITemperatureData> = new GenericDataService<ITemperatureData>(this.authHttp, this.socketService, '/api/data/temperature', '/temperature', this.selectedDevice.id);
       this.dataService = dataService;
       this.deviceData = dataService.lastItem;
-      dataService.getLatest();
+//      dataService.getLatest();
+      this.deviceDataHistory = dataService.items;
+      dataService.getAll();
     }
   }
 
@@ -74,6 +77,7 @@ export class SingleTemperatureComponent implements OnInit {
         dataService.disconnect();
         this.dataService = null;
         this.deviceData = null;
+        this.deviceDataHistory = null;
       }
     }
   }
@@ -81,7 +85,7 @@ export class SingleTemperatureComponent implements OnInit {
   selectDevice(device: TemperatureDevice) {
     this.selectedDevice = device;
     this.clearMessage();
-    this.router.navigate(['../', device.id], {relativeTo: this.r});
+    this.router.navigate(['../', device.id], {relativeTo: this.route});
   }
 
   clearMessage(): void {
