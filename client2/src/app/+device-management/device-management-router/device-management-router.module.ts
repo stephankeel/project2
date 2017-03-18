@@ -8,6 +8,7 @@ import {TemperatureSetupOverviewComponent} from "../temperature-setup-overview/t
 import {HumiditySetupOverviewComponent} from "../humidity-setup-overview/humidity-setup-overview.component";
 import {BlindsdeviceDetailsComponent} from "../blinds-setup-overview/blindsdevice-details/blindsdevice-details.component";
 import {BlindsdeviceChangeComponent} from "../blinds-setup-overview/blindsdevice-change/blindsdevice-change.component";
+import {BlindsdeviceDeleteComponent} from "../blinds-setup-overview/blindsdevice-delete/blindsdevice-delete.component";
 
 const routes: Routes = [
   {path: '', redirectTo: 'overview', pathMatch: 'full'},
@@ -17,6 +18,7 @@ const routes: Routes = [
   {path: 'blinds-overview/edit/:id',canActivate: [AuthGuard], component: BlindsdeviceChangeComponent},
   {path: 'blinds-overview/detail/:id',canActivate: [AuthGuard], component: BlindsdeviceDetailsComponent},
   {path: 'blinds-overview/create',canActivate: [AuthGuard], component: BlindsdeviceChangeComponent},
+  {path: 'blinds-overview/delete/:id',canActivate: [AuthGuard], component: BlindsdeviceDeleteComponent},
   {path: 'humidity-overview', canActivate: [AuthGuard], component: HumiditySetupOverviewComponent},
 ];
 
