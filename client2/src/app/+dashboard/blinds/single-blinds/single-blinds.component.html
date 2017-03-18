@@ -1,11 +1,4 @@
-<div class="header--flex div--no-margins div__subheader--color">
-  <h3 class="h3--no-margins h3--padding">Rollladen-Steuerung (einzeln)</h3>
-  <span class="fill-remaining-space"></span>
-  <button md-button class="button--responsive" (click)="showAll()">
-    <md-icon>content_copy</md-icon>
-    <span class="size-xl">alle</span>
-  </button>
-</div>
+<app-list-header [title]="'Rollladen-Steuerung (einzeln)'" [showBack]="true" [showShowAll]="true"></app-list-header>
 <div class="singleBlindsDiv">
   <div class="deviceList">
     <span class="span__gray div--flex selection-list-item" *ngFor="let device of allDevices"

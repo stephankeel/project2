@@ -77,11 +77,6 @@ export class SingleBlindsComponent implements OnInit {
       }
     }
   }
-  showAll() {
-    this.selectedDevice = null;
-    this.clearMessage();
-    this.router.navigate(['../'], {relativeTo: this.r});
-  }
 
   selectDevice(device: BlindsDevice) {
     this.selectedDevice = device;
