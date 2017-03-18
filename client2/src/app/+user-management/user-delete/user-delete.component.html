@@ -1,8 +1,6 @@
 <div class="div--maxwith div--autogrow div--no-margins">
   <form #f="ngForm" novalidate (ngSubmit)="deleteUser()">
-    <div class="header--flex div--no-margins div__subsubheader--color">
-      <h3 class="h3--no-margins h3--padding">Benutzer löschen</h3>
-    </div>
+    <app-list-header [title]="'Benutzer löschen'"></app-list-header>
     <div class="div--margins-05 div--font div--maxwith">
       <div class="div--flex div--flex-justify-content-center">
         <p>Benutzer <i>{{user.username}}</i> löschen?</p>
