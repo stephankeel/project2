@@ -3,6 +3,7 @@ import {UsersService} from "../service/user.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Subscription} from "rxjs";
 import {IUser} from "../../../../../server/entities/user.interface";
+import {NotificationService} from "../../notification/notification.service";
 
 @Component({
   selector: 'app-user-delete',
@@ -13,7 +14,7 @@ export class UserDeleteComponent implements OnInit, OnDestroy {
   private sub: Subscription;
   private user: IUser = {};
 
-  constructor(private userService: UsersService, private route: ActivatedRoute, private router: Router) {
+  constructor(private userService: UsersService, private route: ActivatedRoute, private router: Router, private notificationService: NotificationService) {
   }
 
   ngOnInit() {
@@ -35,10 +36,10 @@ export class UserDeleteComponent implements OnInit, OnDestroy {
     this.userService.getDataService().subscribe(dataService => {
       if (this.user.id) {
         dataService.getRestService().del(this.user.id).subscribe(user => {
-          console.log(`user delete: ${JSON.stringify(this.user)}`);
+          this.notificationService.info(`Benutzer gelöscht.`);
           this.router.navigate(['../..'], {relativeTo: this.route});
         }, error => {
-          console.log(`Error: user updated ${JSON.stringify(error)}`);
+          this.notificationService.error(`Benutzer konnte nicht gelöscht werden (${JSON.stringify(error)})`);
         });
       }
     });
