@@ -16,6 +16,7 @@ export class DigitalPortService {
   constructor(private blindsDeviceCacheService: BlindsDeviceCacheService) {
     this.unusedInputPorts.next(this.computeUnusedInputPorts(List<IBlindsDevice>()));
     this.unusedOutputPorts.next(this.computeUnusedOutputPorts(List<IBlindsDevice>()));
+    this.init();
   }
 
   public getUnusedInputPorts() : Observable<Port[]> {
