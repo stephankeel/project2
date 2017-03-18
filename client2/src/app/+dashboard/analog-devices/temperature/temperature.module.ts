@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {TemperatureRouterModule} from '../router/temperature-router.module';
+import {TemperatureRouterModule} from './router/temperature-router.module';
 import {AuthGuard} from '../../../auth/auth-guard.service';
 import {TemperatureComponent} from './temperature.component';
 import {AllTemperaturesComponent} from './all-temperatures/all-temperatures.component';

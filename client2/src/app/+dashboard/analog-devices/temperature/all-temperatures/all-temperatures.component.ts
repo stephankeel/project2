@@ -1,4 +1,4 @@
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, Router, Params} from '@angular/router';
 import {Component, OnInit, Input} from '@angular/core';
 import {Observable} from 'rxjs';
 import {TemperatureDevice} from '../../../../misc/device-pool';
@@ -8,7 +8,6 @@ import {GenericService} from '../../../../remote/generic.service';
 import {ClientSocketService} from '../../../../remote/client-socket.service';
 import {GenericDataService} from '../../../../remote/generic-data.service';
 import {NotificationService} from '../../../../notification/notification.service';
-
 
 @Component({
   selector: 'app-all-temperatures',
@@ -20,7 +19,7 @@ export class AllTemperaturesComponent implements OnInit {
   private genericService: GenericService<TemperatureDevice>;
   private dataServices: Map<TemperatureDevice, GenericDataService<ITemperatureData>> = new Map<TemperatureDevice, GenericDataService<ITemperatureData>>();
   devices: TemperatureDevice[] = [];
-  devicesState: Map<TemperatureDevice, Observable<ITemperatureData>> = new Map<TemperatureDevice, Observable<ITemperatureData>>();
+  devicesData: Map<TemperatureDevice, Observable<ITemperatureData>> = new Map<TemperatureDevice, Observable<ITemperatureData>>();
 
   constructor(private r: ActivatedRoute, private router: Router, private socketService: ClientSocketService,
               private authHttp: AuthHttp, private notificationService: NotificationService) {
@@ -52,7 +51,7 @@ export class AllTemperaturesComponent implements OnInit {
   subscribeDevice(device: TemperatureDevice): void {
     let dataService: GenericDataService<ITemperatureData> = new GenericDataService<ITemperatureData>(this.authHttp, this.socketService, '/api/data/temperature', '/temperature', device.id);
     this.dataServices.set(device, dataService);
-    this.devicesState.set(device, dataService.lastItem);
+    this.devicesData.set(device, dataService.lastItem);
     dataService.getLatest();
   }
 
@@ -61,7 +60,7 @@ export class AllTemperaturesComponent implements OnInit {
     if (dataService) {
       dataService.disconnect();
       this.dataServices.delete(device);
-      this.devicesState.delete(device);
+      this.devicesData.delete(device);
     }
   }
 
@@ -70,7 +69,7 @@ export class AllTemperaturesComponent implements OnInit {
   }
 
   getDataObservable(device: TemperatureDevice): Observable<ITemperatureData> {
-    return this.devicesState.get(device);
+    return this.devicesData.get(device);
   }
 
 }
