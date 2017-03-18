@@ -1,13 +1,13 @@
 import {ActivatedRoute, Router} from '@angular/router';
 import {Component, OnInit, Input} from '@angular/core';
 import {Observable} from 'rxjs';
-import {TemperatureDevice} from "../../../misc/device-pool";
-import {ITemperatureData} from "../../../../../../server/entities/data.interface";
-import {AuthHttp} from "angular2-jwt";
-import {GenericService} from "../../../remote/generic.service";
-import {ClientSocketService} from "../../../remote/client-socket.service";
-import {GenericDataService} from "../../../remote/generic-data.service";
-import {NotificationService} from '../../../notification/notification.service';
+import {TemperatureDevice} from '../../../../misc/device-pool';
+import {ITemperatureData} from '../../../../../../../server/entities/data.interface';
+import {AuthHttp} from 'angular2-jwt';
+import {GenericService} from '../../../../remote/generic.service';
+import {ClientSocketService} from '../../../../remote/client-socket.service';
+import {GenericDataService} from '../../../../remote/generic-data.service';
+import {NotificationService} from '../../../../notification/notification.service';
 
 
 @Component({
@@ -27,7 +27,7 @@ export class AllTemperaturesComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.genericService = new GenericService<TemperatureDevice>(this.authHttp, this.socketService, this.notificationService, "/api/devices/temperature", "/temperature");
+    this.genericService = new GenericService<TemperatureDevice>(this.authHttp, this.socketService, this.notificationService, '/api/devices/temperature', '/temperature');
     this.genericService.items.subscribe(devices => {
       this.unsubscribeAll();
       this.devices = devices.toArray().sort((a, b) => a.name.localeCompare(b.name));
