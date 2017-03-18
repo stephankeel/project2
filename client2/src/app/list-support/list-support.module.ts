@@ -11,7 +11,7 @@ import {ListHeaderComponent} from "./list-header/list-header.component";
   ],
   declarations: [
     LineComponent,
-    ListHeaderComponent
+    ListHeaderComponent,
   ],
   exports: [
     LineComponent,
