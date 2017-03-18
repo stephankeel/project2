@@ -8,6 +8,7 @@ import {AnalogViewComponent} from '../analog-view/analog-view.component';
 import {ValuePipe} from '../pipes/value.pipe';
 import {TimestampPipe} from '../pipes/timestamp.pipe';
 import {TimestampFormatterPipe} from '../pipes/timestamp-formatter.pipe';
+import {ValueSplitPipe} from '../pipes/value-split.pipe';
 
 @NgModule({
   imports: [
@@ -21,6 +22,7 @@ import {TimestampFormatterPipe} from '../pipes/timestamp-formatter.pipe';
     ValuePipe,
     TimestampPipe,
     TimestampFormatterPipe,
+    ValueSplitPipe,
   ],
   providers: [
     AuthGuard,

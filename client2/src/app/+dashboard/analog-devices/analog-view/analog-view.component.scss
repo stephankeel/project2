@@ -1,38 +1,46 @@
+$bigFontSize: 150%;
+
+@mixin bigAndBold() {
+  font-size: $bigFontSize;
+  font-weight: bold;
+}
+
 .app-analog-view {
   display: flex;
   flex: 0 0;
   flex-direction: column;
-  background-color: violet;
+  align-items: center;
   margin: 0.5em;
-  width: 150px;
+  border: black solid 1px;
+  width: 100px;
 }
 
 .app-analog-view--name {
-  background-color: red;
+  padding: 0.3em;
 }
 
 .app-analog-view-value--box {
   display: flex;
   flex: 0 0;
   flex-direction: row;
-  background-color: yellow;
   margin: 0.5em;
 }
 
 .app-analog-view-value-left {
-  background-color: lightskyblue;
+  @include bigAndBold;
 }
 
 .app-analog-view-value-right {
-  font-size: 70%;
-  background-color: greenyellow;
+  margin-left: 0.1em;
+  font-weight: bold;
 }
 
 .app-analog-view-value-units {
-  background-color: lightpink;
+  @include bigAndBold;
+  margin-left: 0.2em;
 }
 
 .app-analog-view--time {
+  padding: 0.3em;
   font-size: 70%;
-  background-color: orange;
 }
