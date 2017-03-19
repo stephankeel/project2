@@ -16,12 +16,12 @@ import {AnalogPortService} from "../../service/analog-port.service";
 export class HumiditydeviceChangeComponent implements OnInit {
 
   private subscriptions: Subscription[] = [];
-  private humidityDevice: IHumidityDevice= {};
+  private humidityDevice: IHumidityDevice = {};
   private title: string;
   private backlink = "..";
   private unusedPortHandler: PortHandler;
 
-  constructor(private  humidityDeviceCacheService: HumidityDeviceCacheService,
+  constructor(private humidityDeviceCacheService: HumidityDeviceCacheService,
               private route: ActivatedRoute,
               private router: Router,
               private notificationService: NotificationService,
@@ -52,18 +52,18 @@ export class HumiditydeviceChangeComponent implements OnInit {
     this.subscriptions.forEach(sub => sub.unsubscribe);
   }
 
-  submit(blind: IBlindsDevice) {
+  submit(humidityDevice: IBlindsDevice) {
     this.humidityDeviceCacheService.getDataService().subscribe(dataService => {
       if (this.humidityDevice.id) {
-        blind.id = this.humidityDevice.id;
-        dataService.getRestService().update(blind).subscribe(user => {
+        humidityDevice.id = this.humidityDevice.id;
+        dataService.getRestService().update(humidityDevice).subscribe(user => {
           this.notificationService.info("Feuchtigkeitssensor aktualisiert");
           this.router.navigate(['../..'], {relativeTo: this.route});
         }, error => {
           this.notificationService.error(`Aktualisierung vom Feuchtigkeitssensor fehlgeschlagen (${JSON.stringify(error)})`);
         });
       } else {
-        dataService.getRestService().add(blind).subscribe(user => {
+        dataService.getRestService().add(humidityDevice).subscribe(user => {
           this.notificationService.info("Neuer Rollladen erstellt");
           this.router.navigate(['..'], {relativeTo: this.route});
         }, error => {
