@@ -1,0 +1,6 @@
+<app-list-header [title]="'Details Temperaturesensor'" [backlink]="'../..'" [showBack]="true"></app-list-header>
+<div class="div--margins-05 div--font div--maxwith">
+  <p class="p__small-margin">Name: {{temperatureDevice.name}}</p>
+  <p class="p__small-margin">Eingang: {{convert(temperatureDevice.port)}}</p>
+  <p class="p__small-margin">Polling Intervall: {{temperatureDevice.pollingInterval}}s</p>
+</div>

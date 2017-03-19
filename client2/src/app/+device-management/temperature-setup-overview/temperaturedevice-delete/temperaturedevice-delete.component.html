@@ -1,0 +1,21 @@
+<div class="div--maxwith div--autogrow div--no-margins">
+  <form #f="ngForm" novalidate (ngSubmit)="deleteTemperature()">
+    <app-list-header [title]="'Temperaturesensor löschen'"></app-list-header>
+    <div class="div--margins-05 div--font div--maxwith">
+      <div class="div--flex div--flex-justify-content-center">
+        <p>Temperaturesensor <i>{{temperatureDevice.name}}</i> löschen?</p>
+      </div>
+      <div class="div--flex div--flex-justify-content-center">
+        <button md-button type="button" class="size-xs button--responsive" (click)="cancel()">
+          <md-icon>cancel</md-icon>
+          <span>abbrechen</span>
+        </button>
+        <button md-button type="submit" class="size-xs button--responsive">
+          <md-icon>check</md-icon>
+          <span>löschen</span>
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+

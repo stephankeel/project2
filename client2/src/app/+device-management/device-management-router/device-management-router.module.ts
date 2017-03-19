@@ -12,11 +12,13 @@ import {BlindsdeviceDeleteComponent} from "../blinds-setup-overview/blindsdevice
 import {HumiditydeviceChangeComponent} from "../humidity-setup-overview/humiditydevice-change/humiditydevice-change.component";
 import {HumiditydeviceDetailsComponent} from "../humidity-setup-overview/humiditydevice-details/humiditydevice-details.component";
 import {HumiditydeviceDeleteComponent} from "../humidity-setup-overview/humiditydevice-delete/humiditydevice-delete.component";
+import {TemperaturedeviceDeleteComponent} from "../temperature-setup-overview/temperaturedevice-delete/temperaturedevice-delete.component";
+import {TemperaturedeviceChangeComponent} from "../temperature-setup-overview/temperaturedevice-change/temperaturedevice-change.component";
+import {TemperaturedeviceDetailsComponent} from "../temperature-setup-overview/temperaturedevice-details/temperaturedevice-details.component";
 
 const routes: Routes = [
   {path: '', redirectTo: 'overview', pathMatch: 'full'},
   {path: 'overview', canActivate: [AuthGuard], component: DeviceManagementComponent},
-  {path: 'temperature-overview', canActivate: [AuthGuard], component: TemperatureSetupOverviewComponent},
   {path: 'blinds-overview',canActivate: [AuthGuard], component: BlindsSetupOverviewComponent},
   {path: 'blinds-overview/edit/:id',canActivate: [AuthGuard], component: BlindsdeviceChangeComponent},
   {path: 'blinds-overview/detail/:id',canActivate: [AuthGuard], component: BlindsdeviceDetailsComponent},
@@ -27,6 +29,11 @@ const routes: Routes = [
   {path: 'humidity-overview/detail/:id',canActivate: [AuthGuard], component: HumiditydeviceDetailsComponent},
   {path: 'humidity-overview/create',canActivate: [AuthGuard], component: HumiditydeviceChangeComponent},
   {path: 'humidity-overview/delete/:id',canActivate: [AuthGuard], component: HumiditydeviceDeleteComponent},
+  {path: 'temperature-overview', canActivate: [AuthGuard], component: TemperatureSetupOverviewComponent},
+  {path: 'temperature-overview/edit/:id',canActivate: [AuthGuard], component: TemperaturedeviceChangeComponent},
+  {path: 'temperature-overview/detail/:id',canActivate: [AuthGuard], component: TemperaturedeviceDetailsComponent},
+  {path: 'temperature-overview/create',canActivate: [AuthGuard], component: TemperaturedeviceChangeComponent},
+  {path: 'temperature-overview/delete/:id',canActivate: [AuthGuard], component: TemperaturedeviceDeleteComponent},
 ];
 
 @NgModule({
