@@ -1,6 +1,11 @@
+$switchWidth: 600px;
+
 .app-temperature--div {
   display: flex;
   flex-direction: row;
+  @media(max-width: $switchWidth) {
+    flex-direction: column;
+  }
 }
 
 .app-device-list {
@@ -13,12 +18,6 @@
   min-width: 10em;
 }
 
-.app-single-temperature {
-  display: flex;
-  flex: 1 0;
-  flex-direction: row;
-  flex-wrap: wrap;
-  margin: 0.3em;
-  padding: 0.3em;
-  align-items: center;
+.app-single-temperature--tab {
+  width: 100%;
 }
