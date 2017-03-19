@@ -1,6 +1,6 @@
 import {ActivatedRoute, Router, Params} from '@angular/router';
 import {Component, OnInit} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Observable, Subject, Subscription} from 'rxjs';
 import {TemperatureDevice} from '../../../../misc/device-pool';
 import {ITemperatureData} from '../../../../../../../server/entities/data.interface';
 import {AuthHttp} from 'angular2-jwt';
@@ -22,7 +22,8 @@ export class SingleTemperatureComponent implements OnInit {
   selectedDevice: TemperatureDevice;
   allDevices: TemperatureDevice[] = [];
   deviceData: Observable<ITemperatureData>;
-  deviceDataHistory: Observable<ITemperatureData[]>;
+  dataSubscription: Subscription;
+  deviceDataHistory: Subject<ITemperatureData[]> = new Subject();
 
   constructor(private route: ActivatedRoute, private router: Router, private socketService: ClientSocketService,
               private authHttp: AuthHttp, private notificationService: NotificationService) {
@@ -64,9 +65,10 @@ export class SingleTemperatureComponent implements OnInit {
       let dataService: GenericDataService<ITemperatureData> = new GenericDataService<ITemperatureData>(this.authHttp, this.socketService, '/api/data/temperature', '/temperature', this.selectedDevice.id);
       this.dataService = dataService;
       this.deviceData = dataService.lastItem;
-//      dataService.getLatest();
-      this.deviceDataHistory = dataService.items;
       dataService.getAll();
+      this.dataSubscription = dataService.items.subscribe((items: ITemperatureData[]) => {
+        this.deviceDataHistory.next(items);
+      });
     }
   }
 
@@ -77,7 +79,7 @@ export class SingleTemperatureComponent implements OnInit {
         dataService.disconnect();
         this.dataService = null;
         this.deviceData = null;
-        this.deviceDataHistory = null;
+        this.dataSubscription.unsubscribe();
       }
     }
   }
