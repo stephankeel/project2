@@ -20,6 +20,9 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {AnalogPortService} from "./service/analog-port.service";
 import {DigitalPortService} from "./service/digital-port.service";
 import { BlindsdeviceDeleteComponent } from './blinds-setup-overview/blindsdevice-delete/blindsdevice-delete.component';
+import { HumiditydeviceChangeComponent } from './humidity-setup-overview/humiditydevice-change/humiditydevice-change.component';
+import { HumiditydeviceDeleteComponent } from './humidity-setup-overview/humiditydevice-delete/humiditydevice-delete.component';
+import { HumiditydeviceDetailsComponent } from './humidity-setup-overview/humiditydevice-details/humiditydevice-details.component';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -48,6 +51,9 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     BlindsdeviceDetailsComponent,
     BlindsdeviceChangeComponent,
     BlindsdeviceDeleteComponent,
+    HumiditydeviceChangeComponent,
+    HumiditydeviceDeleteComponent,
+    HumiditydeviceDetailsComponent,
   ],
   providers: [
     AuthGuard,

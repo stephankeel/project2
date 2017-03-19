@@ -1,0 +1,6 @@
+<app-list-header [title]="'Details Feuchtigkeitssensor'" [backlink]="'../..'" [showBack]="true"></app-list-header>
+<div class="div--margins-05 div--font div--maxwith">
+  <p class="p__small-margin">Name: {{humidityDevice.name}}</p>
+  <p class="p__small-margin">Eingang: {{convert(humidityDevice.port)}}</p>
+  <p class="p__small-margin">Polling Intervall: {{humidityDevice.pollingInterval}}s</p>
+</div>

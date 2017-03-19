@@ -9,6 +9,9 @@ import {HumiditySetupOverviewComponent} from "../humidity-setup-overview/humidit
 import {BlindsdeviceDetailsComponent} from "../blinds-setup-overview/blindsdevice-details/blindsdevice-details.component";
 import {BlindsdeviceChangeComponent} from "../blinds-setup-overview/blindsdevice-change/blindsdevice-change.component";
 import {BlindsdeviceDeleteComponent} from "../blinds-setup-overview/blindsdevice-delete/blindsdevice-delete.component";
+import {HumiditydeviceChangeComponent} from "../humidity-setup-overview/humiditydevice-change/humiditydevice-change.component";
+import {HumiditydeviceDetailsComponent} from "../humidity-setup-overview/humiditydevice-details/humiditydevice-details.component";
+import {HumiditydeviceDeleteComponent} from "../humidity-setup-overview/humiditydevice-delete/humiditydevice-delete.component";
 
 const routes: Routes = [
   {path: '', redirectTo: 'overview', pathMatch: 'full'},
@@ -20,6 +23,10 @@ const routes: Routes = [
   {path: 'blinds-overview/create',canActivate: [AuthGuard], component: BlindsdeviceChangeComponent},
   {path: 'blinds-overview/delete/:id',canActivate: [AuthGuard], component: BlindsdeviceDeleteComponent},
   {path: 'humidity-overview', canActivate: [AuthGuard], component: HumiditySetupOverviewComponent},
+  {path: 'humidity-overview/edit/:id',canActivate: [AuthGuard], component: HumiditydeviceChangeComponent},
+  {path: 'humidity-overview/detail/:id',canActivate: [AuthGuard], component: HumiditydeviceDetailsComponent},
+  {path: 'humidity-overview/create',canActivate: [AuthGuard], component: HumiditydeviceChangeComponent},
+  {path: 'humidity-overview/delete/:id',canActivate: [AuthGuard], component: HumiditydeviceDeleteComponent},
 ];
 
 @NgModule({
