@@ -1,0 +1,9 @@
+<div class="app-analog-view device--shadow">
+  <div class="app-analog-view--name">{{name}}</div>
+  <div class="app-analog-view-value--box">
+    <div class="app-analog-view-value-left">{{value | valueSplit:1}}</div>
+    <div class="app-analog-view-value-right"><sup>{{value | valueSplit:-1}}</sup></div>
+    <div class="app-analog-view-value-units">{{units}}</div>
+  </div>
+  <div class="app-analog-view--time">{{timestamp | timestampFormatter}}</div>
+</div>

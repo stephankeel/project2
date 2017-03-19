@@ -14,7 +14,6 @@ import {LogoutComponent} from './logout/logout.component';
 import {NotificationService} from './notification/notification.service';
 import {GrowlModule} from 'primeng/primeng';
 
-
 @NgModule({
   declarations: [
     AppComponent,

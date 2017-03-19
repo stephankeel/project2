@@ -1,0 +1,21 @@
+<app-list-header [title]="'Temperatur (einzeln)'" [showBack]="true"></app-list-header>
+<div class="app-temperature--div">
+  <div class="app-device-list">
+    <span class="span__gray div--flex selection-list-item" *ngFor="let device of allDevices"
+          [class.selected]="device === selectedDevice"
+          (click)="selectDevice(device)">
+      {{device.name}}
+    </span>
+  </div>
+  <div class="app-single-temperature" *ngIf="selectedDevice">
+    <md-tab-group class ="app-single-temperature--tab">
+      <md-tab label="Aktuell">
+        <app-analog-view class="app-analog-view" [name]="selectedDevice.name" [value]="deviceData | async | value"
+                         [units]="'°C'" [timestamp]="deviceData | async | timestamp"></app-analog-view>
+      </md-tab>
+      <md-tab label="Diagram">
+        <app-chart-view class="app-chart-view" [deviceDataHistory]="deviceDataHistory"></app-chart-view>
+      </md-tab>
+    </md-tab-group>
+  </div>
+</div>

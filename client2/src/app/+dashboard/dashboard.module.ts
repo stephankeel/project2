@@ -39,7 +39,6 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   ],
   declarations: [
     DashboardComponent,
-    TemperatureOverviewComponent,
     HumidityOverviewComponent,
     PasswordChangeComponent,
     PasswordChangeConfirmationComponent,

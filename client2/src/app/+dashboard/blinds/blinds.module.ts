@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {MaterialModule} from "@angular/material";
-import {ClientSocketService} from '../../remote/client-socket.service';
 import {BlindsRouterModule} from './blinds-router/blinds-router.module';
 import {AllBlindsComponent} from './all-blinds/all-blinds.component';
 import {SingleBlindsComponent} from './single-blinds/single-blinds.component';
@@ -35,7 +34,6 @@ import {ListSupportModule} from "../../list-support/list-support.module";
   providers: [
     AuthGuard,
     BlindsCommandService,
-    ClientSocketService,
   ],
 })
 export class BlindsModule {
