@@ -7,6 +7,7 @@ import {DeviceOverviewComponent} from "../../device-overview/device-overview/dev
 import {HumidityOverviewComponent} from "../humidity-overview/humidity-overview.component";
 import {PasswordChangeConfirmationComponent} from "../password-change-confirmation/password-change-confirmation.component";
 import {PasswordChangeComponent} from "../password-change/password-change.component";
+import {InfoComponent} from '../info/info.component';
 
 const routes: Routes = [{
   path: '', canActivate: [AuthGuard], component: DashboardComponent, children: [
@@ -35,6 +36,7 @@ const routes: Routes = [{
       canActivate: [AuthGuard],
       loadChildren: 'app/+device-management/device-management.module#DeviceManagementModule'
     },
+    {path: 'info', canActivate: [AuthGuard], component: InfoComponent},
   ]
 }];
 

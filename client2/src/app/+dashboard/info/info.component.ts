@@ -1,18 +1,19 @@
 import {Component, OnInit} from '@angular/core';
-import {CommonRestService} from '../remote/common-rest.service';
-import {Info} from '../../../../server/entities/info';
+import {Router} from "@angular/router";
+import {CommonRestService} from '../../remote/common-rest.service';
+import {Info} from '../../../../../server/entities/info';
 
 @Component({
   selector: 'app-info',
-  templateUrl: 'info.component.html',
-  styleUrls: ['info.component.scss']
+  templateUrl: './info.component.html',
+  styleUrls: ['./info.component.scss']
 })
 export class InfoComponent implements OnInit {
 
   private title: string;
   private infoList: InfoPair[] = [];
 
-  constructor(private restService: CommonRestService) {
+  constructor(private router: Router, private restService: CommonRestService) {
   }
 
   ngOnInit() {
@@ -34,6 +35,10 @@ export class InfoComponent implements OnInit {
     } else {
       return (size / 1000).toFixed(3) + " KB";
     }
+  }
+
+  backClicked(): void {
+    this.router.navigate(['/dashboard']);
   }
 
 }
