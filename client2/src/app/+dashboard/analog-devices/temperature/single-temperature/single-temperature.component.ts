@@ -16,6 +16,8 @@ import {NotificationService} from '../../../../notification/notification.service
 })
 export class SingleTemperatureComponent implements OnInit {
 
+  static readonly TODAY: number = (new Date()).setHours(0, 0, 0); // midnight
+
   private genericService: GenericService<TemperatureDevice>;
   private dataService: GenericDataService<ITemperatureData>;
   id: any;
@@ -67,7 +69,8 @@ export class SingleTemperatureComponent implements OnInit {
       this.deviceData = dataService.lastItem;
       dataService.getAll();
       this.dataSubscription = dataService.items.subscribe((items: ITemperatureData[]) => {
-        this.deviceDataHistory.next(items);
+        let filteredItems: ITemperatureData[] = items.filter(ad => ad.timestamp > SingleTemperatureComponent.TODAY);
+        this.deviceDataHistory.next(filteredItems);
       });
     }
   }
