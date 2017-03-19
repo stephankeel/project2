@@ -18,6 +18,7 @@ import {ClientSocketService} from "../remote/client-socket.service";
 import {BlindsDeviceCacheService} from "../cache/blinds-device.cache.service";
 import {TemperatureDeviceCacheService} from "../cache/temperature-device.cache.service";
 import {HumidityDeviceCacheService} from "../cache/humidity-device.cache.service";
+import {MyValidatorsModule} from "../my-validators/my-validators.module";
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -34,6 +35,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     FormsModule,
     ValidatorsModule,
     DeviceOverviewModule,
+    MyValidatorsModule,
   ],
   declarations: [
     DashboardComponent,
