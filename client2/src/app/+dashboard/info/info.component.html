@@ -1,0 +1,15 @@
+<app-list-header [title]="'INFORMATION'" [showBack]="true" [backlink]="'/dashboard'"></app-list-header>
+<div class="app-info--div">
+  <h4>{{title}}</h4>
+  <table class="infoTable">
+    <tr class="infoRow" *ngFor="let info of infoList" class="infoItem">
+      <td class="infoItem">{{info.name}}</td>
+      <td class="infoItem">{{info.value}}</td>
+    </tr>
+  </table>
+  <h4>Icons von <a href="http://www.flaticon.com" target="_blank">www.flaticon.com</a></h4>
+  <ul class="iconReferences">
+    <li><a href="http://www.flaticon.com" target="_blank">Dave Gandy</a></li>
+    <li><a href="http://www.freepik.com" target="_blank">Freepik</a></li>
+  </ul>
+</div>
