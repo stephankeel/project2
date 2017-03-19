@@ -8,8 +8,8 @@
     </span>
   </div>
   <div class="app-single-temperature" *ngIf="selectedDevice">
-    <md-tab-group>
-      <md-tab class="app-single-temperature--tab" label="Aktuell">
+    <md-tab-group class ="app-single-temperature--tab">
+      <md-tab label="Aktuell">
         <app-analog-view class="app-analog-view" [name]="selectedDevice.name" [value]="deviceData | async | value"
                          [units]="'°C'" [timestamp]="deviceData | async | timestamp"></app-analog-view>
       </md-tab>
