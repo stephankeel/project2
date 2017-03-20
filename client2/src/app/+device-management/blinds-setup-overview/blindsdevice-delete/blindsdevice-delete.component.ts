@@ -35,7 +35,7 @@ export class BlindsdeviceDeleteComponent implements OnInit {
     this.sub.unsubscribe();
   }
 
-  deleteUser() {
+  deleteBlind() {
     this.blindsCacheService.getDataService().subscribe(dataService => {
       if (this.blind.id) {
         dataService.getRestService().del(this.blind.id).subscribe(blind => {
