@@ -64,7 +64,6 @@ export class DeviceOverviewComponent implements OnInit, OnDestroy {
   handleBlindsDevices(): void {
     this.blindsDeviceCache.getDataService().subscribe(dataService => {
       blindsDevicesInfo.count = dataService.getCount();
-      blindsDevicesInfo.updatePortsInUse(dataService.getAllFromCache());
     }, error => {
       this.notificationService.error(`blindsdevice subscrition failed with ${error.toString()}`);
     });
@@ -73,7 +72,6 @@ export class DeviceOverviewComponent implements OnInit, OnDestroy {
   handleHumidityDevices(): void {
     this.humidityDeviceCache.getDataService().subscribe(dataService => {
       humidityDevicesInfo.count = dataService.getCount();
-      AnalogDevicesInfo.updateAnalogPortsInUse(humidityDevicesInfo, dataService.getAllFromCache().map(device => device.port));
     }, error => {
       this.notificationService.error(`humitidydevice subscrition failed with ${error.toString()}`);
     });
@@ -82,8 +80,6 @@ export class DeviceOverviewComponent implements OnInit, OnDestroy {
   handleTemperatureDevices(): void {
     this.temperatureDeviceCache.getDataService().subscribe(dataService => {
       temperatureDevicesInfo.count = dataService.getCount();
-      blindsDevicesInfo.updatePortsInUse(dataService.getAllFromCache());
-      AnalogDevicesInfo.updateAnalogPortsInUse(temperatureDevicesInfo, dataService.getAllFromCache().map(device => device.port));
     }, error => {
       this.notificationService.error(`temperaturedevice subscrition failed with ${error.toString()}`);
     });
