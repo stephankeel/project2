@@ -1,13 +1,14 @@
 import {ActivatedRoute, Router, Params} from '@angular/router';
 import {Component, OnInit} from '@angular/core';
-import {Observable} from 'rxjs';
-import {BlindsDevice} from '../../../misc/device-pool';
-import {IBlindsData} from "../../../../../../server/entities/data.interface";
-import {AuthHttp} from "angular2-jwt";
-import {GenericService} from "../../../remote/generic.service";
-import {ClientSocketService} from "../../../remote/client-socket.service";
-import {GenericDataService} from "../../../remote/generic-data.service";
+import {Subscription} from 'rxjs';
+import {BlindsDevice, DeviceType} from '../../../misc/device-pool';
+import {IBlindsData} from '../../../../../../server/entities/data.interface';
+import {AuthHttp} from 'angular2-jwt';
+import {GenericService} from '../../../remote/generic.service';
+import {ClientSocketService} from '../../../remote/client-socket.service';
 import {NotificationService} from '../../../notification/notification.service';
+import {BlindsDeviceCacheService} from '../../../cache/blinds-device.cache.service';
+import {DataCacheService} from '../../../cache/data-cache.service';
 
 @Component({
   selector: 'app-single-blinds',
@@ -16,24 +17,26 @@ import {NotificationService} from '../../../notification/notification.service';
 })
 export class SingleBlindsComponent implements OnInit {
 
-  private genericService: GenericService<BlindsDevice>;
-  private dataService: GenericDataService<IBlindsData>;
+  private cacheServiceSubscription: Subscription;
   id: any;
   selectedDevice: BlindsDevice;
   allDevices: BlindsDevice[] = [];
-  deviceState: Observable<IBlindsData>;
+  deviceState: IBlindsData;
+  private dataSubscription: Subscription;
 
   constructor(private r: ActivatedRoute, private router: Router, private socketService: ClientSocketService,
+              private blindsDeviceCacheService: BlindsDeviceCacheService, private dataCacheService: DataCacheService,
               private authHttp: AuthHttp, private notificationService: NotificationService) {
   }
 
   ngOnInit() {
-    this.genericService = new GenericService<BlindsDevice>(this.authHttp, this.socketService, this.notificationService, "/api/devices/blinds", "/blinds");
-    this.genericService.items.subscribe(devices => {
-      this.allDevices = devices.toArray().sort((a, b) => a.name.localeCompare(b.name));
-      this.resubscribe();
-    }, error => this.notificationService.error(error.toString()));
-    this.genericService.getAll();
+    this.cacheServiceSubscription = this.blindsDeviceCacheService.getDataService().subscribe((deviceService: GenericService<BlindsDevice>) => {
+      deviceService.items.subscribe(devices => {
+        this.allDevices = devices.toArray().sort((a, b) => a.name.localeCompare(b.name));
+        this.resubscribe();
+      }, error => this.notificationService.error(error.toString()));
+      deviceService.getAll();
+    });
 
     // listen for route id changes
     this.r.params.subscribe((params: Params) => {
@@ -44,7 +47,7 @@ export class SingleBlindsComponent implements OnInit {
 
   ngOnDestroy() {
     this.releaseDevice();
-    this.genericService.disconnect();
+    this.cacheServiceSubscription.unsubscribe();
   }
 
   resubscribe() {
@@ -60,21 +63,17 @@ export class SingleBlindsComponent implements OnInit {
 
   subscribeDevice(): void {
     if (this.selectedDevice) {
-      let dataService: GenericDataService<IBlindsData> = new GenericDataService<IBlindsData>(this.authHttp, this.socketService, '/api/data/blinds', '/blinds', this.selectedDevice.id);
-      this.dataService = dataService;
-      this.deviceState = dataService.lastItem;
-      dataService.getLatest();
+      this.dataSubscription = this.dataCacheService.getCacheAll(DeviceType.BLINDS, this.selectedDevice).subscribe((data: IBlindsData[]) => {
+        this.deviceState = data[data.length-1];
+      });
     }
   }
 
   releaseDevice(): void {
     if (this.selectedDevice) {
-      let dataService: GenericDataService<IBlindsData> = this.dataService;
-      if (dataService) {
-        dataService.disconnect();
-        this.dataService = null;
-        this.deviceState = null;
-      }
+      this.deviceState = null;
+      this.dataSubscription.unsubscribe();
+      this.dataSubscription = null;
     }
   }
 

@@ -21,6 +21,7 @@ import {MyValidatorsModule} from '../my-validators/my-validators.module';
 import {InfoComponent} from './info/info.component';
 import {ListSupportModule} from '../list-support/list-support.module';
 import {CommonRestService} from '../remote/common-rest.service';
+import {DataCacheService} from '../cache/data-cache.service';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -58,6 +59,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     BlindsDeviceCacheService,
     TemperatureDeviceCacheService,
     HumidityDeviceCacheService,
+    DataCacheService,
     CommonRestService,
   ],
 })

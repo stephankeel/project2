@@ -4,7 +4,7 @@
   <div class="appAllBlindsDevices">
     <div class=" action--button" *ngFor="let device of devices" (click)="select(device)">
       <app-moving-blinds class="appMovingBlinds"
-                         [percentageDown]="device | blindsDataObservable:devicesState | async | blindsPercentageDown"
+                         [percentageDown]="getData(device) | blindsPercentageDown"
                          [name]="device.name"></app-moving-blinds>
     </div>
   </div>
