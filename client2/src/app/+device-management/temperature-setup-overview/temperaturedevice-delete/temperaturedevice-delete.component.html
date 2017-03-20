@@ -1,9 +1,9 @@
 <div class="div--maxwith div--autogrow div--no-margins">
-  <form #f="ngForm" novalidate (ngSubmit)="deleteBlind()">
-    <app-list-header [title]="'Rollladen löschen'"></app-list-header>
+  <form #f="ngForm" novalidate (ngSubmit)="deleteTemperature()">
+    <app-list-header [title]="'Temperaturesensor löschen'"></app-list-header>
     <div class="div--margins-05 div--font div--maxwith">
       <div class="div--flex div--flex-justify-content-center">
-        <p>Rollladen <i>{{blind.name}}</i> löschen?</p>
+        <p>Temperaturesensor <i>{{temperatureDevice.name}}</i> löschen?</p>
       </div>
       <div class="div--flex div--flex-justify-content-center">
         <button md-button type="button" class="size-xs button--responsive" (click)="cancel()">

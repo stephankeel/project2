@@ -1,0 +1,44 @@
+<div class="div--maxwith div--autogrow div--no-margins">
+  <form #f="ngForm" novalidate (ngSubmit)="submit(f.value)">
+    <div class="header--flex div--no-margins div__subsubheader--color">
+      <h3 class="h3--no-margins h3--padding">{{title}}</h3>
+      <span class="fill-remaining-space"></span>
+      <button md-button type="button" class="size-xs button--responsive" (click)="cancel()">
+        <md-icon>undo</md-icon>
+      </button>
+      <button md-button type="submit" class="size-xs button--responsive" [disabled]="!f.valid">
+        <md-icon>save</md-icon>
+      </button>
+    </div>
+    <div class="div--margins-05 div--font div--maxwith">
+      <section class="input-section--flex">
+        <md-input-container class="full-width button-container--small-margins">
+          <input mdInput placeholder="Name" name="name" required minlength="4" maxlength="20" #nameControl="ngModel"
+                 [ngModel]="humidityDevice.name">
+          <md-hint *ngIf="!nameControl.valid" [ngStyle]="{'color': 'red'}" align="start">erforderlich, mind. 4
+            Zeichen lang
+          </md-hint>
+        </md-input-container>
+      </section>
+      <section class="input-section--flex">
+        <div class="div--margins-05 input-container--middle-size">
+          <div class="div--small-margins div--flex div--flex-dir-column">
+            <md-select placeholder="Eingang" name="port" #portControl="ngModel"
+                       [ngModel]="humidityDevice.port" required>
+              <md-option *ngFor="let port of unusedPortHandler.getUnusedPort() | async" [value]="port">
+                {{getPortName(port)}}
+              </md-option>
+            </md-select>
+            <p class="div__select--hint" *ngIf="!portControl.valid">erforderlich</p>
+          </div>
+        </div>
+        <md-input-container class="input-container--middle-size button-container--small-margins">
+          <input mdInput placeholder="Pollingintervall in Sekunden" name="pollingInterval" required
+                 #pollingIntervalControl="ngModel" [ngModel]="humidityDevice.pollingInterval">
+          <md-hint *ngIf="!pollingIntervalControl.valid" [ngStyle]="{'color': 'red'}" align="start">erforderlich
+          </md-hint>
+        </md-input-container>
+      </section>
+    </div>
+  </form>
+</div>
