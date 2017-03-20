@@ -1,13 +1,15 @@
 import {Component, OnInit, OnDestroy} from "@angular/core";
-import {DeviceType, DevicesInfo, devicePool, blindsDevicesInfo} from "../../misc/device-pool";
+import {
+  DeviceType,
+  DevicesInfo,
+  devicePool,
+  blindsDevicesInfo,
+  temperatureDevicesInfo,
+  humidityDevicesInfo
+} from "../../misc/device-pool";
 import {Router, ActivatedRoute} from "@angular/router";
 import {GenericService} from "../../remote/generic.service";
 import {IBlindsDevice, IHumidityDevice, ITemperatureDevice} from "../../../../../server/entities/device.interface";
-import {
-  humidityDevicesInfo,
-  AnalogDevicesInfo,
-  temperatureDevicesInfo
-} from "../../../../../client/src/app/device-pool";
 import {NotificationService} from "../../notification/notification.service";
 import {TemperatureDeviceCacheService} from "../../cache/temperature-device.cache.service";
 import {BlindsDeviceCacheService} from "../../cache/blinds-device.cache.service";
