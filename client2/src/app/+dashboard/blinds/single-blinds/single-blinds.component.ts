@@ -63,8 +63,8 @@ export class SingleBlindsComponent implements OnInit {
 
   subscribeDevice(): void {
     if (this.selectedDevice) {
-      this.dataSubscription = this.dataCacheService.getCacheAll(DeviceType.BLINDS, this.selectedDevice).subscribe((data: IBlindsData[]) => {
-        this.deviceState = data[data.length-1];
+      this.dataSubscription = this.dataCacheService.getCacheLatest(DeviceType.BLINDS, this.selectedDevice).subscribe((data: IBlindsData) => {
+        this.deviceState = data;
       });
     }
   }

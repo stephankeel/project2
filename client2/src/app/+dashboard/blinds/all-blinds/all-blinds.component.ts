@@ -46,8 +46,8 @@ export class AllBlindsComponent implements OnInit {
 
   subscribeAll(): void {
     this.devices.forEach(device => {
-      let subscription = this.dataCacheService.getCacheAll(DeviceType.BLINDS, device).subscribe((data: IBlindsData[]) => {
-        this.devicesState.set(device, data[data.length-1]);
+      let subscription = this.dataCacheService.getCacheLatest(DeviceType.BLINDS, device).subscribe((data: IBlindsData) => {
+        this.devicesState.set(device, data);
       });
       this.dataSubscriptions.set(device, subscription);
     });

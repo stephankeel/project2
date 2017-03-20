@@ -18,9 +18,9 @@ import {IBlindsData, IHumidityData, ITemperatureData} from "../../../../server/e
 @Injectable()
 export class DataCacheService {
 
-  private dataCache: Map<IDevice, ReplaySubject<Array<IData>>> = new Map<IDevice, ReplaySubject<Array<IData>>>();
+  private dataCacheLatest: Map<IDevice, ReplaySubject<IData>> = new Map<IDevice, ReplaySubject<IData>>();
+  private dataCacheAll: Map<IDevice, ReplaySubject<Array<IData>>> = new Map<IDevice, ReplaySubject<Array<IData>>>();
   private deviceSubscriptions: Map<GenericeCacheService<any>, Subscription> = new Map<GenericeCacheService<any>, Subscription>();
-  private dataSubscriptions: Map<GenericDataService<any>, Subscription> = new Map<GenericDataService<any>, Subscription>();
 
   constructor(private http: AuthHttp,
               private socketService: ClientSocketService,
@@ -33,51 +33,69 @@ export class DataCacheService {
   /**
    * Returns the observable to listen for the latest data of the provided deviceType and device.
    */
-/*
   public getCacheLatest(deviceType: DeviceType, device: IDevice): Observable<IData> {
-    return this.getCacheAll(deviceType, device);
+    let cacheLatestObs: ReplaySubject<IData> = this.dataCacheLatest.get(device);
+    if (!cacheLatestObs) {
+      // subscribe to the data service
+      let dataService: GenericDataService<any> = this.getDataService(deviceType, device);
+      if (dataService) {
+        cacheLatestObs = dataService.lastItem;
+        if (cacheLatestObs.isEmpty) {
+          dataService.getLatest();
+        }
+        this.dataCacheLatest.set(device, cacheLatestObs);
+      }
+      this.listenForDeviceDeletion(deviceType);
+    }
+    return cacheLatestObs;
   }
-*/
 
   /**
    * Returns the observable to listen for all data of the provided deviceType and device.
    */
   public getCacheAll(deviceType: DeviceType, device: IDevice): Observable<IData[]> {
-    let cacheObs: ReplaySubject<Array<IData>> = this.dataCache.get(device);
-    if (!cacheObs) {
+    let cacheAllObs: ReplaySubject<Array<IData>> = this.dataCacheAll.get(device);
+    if (!cacheAllObs) {
       // subscribe to the data service
       let dataService: GenericDataService<any> = this.getDataService(deviceType, device);
       if (dataService) {
-        cacheObs = dataService.items;
-        if (cacheObs.isEmpty) {
+        cacheAllObs = dataService.items;
+        if (cacheAllObs.isEmpty) {
           dataService.getAll();
         }
-        this.dataCache.set(device, cacheObs);
-
-        // listen for device deletion
-        let deviceService: GenericeCacheService<any> = this.getDeviceService(deviceType);
-        let deviceSubscription: Subscription = this.deviceSubscriptions.get(deviceService);
-        if (!deviceSubscription) {
-          deviceSubscription = deviceService.getDataService().subscribe((deviceService: GenericService<IDevice>) => {
-            deviceService.items.subscribe(devices => {
-              // we are just interested in delete devices -> remove data subscription
-              let removedDevices: IDevice[] = [];
-              this.dataCache.forEach((key, val) => {
-                if (!devices.contains(key)) {
-                  removedDevices.push(key);
-                }
-              });
-              removedDevices.forEach((dev: IDevice) => {
-                this.dataCache.delete(dev);
-              });
-            }, error => this.notificationService.error(error.toString()));
-            deviceService.getAll();
-          });
-          this.deviceSubscriptions.set(deviceService, deviceSubscription);
-        }
+        this.dataCacheAll.set(device, cacheAllObs);
       }
+      this.listenForDeviceDeletion(deviceType);
     }
-    return cacheObs;
+    return cacheAllObs;
+  }
+
+  /**
+   * Listen for device deletion to be able to cleanup the cache if such happens.
+   * @param deviceType the type of device to listen for changes
+   */
+  private listenForDeviceDeletion(deviceType: DeviceType) {
+    let deviceService: GenericeCacheService<any> = this.getDeviceService(deviceType);
+    let deviceSubscription: Subscription = this.deviceSubscriptions.get(deviceService);
+    if (!deviceSubscription) {
+      deviceSubscription = deviceService.getDataService().subscribe((deviceService: GenericService<IDevice>) => {
+        deviceService.items.subscribe(devices => {
+          // we are just interested in delete devices -> remove data subscription
+          let removedDevices: IDevice[] = [];
+          this.dataCacheAll.forEach((key, val) => {
+            if (!devices.contains(key)) {
+              removedDevices.push(key);
+            }
+          });
+          removedDevices.forEach((dev: IDevice) => {
+            this.dataCacheLatest.delete(dev);
+            this.dataCacheAll.delete(dev);
+          });
+        }, error => this.notificationService.error(error.toString()));
+        deviceService.getAll();
+      });
+      this.deviceSubscriptions.set(deviceService, deviceSubscription);
+    }
   }
 
   private getDataService(deviceType: DeviceType, device: IDevice): GenericDataService<any> {
