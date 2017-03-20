@@ -1,14 +1,10 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
-import {GenericService} from "../../remote/generic.service";
+import {Component, OnInit} from "@angular/core";
 import {IUser} from "../../../../../server/entities/user.interface";
-import {ClientSocketService} from "../../remote/client-socket.service";
-import {AuthHttp} from "angular2-jwt";
-import {UserType, userTypeAsString} from "../../../../../server/entities/user-type";
-import {UsersService} from "../service/user.service";
 import {ReplaySubject, Observable} from "rxjs";
 import {List} from "immutable";
 import {Router, ActivatedRoute} from "@angular/router";
 import {AuthenticationService} from "../../remote/authentication.service";
+import {UserCacheService} from "../../cache/user.cache.service";
 
 @Component({
   selector: 'app-users',
@@ -18,11 +14,11 @@ import {AuthenticationService} from "../../remote/authentication.service";
 export class UsersComponent implements OnInit {
   private items: Observable<List<IUser>> = new ReplaySubject<List<IUser>>(1);
 
-  constructor(private userService: UsersService, private router: Router, private route: ActivatedRoute, private authenticationService: AuthenticationService) {
+  constructor(private userCacheService: UserCacheService, private router: Router, private route: ActivatedRoute, private authenticationService: AuthenticationService) {
   }
 
   ngOnInit() {
-    this.userService.getDataService().subscribe(userService => {
+    this.userCacheService.getDataService().subscribe(userService => {
       this.items = userService.items;
     })
   }
