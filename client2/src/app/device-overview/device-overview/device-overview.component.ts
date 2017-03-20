@@ -1,13 +1,15 @@
 import {Component, OnInit, OnDestroy} from "@angular/core";
-import {DeviceType, DevicesInfo, devicePool, blindsDevicesInfo} from "../../misc/device-pool";
+import {
+  DeviceType,
+  DevicesInfo,
+  devicePool,
+  blindsDevicesInfo,
+  temperatureDevicesInfo,
+  humidityDevicesInfo
+} from "../../misc/device-pool";
 import {Router, ActivatedRoute} from "@angular/router";
 import {GenericService} from "../../remote/generic.service";
 import {IBlindsDevice, IHumidityDevice, ITemperatureDevice} from "../../../../../server/entities/device.interface";
-import {
-  humidityDevicesInfo,
-  AnalogDevicesInfo,
-  temperatureDevicesInfo
-} from "../../../../../client/src/app/device-pool";
 import {NotificationService} from "../../notification/notification.service";
 import {TemperatureDeviceCacheService} from "../../cache/temperature-device.cache.service";
 import {BlindsDeviceCacheService} from "../../cache/blinds-device.cache.service";
@@ -62,7 +64,6 @@ export class DeviceOverviewComponent implements OnInit, OnDestroy {
   handleBlindsDevices(): void {
     this.blindsDeviceCache.getDataService().subscribe(dataService => {
       blindsDevicesInfo.count = dataService.getCount();
-      blindsDevicesInfo.updatePortsInUse(dataService.getAllFromCache());
     }, error => {
       this.notificationService.error(`blindsdevice subscrition failed with ${error.toString()}`);
     });
@@ -71,7 +72,6 @@ export class DeviceOverviewComponent implements OnInit, OnDestroy {
   handleHumidityDevices(): void {
     this.humidityDeviceCache.getDataService().subscribe(dataService => {
       humidityDevicesInfo.count = dataService.getCount();
-      AnalogDevicesInfo.updateAnalogPortsInUse(humidityDevicesInfo, dataService.getAllFromCache().map(device => device.port));
     }, error => {
       this.notificationService.error(`humitidydevice subscrition failed with ${error.toString()}`);
     });
@@ -80,8 +80,6 @@ export class DeviceOverviewComponent implements OnInit, OnDestroy {
   handleTemperatureDevices(): void {
     this.temperatureDeviceCache.getDataService().subscribe(dataService => {
       temperatureDevicesInfo.count = dataService.getCount();
-      blindsDevicesInfo.updatePortsInUse(dataService.getAllFromCache());
-      AnalogDevicesInfo.updateAnalogPortsInUse(temperatureDevicesInfo, dataService.getAllFromCache().map(device => device.port));
     }, error => {
       this.notificationService.error(`temperaturedevice subscrition failed with ${error.toString()}`);
     });
