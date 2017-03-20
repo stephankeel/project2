@@ -1,10 +1,10 @@
-import {Component, OnInit} from '@angular/core';
-import {UsersService} from "../service/user.service";
+import {Component, OnInit} from "@angular/core";
 import {IUser} from "../../../../../server/entities/user.interface";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Subscription} from "rxjs";
 import {UserTypesArray, UserType} from "../../../../../server/entities/user-type";
 import {AuthenticationService} from "../../remote/authentication.service";
+import {UserCacheService} from "../../cache/user.cache.service";
 
 @Component({
   selector: 'app-user-change',
@@ -19,14 +19,14 @@ export class UserChangeComponent implements OnInit {
   private title: string;
   private userTypes: any[];
 
-  constructor(private userService: UsersService, private route: ActivatedRoute, private router: Router, private authenticationService: AuthenticationService) {
+  constructor(private userCacheService: UserCacheService, private route: ActivatedRoute, private router: Router, private authenticationService: AuthenticationService) {
     this.userTypes = UserTypesArray;
   }
 
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
       if (params['id']) {
-        this.userService.getDataService().subscribe(dataService => {
+        this.userCacheService.getDataService().subscribe(dataService => {
           this.user = dataService.getCache(params['id']);
           this.userPasswordHash = this.user.password;
           this.user.password = '';
@@ -43,7 +43,7 @@ export class UserChangeComponent implements OnInit {
   }
 
   submit(user: IUser) {
-    this.userService.getDataService().subscribe(dataService => {
+    this.userCacheService.getDataService().subscribe(dataService => {
       if (this.user.id) {
         user.id = this.user.id;
         if (!user.password) {
