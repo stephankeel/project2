@@ -15,7 +15,10 @@ export class BlindsdeviceDeleteComponent implements OnInit {
   private sub: Subscription;
   private blind: IBlindsDevice = {};
 
-  constructor(private blindsCacheService: BlindsDeviceCacheService, private route: ActivatedRoute, private router: Router, private notificationService: NotificationService) {
+  constructor(private blindsCacheService: BlindsDeviceCacheService,
+              private route: ActivatedRoute,
+              private router: Router,
+              private notificationService: NotificationService) {
   }
 
   ngOnInit() {
@@ -32,11 +35,10 @@ export class BlindsdeviceDeleteComponent implements OnInit {
     this.sub.unsubscribe();
   }
 
-
   deleteUser() {
     this.blindsCacheService.getDataService().subscribe(dataService => {
       if (this.blind.id) {
-        dataService.getRestService().del(this.blind.id).subscribe(user => {
+        dataService.getRestService().del(this.blind.id).subscribe(blind => {
           this.notificationService.info(`Rollladen gelöscht.`);
           this.router.navigate(['../..'], {relativeTo: this.route});
         }, error => {

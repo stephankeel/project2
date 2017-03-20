@@ -62,14 +62,14 @@ export class BlindsdeviceChangeComponent implements OnInit {
           this.notificationService.info("Rollladen aktualisiert");
           this.router.navigate(['../..'], {relativeTo: this.route});
         }, error => {
-          this.notificationService.error(`Aktualisierung vom Rollladen Fehlgeschlagen (${JSON.stringify(error)})`);
+          this.notificationService.error(`Aktualisierung vom Rollladen fehlgeschlagen (${JSON.stringify(error)})`);
         });
       } else {
         dataService.getRestService().add(blind).subscribe(user => {
           this.notificationService.info("Neuer Rollladen erstellt");
           this.router.navigate(['..'], {relativeTo: this.route});
         }, error => {
-          this.notificationService.error(`Erstellung vom Rollladen Fehlgeschlagen (${JSON.stringify(error)})`);
+          this.notificationService.error(`Erstellung vom Rollladen fehlgeschlagen (${JSON.stringify(error)})`);
         });
       }
     });

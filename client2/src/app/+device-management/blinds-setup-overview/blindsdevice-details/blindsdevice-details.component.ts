@@ -15,8 +15,7 @@ export class BlindsdeviceDetailsComponent implements OnInit {
   private blind: IBlindsDevice = {};
 
   constructor(private blindsCacheService: BlindsDeviceCacheService,
-              private route: ActivatedRoute,
-              private router: Router) {
+              private route: ActivatedRoute) {
   }
 
   ngOnInit() {
