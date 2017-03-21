@@ -89,7 +89,7 @@ export class AllOfTypeComponent implements OnInit {
   }
 
   select(device: IDevice): void {
-    let path: string = this.deviceType === DeviceType.HUMIDITY ? '../humidity' : '../temperature';
+    let path: string = (this.deviceType === DeviceType.HUMIDITY ? '../humidity' : '../temperature');
     this.router.navigate([path, device.id], {relativeTo: this.route});
   }
 
