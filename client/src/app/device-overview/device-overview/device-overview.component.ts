@@ -20,7 +20,7 @@ import {HumidityDeviceCacheService} from "../../cache/humidity-device.cache.serv
   templateUrl: 'device-overview.component.html',
   styleUrls: ['device-overview.component.scss']
 })
-export class DeviceOverviewComponent implements OnInit, OnDestroy {
+export class DeviceOverviewComponent implements OnInit {
   devicePool: DevicesInfo[] = devicePool;
   blindsDeviceService: GenericService<IBlindsDevice>;
   humidityDeviceService: GenericService<IHumidityDevice>;
@@ -39,12 +39,6 @@ export class DeviceOverviewComponent implements OnInit, OnDestroy {
     this.handleBlindsDevices();
     this.handleHumidityDevices();
     this.handleTemperatureDevices();
-  }
-
-  ngOnDestroy() {
-    this.blindsDeviceCache.disconnect();
-    this.humidityDeviceCache.disconnect();
-    this.temperatureDeviceCache.disconnect();
   }
 
   clickAction(device: DevicesInfo): void {
