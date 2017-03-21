@@ -6,7 +6,7 @@ import {NotificationService} from "../../../notification/notification.service";
 import {portName, Port} from "../../../../../../server/hardware/port-map";
 import {PortHandler} from "../../service/port-handler";
 import {AnalogPortService} from "../../service/analog-port.service";
-import {TemperatureDeviceCacheService} from "../../../cache/temperature-device.cache.service";
+import {TemperatureDeviceCacheService} from "../../../cache/service/temperature-device.cache.service";
 
 @Component({
   selector: 'app-temperaturedevice-change',

@@ -11,16 +11,16 @@ import {Router, ActivatedRoute} from "@angular/router";
 import {GenericService} from "../../remote/generic.service";
 import {IBlindsDevice, IHumidityDevice, ITemperatureDevice} from "../../../../../server/entities/device.interface";
 import {NotificationService} from "../../notification/notification.service";
-import {TemperatureDeviceCacheService} from "../../cache/temperature-device.cache.service";
-import {BlindsDeviceCacheService} from "../../cache/blinds-device.cache.service";
-import {HumidityDeviceCacheService} from "../../cache/humidity-device.cache.service";
+import {TemperatureDeviceCacheService} from "../../cache/service/temperature-device.cache.service";
+import {BlindsDeviceCacheService} from "../../cache/service/blinds-device.cache.service";
+import {HumidityDeviceCacheService} from "../../cache/service/humidity-device.cache.service";
 
 @Component({
   selector: 'app-device-overview',
   templateUrl: 'device-overview.component.html',
   styleUrls: ['device-overview.component.scss']
 })
-export class DeviceOverviewComponent implements OnInit, OnDestroy {
+export class DeviceOverviewComponent implements OnInit {
   devicePool: DevicesInfo[] = devicePool;
   blindsDeviceService: GenericService<IBlindsDevice>;
   humidityDeviceService: GenericService<IHumidityDevice>;
@@ -39,12 +39,6 @@ export class DeviceOverviewComponent implements OnInit, OnDestroy {
     this.handleBlindsDevices();
     this.handleHumidityDevices();
     this.handleTemperatureDevices();
-  }
-
-  ngOnDestroy() {
-    this.blindsDeviceCache.disconnect();
-    this.humidityDeviceCache.disconnect();
-    this.temperatureDeviceCache.disconnect();
   }
 
   clickAction(device: DevicesInfo): void {

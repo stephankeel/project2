@@ -5,7 +5,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {NotificationService} from "../../../notification/notification.service";
 import {portName, Port} from "../../../../../../server/hardware/port-map";
 import {PortHandler} from "../../service/port-handler";
-import {HumidityDeviceCacheService} from "../../../cache/humidity-device.cache.service";
+import {HumidityDeviceCacheService} from "../../../cache/service/humidity-device.cache.service";
 import {AnalogPortService} from "../../service/analog-port.service";
 
 @Component({

@@ -3,7 +3,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {ITemperatureDevice} from "../../../../../../server/entities/device.interface";
 import {Subscription} from "rxjs";
 import {NotificationService} from "../../../notification/notification.service";
-import {TemperatureDeviceCacheService} from "../../../cache/temperature-device.cache.service";
+import {TemperatureDeviceCacheService} from "../../../cache/service/temperature-device.cache.service";
 
 @Component({
   selector: 'app-temperaturedevice-delete',

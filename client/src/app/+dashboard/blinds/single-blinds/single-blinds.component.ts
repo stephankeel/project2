@@ -7,8 +7,8 @@ import {AuthHttp} from 'angular2-jwt';
 import {GenericService} from '../../../remote/generic.service';
 import {ClientSocketService} from '../../../remote/client-socket.service';
 import {NotificationService} from '../../../notification/notification.service';
-import {BlindsDeviceCacheService} from '../../../cache/blinds-device.cache.service';
-import {DataCacheService} from '../../../cache/data-cache.service';
+import {BlindsDeviceCacheService} from '../../../cache/service/blinds-device.cache.service';
+import {DataCacheService} from '../../../cache/service/data-cache.service';
 
 @Component({
   selector: 'app-single-blinds',

@@ -1,10 +1,10 @@
 import {Injectable} from "@angular/core";
-import {GenericService} from "../remote/generic.service";
+import {GenericService} from "../../remote/generic.service";
 import {AuthHttp} from "angular2-jwt";
 import {Observable, ReplaySubject} from "rxjs";
-import {IId} from "../../../../server/entities/id.interface";
-import {ClientSocketService} from "../remote/client-socket.service";
-import {NotificationService} from "../notification/notification.service";
+import {IId} from "../../../../../server/entities/id.interface";
+import {ClientSocketService} from "../../remote/client-socket.service";
+import {NotificationService} from "../../notification/notification.service";
 
 @Injectable()
 export class GenericeCacheService<T extends IId> {

@@ -4,7 +4,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {Subscription} from "rxjs";
 import {UserTypesArray, UserType} from "../../../../../server/entities/user-type";
 import {AuthenticationService} from "../../remote/authentication.service";
-import {UserCacheService} from "../../cache/user.cache.service";
+import {UserCacheService} from "../../cache/service/user.cache.service";
 
 @Component({
   selector: 'app-user-change',

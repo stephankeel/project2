@@ -1,7 +1,7 @@
 import {Component, OnInit} from "@angular/core";
 import {IBlindsDevice} from "../../../../../../server/entities/device.interface";
 import {Subscription} from "rxjs";
-import {BlindsDeviceCacheService} from "../../../cache/blinds-device.cache.service";
+import {BlindsDeviceCacheService} from "../../../cache/service/blinds-device.cache.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {NotificationService} from "../../../notification/notification.service";
 import {DigitalPortService} from "../../service/digital-port.service";

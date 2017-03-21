@@ -13,14 +13,12 @@ import {Http, RequestOptions} from '@angular/http';
 import {PasswordChangeConfirmationComponent} from './password-change-confirmation/password-change-confirmation.component';
 import {DeviceOverviewModule} from '../device-overview/device-overview.module';
 import {ClientSocketService} from '../remote/client-socket.service';
-import {BlindsDeviceCacheService} from '../cache/blinds-device.cache.service';
-import {TemperatureDeviceCacheService} from '../cache/temperature-device.cache.service';
-import {HumidityDeviceCacheService} from '../cache/humidity-device.cache.service';
 import {MyValidatorsModule} from '../my-validators/my-validators.module';
 import {InfoComponent} from './info/info.component';
 import {ListSupportModule} from '../list-support/list-support.module';
 import {CommonRestService} from '../remote/common-rest.service';
 import {DataCacheService} from '../cache/data-cache.service';
+import {CacheModule} from "../cache/cache.module";
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -39,6 +37,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     DeviceOverviewModule,
     MyValidatorsModule,
     ListSupportModule,
+    CacheModule,
   ],
   declarations: [
     DashboardComponent,
@@ -54,9 +53,6 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
       deps: [Http, RequestOptions]
     },
     ClientSocketService,
-    BlindsDeviceCacheService,
-    TemperatureDeviceCacheService,
-    HumidityDeviceCacheService,
     DataCacheService,
     CommonRestService,
   ],
