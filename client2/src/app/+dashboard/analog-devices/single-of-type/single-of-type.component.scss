@@ -1,0 +1,24 @@
+$switchWidth: 600px;
+$maxTabWidth: 400px;
+
+.app-device--div {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  @media(max-width: $switchWidth) {
+    flex-direction: column;
+  }
+}
+
+.app-device-list {
+  flex-direction: column;
+  margin: 0.5em;
+}
+
+.selection-list-item {
+  min-width: 10em;
+}
+
+.app-single-device--tab {
+  max-width: $maxTabWidth;
+}

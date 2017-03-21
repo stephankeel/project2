@@ -1,7 +1,1 @@
-<app-list-header [title]="'Temperatur-Übersicht'" [showBack]="true" [backlink]="'/dashboard'"></app-list-header>
-<div class="app-temperatures--div" *ngIf="devices">
-  <div class=" action--button" *ngFor="let device of devices" (click)="select(device)">
-    <app-analog-view class="app-analog-view" [name]="device.name" [value]="getDataObservable(device) | async | value"
-                     [units]="'°C'" [timestamp]="getDataObservable(device) | async | timestamp"></app-analog-view>
-  </div>
-</div>
+<app-all-of-type [deviceType]="deviceType"></app-all-of-type>

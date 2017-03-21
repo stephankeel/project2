@@ -18,13 +18,13 @@ import {DataCacheService} from '../../../cache/data-cache.service';
 export class SingleBlindsComponent implements OnInit {
 
   private cacheServiceSubscription: Subscription;
-  id: any;
-  selectedDevice: BlindsDevice;
-  allDevices: BlindsDevice[] = [];
-  deviceState: IBlindsData;
+  private id: any;
+  private selectedDevice: BlindsDevice;
+  private allDevices: BlindsDevice[] = [];
+  private deviceState: IBlindsData;
   private dataSubscription: Subscription;
 
-  constructor(private r: ActivatedRoute, private router: Router, private socketService: ClientSocketService,
+  constructor(private route: ActivatedRoute, private router: Router, private socketService: ClientSocketService,
               private blindsDeviceCacheService: BlindsDeviceCacheService, private dataCacheService: DataCacheService,
               private authHttp: AuthHttp, private notificationService: NotificationService) {
   }
@@ -39,7 +39,7 @@ export class SingleBlindsComponent implements OnInit {
     });
 
     // listen for route id changes
-    this.r.params.subscribe((params: Params) => {
+    this.route.params.subscribe((params: Params) => {
       this.id = params['id'];
       this.resubscribe();
     });
@@ -72,15 +72,17 @@ export class SingleBlindsComponent implements OnInit {
   releaseDevice(): void {
     if (this.selectedDevice) {
       this.deviceState = null;
-      this.dataSubscription.unsubscribe();
-      this.dataSubscription = null;
+      if (this.dataSubscription) {
+        this.dataSubscription.unsubscribe();
+        this.dataSubscription = null;
+      }
     }
   }
 
   selectDevice(device: BlindsDevice) {
     this.selectedDevice = device;
     this.clearMessage();
-    this.router.navigate(['../', device.id], {relativeTo: this.r});
+    this.router.navigate(['../', device.id], {relativeTo: this.route});
   }
 
   clearMessage(): void {
