@@ -4,7 +4,6 @@ import {RouterModule, Routes} from "@angular/router";
 import {DashboardComponent} from "../dashboard/dashboard.component";
 import {AuthGuard} from "../../auth/auth-guard.service";
 import {DeviceOverviewComponent} from "../../device-overview/device-overview/device-overview.component";
-import {HumidityOverviewComponent} from "../humidity-overview/humidity-overview.component";
 import {PasswordChangeConfirmationComponent} from "../password-change-confirmation/password-change-confirmation.component";
 import {PasswordChangeComponent} from "../password-change/password-change.component";
 import {InfoComponent} from '../info/info.component';
@@ -17,7 +16,11 @@ const routes: Routes = [{
       canActivate: [AuthGuard],
       loadChildren: 'app/+dashboard/blinds/blinds.module#BlindsModule'
     },
-    {path: 'humidity-overview', canActivate: [AuthGuard], component: HumidityOverviewComponent},
+    {
+      path: 'humidity-overview',
+      canActivate: [AuthGuard],
+      loadChildren: 'app/+dashboard/analog-devices/humidity/humidity.module#HumidityModule'
+    },
     {
       path: 'temperature-overview',
       canActivate: [AuthGuard],

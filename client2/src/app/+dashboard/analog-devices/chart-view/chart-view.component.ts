@@ -11,7 +11,8 @@ import {UIChart} from 'primeng/components/chart/chart';
 export class ChartViewComponent implements OnInit {
 
   @ViewChild('chart') chart: UIChart;
-  @Input() deviceDataHistory: Observable<IAnalogData>;
+  @Input() deviceDataHistory: Observable<IAnalogData[]>;
+  @Input() label: string;
 
   static readonly MAX_RECORDS: number = 200;
 
@@ -23,7 +24,7 @@ export class ChartViewComponent implements OnInit {
       labels: [],
       datasets: [
         {
-          label: 'Temperature',
+          label: '',
           data: []
         }
       ],
@@ -40,6 +41,7 @@ export class ChartViewComponent implements OnInit {
 
   setData(analogData: IAnalogData[]): void {
     this.data.labels = [];
+    this.data.datasets[0].label = this.label;
     this.data.datasets[0].data = [];
     let reducedData: IAnalogData[] = this.reduceData(analogData);
     reducedData.forEach(ad => {

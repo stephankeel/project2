@@ -1,14 +1,14 @@
 import {ActivatedRoute, Router} from '@angular/router';
 import {Component, OnInit} from '@angular/core';
-import {Observable, Subscription} from 'rxjs';
-import {BlindsDevice} from '../../../misc/device-pool';
-import {IBlindsData} from "../../../../../../server/entities/data.interface";
-import {AuthHttp} from "angular2-jwt";
-import {GenericService} from "../../../remote/generic.service";
-import {ClientSocketService} from "../../../remote/client-socket.service";
-import {GenericDataService} from "../../../remote/generic-data.service";
+import {Subscription} from 'rxjs';
+import {BlindsDevice, DeviceType} from '../../../misc/device-pool';
+import {IBlindsData} from '../../../../../../server/entities/data.interface';
+import {AuthHttp} from 'angular2-jwt';
+import {GenericService} from '../../../remote/generic.service';
+import {ClientSocketService} from '../../../remote/client-socket.service';
 import {NotificationService} from '../../../notification/notification.service';
-import {BlindsDeviceCacheService} from "../../../cache/blinds-device.cache.service";
+import {BlindsDeviceCacheService} from '../../../cache/blinds-device.cache.service';
+import {DataCacheService} from '../../../cache/data-cache.service';
 
 
 @Component({
@@ -18,17 +18,18 @@ import {BlindsDeviceCacheService} from "../../../cache/blinds-device.cache.servi
 })
 export class AllBlindsComponent implements OnInit {
 
-  private chacheServiceSubscription: Subscription;
-  private dataServices: Map<BlindsDevice, GenericDataService<IBlindsData>> = new Map<BlindsDevice, GenericDataService<IBlindsData>>();
-  devices: BlindsDevice[] = [];
-  devicesState: Map<BlindsDevice, Observable<IBlindsData>> = new Map<BlindsDevice, Observable<IBlindsData>>();
+  private cacheServiceSubscription: Subscription;
+  private devices: BlindsDevice[] = [];
+  private devicesState: Map<BlindsDevice, IBlindsData> = new Map<BlindsDevice, IBlindsData>();
+  private dataSubscriptions: Map<BlindsDevice, Subscription> = new Map<BlindsDevice, Subscription>();
 
-  constructor(private r: ActivatedRoute, private router: Router, private socketService: ClientSocketService, private blindsDeviceCacheService: BlindsDeviceCacheService,
+  constructor(private r: ActivatedRoute, private router: Router, private socketService: ClientSocketService,
+              private blindsDeviceCacheService: BlindsDeviceCacheService, private dataCacheService: DataCacheService,
               private authHttp: AuthHttp, private notificationService: NotificationService) {
   }
 
   ngOnInit() {
-    this.chacheServiceSubscription = this.blindsDeviceCacheService.getDataService().subscribe((deviceService: GenericService<BlindsDevice>) => {
+    this.cacheServiceSubscription = this.blindsDeviceCacheService.getDataService().subscribe((deviceService: GenericService<BlindsDevice>) => {
       deviceService.items.subscribe(devices => {
         this.unsubscribeAll();
         this.devices = devices.toArray().sort((a, b) => a.name.localeCompare(b.name));
@@ -40,34 +41,32 @@ export class AllBlindsComponent implements OnInit {
 
   ngOnDestroy() {
     this.unsubscribeAll();
-    this.chacheServiceSubscription.unsubscribe();
+    this.cacheServiceSubscription.unsubscribe();
   }
 
   subscribeAll(): void {
-    this.devices.forEach(device => this.subscribeDevice(device));
+    this.devices.forEach(device => {
+      let subscription = this.dataCacheService.getCacheLatest(DeviceType.BLINDS, device).subscribe((data: IBlindsData) => {
+        this.devicesState.set(device, data);
+      });
+      this.dataSubscriptions.set(device, subscription);
+    });
   }
 
   unsubscribeAll(): void {
-    this.devices.forEach(device => this.releaseDevice(device));
-  }
-
-  subscribeDevice(device: BlindsDevice): void {
-    let dataService: GenericDataService<IBlindsData> = new GenericDataService<IBlindsData>(this.authHttp, this.socketService, '/api/data/blinds', '/blinds', device.id);
-    this.dataServices.set(device, dataService);
-    this.devicesState.set(device, dataService.lastItem);
-    dataService.getLatest();
-  }
-
-  releaseDevice(device: BlindsDevice): void {
-    let dataService: GenericDataService<IBlindsData> = this.dataServices.get(device);
-    if (dataService) {
-      dataService.disconnect();
-      this.dataServices.delete(device);
+    this.devices.forEach(device => {
       this.devicesState.delete(device);
-    }
+      this.dataSubscriptions.get(device).unsubscribe();
+      this.dataSubscriptions.delete(device);
+    });
+  }
+
+  getData(device: BlindsDevice): IBlindsData {
+    return this.devicesState.get(device);
   }
 
   select(device: BlindsDevice): void {
     this.router.navigate(['../blinds', device.id], {relativeTo: this.r});
   }
+
 }

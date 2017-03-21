@@ -1,0 +1,7 @@
+<app-list-header [title]="title" [showBack]="true" [backlink]="'/dashboard'"></app-list-header>
+<div class="app-devices--div" *ngIf="devices">
+  <div class=" action--button" *ngFor="let device of devices" (click)="select(device)">
+    <app-analog-view class="app-analog-view" [name]="device.name" [value]="getData(device) | value"
+                     [units]="units" [timestamp]="getData(device) | timestamp"></app-analog-view>
+  </div>
+</div>

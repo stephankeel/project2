@@ -5,7 +5,6 @@ import {DashboardRouterModule} from './dashboard-router/dashboard-router.module'
 import {AuthGuard} from '../auth/auth-guard.service';
 import {MaterialModule} from '@angular/material';
 import {FooterModule} from '../footer/footer.module';
-import {HumidityOverviewComponent} from './humidity-overview/humidity-overview.component';
 import {PasswordChangeComponent} from './password-change/password-change.component';
 import {FormsModule} from '@angular/forms';
 import {ValidatorsModule} from 'ng2-validators';
@@ -21,6 +20,7 @@ import {MyValidatorsModule} from '../my-validators/my-validators.module';
 import {InfoComponent} from './info/info.component';
 import {ListSupportModule} from '../list-support/list-support.module';
 import {CommonRestService} from '../remote/common-rest.service';
+import {DataCacheService} from '../cache/data-cache.service';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -42,7 +42,6 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   ],
   declarations: [
     DashboardComponent,
-    HumidityOverviewComponent,
     PasswordChangeComponent,
     PasswordChangeConfirmationComponent,
     InfoComponent,
@@ -58,6 +57,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     BlindsDeviceCacheService,
     TemperatureDeviceCacheService,
     HumidityDeviceCacheService,
+    DataCacheService,
     CommonRestService,
   ],
 })
