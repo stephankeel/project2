@@ -36,6 +36,18 @@ export class SingleOfTypeComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private router: Router, private socketService: ClientSocketService,
               private authHttp: AuthHttp, private notificationService: NotificationService) {
+
+    // TODO: This is a dirty hack as deviceType is not set when instantiated by a route
+    if (!this.deviceType) {
+      let compStr: string = this.route.component.toString();
+      let pos: number = compStr.indexOf('SingleHumidityComponent');
+      if (pos >= 0) {
+        this.deviceType = DeviceType.HUMIDITY;
+      } else {
+        this.deviceType = DeviceType.TEMPERATURE;
+      }
+    }
+
     if (this.deviceType === DeviceType.HUMIDITY) {
       this.title = 'Feuchtigkeit (einzeln)';
       this.label = 'Feuchtigkeit';
