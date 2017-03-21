@@ -1,5 +1,5 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {NgModule} from "@angular/core";
+import {CommonModule} from "@angular/common";
 import {TemperatureDeviceCacheService} from "./service/temperature-device.cache.service";
 import {BlindsDeviceCacheService} from "./service/blinds-device.cache.service";
 import {HumidityDeviceCacheService} from "./service/humidity-device.cache.service";
