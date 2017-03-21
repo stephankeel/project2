@@ -19,11 +19,7 @@ main {
   margin: 0 0 0.5em 0;
 }
 
-#homeautomationIcon {
-  width: 5em;
-}
-
-#usernameDiv {
+#div__username {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -31,7 +27,7 @@ main {
   margin: 1em 0 0.4em 0;
 }
 
-#passwordDiv {
+#div__password {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -41,4 +37,9 @@ main {
 
 .loginPageTitleDiv {
   font-size: 300%;
+}
+
+.input__login-message {
+  margin: 0 0 0.5em 8em;
+  color: red;
 }

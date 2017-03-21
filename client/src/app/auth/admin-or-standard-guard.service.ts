@@ -5,10 +5,10 @@ import {
   RouterStateSnapshot,
   CanActivateChild
 } from '@angular/router';
-import {UserType} from '../user';
 
 
 import {AuthenticationService}      from '../remote/authentication.service';
+import {UserType} from "../../../../server/entities/user-type";
 
 @Injectable()
 export class AdminOrStandardGuard implements CanActivate, CanActivateChild {

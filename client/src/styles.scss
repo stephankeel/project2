@@ -1,94 +1,200 @@
+/* You can add global styles to this file, and also import other style files */
+@import '~@angular/material/core/theming/prebuilt/indigo-pink.css';
+@import url('assets/css/material.icons.css');
 @import url('../node_modules/primeng/resources/themes/omega/theme.css');
 @import url('../node_modules/primeng/resources/primeng.min.css');
 @import url('../node_modules/font-awesome/css/font-awesome.min.css');
 
-$headerFooterPadding: 0.2em;
-$headerFooterBackgroundColor: lightgreen;
-
-* {
-  box-sizing: border-box;
-  border-radius: 0.3em;
+.body--no-margin {
+  margin: 0;
 }
 
-html {
-  min-width: 360px;
-
-}
-
-button, select {
-  min-width: 5em;
-  background-image: linear-gradient(to top, darkgrey 30%, white 100%);
-  box-shadow: 0.1em 0.2em 0.5em grey;
-}
-
-button:hover, select:hover {
-  background-image: linear-gradient(to bottom, darkgrey 30%, white 100%);
-}
-
-input[type='checkbox']:hover {
-  transform: scale(1.1);
-}
-
-body {
+.body--font {
   font-family: Arial, Verdana, sans-serif;
-  border-width: 0 5px;
 }
 
-header {
+.fill-remaining-space {
+  flex: 1 1 auto;
+}
+
+.header--zoom-on-hover:hover {
+  transform: scale(1.25);
+}
+
+.action--button:hover, .app-blinds-button:hover {
+  background-color: rgba(0, 0, 0, 0.15);
+}
+
+.img__icon--big-width {
+  width: 5em;
+}
+
+.header--padding {
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+}
+
+.header--background-color {
+  background-color: lightgreen;
+}
+
+.header--flex {
   display: flex;
-  justify-content: flex-start;
+  width: 100%;
   align-items: center;
   flex-wrap: wrap;
-  background-color: $headerFooterBackgroundColor;
-  padding: $headerFooterPadding;
 }
 
-.headerTitle {
-  margin: 6px;
+.header__title {
+  margin: 10px;
   text-shadow: 0.1em 0.1em 0.5em grey;
 }
 
-footer {
-  display: flex;
-  justify-content: space-between;
-  font-size: 80%;
-  padding: $headerFooterPadding;
+.device--shadow {
+  box-shadow: 0.1em 0.1em 0.5em grey;
+}
+
+.div--full-width {
   width: 100%;
-  background-color: $headerFooterBackgroundColor;
 }
 
-.contextHeaderActionDiv {
+.div--maxwith {
+  max-width: 800px;
+}
+
+.div--small-margins {
+  margin: 0.2em 0 0.2em 0;
+}
+
+.header {
   display: flex;
-  flex: 1;
-  justify-content: flex-end;
+  align-items: center;
+  h1 {
+    margin: 0.2em;
+  }
 }
 
-.headerAction:hover, .iconAction:active, .app-blinds-button:hover {
-  transform: scale(1.10);
+.div--margins-05 {
+  margin: 0.5em;
 }
 
-.headerIcon {
-  width: 32px;
-  height: 32px;
+.div--font {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
-.userList, deviceList {
-  max-width: 40%;
-  max-height: 80vh;
-  overflow-y: auto;
-
+.div--no-margins {
+  margin: 0;
 }
 
-.userListItem, .deviceListItem {
-  padding: 0.3em 0.1em;
-  margin: 0.3em 0;
-  border: 0.1em solid lightgrey;
+.div--minwidth {
+  min-width: 400px;
 }
 
-.selectionListItem.selected {
-  background-color: lightgray;
+.div--width500px {
+  max-width: 500px;
+}
+.div--autogrow {
+  flex: 1 1 auto;
 }
 
-.ng-invalid:not(form) {
-  border: 0.2em solid red;
+.button--gray {
+  background: #A6BAC5;
+}
+
+button.button--responsive {
+  min-width: 10px;
+  margin: 0.2em;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+}
+
+.form {
+  max-width: 500px;
+  background-color: #F7F7F7;
+  border-radius: 5px;
+}
+
+.div__button-row {
+  display: flex;
+}
+
+.button-container--small-margins {
+  margin: 0.2em 0.5em 0.2em 0.5em;
+}
+
+.input-section--flex {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  align-items: baseline;
+  min-height: 3em;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.div__subheader--color {
+  background-color: #38b938;
+}
+
+.div__subsubheader--color {
+  background-color: #189918;
+}
+
+.h3--no-margins {
+  margin: 0;
+}
+
+.h3--padding {
+  padding: 0.5em;
+}
+
+.span__gray {
+  background: #DDDDDD;
+  border-radius: 4px;
+  padding: 0.5em;
+  margin: 0.2em;
+  flex: 1 1 auto;
+  min-width: 180px;
+}
+
+.div--flex {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.div--flex-justify-content-center {
+  justify-content: center;
+}
+
+.div--flex-dir-column {
+  flex-direction: column;
+}
+
+.size-xs {
+  display: none;
+}
+
+@media screen and (max-width: 600px) {
+  .size-xl {
+    display: none;
+  }
+
+  .size-xs {
+    display: block;
+  }
+}
+
+.selection-list-item.selected {
+  border: solid black 1px;
+}
+
+p.div__select--hint {
+  margin-top: 0.2em;
+  margin-bottom: 0;
+  display: block;
+  font-size: 75%;
+  bottom: 0;
+  color: red;
 }

@@ -1,10 +1,10 @@
-import {SPAANGULARPage} from './app.po';
+import { HomeautomationClientPage } from './app.po';
 
-describe('spa-angular App', function () {
-  let page: SPAANGULARPage;
+describe('homeautomation-client App', () => {
+  let page: HomeautomationClientPage;
 
   beforeEach(() => {
-    page = new SPAANGULARPage();
+    page = new HomeautomationClientPage();
   });
 
   it('should display message saying app works', () => {

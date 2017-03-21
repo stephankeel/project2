@@ -1,6 +1,6 @@
-import {browser, element, by} from 'protractor';
+import { browser, element, by } from 'protractor';
 
-export class SPAANGULARPage {
+export class HomeautomationClientPage {
   navigateTo() {
     return browser.get('/');
   }

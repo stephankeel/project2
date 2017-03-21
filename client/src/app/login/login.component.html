@@ -1,37 +1,31 @@
-<header>
-  <img id="homeautomationIcon" src="app/images/homeautomation.svg" alt="Login Icon" title="Login Page Icon">
-  <h1 class="headerTitle">HOMEAUTOMATION</h1>
+<header class="header header--flex header--background-color header--no-padding">
+  <img class="img__icon--big-width button__menu" src="assets/icons/homeautomation.svg"
+       alt="Menu Icon"
+       title="Menu Icon">
+  <h1 class="header__title">HOMEAUTOMATION</h1>
 </header>
-
-<main *ngIf="loggedOut===true">
-  <form (ngSubmit)="doLogin()" #loginForm="ngForm">
-    <div id="loginTitleDiv" class="loginPageTitleDiv">
-      ANMELDEN
-    </div>
-    <div id="usernameDiv">
-      <label id="usernameLabel" class="loginLabel" for="username">USERNAME</label>
-      <input [(ngModel)]="username" placeholder="username" id="username" class="validatable loginInput"
-             tpye="text" (keydown)="clearMessage()" (focus)="clearMessage()"
-             name="username" required minlength="4">
-    </div>
-    <div id="passwordDiv">
-      <label id="passwordLabel" class="loginLabel" for="password">PASSWORT</label>
-      <input [(ngModel)]="password" placeholder="password" id="password" class="validatable loginInput"
-             type="password" (keydown)="clearMessage()" (focus)="clearMessage()" name="password" required minlength="4">
-    </div>
-    <div *ngIf="message" id="loginMessage">
-      {{message}}
-    </div>
-    <div id="loginButtonDiv" class="loginPageButtonDiv">
-      <button id="loginButton" type="submit" [disabled]="!loginForm.form.valid">OK</button>
+<div class="header--flex div--no-margins div__subheader--color">
+  <h3 class="h3--no-margins h3--padding">Anmeldung</h3>
+</div>
+<div class="div--width500px div--margins-05">
+  <form class="form" #f="ngForm" novalidate (onSubmit)="doLogin()">
+    <section class="section">
+      <md-input-container class="div--full-width div--small-margins">
+        <input mdInput placeholder="Benutzer" name="username" required #userControl="ngModel" [(ngModel)]="username">
+        <md-hint *ngIf="!userControl.valid" [ngStyle]="{'color': 'red'}" align="start">erforderlich</md-hint>
+      </md-input-container>
+      <md-input-container class="div--full-width div--small-margins">
+        <input mdInput placeholder="Passwort" name="password" required type="password" #passwordControl="ngModel"
+               [(ngModel)]="password">
+        <md-hint *ngIf="!passwordControl.valid" [ngStyle]="{'color': 'red'}" align="start">erforderlich</md-hint>
+      </md-input-container>
+    </section>
+    <div class="div__button-row">
+      <span class="fill-remaining-space"></span>
+      <button md-button type="submit" (click)="doLogin()" [disabled]="!f.valid" class="button--gray">Login
+      </button>
     </div>
   </form>
-</main>
-<main *ngIf="loggedOut===false" id="logoutContent">
-  <div id="logoutTitleDiv" class="loginPageTitleDiv">
-    ABMELDEN
-  </div>
-  <div id="logoutButtonDiv" class="loginPageButtonDiv">
-    <button id="logoutButton" (click)="doLogout()">OK</button>
-  </div>
-</main>
+  <!--  <app-my-spinner [isRunning]="busy" [delay]="150"></app-my-spinner>-->
+</div>
+<app-footer></app-footer>

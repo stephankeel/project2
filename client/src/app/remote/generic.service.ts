@@ -1,11 +1,11 @@
-import {ReplaySubject, Subscription} from 'rxjs';
-import {ClientSocketService} from './client-socket.service';
-import {List} from 'immutable';
-import {IId} from '../../../../server/entities/id.interface';
-import {AuthHttp} from 'angular2-jwt';
-import {ISocketItem} from '../../../../server/entities/socket-item.model';
-import {GenericRestService} from './generic-rest.service';
-import {NotificationService} from '../notification/notification.service';
+import {ReplaySubject, Subscription, Observable, Subject} from "rxjs";
+import {ClientSocketService} from "./client-socket.service";
+import {List, Seq, Iterator} from "immutable";
+import {IId} from "../../../../server/entities/id.interface";
+import {AuthHttp} from "angular2-jwt";
+import {ISocketItem} from "../../../../server/entities/socket-item.model";
+import {GenericRestService} from "./generic-rest.service";
+import {NotificationService} from "../notification/notification.service";
 
 export class GenericService<T extends IId> {
   items: ReplaySubject<List<T>> = new ReplaySubject<List<T>>(1);
@@ -13,7 +13,8 @@ export class GenericService<T extends IId> {
   private dataSubscription: Subscription;
   private restService: GenericRestService<T>;
 
-  constructor(private authHttp: AuthHttp, private socketService: ClientSocketService, private notificationService: NotificationService,
+  constructor(private authHttp: AuthHttp, private socketService: ClientSocketService,
+              private notificationService: NotificationService,
               private restUrl: string, private socketNamespace: string) {
     this.restService = new GenericRestService<T>(authHttp, restUrl);
     let observable = socketService.get(socketNamespace);
@@ -24,12 +25,30 @@ export class GenericService<T extends IId> {
     this.dataSubscription.unsubscribe();
   }
 
+  public getCache(id: string): T {
+    return this.currentItems.get(id);
+  }
+
+  public getAllFromCache(): T[] {
+      let ret: T[] = [];
+    this.currentItems.forEach((v: T) => ret.push(v));
+    return ret;
+  }
+
+  public getCount(): number {
+    return this.currentItems.size;
+  }
+
+  public getRestService(): GenericRestService<T> {
+    return this.restService;
+  }
+
   private processItem(packet: ISocketItem) {
-    if (packet.action === 'create') {
+    if (packet.action === "create") {
       this.addItem(packet.item);
-    } else if (packet.action === 'update') {
+    } else if (packet.action === "update") {
       this.updateItem(packet.item);
-    } else if (packet.action === 'delete') {
+    } else if (packet.action === "delete") {
       this.deleteItem(packet.item);
     }
   }
@@ -64,13 +83,18 @@ export class GenericService<T extends IId> {
     });
   }
 
-  public getAll() {
+  public getAll(): Observable<T[]> {
+    let subject = new Subject<T[]>();
     this.restService.getAll().subscribe((items: T[]) => {
       this.addAll(items);
+      subject.next(items);
+      subject.complete();
     }, (err: any) => {
       this.notificationService.error(`getAll failed with ${err.toString()}`);
       this.items.error(err);
+      subject.error(err);
     });
+    return subject;
   }
 
   private addAll(items: T[]) {
