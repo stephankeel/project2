@@ -3,7 +3,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {Subscription} from "rxjs";
 import {IUser} from "../../../../../server/entities/user.interface";
 import {NotificationService} from "../../notification/notification.service";
-import {UserCacheService} from "../../cache/user.cache.service";
+import {UserCacheService} from "../../cache/service/user.cache.service";
 
 @Component({
   selector: 'app-user-delete',

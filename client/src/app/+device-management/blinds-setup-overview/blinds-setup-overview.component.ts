@@ -1,6 +1,6 @@
 import {Component, OnInit} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
-import {BlindsDeviceCacheService} from "../../cache/blinds-device.cache.service";
+import {BlindsDeviceCacheService} from "../../cache/service/blinds-device.cache.service";
 import {Observable, ReplaySubject} from "rxjs";
 import {AuthenticationService} from "../../remote/authentication.service";
 import {List} from "immutable";

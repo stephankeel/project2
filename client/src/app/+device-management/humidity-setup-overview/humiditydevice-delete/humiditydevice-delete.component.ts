@@ -3,7 +3,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {IHumidityDevice} from "../../../../../../server/entities/device.interface";
 import {Subscription} from "rxjs";
 import {NotificationService} from "../../../notification/notification.service";
-import {HumidityDeviceCacheService} from "../../../cache/humidity-device.cache.service";
+import {HumidityDeviceCacheService} from "../../../cache/service/humidity-device.cache.service";
 
 @Component({
   selector: 'app-humiditydevice-delete',

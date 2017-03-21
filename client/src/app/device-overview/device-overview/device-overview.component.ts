@@ -11,9 +11,9 @@ import {Router, ActivatedRoute} from "@angular/router";
 import {GenericService} from "../../remote/generic.service";
 import {IBlindsDevice, IHumidityDevice, ITemperatureDevice} from "../../../../../server/entities/device.interface";
 import {NotificationService} from "../../notification/notification.service";
-import {TemperatureDeviceCacheService} from "../../cache/temperature-device.cache.service";
-import {BlindsDeviceCacheService} from "../../cache/blinds-device.cache.service";
-import {HumidityDeviceCacheService} from "../../cache/humidity-device.cache.service";
+import {TemperatureDeviceCacheService} from "../../cache/service/temperature-device.cache.service";
+import {BlindsDeviceCacheService} from "../../cache/service/blinds-device.cache.service";
+import {HumidityDeviceCacheService} from "../../cache/service/humidity-device.cache.service";
 
 @Component({
   selector: 'app-device-overview',

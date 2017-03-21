@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Router, ActivatedRoute} from "@angular/router";
-import {BlindsDeviceCacheService} from "../../../cache/blinds-device.cache.service";
+import {BlindsDeviceCacheService} from "../../../cache/service/blinds-device.cache.service";
 import {IBlindsDevice} from "../../../../../../server/entities/device.interface";
 import {Subscription} from "rxjs";
 import {Port, portName} from "../../../../../../server/hardware/port-map";

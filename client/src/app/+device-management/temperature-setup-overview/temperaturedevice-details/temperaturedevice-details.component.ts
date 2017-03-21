@@ -3,7 +3,7 @@ import {ActivatedRoute} from "@angular/router";
 import {ITemperatureDevice} from "../../../../../../server/entities/device.interface";
 import {Subscription} from "rxjs";
 import {Port, portName} from "../../../../../../server/hardware/port-map";
-import {TemperatureDeviceCacheService} from "../../../cache/temperature-device.cache.service";
+import {TemperatureDeviceCacheService} from "../../../cache/service/temperature-device.cache.service";
 
 @Component({
   selector: 'app-temperaturedevice-details',

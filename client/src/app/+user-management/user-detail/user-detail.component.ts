@@ -3,7 +3,7 @@ import {Router, ActivatedRoute} from "@angular/router";
 import {IUser} from "../../../../../server/entities/user.interface";
 import {Subscription} from "rxjs";
 import {UserType, userTypeAsString} from "../../../../../server/entities/user-type";
-import {UserCacheService} from "../../cache/user.cache.service";
+import {UserCacheService} from "../../cache/service/user.cache.service";
 
 @Component({
   selector: 'app-user-detail',

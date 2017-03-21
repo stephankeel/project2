@@ -1,18 +1,18 @@
 import {Injectable} from "@angular/core";
-import {GenericService} from "../remote/generic.service";
+import {GenericService} from "../../remote/generic.service";
 import {AuthHttp} from "angular2-jwt";
 import {Observable, Subscription, ReplaySubject} from "rxjs";
-import {IDevice} from "../../../../server/entities/device.interface";
-import {IData} from "../../../../server/entities/data.interface";
-import {ClientSocketService} from "../remote/client-socket.service";
-import {NotificationService} from "../notification/notification.service";
+import {IDevice} from "../../../../../server/entities/device.interface";
+import {IData} from "../../../../../server/entities/data.interface";
+import {ClientSocketService} from "../../remote/client-socket.service";
+import {NotificationService} from "../../notification/notification.service";
 import {BlindsDeviceCacheService} from './blinds-device.cache.service';
 import {HumidityDeviceCacheService} from './humidity-device.cache.service';
 import {TemperatureDeviceCacheService} from './temperature-device.cache.service'
 import {GenericeCacheService} from './generic.cache.service';
-import {GenericDataService} from "../remote/generic-data.service";
-import {DeviceType} from "../misc/device-pool";
-import {IBlindsData, IHumidityData, ITemperatureData} from "../../../../server/entities/data.interface";
+import {GenericDataService} from "../../remote/generic-data.service";
+import {DeviceType} from "../../misc/device-pool";
+import {IBlindsData, IHumidityData, ITemperatureData} from "../../../../../server/entities/data.interface";
 
 
 @Injectable()

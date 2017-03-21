@@ -4,7 +4,7 @@ import {ReplaySubject, Observable} from "rxjs";
 import {List} from "immutable";
 import {Router, ActivatedRoute} from "@angular/router";
 import {AuthenticationService} from "../../remote/authentication.service";
-import {UserCacheService} from "../../cache/user.cache.service";
+import {UserCacheService} from "../../cache/service/user.cache.service";
 
 @Component({
   selector: 'app-users',

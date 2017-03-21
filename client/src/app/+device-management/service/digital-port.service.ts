@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {BlindsDeviceCacheService} from "../../cache/blinds-device.cache.service";
+import {BlindsDeviceCacheService} from "../../cache/service/blinds-device.cache.service";
 import {ReplaySubject, Observable, Subscription} from "rxjs";
 import {List} from "immutable";
 import {IBlindsDevice} from "../../../../../server/entities/device.interface";
