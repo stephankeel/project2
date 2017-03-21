@@ -8,7 +8,7 @@ import {SingleTemperatureComponent} from './single-temperature/single-temperatur
 import {ListSupportModule} from '../../../list-support/list-support.module';
 import {MaterialModule} from '@angular/material';
 import {ChartModule} from 'primeng/primeng';
-import {AllOfTypeModule} from "../all-of-type/all-of-type.moduile";
+import {AllOfTypeModule} from "../all-of-type/all-of-type.module";
 import {SingleOfTypeModule} from "../single-of-type/single-of-type.module";
 
 @NgModule({
