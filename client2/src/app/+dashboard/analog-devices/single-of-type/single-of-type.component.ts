@@ -36,18 +36,9 @@ export class SingleOfTypeComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private router: Router, private socketService: ClientSocketService,
               private authHttp: AuthHttp, private notificationService: NotificationService) {
+  }
 
-    // TODO: This is a dirty hack as deviceType is not set when instantiated by a route
-    if (!this.deviceType) {
-      let compStr: string = this.route.component.toString();
-      let pos: number = compStr.indexOf('SingleHumidityComponent');
-      if (pos >= 0) {
-        this.deviceType = DeviceType.HUMIDITY;
-      } else {
-        this.deviceType = DeviceType.TEMPERATURE;
-      }
-    }
-
+  ngOnInit() {
     if (this.deviceType === DeviceType.HUMIDITY) {
       this.title = 'Feuchtigkeit (einzeln)';
       this.label = 'Feuchtigkeit';
@@ -59,9 +50,7 @@ export class SingleOfTypeComponent implements OnInit {
       this.units = '°C';
       this.genericService = new GenericService<IDevice>(this.authHttp, this.socketService, this.notificationService, '/api/devices/temperature', '/temperature');
     }
-  }
 
-  ngOnInit() {
     this.genericService.items.subscribe(devices => {
       this.allDevices = devices.toArray().sort((a, b) => a.name.localeCompare(b.name));
       this.resubscribe();
