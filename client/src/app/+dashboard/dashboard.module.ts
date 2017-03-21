@@ -18,6 +18,7 @@ import {InfoComponent} from './info/info.component';
 import {ListSupportModule} from '../list-support/list-support.module';
 import {CommonRestService} from '../remote/common-rest.service';
 import {CacheModule} from "../cache/cache.module";
+import {DataCacheService} from '../cache/service/data-cache.service';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -53,6 +54,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     },
     ClientSocketService,
     CommonRestService,
+    DataCacheService,
   ],
 })
 export class DashboardModule {
