@@ -13,7 +13,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {ValidatorsModule} from "ng2-validators";
 import {ListSupportModule} from "../list-support/list-support.module";
 import {UserListFormatterPipe} from "./users/user-list-formatter.pipe";
-import {UserCacheService} from "../cache/user.cache.service";
+import {CacheModule} from "../cache/cache.module";
 
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
@@ -31,6 +31,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     ReactiveFormsModule,
     ValidatorsModule,
     ListSupportModule,
+    CacheModule,
   ],
   declarations: [
     UsersComponent,
@@ -46,7 +47,6 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
       deps: [Http, RequestOptions]
     },
     ClientSocketService,
-    UserCacheService,
   ],
   bootstrap: []
 
