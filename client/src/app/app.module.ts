@@ -16,7 +16,8 @@ import {GrowlModule} from 'primeng/primeng';
 import {CacheModule} from "./cache/cache.module";
 import {AuthHttp, AuthConfig} from "angular2-jwt";
 import {ClientSocketService} from "./remote/client-socket.service";
-
+import {AdminOrStandardGuard} from './auth/admin-or-standard-guard.service';
+import {AdminGuard} from './auth/admin-guard.service';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -42,13 +43,14 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   ],
   providers: [
     AuthGuard,
+    AdminOrStandardGuard,
+    AdminGuard,
     {
       provide: AuthHttp,
       useFactory: authHttpServiceFactory,
       deps: [Http, RequestOptions]
     },
     ClientSocketService,
-    AuthGuard,
     NoAuthGuard,
     AuthenticationService,
     NotificationService,
