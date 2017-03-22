@@ -69,7 +69,7 @@ export class ChartViewComponent implements OnInit {
       });
     } else {
       // drop every n-th element
-      let nthElement: number = Math.round(ChartViewComponent.MAX_RECORDS / numberToDelete);
+      let nthElement: number = Math.round(ChartViewComponent.MAX_RECORDS / numberToDelete) + 1;
       let i: number = 0;
       data.forEach(d => {
         i++;
