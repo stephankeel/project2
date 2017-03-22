@@ -29,7 +29,7 @@ export class AllBlindsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.cacheServiceSubscription = this.blindsDeviceCacheService.getDataService().subscribe((deviceService: GenericService<BlindsDevice>) => {
+    this.cacheServiceSubscription = this.blindsDeviceCacheService.getDataService().subscribe(deviceService => {
       deviceService.items.subscribe(devices => {
         this.unsubscribeAll();
         this.devices = devices.toArray().sort((a, b) => a.name.localeCompare(b.name));
