@@ -1,19 +1,21 @@
-import {NgModule} from "@angular/core";
-import {CommonModule} from "@angular/common";
-import {RouterModule, Routes} from "@angular/router";
-import {DashboardComponent} from "../dashboard/dashboard.component";
-import {AuthGuard} from "../../auth/auth-guard.service";
-import {DeviceOverviewComponent} from "../../device-overview/device-overview/device-overview.component";
-import {PasswordChangeConfirmationComponent} from "../password-change-confirmation/password-change-confirmation.component";
-import {PasswordChangeComponent} from "../password-change/password-change.component";
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {RouterModule, Routes} from '@angular/router';
+import {DashboardComponent} from '../dashboard/dashboard.component';
+import {AuthGuard} from '../../auth/auth-guard.service';
+import {DeviceOverviewComponent} from '../../device-overview/device-overview/device-overview.component';
+import {PasswordChangeConfirmationComponent} from '../password-change-confirmation/password-change-confirmation.component';
+import {PasswordChangeComponent} from '../password-change/password-change.component';
 import {InfoComponent} from '../info/info.component';
+import {AdminOrStandardGuard} from '../../auth/admin-or-standard-guard.service';
+import {AdminGuard} from '../../auth/admin-guard.service';
 
 const routes: Routes = [{
   path: '', canActivate: [AuthGuard], component: DashboardComponent, children: [
     {path: 'overview', canActivate: [AuthGuard], component: DeviceOverviewComponent},
     {
       path: 'blinds-overview',
-      canActivate: [AuthGuard],
+      canActivate: [AuthGuard, AdminOrStandardGuard],
       loadChildren: 'app/+dashboard/blinds/blinds.module#BlindsModule'
     },
     {
@@ -31,12 +33,12 @@ const routes: Routes = [{
     {path: '', redirectTo: 'overview', pathMatch: 'full'},
     {
       path: 'user-management',
-      canActivate: [AuthGuard],
+      canActivate: [AuthGuard, AdminGuard],
       loadChildren: 'app/+user-management/user-management.module#UserManagementModule'
     },
     {
       path: 'device-management',
-      canActivate: [AuthGuard],
+      canActivate: [AuthGuard, AdminGuard],
       loadChildren: 'app/+device-management/device-management.module#DeviceManagementModule'
     },
     {path: 'info', canActivate: [AuthGuard], component: InfoComponent},
