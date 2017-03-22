@@ -53,7 +53,7 @@ export class UserChangeComponent implements OnInit {
         if (!user.password) {
           user.password = this.userPasswordHash;
         }
-        if (!user.type) {
+        if (user.type == undefined) {
           user.type = this.userType;
         }
         dataService.getRestService().update(user).subscribe(user => {
