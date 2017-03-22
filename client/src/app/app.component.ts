@@ -14,4 +14,8 @@ export class AppComponent {
   getMessages(): Message[] {
     return this.notificationService.message;
   }
+
+  clearMessage() {
+    this.notificationService.clear();
+  }
 }
