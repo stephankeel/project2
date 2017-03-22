@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { Message } from 'primeng/primeng';
+import {Injectable} from '@angular/core';
+import {Message} from 'primeng/primeng';
 
 @Injectable()
 export class NotificationService {
@@ -10,30 +10,43 @@ export class NotificationService {
     this.clear();
   }
 
-  clear(): void {
-    this.message = [];
+  clear(msg?: any): void {
+    if (msg) {
+      let index: number = this.message.indexOf(msg);
+      if (index >= 0) {
+        this.message.splice(index, 1);
+      }
+    } else {
+      this.message = [];
+    }
+  }
+
+  private push(msg: any, timeout: number): void {
+    this.message.push(msg);
+    let timer = setTimeout(() => {
+      this.clear(msg);
+    }, timeout);
   }
 
   success(detail: string, summary?: string): void {
-    this.message.push({
+    let msg = {
       severity: 'success', summary: summary, detail: this.trim(detail)
-    });
-    let timer = setTimeout(() => {
-      this.clear();
-      clearTimeout(timer);
-    } , 2000);
+    };
+    this.push(msg, 5000);
   }
 
   info(detail: string, summary?: string): void {
-    this.message.push({
+    let msg = {
       severity: 'info', summary: summary, detail: this.trim(detail)
-    });
+    };
+    this.push(msg, 5000);
   }
 
   warning(detail: string, summary?: string): void {
-    this.message.push({
+    let msg = {
       severity: 'warn', summary: summary, detail: this.trim(detail)
-    });
+    };
+    this.push(msg, 10000);
   }
 
   error(detail: string, summary?: string): void {
