@@ -9,6 +9,8 @@ import {GenericService} from '../../../remote/generic.service';
 import {ClientSocketService} from '../../../remote/client-socket.service';
 import {GenericDataService} from '../../../remote/generic-data.service';
 import {NotificationService} from '../../../notification/notification.service';
+import {TemperatureDeviceCacheService} from "../../../cache/service/temperature-device.cache.service";
+import {HumidityDeviceCacheService} from "../../../cache/service/humidity-device.cache.service";
 
 @Component({
   selector: 'app-single-of-type',
@@ -35,7 +37,9 @@ export class SingleOfTypeComponent implements OnInit {
   deviceDataHistory: Subject<IAnalogData[]> = new Subject();
 
   constructor(private route: ActivatedRoute, private router: Router, private socketService: ClientSocketService,
-              private authHttp: AuthHttp, private notificationService: NotificationService) {
+              private authHttp: AuthHttp, private notificationService: NotificationService,
+              private temperatureDeviceCacheService: TemperatureDeviceCacheService,
+              private humidityDeviceCacheService: HumidityDeviceCacheService) {
   }
 
   ngOnInit() {
@@ -43,25 +47,33 @@ export class SingleOfTypeComponent implements OnInit {
       this.title = 'Feuchtigkeit (einzeln)';
       this.label = 'Feuchtigkeit';
       this.units = '%rel';
-      this.genericService = new GenericService<IDevice>(this.authHttp, this.socketService, this.notificationService, '/api/devices/humidity', '/humidity');
+
+      this.humidityDeviceCacheService.getDataService().subscribe(dataService => {
+        this.genericService = dataService;
+        this.configureItemSubscription();
+      });
     } else {
       this.title = 'Temperatur (einzeln)';
       this.label = 'Temperatur';
       this.units = '°C';
-      this.genericService = new GenericService<IDevice>(this.authHttp, this.socketService, this.notificationService, '/api/devices/temperature', '/temperature');
+      this.temperatureDeviceCacheService.getDataService().subscribe(dataService => {
+        this.genericService = dataService;
+        this.configureItemSubscription();
+      });
     }
-
-    this.genericService.items.subscribe(devices => {
-      this.allDevices = devices.toArray().sort((a, b) => a.name.localeCompare(b.name));
-      this.resubscribe();
-    }, error => this.notificationService.error(error.toString()));
-    this.genericService.getAll();
 
     // listen for route id changes
     this.route.params.subscribe((params: Params) => {
       this.id = params['id'];
       this.resubscribe();
     });
+  }
+
+  private configureItemSubscription() {
+    this.genericService.items.subscribe(devices => {
+      this.allDevices = devices.toArray().sort((a, b) => a.name.localeCompare(b.name));
+      this.resubscribe();
+    }, error => this.notificationService.error(error.toString()));
   }
 
   ngOnDestroy() {
