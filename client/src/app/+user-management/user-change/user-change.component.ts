@@ -17,6 +17,7 @@ export class UserChangeComponent implements OnInit {
   private sub: Subscription;
   private user: IUser = {type: UserType.STANDARD};
   private userPasswordHash: string;
+  private userType: UserType;
   private title: string;
   private userTypes: any[];
 
@@ -31,6 +32,7 @@ export class UserChangeComponent implements OnInit {
         this.userCacheService.getDataService().subscribe(dataService => {
           this.user = dataService.getCache(params['id']);
           this.userPasswordHash = this.user.password;
+          this.userType = this.user.type;
           this.user.password = '';
           this.title = "Benutzer ändern";
         });
@@ -50,6 +52,9 @@ export class UserChangeComponent implements OnInit {
         user.id = this.user.id;
         if (!user.password) {
           user.password = this.userPasswordHash;
+        }
+        if (!user.type) {
+          user.type = this.userType;
         }
         dataService.getRestService().update(user).subscribe(user => {
           this.notificationService.info('Benutzer wurde erfolgreich modifiziert');
