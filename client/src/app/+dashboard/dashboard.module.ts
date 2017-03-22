@@ -17,7 +17,7 @@ import {MyValidatorsModule} from '../my-validators/my-validators.module';
 import {InfoComponent} from './info/info.component';
 import {ListSupportModule} from '../list-support/list-support.module';
 import {CommonRestService} from '../remote/common-rest.service';
-import {DataCacheService} from '../cache/data-cache.service';
+import {DataCacheService} from '../cache/service/data-cache.service';
 import {CacheModule} from "../cache/cache.module";
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {

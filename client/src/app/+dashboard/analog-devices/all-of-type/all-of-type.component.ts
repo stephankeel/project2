@@ -1,14 +1,16 @@
-import {ActivatedRoute, Router} from '@angular/router';
-import {Component, OnInit, Input} from '@angular/core';
-import {Subscription} from 'rxjs';
+import {ActivatedRoute, Router} from "@angular/router";
+import {Component, OnInit, Input} from "@angular/core";
+import {Subscription} from "rxjs";
 import {IDevice} from "../../../../../../server/entities/device.interface";
-import {DeviceType} from '../../../misc/device-pool';
-import {IAnalogData} from '../../../../../../server/entities/data.interface';
-import {AuthHttp} from 'angular2-jwt';
-import {GenericService} from '../../../remote/generic.service';
-import {ClientSocketService} from '../../../remote/client-socket.service';
-import {GenericDataService} from '../../../remote/generic-data.service';
-import {NotificationService} from '../../../notification/notification.service';
+import {DeviceType} from "../../../misc/device-pool";
+import {IAnalogData} from "../../../../../../server/entities/data.interface";
+import {AuthHttp} from "angular2-jwt";
+import {GenericService} from "../../../remote/generic.service";
+import {ClientSocketService} from "../../../remote/client-socket.service";
+import {GenericDataService} from "../../../remote/generic-data.service";
+import {NotificationService} from "../../../notification/notification.service";
+import {TemperatureDeviceCacheService} from "../../../cache/service/temperature-device.cache.service";
+import {HumidityDeviceCacheService} from "../../../cache/service/humidity-device.cache.service";
 
 @Component({
   selector: 'app-all-of-type',
@@ -29,26 +31,35 @@ export class AllOfTypeComponent implements OnInit {
   dataSubscriptions: Map<IDevice, Subscription> = new Map<IDevice, Subscription>();
 
   constructor(private route: ActivatedRoute, private router: Router, private socketService: ClientSocketService,
-              private authHttp: AuthHttp, private notificationService: NotificationService) {
+              private authHttp: AuthHttp, private notificationService: NotificationService,
+              private temperatureDeviceCacheService: TemperatureDeviceCacheService,
+              private humidityDeviceCacheService: HumidityDeviceCacheService) {
   }
 
   ngOnInit() {
     if (this.deviceType === DeviceType.HUMIDITY) {
       this.title = 'Feuchtigkeit-Übersicht';
       this.units = '%rel';
-      this.genericService = new GenericService<IDevice>(this.authHttp, this.socketService, this.notificationService, '/api/devices/humidity', '/humidity');
+      this.humidityDeviceCacheService.getDataService().subscribe(dataService => {
+        this.genericService = dataService;
+        this.configureItemSubscription();
+      });
     } else {
       this.title = 'Temperatur-Übersicht';
       this.units = '°C';
-      this.genericService = new GenericService<IDevice>(this.authHttp, this.socketService, this.notificationService, '/api/devices/temperature', '/temperature');
+      this.temperatureDeviceCacheService.getDataService().subscribe(dataService => {
+        this.genericService = dataService;
+        this.configureItemSubscription();
+      });
     }
+  }
 
+  private configureItemSubscription() {
     this.genericService.items.subscribe(devices => {
       this.unsubscribeAll();
       this.devices = devices.toArray().sort((a, b) => a.name.localeCompare(b.name));
       this.subscribeAll();
     }, error => this.notificationService.error(error.toString()));
-    this.genericService.getAll();
   }
 
   ngOnDestroy() {
@@ -56,15 +67,15 @@ export class AllOfTypeComponent implements OnInit {
     this.genericService.disconnect();
   }
 
-  subscribeAll(): void {
+  private subscribeAll(): void {
     this.devices.forEach(device => this.subscribeDevice(device));
   }
 
-  unsubscribeAll(): void {
+  private unsubscribeAll(): void {
     this.devices.forEach(device => this.releaseDevice(device));
   }
 
-  subscribeDevice(device: IDevice): void {
+  private subscribeDevice(device: IDevice): void {
     let dataService: GenericDataService<IAnalogData>;
     if (this.deviceType === DeviceType.HUMIDITY) {
       dataService = new GenericDataService<IAnalogData>(this.authHttp, this.socketService, '/api/data/humidity', '/humidity', device.id);
@@ -77,7 +88,7 @@ export class AllOfTypeComponent implements OnInit {
     dataService.getLatest();
   }
 
-  releaseDevice(device: IDevice): void {
+  private releaseDevice(device: IDevice): void {
     let dataService: GenericDataService<IAnalogData> = this.dataServices.get(device);
     if (dataService) {
       dataService.disconnect();
