@@ -18,6 +18,7 @@ import {DataCacheService} from '../../../cache/service/data-cache.service';
 export class SingleBlindsComponent implements OnInit {
 
   private cacheServiceSubscription: Subscription;
+  private deviceServiceSubscription: Subscription;
   private id: any;
   private selectedDevice: BlindsDevice;
   private allDevices: BlindsDevice[] = [];
@@ -31,7 +32,7 @@ export class SingleBlindsComponent implements OnInit {
 
   ngOnInit() {
     this.cacheServiceSubscription = this.blindsDeviceCacheService.getDataService().subscribe((deviceService: GenericService<BlindsDevice>) => {
-      deviceService.items.subscribe(devices => {
+      this.deviceServiceSubscription = deviceService.items.subscribe(devices => {
         this.allDevices = devices.toArray().sort((a, b) => a.name.localeCompare(b.name));
         this.resubscribe();
       }, error => this.notificationService.error(error.toString()));
@@ -47,6 +48,7 @@ export class SingleBlindsComponent implements OnInit {
 
   ngOnDestroy() {
     this.releaseDevice();
+    this.deviceServiceSubscription.unsubscribe();
     this.cacheServiceSubscription.unsubscribe();
   }
 
