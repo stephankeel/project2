@@ -56,8 +56,11 @@ export class AllBlindsComponent implements OnInit {
   unsubscribeAll(): void {
     this.devices.forEach(device => {
       this.devicesState.delete(device);
-      this.dataSubscriptions.get(device).unsubscribe();
-      this.dataSubscriptions.delete(device);
+      let subscription: Subscription = this.dataSubscriptions.get(device);
+      if (subscription) {
+        subscription.unsubscribe();
+        this.dataSubscriptions.delete(device);
+      }
     });
   }
 
