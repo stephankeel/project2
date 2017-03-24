@@ -16,7 +16,7 @@
                          [timestamp]="dataCacheService.getLatestData(selectedDeviceId) | async | timestamp"></app-analog-view>
       </md-tab>
       <md-tab label="Diagram">
-        <app-chart-view class="app-chart-view" [deviceDataHistory]="dataCacheService.getAllData(selectedDeviceId)" [label]="label"></app-chart-view>
+        <app-chart-view class="app-chart-view" [deviceDataHistory]="deviceDataHistory" [label]="label"></app-chart-view>
       </md-tab>
     </md-tab-group>
   </div>
