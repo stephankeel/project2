@@ -8,7 +8,7 @@ import {GenericRestService} from "./generic-rest.service";
 import {NotificationService} from "../notification/notification.service";
 
 export class GenericService<T extends IId> {
-  items: ReplaySubject<List<T>> = new ReplaySubject<List<T>>(1);
+  items: ReplaySubject<T[]> = new ReplaySubject<T[]>(1);
   private currentItems: Map<string, T> = new Map<string, T>();
   private dataSubscription: Subscription;
   private restService: GenericRestService<T>;
@@ -102,27 +102,27 @@ export class GenericService<T extends IId> {
     for (let item of items) {
       this.currentItems.set(item.id, item);
     }
-    this.items.next(List<T>(this.currentItems.values()));
+    this.items.next(Array.from(this.currentItems.values()));
   }
 
   private addItem(item: T) {
     if (!this.currentItems.has(item.id)) {
       this.currentItems.set(item.id, item);
-      this.items.next(List<T>(this.currentItems.values()));
+      this.items.next(Array.from(this.currentItems.values()));
     }
   }
 
   private updateItem(item: T) {
     if (this.currentItems.get(item.id) !== item) {
       this.currentItems.set(item.id, item);
-      this.items.next(List<T>(this.currentItems.values()));
+      this.items.next(Array.from(this.currentItems.values()));
     }
   }
 
   private deleteItem(id: string) {
     if (this.currentItems.has(id)) {
       this.currentItems.delete(id);
-      this.items.next(List<T>(this.currentItems.values()));
+      this.items.next(Array.from(this.currentItems.values()));
     }
   }
 }

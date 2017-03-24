@@ -80,10 +80,11 @@ export class DataCacheService {
     if (!deviceSubscription) {
       deviceSubscription = deviceService.getDataService().subscribe((deviceService: GenericService<IDevice>) => {
         deviceService.items.subscribe(devices => {
+          let deviceSet: Set<any> = new Set<any>(devices);
           // we are just interested in delete devices -> remove data subscription
           let removedDevices: IDevice[] = [];
           this.dataCacheAll.forEach((key, val) => {
-            if (!devices.contains(key)) {
+            if (!deviceSet.has(key)) {
               removedDevices.push(key);
             }
           });

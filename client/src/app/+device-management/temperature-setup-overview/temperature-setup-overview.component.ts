@@ -11,7 +11,7 @@ import {TemperatureDeviceCacheService} from "../../cache/service/temperature-dev
 })
 export class TemperatureSetupOverviewComponent implements OnInit {
 
-  private items: Observable<List<ITemperatureDevice>> = new ReplaySubject<List<ITemperatureDevice>>(1);
+  private items: Observable<ITemperatureDevice[]> = new ReplaySubject<ITemperatureDevice[]>(1);
 
   constructor(private temperatureDeviceCacheService: TemperatureDeviceCacheService) {
   }

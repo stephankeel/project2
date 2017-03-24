@@ -14,8 +14,8 @@ export class DigitalPortService {
   private itemsSub: Subscription;
 
   constructor(private blindsDeviceCacheService: BlindsDeviceCacheService) {
-    this.unusedInputPorts.next(this.computeUnusedInputPorts(List<IBlindsDevice>()));
-    this.unusedOutputPorts.next(this.computeUnusedOutputPorts(List<IBlindsDevice>()));
+    this.unusedInputPorts.next(this.computeUnusedInputPorts([]));
+    this.unusedOutputPorts.next(this.computeUnusedOutputPorts([]));
     this.init();
   }
 
@@ -36,15 +36,15 @@ export class DigitalPortService {
     })
   }
 
-  private computeUnusedInputPorts(itemList: List<IBlindsDevice>): Port[] {
+  private computeUnusedInputPorts(itemList: IBlindsDevice[]): Port[] {
     return this.computeUnusedPorts(itemList, digitalInputs, item => item.keyDown, item => item.keyUp);
   }
 
-  private computeUnusedOutputPorts(itemList: List<IBlindsDevice>): Port[] {
+  private computeUnusedOutputPorts(itemList: IBlindsDevice[]): Port[] {
     return this.computeUnusedPorts(itemList, digitalOutputs, item => item.actorDown, item => item.actorUp);
   }
 
-  private computeUnusedPorts(itemList: List<IBlindsDevice>, availablePorts: Port[], down:(item: IBlindsDevice) => Port, up: (item: IBlindsDevice) => Port): Port[] {
+  private computeUnusedPorts(itemList: IBlindsDevice[], availablePorts: Port[], down:(item: IBlindsDevice) => Port, up: (item: IBlindsDevice) => Port): Port[] {
     let unusedPorts: Set<Port> = new Set<Port>(availablePorts);
     itemList.forEach(item => {
       unusedPorts.delete(up(item));
