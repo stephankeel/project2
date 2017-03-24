@@ -2,7 +2,8 @@
   <app-list-header [title]="'Benutzerverwaltung'" [backlink]="'../..'" [showCreate]="true"
                    [showBack]="true"></app-list-header>
   <div class="div--margins-05 div--maxwith">
-    <app-line class="div--flex" *ngFor="let user of items | async" [disableDelete]="isLoggedInUser(user)" [id]="user.id"
+    <app-line class="div--flex" *ngFor="let user of userCacheService.getAll() | async"
+              [disableDelete]="isLoggedInUser(user)" [id]="user.id"
               [desc]="user | userListFormatter"></app-line>
   </div>
 </div>

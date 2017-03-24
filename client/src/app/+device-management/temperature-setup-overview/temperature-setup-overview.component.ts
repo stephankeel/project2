@@ -9,16 +9,8 @@ import {TemperatureDeviceCacheService} from "../../cache/service/temperature-dev
   templateUrl: './temperature-setup-overview.component.html',
   styleUrls: ['./temperature-setup-overview.component.scss']
 })
-export class TemperatureSetupOverviewComponent implements OnInit {
-
-  private items: Observable<ITemperatureDevice[]> = new ReplaySubject<ITemperatureDevice[]>(1);
+export class TemperatureSetupOverviewComponent {
 
   constructor(private temperatureDeviceCacheService: TemperatureDeviceCacheService) {
-  }
-
-  ngOnInit() {
-    this.temperatureDeviceCacheService.getDataService().subscribe(temperatureService => {
-      this.items = temperatureService.items;
-    })
   }
 }

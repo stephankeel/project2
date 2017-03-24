@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {Router, ActivatedRoute} from "@angular/router";
+import {Component, OnInit} from "@angular/core";
+import {ActivatedRoute} from "@angular/router";
 import {BlindsDeviceCacheService} from "../../../cache/service/blinds-device.cache.service";
 import {IBlindsDevice} from "../../../../../../server/entities/device.interface";
 import {Subscription} from "rxjs";
@@ -21,8 +21,8 @@ export class BlindsdeviceDetailsComponent implements OnInit {
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
       if (params['id']) {
-        this.blindsCacheService.getDataService().subscribe(dataService => {
-          this.blind = dataService.getCache(params['id']);
+        this.blindsCacheService.getDevice(params['id']).subscribe(device => {
+          this.blind = device;
         });
       }
     });

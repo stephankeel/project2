@@ -1,7 +1,7 @@
 <div class="div--maxwith">
   <app-list-header [title]="'Rollladenverwaltung'" [showCreate]="true" [showBack]="true"></app-list-header>
   <div class="div--margins-05 div--maxwith">
-    <app-line class="div--flex" *ngFor="let blind of items | async" [id]="blind.id"
+    <app-line class="div--flex" *ngFor="let blind of blindsDeviceCacheService.getAll() | async" [id]="blind.id"
               [desc]="blind | blindListentryFormatter"></app-line>
   </div>
 </div>

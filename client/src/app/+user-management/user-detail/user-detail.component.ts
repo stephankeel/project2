@@ -21,8 +21,8 @@ export class UserDetailComponent implements OnInit {
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
       if (params['id']) {
-        this.userCacheService.getDataService().subscribe(dataService => {
-          this.user = dataService.getCache(params['id']);
+        this.userCacheService.getDevice(params['id']).subscribe(user => {
+          this.user = user;
         });
       }
     });
@@ -36,7 +36,7 @@ export class UserDetailComponent implements OnInit {
     this.router.navigate(['../..'], {relativeTo: this.route});
   }
 
-  userTypeAsString(type: UserType) : string{
+  userTypeAsString(type: UserType): string {
     return userTypeAsString(type);
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from "@angular/core";
 import {BlindsDeviceCacheService} from "../../../cache/service/blinds-device.cache.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {IBlindsDevice} from "../../../../../../server/entities/device.interface";
@@ -24,8 +24,8 @@ export class BlindsdeviceDeleteComponent implements OnInit {
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
       if (params['id']) {
-        this.blindsCacheService.getDataService().subscribe(dataService => {
-          this.blind = dataService.getCache(params['id']);
+        this.blindsCacheService.getDevice(params['id']).subscribe(device => {
+          this.blind = device;
         });
       }
     });
@@ -36,16 +36,14 @@ export class BlindsdeviceDeleteComponent implements OnInit {
   }
 
   deleteBlind() {
-    this.blindsCacheService.getDataService().subscribe(dataService => {
-      if (this.blind.id) {
-        dataService.getRestService().del(this.blind.id).subscribe(blind => {
-          this.notificationService.info(`Rollladen gelöscht.`);
-          this.router.navigate(['../..'], {relativeTo: this.route});
-        }, error => {
-          this.notificationService.error(`Rollladen konnte nicht gelöscht werden (${JSON.stringify(error)})`);
-        });
-      }
-    });
+    if (this.blind.id) {
+      this.blindsCacheService.delDevice(this.blind.id).subscribe(blind => {
+        this.notificationService.info(`Rollladen gelöscht.`);
+        this.router.navigate(['../..'], {relativeTo: this.route});
+      }, error => {
+        this.notificationService.error(`Rollladen konnte nicht gelöscht werden (${JSON.stringify(error)})`);
+      });
+    }
   }
 
   cancel() {

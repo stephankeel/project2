@@ -17,8 +17,7 @@ import {DataCacheService} from '../../../cache/service/data-cache.service';
 })
 export class SingleBlindsComponent implements OnInit {
 
-  private cacheServiceSubscription: Subscription;
-  private deviceServiceSubscription: Subscription;
+  private subscription: Subscription;
   private id: any;
   private selectedDevice: BlindsDevice;
   private allDevices: BlindsDevice[] = [];
@@ -31,13 +30,10 @@ export class SingleBlindsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.cacheServiceSubscription = this.blindsDeviceCacheService.getDataService().subscribe((deviceService: GenericService<BlindsDevice>) => {
-      this.deviceServiceSubscription = deviceService.items.subscribe(devices => {
-        this.allDevices = devices.sort((a, b) => a.name.localeCompare(b.name));
-        this.resubscribe();
-      }, error => this.notificationService.error(error.toString()));
-      deviceService.getAll();
-    });
+    this.subscription = this.blindsDeviceCacheService.getAll().subscribe(devices => {
+      this.allDevices = devices.sort((a, b) => a.name.localeCompare(b.name));
+      this.resubscribe();
+    }, error => this.notificationService.error(error.toString()));
 
     // listen for route id changes
     this.route.params.subscribe((params: Params) => {
@@ -48,11 +44,10 @@ export class SingleBlindsComponent implements OnInit {
 
   ngOnDestroy() {
     this.releaseDevice();
-    this.deviceServiceSubscription.unsubscribe();
-    this.cacheServiceSubscription.unsubscribe();
+    this.subscription.unsubscribe();
   }
 
-  resubscribe() {
+  private resubscribe() {
     this.releaseDevice();
     if (this.allDevices.length > 0 && this.id) {
       let matchingDevices: BlindsDevice[] = this.allDevices.filter(device => device.id == this.id);
@@ -63,7 +58,7 @@ export class SingleBlindsComponent implements OnInit {
     }
   }
 
-  subscribeDevice(): void {
+  private subscribeDevice(): void {
     if (this.selectedDevice) {
       this.dataSubscription = this.dataCacheService.getCacheLatest(DeviceType.BLINDS, this.selectedDevice).subscribe((data: IBlindsData) => {
         this.deviceState = data;
@@ -71,7 +66,7 @@ export class SingleBlindsComponent implements OnInit {
     }
   }
 
-  releaseDevice(): void {
+  private releaseDevice(): void {
     if (this.selectedDevice) {
       this.deviceState = null;
       if (this.dataSubscription) {
@@ -81,13 +76,13 @@ export class SingleBlindsComponent implements OnInit {
     }
   }
 
-  selectDevice(device: BlindsDevice) {
+  private selectDevice(device: BlindsDevice) {
     this.selectedDevice = device;
     this.clearMessage();
     this.router.navigate(['../', device.id], {relativeTo: this.route});
   }
 
-  clearMessage(): void {
+  private clearMessage(): void {
     this.notificationService.clear();
   }
 

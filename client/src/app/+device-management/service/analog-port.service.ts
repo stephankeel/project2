@@ -26,23 +26,19 @@ export class AnalogPortService {
   }
 
   private init() {
-    this.temperatureDeviceCacheService.getDataService().subscribe(temperatureService => {
-      this.itemsTemperatureSub = temperatureService.items.subscribe(itemList => {
-        this.lastTemperatureItems = itemList;
-        this.temperatureLoaded = true;
-        this.computeUnusedInputPorts();
-      });
+    this.temperatureDeviceCacheService.getAll().subscribe(itemList => {
+      this.lastTemperatureItems = itemList;
+      this.temperatureLoaded = true;
+      this.computeUnusedInputPorts();
     });
-    this.humidityDeviceCacheService.getDataService().subscribe(humidityService => {
-      this.itemsHumiditySub = humidityService.items.subscribe(itemList => {
-        this.lastHumidityItems = itemList;
-        this.humidityLoaded = true;
-        this.computeUnusedInputPorts();
-      });
+    this.humidityDeviceCacheService.getAll().subscribe(itemList => {
+      this.lastHumidityItems = itemList;
+      this.humidityLoaded = true;
+      this.computeUnusedInputPorts();
     });
   }
 
-  private computeUnusedInputPorts(){
+  private computeUnusedInputPorts() {
     return this.computeUnusedPorts(analogInputs);
   }
 

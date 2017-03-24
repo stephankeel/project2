@@ -11,16 +11,8 @@ import {IBlindsDevice} from "../../../../../server/entities/device.interface";
   templateUrl: './blinds-setup-overview.component.html',
   styleUrls: ['./blinds-setup-overview.component.scss']
 })
-export class BlindsSetupOverviewComponent implements OnInit {
-
-  private items: Observable<IBlindsDevice[]> = new ReplaySubject<IBlindsDevice[]>(1);
+export class BlindsSetupOverviewComponent {
 
   constructor(private blindsDeviceCacheService: BlindsDeviceCacheService) {
-  }
-
-  ngOnInit() {
-    this.blindsDeviceCacheService.getDataService().subscribe(blindsService => {
-      this.items = blindsService.items;
-    })
   }
 }

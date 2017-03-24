@@ -9,16 +9,8 @@ import {List} from "immutable";
   templateUrl: './humidity-setup-overview.component.html',
   styleUrls: ['./humidity-setup-overview.component.scss']
 })
-export class HumiditySetupOverviewComponent implements OnInit {
-
-  private items: Observable<IHumidityDevice[]> = new ReplaySubject<IHumidityDevice[]>(1);
+export class HumiditySetupOverviewComponent {
 
   constructor(private humidityDeviceCacheService: HumidityDeviceCacheService) {
-  }
-
-  ngOnInit() {
-    this.humidityDeviceCacheService.getDataService().subscribe(humidityService => {
-      this.items = humidityService.items;
-    })
   }
 }

@@ -56,24 +56,24 @@ export class DeviceOverviewComponent implements OnInit {
   }
 
   handleBlindsDevices(): void {
-    this.blindsDeviceCache.getDataService().subscribe(dataService => {
-      blindsDevicesInfo.count = dataService.getCount();
+    this.blindsDeviceCache.getAll().subscribe(devices => {
+      blindsDevicesInfo.count = devices.length;
     }, error => {
       this.notificationService.error(`blindsdevice subscrition failed with ${error.toString()}`);
     });
   }
 
   handleHumidityDevices(): void {
-    this.humidityDeviceCache.getDataService().subscribe(dataService => {
-      humidityDevicesInfo.count = dataService.getCount();
+    this.humidityDeviceCache.getAll().subscribe(devices => {
+      humidityDevicesInfo.count = devices.length;
     }, error => {
       this.notificationService.error(`humitidydevice subscrition failed with ${error.toString()}`);
     });
   }
 
   handleTemperatureDevices(): void {
-    this.temperatureDeviceCache.getDataService().subscribe(dataService => {
-      temperatureDevicesInfo.count = dataService.getCount();
+    this.temperatureDeviceCache.getAll().subscribe(devices => {
+      temperatureDevicesInfo.count = devices.length;
     }, error => {
       this.notificationService.error(`temperaturedevice subscrition failed with ${error.toString()}`);
     });

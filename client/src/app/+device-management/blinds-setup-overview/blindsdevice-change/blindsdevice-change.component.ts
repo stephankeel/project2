@@ -5,7 +5,7 @@ import {BlindsDeviceCacheService} from "../../../cache/service/blinds-device.cac
 import {ActivatedRoute, Router} from "@angular/router";
 import {NotificationService} from "../../../notification/notification.service";
 import {DigitalPortService} from "../../service/digital-port.service";
-import {portName, Port} from "../../../../../../server/hardware/port-map";
+import {Port, portName} from "../../../../../../server/hardware/port-map";
 import {PortHandler} from "../../service/port-handler";
 
 @Component({
@@ -33,8 +33,8 @@ export class BlindsdeviceChangeComponent implements OnInit {
     this.unusedOutputPortHandler = new PortHandler(() => this.digitalPortService.getUnusedOutputPorts());
     this.subscriptions.push(this.route.params.subscribe(params => {
       if (params['id']) {
-        this.blindsCacheService.getDataService().subscribe(dataService => {
-          this.blind = dataService.getCache(params['id']);
+        this.blindsCacheService.getDevice(params['id']).subscribe(device => {
+          this.blind = device;
           this.unusedInputPortHandler.registerPorts([this.blind.keyDown, this.blind.keyUp]);
           this.unusedOutputPortHandler.registerPorts([this.blind.actorDown, this.blind.actorUp]);
           this.title = "Rollladen ändern";
@@ -55,24 +55,22 @@ export class BlindsdeviceChangeComponent implements OnInit {
   }
 
   submit(blind: IBlindsDevice) {
-    this.blindsCacheService.getDataService().subscribe(dataService => {
-      if (this.blind.id) {
-        blind.id = this.blind.id;
-        dataService.getRestService().update(blind).subscribe(user => {
-          this.notificationService.info("Rollladen aktualisiert");
-          this.router.navigate(['../..'], {relativeTo: this.route});
-        }, error => {
-          this.notificationService.error(`Aktualisierung vom Rollladen fehlgeschlagen (${JSON.stringify(error)})`);
-        });
-      } else {
-        dataService.getRestService().add(blind).subscribe(user => {
-          this.notificationService.info("Neuer Rollladen erstellt");
-          this.router.navigate(['..'], {relativeTo: this.route});
-        }, error => {
-          this.notificationService.error(`Erstellung vom Rollladen fehlgeschlagen (${JSON.stringify(error)})`);
-        });
-      }
-    });
+    if (this.blind.id) {
+      blind.id = this.blind.id;
+      this.blindsCacheService.updateDevice(blind).subscribe(blind => {
+        this.notificationService.info("Rollladen aktualisiert");
+        this.router.navigate(['../..'], {relativeTo: this.route});
+      }, error => {
+        this.notificationService.error(`Aktualisierung vom Rollladen fehlgeschlagen (${JSON.stringify(error)})`);
+      });
+    } else {
+      this.blindsCacheService.addDevice(blind).subscribe(blind => {
+        this.notificationService.info("Neuer Rollladen erstellt");
+        this.router.navigate(['..'], {relativeTo: this.route});
+      }, error => {
+        this.notificationService.error(`Erstellung vom Rollladen fehlgeschlagen (${JSON.stringify(error)})`);
+      });
+    }
   }
 
   cancel() {

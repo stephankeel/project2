@@ -19,21 +19,19 @@ export class DigitalPortService {
     this.init();
   }
 
-  public getUnusedInputPorts() : Observable<Port[]> {
+  public getUnusedInputPorts(): Observable<Port[]> {
     return this.unusedInputPorts;
   }
 
-  public getUnusedOutputPorts() : Observable<Port[]> {
+  public getUnusedOutputPorts(): Observable<Port[]> {
     return this.unusedOutputPorts;
   }
 
   private init() {
-    this.blindsDeviceCacheService.getDataService().subscribe(blindsService => {
-      this.itemsSub = blindsService.items.subscribe(itemList => {
-        this.unusedInputPorts.next(this.computeUnusedInputPorts(itemList));
-        this.unusedOutputPorts.next(this.computeUnusedOutputPorts(itemList));
-      });
-    })
+    this.blindsDeviceCacheService.getAll().subscribe(items => {
+      this.unusedInputPorts.next(this.computeUnusedInputPorts(items));
+      this.unusedOutputPorts.next(this.computeUnusedOutputPorts(items));
+    });
   }
 
   private computeUnusedInputPorts(itemList: IBlindsDevice[]): Port[] {
@@ -44,7 +42,7 @@ export class DigitalPortService {
     return this.computeUnusedPorts(itemList, digitalOutputs, item => item.actorDown, item => item.actorUp);
   }
 
-  private computeUnusedPorts(itemList: IBlindsDevice[], availablePorts: Port[], down:(item: IBlindsDevice) => Port, up: (item: IBlindsDevice) => Port): Port[] {
+  private computeUnusedPorts(itemList: IBlindsDevice[], availablePorts: Port[], down: (item: IBlindsDevice) => Port, up: (item: IBlindsDevice) => Port): Port[] {
     let unusedPorts: Set<Port> = new Set<Port>(availablePorts);
     itemList.forEach(item => {
       unusedPorts.delete(up(item));

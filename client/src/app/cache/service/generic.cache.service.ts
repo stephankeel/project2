@@ -5,8 +5,6 @@ import {Observable, ReplaySubject} from "rxjs";
 import {IId} from "../../../../../server/entities/id.interface";
 import {ClientSocketService} from "../../remote/client-socket.service";
 import {NotificationService} from "../../notification/notification.service";
-import {register} from "ts-node/dist";
-import {forEach} from "@angular/router/src/utils/collection";
 
 @Injectable()
 export class GenericeCacheService<T extends IId> {

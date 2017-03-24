@@ -32,8 +32,8 @@ export class HumiditydeviceChangeComponent implements OnInit {
     this.unusedPortHandler = new PortHandler(() => this.analogPortService.getUnusedInputPorts());
     this.subscriptions.push(this.route.params.subscribe(params => {
       if (params['id']) {
-        this.humidityDeviceCacheService.getDataService().subscribe(dataService => {
-          this.humidityDevice = dataService.getCache(params['id']);
+        this.humidityDeviceCacheService.getDevice(params['id']).subscribe(device => {
+          this.humidityDevice = device;
           this.unusedPortHandler.registerPorts([this.humidityDevice.port]);
           this.title = "Feuchtigkeitssensor ändern";
           this.backlink = "../.."
@@ -53,24 +53,22 @@ export class HumiditydeviceChangeComponent implements OnInit {
   }
 
   submit(humidityDevice: IBlindsDevice) {
-    this.humidityDeviceCacheService.getDataService().subscribe(dataService => {
-      if (this.humidityDevice.id) {
-        humidityDevice.id = this.humidityDevice.id;
-        dataService.getRestService().update(humidityDevice).subscribe(user => {
-          this.notificationService.info("Feuchtigkeitssensor aktualisiert");
-          this.router.navigate(['../..'], {relativeTo: this.route});
-        }, error => {
-          this.notificationService.error(`Aktualisierung vom Feuchtigkeitssensor fehlgeschlagen (${JSON.stringify(error)})`);
-        });
-      } else {
-        dataService.getRestService().add(humidityDevice).subscribe(user => {
-          this.notificationService.info("Neuer Rollladen erstellt");
-          this.router.navigate(['..'], {relativeTo: this.route});
-        }, error => {
-          this.notificationService.error(`Erstellung vom Feuchtigkeitssensor fehlgeschlagen (${JSON.stringify(error)})`);
-        });
-      }
-    });
+    if (this.humidityDevice.id) {
+      humidityDevice.id = this.humidityDevice.id;
+      this.humidityDeviceCacheService.updateDevice(humidityDevice).subscribe(humidityDevice => {
+        this.notificationService.info("Feuchtigkeitssensor aktualisiert");
+        this.router.navigate(['../..'], {relativeTo: this.route});
+      }, error => {
+        this.notificationService.error(`Aktualisierung vom Feuchtigkeitssensor fehlgeschlagen (${JSON.stringify(error)})`);
+      });
+    } else {
+      this.humidityDeviceCacheService.addDevice(humidityDevice).subscribe(humidityDevice => {
+        this.notificationService.info("Neuer Feuchtigkeitssensor erstellt");
+        this.router.navigate(['..'], {relativeTo: this.route});
+      }, error => {
+        this.notificationService.error(`Erstellung vom Feuchtigkeitssensor fehlgeschlagen (${JSON.stringify(error)})`);
+      });
+    }
   }
 
   cancel() {
