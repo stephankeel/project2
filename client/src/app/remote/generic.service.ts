@@ -1,6 +1,5 @@
-import {ReplaySubject, Subscription, Observable, Subject} from "rxjs";
+import {Observable, ReplaySubject, Subject, Subscription} from "rxjs";
 import {ClientSocketService} from "./client-socket.service";
-import {List, Seq, Iterator} from "immutable";
 import {IId} from "../../../../server/entities/id.interface";
 import {AuthHttp} from "angular2-jwt";
 import {ISocketItem} from "../../../../server/entities/socket-item.model";
