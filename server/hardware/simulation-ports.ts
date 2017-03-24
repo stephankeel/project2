@@ -128,7 +128,7 @@ export class SimulatedAIN extends AbstractAIN {
       this.outputObs = Observable.create((subscriber: Subscriber<number>) => {
         SimulatedAIN.logger.debug(`poll ${this.getName()} every ${intervalSeconds} second(s)`);
         this.doPoll = true;
-
+        this.setInitialValue(subscriber);
         let intervalId = setInterval(() => {
           if (this.doPoll) {
             this.generateNextValue();
