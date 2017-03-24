@@ -24,20 +24,6 @@ export class GenericService<T extends IId> {
     this.dataSubscription.unsubscribe();
   }
 
-  public getCache(id: string): T {
-    return this.currentItems.get(id);
-  }
-
-  public getAllFromCache(): T[] {
-      let ret: T[] = [];
-    this.currentItems.forEach((v: T) => ret.push(v));
-    return ret;
-  }
-
-  public getCount(): number {
-    return this.currentItems.size;
-  }
-
   public getRestService(): GenericRestService<T> {
     return this.restService;
   }

@@ -4,7 +4,6 @@ import {TemperatureDeviceCacheService} from "./service/temperature-device.cache.
 import {BlindsDeviceCacheService} from "./service/blinds-device.cache.service";
 import {HumidityDeviceCacheService} from "./service/humidity-device.cache.service";
 import {UserCacheService} from "./service/user.cache.service";
-import {DataCacheService} from "./service/data-cache.service";
 import {TemperatureDataCacheService} from "./service/temperature-data.cache.service";
 import {HumidityDataCacheService} from "./service/humidity-data.cache.service";
 import {BlindDataCacheService} from "./service/blinds-data.cache.service";
@@ -20,7 +19,6 @@ import {BlindDataCacheService} from "./service/blinds-data.cache.service";
     TemperatureDataCacheService,
     HumidityDeviceCacheService,
     HumidityDataCacheService,
-    DataCacheService,
     UserCacheService,
   ],
   declarations: []

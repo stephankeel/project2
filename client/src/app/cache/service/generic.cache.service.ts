@@ -19,22 +19,6 @@ export class GenericeCacheService<T extends IId> {
     this.loaded = false;
   }
 
-  public getDataService(): Observable<GenericService<T>> {
-    let subject = new ReplaySubject<GenericService<T>>();
-    if (!this.loaded) {
-      this.dataService = new GenericService<T>(this.http, this.socketService, this.notificationService, this.restUrl, this.socketNamespace);
-      this.dataService.getAll().subscribe(service => {
-        subject.next(this.dataService);
-        subject.complete();
-        this.loaded = true;
-      });
-    } else {
-      subject.next(this.dataService);
-      subject.complete();
-    }
-    return subject;
-  }
-
   private ensureAllLoaded() {
     if (!this.loaded) {
       this.dataService = new GenericService<T>(this.http, this.socketService, this.notificationService, this.restUrl, this.socketNamespace);
