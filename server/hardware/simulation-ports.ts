@@ -128,15 +128,10 @@ export class SimulatedAIN extends AbstractAIN {
       this.outputObs = Observable.create((subscriber: Subscriber<number>) => {
         SimulatedAIN.logger.debug(`poll ${this.getName()} every ${intervalSeconds} second(s)`);
         this.doPoll = true;
+
         let intervalId = setInterval(() => {
           if (this.doPoll) {
-            // provide simulated value between 0 and 4095 max!
-            if (this.generatedValue > 30) {
-              this.sign = -1;
-            } else if (this.generatedValue < 15) {
-              this.sign = 1;
-            }
-            this.generatedValue += this.sign * 0.1;
+            this.generateNextValue();
             subscriber.next(this.generatedValue);
           } else {
             subscriber.complete();
@@ -146,6 +141,21 @@ export class SimulatedAIN extends AbstractAIN {
       });
     }
     return this.outputObs;
+  }
+
+  private setInitialValue(subscriber: Subscriber<number>) {
+    this.generateNextValue();
+    subscriber.next(this.generatedValue);
+  }
+
+  private generateNextValue() {
+    // provide simulated value between 0 and 4095 max!
+    if (this.generatedValue > 30) {
+      this.sign = -1;
+    } else if (this.generatedValue < 15) {
+      this.sign = 1;
+    }
+    this.generatedValue += this.sign * 0.1;
   }
 
   stopPolling(): void {
