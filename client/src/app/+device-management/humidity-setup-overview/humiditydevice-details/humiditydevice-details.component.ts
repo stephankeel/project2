@@ -22,8 +22,8 @@ export class HumiditydeviceDetailsComponent implements OnInit {
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
       if (params['id']) {
-        this.humidityDeviceCacheService.getDataService().subscribe(dataService => {
-          this.humidityDevice = dataService.getCache(params['id']);
+        this.humidityDeviceCacheService.getDevice(params['id']).subscribe(device => {
+          this.humidityDevice = device;
         });
       }
     });

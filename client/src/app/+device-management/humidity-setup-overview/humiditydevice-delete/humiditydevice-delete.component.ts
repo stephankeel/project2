@@ -24,8 +24,8 @@ export class HumiditydeviceDeleteComponent implements OnInit {
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
       if (params['id']) {
-        this.humidityDeviceCacheService.getDataService().subscribe(dataService => {
-          this.humidityDevice = dataService.getCache(params['id']);
+        this.humidityDeviceCacheService.getDevice(params['id']).subscribe(device => {
+          this.humidityDevice = device;
         });
       }
     });
@@ -36,16 +36,14 @@ export class HumiditydeviceDeleteComponent implements OnInit {
   }
 
   deleteHumidity() {
-    this.humidityDeviceCacheService.getDataService().subscribe(dataService => {
-      if (this.humidityDevice.id) {
-        dataService.getRestService().del(this.humidityDevice.id).subscribe(humidityDevice => {
-          this.notificationService.info(`Feuchtigkeitssensor gelöscht.`);
-          this.router.navigate(['../..'], {relativeTo: this.route});
-        }, error => {
-          this.notificationService.error(`Feuchtigkeitssensor konnte nicht gelöscht werden (${JSON.stringify(error)})`);
-        });
-      }
-    });
+    if (this.humidityDevice.id) {
+      this.humidityDeviceCacheService.delDevice(this.humidityDevice.id).subscribe(humidityDevice => {
+        this.notificationService.info(`Feuchtigkeitssensor gelöscht.`);
+        this.router.navigate(['../..'], {relativeTo: this.route});
+      }, error => {
+        this.notificationService.error(`Feuchtigkeitssensor konnte nicht gelöscht werden (${JSON.stringify(error)})`);
+      });
+    }
   }
 
   cancel() {
