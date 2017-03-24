@@ -11,6 +11,9 @@ import {NotificationService} from "../../../notification/notification.service";
 import {TemperatureDeviceCacheService} from "../../../cache/service/temperature-device.cache.service";
 import {HumidityDeviceCacheService} from "../../../cache/service/humidity-device.cache.service";
 import {GenericeCacheService} from "../../../cache/service/generic.cache.service";
+import {TemperatureDataCacheService} from "../../../cache/service/temperature-data.cache.service";
+import {HumidityDataCacheService} from "../../../cache/service/humidity-data.cache.service";
+import {GenericDataCacheService} from "../../../cache/service/generic-data-cache.service";
 
 @Component({
   selector: 'app-all-of-type',
@@ -22,85 +25,33 @@ export class AllOfTypeComponent implements OnInit {
   @Input() deviceType: DeviceType;
 
   private title: string;
-  private devices: IDevice[] = [];
   private units: string;
 
-  private genericCacheService: GenericeCacheService<any>;
-  private dataServices: Map<IDevice, GenericDataService<IAnalogData>> = new Map<IDevice, GenericDataService<IAnalogData>>();
-  devicesData: Map<IDevice, IAnalogData> = new Map<IDevice, IAnalogData>();
-  dataSubscriptions: Map<IDevice, Subscription> = new Map<IDevice, Subscription>();
+  private deviceCacheService: GenericeCacheService<any>;
+  private dataCacheService: GenericDataCacheService<any, any>;
 
-  constructor(private route: ActivatedRoute, private router: Router, private socketService: ClientSocketService,
-              private authHttp: AuthHttp, private notificationService: NotificationService,
+  constructor(private route: ActivatedRoute, private router: Router,
               private temperatureDeviceCacheService: TemperatureDeviceCacheService,
-              private humidityDeviceCacheService: HumidityDeviceCacheService) {
+              private temperatureDataCacheService: TemperatureDataCacheService,
+              private humidityDeviceCacheService: HumidityDeviceCacheService,
+              private humidityDataCacheService: HumidityDataCacheService) {
   }
 
   ngOnInit() {
     if (this.deviceType === DeviceType.HUMIDITY) {
       this.title = 'Feuchtigkeit-Übersicht';
       this.units = '%rel';
-      this.genericCacheService = this.humidityDeviceCacheService;
+      this.deviceCacheService = this.humidityDeviceCacheService;
+      this.dataCacheService = this.humidityDataCacheService;
     } else {
       this.title = 'Temperatur-Übersicht';
       this.units = '°C';
-      this.genericCacheService = this.temperatureDeviceCacheService;
-    }
-    this.configureItemSubscription();
-  }
-
-  private configureItemSubscription() {
-    this.genericCacheService.getAll().subscribe(devices => {
-      this.unsubscribeAll();
-      this.devices = devices.sort((a, b) => a.name.localeCompare(b.name));
-      this.subscribeAll();
-    }, error => this.notificationService.error(error.toString()));
-  }
-
-  ngOnDestroy() {
-    this.unsubscribeAll();
-    this.genericCacheService.disconnect();
-  }
-
-  private subscribeAll(): void {
-    this.devices.forEach(device => this.subscribeDevice(device));
-  }
-
-  private unsubscribeAll(): void {
-    this.devices.forEach(device => this.releaseDevice(device));
-  }
-
-  private subscribeDevice(device: IDevice): void {
-    let dataService: GenericDataService<IAnalogData>;
-    if (this.deviceType === DeviceType.HUMIDITY) {
-      dataService = new GenericDataService<IAnalogData>(this.authHttp, this.socketService, '/api/data/humidity', '/humidity', device.id);
-    } else {
-      dataService = new GenericDataService<IAnalogData>(this.authHttp, this.socketService, '/api/data/temperature', '/temperature', device.id);
-    }
-    this.dataServices.set(device, dataService);
-    let subscription = dataService.lastItem.subscribe((data: IAnalogData) => this.devicesData.set(device, data));
-    this.dataSubscriptions.set(device, subscription);
-    dataService.getLatest();
-  }
-
-  private releaseDevice(device: IDevice): void {
-    let dataService: GenericDataService<IAnalogData> = this.dataServices.get(device);
-    if (dataService) {
-      dataService.disconnect();
-      this.dataServices.delete(device);
-      this.devicesData.delete(device);
-      this.dataSubscriptions.get(device).unsubscribe();
-      this.dataSubscriptions.delete(device);
+      this.deviceCacheService = this.temperatureDeviceCacheService;
+      this.dataCacheService = this.temperatureDataCacheService;
     }
   }
-
-  select(device: IDevice): void {
+  private select(device: IDevice): void {
     let path: string = this.deviceType === DeviceType.HUMIDITY ? '../humidity' : '../temperature';
     this.router.navigate([path, device.id], {relativeTo: this.route});
   }
-
-  getData(device: IDevice): IAnalogData {
-    return this.devicesData.get(device);
-  }
-
 }
