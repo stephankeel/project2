@@ -32,7 +32,7 @@ export class SingleBlindsComponent implements OnInit {
   ngOnInit() {
     this.cacheServiceSubscription = this.blindsDeviceCacheService.getDataService().subscribe((deviceService: GenericService<BlindsDevice>) => {
       deviceService.items.subscribe(devices => {
-        this.allDevices = devices.toArray().sort((a, b) => a.name.localeCompare(b.name));
+        this.allDevices = devices.sort((a, b) => a.name.localeCompare(b.name));
         this.resubscribe();
       }, error => this.notificationService.error(error.toString()));
       deviceService.getAll();

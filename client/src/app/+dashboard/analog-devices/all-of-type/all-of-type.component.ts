@@ -57,7 +57,7 @@ export class AllOfTypeComponent implements OnInit {
   private configureItemSubscription() {
     this.genericService.items.subscribe(devices => {
       this.unsubscribeAll();
-      this.devices = devices.toArray().sort((a, b) => a.name.localeCompare(b.name));
+      this.devices = devices.sort((a, b) => a.name.localeCompare(b.name));
       this.subscribeAll();
     }, error => this.notificationService.error(error.toString()));
   }

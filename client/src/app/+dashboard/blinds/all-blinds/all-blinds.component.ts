@@ -32,7 +32,7 @@ export class AllBlindsComponent implements OnInit {
     this.cacheServiceSubscription = this.blindsDeviceCacheService.getDataService().subscribe(deviceService => {
       deviceService.items.subscribe(devices => {
         this.unsubscribeAll();
-        this.devices = devices.toArray().sort((a, b) => a.name.localeCompare(b.name));
+        this.devices = devices.sort((a, b) => a.name.localeCompare(b.name));
         this.subscribeAll();
       }, error => this.notificationService.error(error.toString()));
       deviceService.getAll();

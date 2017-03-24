@@ -12,7 +12,7 @@ import {UserCacheService} from "../../cache/service/user.cache.service";
   styleUrls: ['users.component.scss']
 })
 export class UsersComponent implements OnInit {
-  private items: Observable<List<IUser>> = new ReplaySubject<List<IUser>>(1);
+  private items: Observable<IUser[]> = new ReplaySubject<IUser[]>(1);
 
   constructor(private userCacheService: UserCacheService, private router: Router, private route: ActivatedRoute, private authenticationService: AuthenticationService) {
   }
