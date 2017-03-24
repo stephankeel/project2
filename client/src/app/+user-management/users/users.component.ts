@@ -11,16 +11,8 @@ import {UserCacheService} from "../../cache/service/user.cache.service";
   templateUrl: 'users.component.html',
   styleUrls: ['users.component.scss']
 })
-export class UsersComponent implements OnInit {
-  private items: Observable<IUser[]> = new ReplaySubject<IUser[]>(1);
-
+export class UsersComponent  {
   constructor(private userCacheService: UserCacheService, private router: Router, private route: ActivatedRoute, private authenticationService: AuthenticationService) {
-  }
-
-  ngOnInit() {
-    this.userCacheService.getDataService().subscribe(userService => {
-      this.items = userService.items;
-    })
   }
 
   isLoggedInUser(user: IUser) {

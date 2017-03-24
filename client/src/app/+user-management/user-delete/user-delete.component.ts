@@ -20,8 +20,8 @@ export class UserDeleteComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
       if (params['id']) {
-        this.userCacheService.getDataService().subscribe(dataService => {
-          this.user = dataService.getCache(params['id']);
+        this.userCacheService.getDevice(params['id']).subscribe(user => {
+          this.user = user;
         });
       }
     });
@@ -33,16 +33,14 @@ export class UserDeleteComponent implements OnInit, OnDestroy {
 
 
   deleteUser() {
-    this.userCacheService.getDataService().subscribe(dataService => {
-      if (this.user.id) {
-        dataService.getRestService().del(this.user.id).subscribe(user => {
-          this.notificationService.info(`Benutzer gelöscht.`);
-          this.router.navigate(['../..'], {relativeTo: this.route});
-        }, error => {
-          this.notificationService.error(`Benutzer konnte nicht gelöscht werden (${JSON.stringify(error)})`);
-        });
-      }
-    });
+    if (this.user.id) {
+      this.userCacheService.delDevice(this.user.id).subscribe(user => {
+        this.notificationService.info(`Benutzer gelöscht.`);
+        this.router.navigate(['../..'], {relativeTo: this.route});
+      }, error => {
+        this.notificationService.error(`Benutzer konnte nicht gelöscht werden (${JSON.stringify(error)})`);
+      });
+    }
   }
 
   cancel() {

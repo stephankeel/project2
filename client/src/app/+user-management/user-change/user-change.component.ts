@@ -2,7 +2,7 @@ import {Component, OnInit} from "@angular/core";
 import {IUser} from "../../../../../server/entities/user.interface";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Subscription} from "rxjs";
-import {UserTypesArray, UserType} from "../../../../../server/entities/user-type";
+import {UserType, UserTypesArray} from "../../../../../server/entities/user-type";
 import {AuthenticationService} from "../../remote/authentication.service";
 import {UserCacheService} from "../../cache/service/user.cache.service";
 import {NotificationService} from "../../notification/notification.service";
@@ -29,8 +29,8 @@ export class UserChangeComponent implements OnInit {
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
       if (params['id']) {
-        this.userCacheService.getDataService().subscribe(dataService => {
-          this.user = dataService.getCache(params['id']);
+        this.userCacheService.getDevice(params['id']).subscribe(user => {
+          this.user = user;
           this.userPasswordHash = this.user.password;
           this.userType = this.user.type;
           this.user.password = '';
@@ -47,30 +47,28 @@ export class UserChangeComponent implements OnInit {
   }
 
   submit(user: IUser) {
-    this.userCacheService.getDataService().subscribe(dataService => {
-      if (this.user.id) {
-        user.id = this.user.id;
-        if (!user.password) {
-          user.password = this.userPasswordHash;
-        }
-        if (user.type == undefined) {
-          user.type = this.userType;
-        }
-        dataService.getRestService().update(user).subscribe(user => {
-          this.notificationService.info('Benutzer wurde erfolgreich modifiziert');
-          this.router.navigate(['../..'], {relativeTo: this.route});
-        }, error => {
-          this.notificationService.error(`Benutzer konnte nicht modifiziert werden (${JSON.stringify(error)})`);
-        });
-      } else {
-        dataService.getRestService().add(user).subscribe(user => {
-          this.notificationService.info('Neuer Benutzer wurde erfolgreich angelegt');
-          this.router.navigate(['..'], {relativeTo: this.route});
-        }, error => {
-          this.notificationService.error(`Neuer Benutzer konnte nicht angelegt werden (${JSON.stringify(error)})`);
-        });
+    if (this.user.id) {
+      user.id = this.user.id;
+      if (!user.password) {
+        user.password = this.userPasswordHash;
       }
-    });
+      if (user.type == undefined) {
+        user.type = this.userType;
+      }
+      this.userCacheService.updateDevice(user).subscribe(user => {
+        this.notificationService.info('Benutzer wurde erfolgreich modifiziert');
+        this.router.navigate(['../..'], {relativeTo: this.route});
+      }, error => {
+        this.notificationService.error(`Benutzer konnte nicht modifiziert werden (${JSON.stringify(error)})`);
+      });
+    } else {
+      this.userCacheService.addDevice(user).subscribe(user => {
+        this.notificationService.info('Neuer Benutzer wurde erfolgreich angelegt');
+        this.router.navigate(['..'], {relativeTo: this.route});
+      }, error => {
+        this.notificationService.error(`Neuer Benutzer konnte nicht angelegt werden (${JSON.stringify(error)})`);
+      });
+    }
   }
 
   cancel() {
