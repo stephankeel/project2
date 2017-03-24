@@ -1,16 +1,16 @@
 import {ActivatedRoute, Router} from "@angular/router";
-import {Component, OnInit, Input} from "@angular/core";
+import {Component, Input, OnInit} from "@angular/core";
 import {Subscription} from "rxjs";
 import {IDevice} from "../../../../../../server/entities/device.interface";
 import {DeviceType} from "../../../misc/device-pool";
 import {IAnalogData} from "../../../../../../server/entities/data.interface";
 import {AuthHttp} from "angular2-jwt";
-import {GenericService} from "../../../remote/generic.service";
 import {ClientSocketService} from "../../../remote/client-socket.service";
 import {GenericDataService} from "../../../remote/generic-data.service";
 import {NotificationService} from "../../../notification/notification.service";
 import {TemperatureDeviceCacheService} from "../../../cache/service/temperature-device.cache.service";
 import {HumidityDeviceCacheService} from "../../../cache/service/humidity-device.cache.service";
+import {GenericeCacheService} from "../../../cache/service/generic.cache.service";
 
 @Component({
   selector: 'app-all-of-type',
@@ -25,7 +25,7 @@ export class AllOfTypeComponent implements OnInit {
   private devices: IDevice[] = [];
   private units: string;
 
-  private genericService: GenericService<any>;
+  private genericCacheService: GenericeCacheService<any>;
   private dataServices: Map<IDevice, GenericDataService<IAnalogData>> = new Map<IDevice, GenericDataService<IAnalogData>>();
   devicesData: Map<IDevice, IAnalogData> = new Map<IDevice, IAnalogData>();
   dataSubscriptions: Map<IDevice, Subscription> = new Map<IDevice, Subscription>();
@@ -40,22 +40,17 @@ export class AllOfTypeComponent implements OnInit {
     if (this.deviceType === DeviceType.HUMIDITY) {
       this.title = 'Feuchtigkeit-Übersicht';
       this.units = '%rel';
-      this.humidityDeviceCacheService.getDataService().subscribe(dataService => {
-        this.genericService = dataService;
-        this.configureItemSubscription();
-      });
+      this.genericCacheService = this.humidityDeviceCacheService;
     } else {
       this.title = 'Temperatur-Übersicht';
       this.units = '°C';
-      this.temperatureDeviceCacheService.getDataService().subscribe(dataService => {
-        this.genericService = dataService;
-        this.configureItemSubscription();
-      });
+      this.genericCacheService = this.temperatureDeviceCacheService;
     }
+    this.configureItemSubscription();
   }
 
   private configureItemSubscription() {
-    this.genericService.items.subscribe(devices => {
+    this.genericCacheService.getAll().subscribe(devices => {
       this.unsubscribeAll();
       this.devices = devices.sort((a, b) => a.name.localeCompare(b.name));
       this.subscribeAll();
@@ -64,7 +59,7 @@ export class AllOfTypeComponent implements OnInit {
 
   ngOnDestroy() {
     this.unsubscribeAll();
-    this.genericService.disconnect();
+    this.genericCacheService.disconnect();
   }
 
   private subscribeAll(): void {

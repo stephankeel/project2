@@ -11,6 +11,7 @@ import {GenericDataService} from '../../../remote/generic-data.service';
 import {NotificationService} from '../../../notification/notification.service';
 import {TemperatureDeviceCacheService} from "../../../cache/service/temperature-device.cache.service";
 import {HumidityDeviceCacheService} from "../../../cache/service/humidity-device.cache.service";
+import {GenericeCacheService} from "../../../cache/service/generic.cache.service";
 
 @Component({
   selector: 'app-single-of-type',
@@ -27,7 +28,7 @@ export class SingleOfTypeComponent implements OnInit {
   private units: string;
   private label: string;
 
-  private genericService: GenericService<IDevice>;
+  private genericCacheService: GenericeCacheService<IDevice>;
   private dataService: GenericDataService<IAnalogData>;
   id: any;
   selectedDevice: IDevice;
@@ -47,20 +48,14 @@ export class SingleOfTypeComponent implements OnInit {
       this.title = 'Feuchtigkeit (einzeln)';
       this.label = 'Feuchtigkeit';
       this.units = '%rel';
-
-      this.humidityDeviceCacheService.getDataService().subscribe(dataService => {
-        this.genericService = dataService;
-        this.configureItemSubscription();
-      });
+      this.genericCacheService = this.humidityDeviceCacheService;
     } else {
       this.title = 'Temperatur (einzeln)';
       this.label = 'Temperatur';
       this.units = '°C';
-      this.temperatureDeviceCacheService.getDataService().subscribe(dataService => {
-        this.genericService = dataService;
-        this.configureItemSubscription();
-      });
+      this.genericCacheService = this.temperatureDeviceCacheService;
     }
+    this.configureItemSubscription();
 
     // listen for route id changes
     this.route.params.subscribe((params: Params) => {
@@ -70,7 +65,7 @@ export class SingleOfTypeComponent implements OnInit {
   }
 
   private configureItemSubscription() {
-    this.genericService.items.subscribe(devices => {
+    this.genericCacheService.getAll().subscribe(devices => {
       this.allDevices = devices.sort((a, b) => a.name.localeCompare(b.name));
       this.resubscribe();
     }, error => this.notificationService.error(error.toString()));
@@ -78,7 +73,7 @@ export class SingleOfTypeComponent implements OnInit {
 
   ngOnDestroy() {
     this.releaseDevice();
-    this.genericService.disconnect();
+    this.genericCacheService.disconnect();
   }
 
   resubscribe() {
