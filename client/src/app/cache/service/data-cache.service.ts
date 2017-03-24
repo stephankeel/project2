@@ -15,7 +15,6 @@ import {GenericDataService} from "../../remote/generic-data.service";
 import {DeviceType} from "../../misc/device-pool";
 import {IBlindsData, IHumidityData, ITemperatureData} from "../../../../../server/entities/data.interface";
 
-
 @Injectable()
 export class DataCacheService {
 
