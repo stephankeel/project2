@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, OnDestroy, OnInit} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ITemperatureDevice} from "../../../../../../server/entities/device.interface";
 import {Subscription} from "rxjs";
@@ -10,7 +10,7 @@ import {TemperatureDeviceCacheService} from "../../../cache/service/temperature-
   templateUrl: './temperaturedevice-delete.component.html',
   styleUrls: ['./temperaturedevice-delete.component.scss']
 })
-export class TemperaturedeviceDeleteComponent implements OnInit {
+export class TemperaturedeviceDeleteComponent implements OnInit, OnDestroy {
 
   private sub: Subscription;
   private temperatureDevice: ITemperatureDevice = {};
@@ -24,8 +24,8 @@ export class TemperaturedeviceDeleteComponent implements OnInit {
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
       if (params['id']) {
-        this.temperatureDeviceCacheService.getDataService().subscribe(dataService => {
-          this.temperatureDevice = dataService.getCache(params['id']);
+        this.temperatureDeviceCacheService.getDevice(params['id']).subscribe(device => {
+          this.temperatureDevice = device;
         });
       }
     });
@@ -36,16 +36,14 @@ export class TemperaturedeviceDeleteComponent implements OnInit {
   }
 
   deleteTemperature() {
-    this.temperatureDeviceCacheService.getDataService().subscribe(dataService => {
-      if (this.temperatureDevice.id) {
-        dataService.getRestService().del(this.temperatureDevice.id).subscribe(temperatureDevice => {
-          this.notificationService.info(`Temperatursensor gelöscht.`);
-          this.router.navigate(['../..'], {relativeTo: this.route});
-        }, error => {
-          this.notificationService.error(`Temperatursensor konnte nicht gelöscht werden (${JSON.stringify(error)})`);
-        });
-      }
-    });
+    if (this.temperatureDevice.id) {
+      this.temperatureDeviceCacheService.delDevice(this.temperatureDevice.id).subscribe(temperatureDevice => {
+        this.notificationService.info(`Temperatursensor gelöscht.`);
+        this.router.navigate(['../..'], {relativeTo: this.route});
+      }, error => {
+        this.notificationService.error(`Temperatursensor konnte nicht gelöscht werden (${JSON.stringify(error)})`);
+      });
+    }
   }
 
   cancel() {
