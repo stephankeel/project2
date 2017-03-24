@@ -19,6 +19,7 @@ import {DataCacheService} from '../../../cache/service/data-cache.service';
 export class AllBlindsComponent implements OnInit {
 
   private cacheServiceSubscription: Subscription;
+  private deviceServiceSubscription: Subscription;
   private devices: BlindsDevice[] = [];
   private devicesState: Map<BlindsDevice, IBlindsData> = new Map<BlindsDevice, IBlindsData>();
   private dataSubscriptions: Map<BlindsDevice, Subscription> = new Map<BlindsDevice, Subscription>();
@@ -30,7 +31,7 @@ export class AllBlindsComponent implements OnInit {
 
   ngOnInit() {
     this.cacheServiceSubscription = this.blindsDeviceCacheService.getDataService().subscribe(deviceService => {
-      deviceService.items.subscribe(devices => {
+      this.deviceServiceSubscription = deviceService.items.subscribe(devices => {
         this.unsubscribeAll();
         this.devices = devices.sort((a, b) => a.name.localeCompare(b.name));
         this.subscribeAll();
@@ -41,6 +42,7 @@ export class AllBlindsComponent implements OnInit {
 
   ngOnDestroy() {
     this.unsubscribeAll();
+    this.deviceServiceSubscription.unsubscribe();
     this.cacheServiceSubscription.unsubscribe();
   }
 
