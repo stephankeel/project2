@@ -14,7 +14,7 @@ export class ChartViewComponent implements OnInit {
   @Input() deviceDataHistory: Observable<IAnalogData[]>;
   @Input() label: string;
 
-  static readonly MAX_RECORDS: number = 200;
+  static readonly MAX_RECORDS: number = 100;
 
   dataSubscription: Subscription;
   data: any;

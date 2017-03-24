@@ -1,15 +1,16 @@
-import {ActivatedRoute, Params, Router} from "@angular/router";
-import {Component, Input, OnInit} from "@angular/core";
-import {IDevice} from "../../../../../../server/entities/device.interface";
-import {DeviceType} from "../../../misc/device-pool";
-import {IData} from "../../../../../../server/entities/data.interface";
-import {TemperatureDeviceCacheService} from "../../../cache/service/temperature-device.cache.service";
-import {HumidityDeviceCacheService} from "../../../cache/service/humidity-device.cache.service";
-import {GenericeCacheService} from "../../../cache/service/generic.cache.service";
-import {TemperatureDataCacheService} from "../../../cache/service/temperature-data.cache.service";
-import {HumidityDataCacheService} from "../../../cache/service/humidity-data.cache.service";
-import {GenericDataCacheService} from "../../../cache/service/generic-data-cache.service";
-import {NotificationService} from "../../../notification/notification.service";
+import {ActivatedRoute, Params, Router} from '@angular/router';
+import {Component, Input, OnInit} from '@angular/core';
+import {Subject, Subscription} from 'rxjs';
+import {IDevice} from '../../../../../../server/entities/device.interface';
+import {DeviceType} from '../../../misc/device-pool';
+import {IData} from '../../../../../../server/entities/data.interface';
+import {TemperatureDeviceCacheService} from '../../../cache/service/temperature-device.cache.service';
+import {HumidityDeviceCacheService} from '../../../cache/service/humidity-device.cache.service';
+import {GenericeCacheService} from '../../../cache/service/generic.cache.service';
+import {TemperatureDataCacheService} from '../../../cache/service/temperature-data.cache.service';
+import {HumidityDataCacheService} from '../../../cache/service/humidity-data.cache.service';
+import {GenericDataCacheService} from '../../../cache/service/generic-data-cache.service';
+import {NotificationService} from '../../../notification/notification.service';
 
 @Component({
   selector: 'app-single-of-type',
@@ -26,9 +27,11 @@ export class SingleOfTypeComponent implements OnInit {
   private units: string;
   private label: string;
 
+  private deviceDataHistorySubscription: Subscription;
+  private deviceDataHistory: Subject<IData[]> = new Subject();
   private deviceCacheService: GenericeCacheService<IDevice>;
   private dataCacheService: GenericDataCacheService<IData, IDevice>;
-  private selectedDeviceId: IDevice;
+  private selectedDeviceId: string;
 
   constructor(private route: ActivatedRoute, private router: Router,
               private notificationService: NotificationService,
@@ -55,6 +58,7 @@ export class SingleOfTypeComponent implements OnInit {
 
     this.route.params.subscribe((params: Params) => {
       this.selectedDeviceId = params['id'];
+      this.changeDataHistory(this.selectedDeviceId);
     });
 
     this.redirectIfCurrentSelectionIsDeleted();
@@ -66,6 +70,16 @@ export class SingleOfTypeComponent implements OnInit {
       if (currentSelectedDevice === undefined) {
         this.router.navigate(['..'], {relativeTo: this.route});
       }
+    });
+  }
+
+  private changeDataHistory(deviceId: string): void {
+    if (this.deviceDataHistorySubscription) {
+      this.deviceDataHistorySubscription.unsubscribe();
+    }
+    this.deviceDataHistorySubscription = this.dataCacheService.getAllData(deviceId).subscribe((data: IData[]) => {
+      let filteredData: IData[] = data.filter(d => d.timestamp > SingleOfTypeComponent.TODAY);
+      this.deviceDataHistory.next(filteredData);
     });
   }
 
