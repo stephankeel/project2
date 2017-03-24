@@ -1,7 +1,7 @@
 <app-list-header [title]="title" [showBack]="true"></app-list-header>
 <div class="app-device--div">
   <div class="app-device-list">
-    <span class="span__gray div--flex selection-list-item" *ngFor="let device of allDevices"
+    <span class="span__gray div--flex selection-list-item action--button" *ngFor="let device of allDevices"
           [class.selected]="device === selectedDevice"
           (click)="selectDevice(device)">
       {{device.name}}
