@@ -171,18 +171,11 @@ export class AIN extends AbstractAIN {
       this.outputObs = Observable.create((subscriber: Subscriber<number>) => {
         AIN.logger.debug(`poll ${this.getName()} every ${intervalSeconds} second(s)`);
         if (fs.existsSync(this.getName())) {
+          this.readInitialValue(subscriber);
           this.doPoll = true;
           this.intervalId = setInterval(() => {
             if (this.doPoll) {
-              fs.readFile(this.getName(), (err, data) => {
-                if (err) {
-                  subscriber.error(`read ${this.getName()} failed with ${err}`);
-                } else {
-                  let val: number = Number(data.toString());
-                  AIN.logger.debug(`${this.getName()}: value ${val}`);
-                  subscriber.next(val);
-                }
-              });
+              this.subscribeReadValue(subscriber);
             } else {
               subscriber.complete();
             }
@@ -194,6 +187,22 @@ export class AIN extends AbstractAIN {
       });
     }
     return this.outputObs;
+  }
+
+  private readInitialValue(subscriber: Subscriber<number>) {
+    this.subscribeReadValue(subscriber);
+  }
+
+  private subscribeReadValue(subscriber: Subscriber<number>) {
+    fs.readFile(this.getName(), (err, data) => {
+      if (err) {
+        subscriber.error(`read ${this.getName()} failed with ${err}`);
+      } else {
+        let val: number = Number(data.toString());
+        AIN.logger.debug(`${this.getName()}: value ${val}`);
+        subscriber.next(val);
+      }
+    });
   }
 
   stopPolling(): void {
