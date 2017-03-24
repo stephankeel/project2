@@ -8,7 +8,7 @@
     <md-icon>content_copy</md-icon>
     <span class="size-xl">alle</span>
   </button>
-  <button md-button class="button--responsive" (click)="create()" *ngIf="showCreate">
+  <button md-button class="button--responsive" (click)="create()" [disabled]="disableCreate" *ngIf="showCreate">
     <md-icon>add</md-icon>
     <span class="size-xl">erstellen</span>
   </button>

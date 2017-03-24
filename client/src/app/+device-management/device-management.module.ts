@@ -26,6 +26,7 @@ import { HumiditydeviceDetailsComponent } from './humidity-setup-overview/humidi
 import { TemperaturedeviceDetailsComponent } from './temperature-setup-overview/temperaturedevice-details/temperaturedevice-details.component';
 import { TemperaturedeviceDeleteComponent } from './temperature-setup-overview/temperaturedevice-delete/temperaturedevice-delete.component';
 import { TemperaturedeviceChangeComponent } from './temperature-setup-overview/temperaturedevice-change/temperaturedevice-change.component';
+import {PipesModule} from "../+dashboard/analog-devices/pipes/pipes.module";
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -42,6 +43,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     ListSupportModule,
     FormsModule,
     ReactiveFormsModule,
+    PipesModule,
   ],
   declarations: [
     DeviceManagementComponent,

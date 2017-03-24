@@ -3,6 +3,7 @@ import {ITemperatureDevice} from "../../../../../server/entities/device.interfac
 import {ReplaySubject, Observable} from "rxjs";
 import {List} from "immutable";
 import {TemperatureDeviceCacheService} from "../../cache/service/temperature-device.cache.service";
+import {AnalogPortService} from "../service/analog-port.service";
 
 @Component({
   selector: 'app-temperature-setup-overview',
@@ -11,6 +12,7 @@ import {TemperatureDeviceCacheService} from "../../cache/service/temperature-dev
 })
 export class TemperatureSetupOverviewComponent {
 
-  constructor(private temperatureDeviceCacheService: TemperatureDeviceCacheService) {
+  constructor(private temperatureDeviceCacheService: TemperatureDeviceCacheService,
+              private analogPortService: AnalogPortService) {
   }
 }
