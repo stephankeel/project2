@@ -1,85 +1,46 @@
-import {ActivatedRoute, Router, Params} from '@angular/router';
-import {Component, OnInit} from '@angular/core';
-import {Subscription} from 'rxjs';
-import {BlindsDevice, DeviceType} from '../../../misc/device-pool';
-import {IBlindsData} from '../../../../../../server/entities/data.interface';
-import {AuthHttp} from 'angular2-jwt';
-import {GenericService} from '../../../remote/generic.service';
-import {ClientSocketService} from '../../../remote/client-socket.service';
-import {NotificationService} from '../../../notification/notification.service';
-import {BlindsDeviceCacheService} from '../../../cache/service/blinds-device.cache.service';
-import {DataCacheService} from '../../../cache/service/data-cache.service';
+import {ActivatedRoute, Params, Router} from "@angular/router";
+import {Component} from "@angular/core";
+import {Subscription} from "rxjs";
+import {BlindsDevice} from "../../../misc/device-pool";
+import {IBlindsData} from "../../../../../../server/entities/data.interface";
+import {NotificationService} from "../../../notification/notification.service";
+import {BlindsDeviceCacheService} from "../../../cache/service/blinds-device.cache.service";
+import {BlindDataCacheService} from "../../../cache/service/blinds-data.cache.service";
 
 @Component({
   selector: 'app-single-blinds',
   templateUrl: './single-blinds.component.html',
   styleUrls: ['./single-blinds.component.scss']
 })
-export class SingleBlindsComponent implements OnInit {
+export class SingleBlindsComponent {
 
-  private subscription: Subscription;
-  private id: any;
-  private selectedDevice: BlindsDevice;
-  private allDevices: BlindsDevice[] = [];
-  private deviceState: IBlindsData;
-  private dataSubscription: Subscription;
+  private selectedDeviceId: BlindsDevice;
 
-  constructor(private route: ActivatedRoute, private router: Router, private socketService: ClientSocketService,
-              private blindsDeviceCacheService: BlindsDeviceCacheService, private dataCacheService: DataCacheService,
-              private authHttp: AuthHttp, private notificationService: NotificationService) {
+  constructor(private route: ActivatedRoute, private router: Router,
+              private blindsDeviceCacheService: BlindsDeviceCacheService,
+              private blindDataCacheService: BlindDataCacheService,
+              private notificationService: NotificationService) {
+
+    this.route.params.subscribe((params: Params) => {
+      this.selectedDeviceId = params['id'];
+    });
+
+    this.redirectIfCurrentSelectionIsDeleted();
   }
 
-  ngOnInit() {
-    this.subscription = this.blindsDeviceCacheService.getAll().subscribe(devices => {
-      this.allDevices = devices.sort((a, b) => a.name.localeCompare(b.name));
-      this.resubscribe();
-    }, error => this.notificationService.error(error.toString()));
-
-    // listen for route id changes
-    this.route.params.subscribe((params: Params) => {
-      this.id = params['id'];
-      this.resubscribe();
+  private redirectIfCurrentSelectionIsDeleted() {
+    this.blindsDeviceCacheService.getAll().subscribe(devices => {
+      let currentSelectedDevice = devices.find(device => device.id === this.selectedDeviceId);
+      if (currentSelectedDevice === undefined) {
+        this.router.navigate(['..'], {relativeTo: this.route});
+      }
     });
   }
 
-  ngOnDestroy() {
-    this.releaseDevice();
-    this.subscription.unsubscribe();
-  }
-
-  private resubscribe() {
-    this.releaseDevice();
-    if (this.allDevices.length > 0 && this.id) {
-      let matchingDevices: BlindsDevice[] = this.allDevices.filter(device => device.id == this.id);
-      if (matchingDevices.length > 0) {
-        this.selectedDevice = matchingDevices[0];
-        this.subscribeDevice();
-      }
-    }
-  }
-
-  private subscribeDevice(): void {
-    if (this.selectedDevice) {
-      this.dataSubscription = this.dataCacheService.getCacheLatest(DeviceType.BLINDS, this.selectedDevice).subscribe((data: IBlindsData) => {
-        this.deviceState = data;
-      });
-    }
-  }
-
-  private releaseDevice(): void {
-    if (this.selectedDevice) {
-      this.deviceState = null;
-      if (this.dataSubscription) {
-        this.dataSubscription.unsubscribe();
-        this.dataSubscription = null;
-      }
-    }
-  }
-
-  private selectDevice(device: BlindsDevice) {
-    this.selectedDevice = device;
+  private selectDevice(deviceId: string) {
+    this.selectedDeviceId = deviceId;
     this.clearMessage();
-    this.router.navigate(['../', device.id], {relativeTo: this.route});
+    this.router.navigate(['../', deviceId], {relativeTo: this.route});
   }
 
   private clearMessage(): void {

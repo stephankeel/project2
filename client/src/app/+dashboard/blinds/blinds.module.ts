@@ -13,6 +13,7 @@ import {AuthGuard} from '../../auth/auth-guard.service';
 import {BlindsComponent} from './blinds.component';
 import {BlindsCommandService} from '../../remote/blinds-command.service';
 import {ListSupportModule} from "../../list-support/list-support.module";
+import {PipesModule} from "../analog-devices/pipes/pipes.module";
 
 @NgModule({
   imports: [
@@ -20,6 +21,7 @@ import {ListSupportModule} from "../../list-support/list-support.module";
     MaterialModule,
     BlindsRouterModule,
     ListSupportModule,
+    PipesModule,
   ],
   declarations: [
     BlindsComponent,

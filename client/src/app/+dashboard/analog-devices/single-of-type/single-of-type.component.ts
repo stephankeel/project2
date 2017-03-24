@@ -1,17 +1,15 @@
-import {ActivatedRoute, Router, Params} from '@angular/router';
-import {Component, OnInit, Input} from '@angular/core';
-import {Observable, Subject, Subscription} from 'rxjs';
-import {IDevice} from '../../../../../../server/entities/device.interface';
-import {DeviceType} from '../../../misc/device-pool';
-import {IAnalogData} from '../../../../../../server/entities/data.interface';
-import {AuthHttp} from 'angular2-jwt';
-import {GenericService} from '../../../remote/generic.service';
-import {ClientSocketService} from '../../../remote/client-socket.service';
-import {GenericDataService} from '../../../remote/generic-data.service';
-import {NotificationService} from '../../../notification/notification.service';
+import {ActivatedRoute, Params, Router} from "@angular/router";
+import {Component, Input, OnInit} from "@angular/core";
+import {IDevice} from "../../../../../../server/entities/device.interface";
+import {DeviceType} from "../../../misc/device-pool";
+import {IData} from "../../../../../../server/entities/data.interface";
 import {TemperatureDeviceCacheService} from "../../../cache/service/temperature-device.cache.service";
 import {HumidityDeviceCacheService} from "../../../cache/service/humidity-device.cache.service";
 import {GenericeCacheService} from "../../../cache/service/generic.cache.service";
+import {TemperatureDataCacheService} from "../../../cache/service/temperature-data.cache.service";
+import {HumidityDataCacheService} from "../../../cache/service/humidity-data.cache.service";
+import {GenericDataCacheService} from "../../../cache/service/generic-data-cache.service";
+import {NotificationService} from "../../../notification/notification.service";
 
 @Component({
   selector: 'app-single-of-type',
@@ -28,19 +26,16 @@ export class SingleOfTypeComponent implements OnInit {
   private units: string;
   private label: string;
 
-  private genericCacheService: GenericeCacheService<IDevice>;
-  private dataService: GenericDataService<IAnalogData>;
-  id: any;
-  selectedDevice: IDevice;
-  allDevices: IAnalogData[] = [];
-  deviceData: IAnalogData;
-  dataSubscription: Subscription;
-  deviceDataHistory: Subject<IAnalogData[]> = new Subject();
+  private deviceCacheService: GenericeCacheService<IDevice>;
+  private dataCacheService: GenericDataCacheService<IData, IDevice>;
+  private selectedDeviceId: IDevice;
 
-  constructor(private route: ActivatedRoute, private router: Router, private socketService: ClientSocketService,
-              private authHttp: AuthHttp, private notificationService: NotificationService,
+  constructor(private route: ActivatedRoute, private router: Router,
+              private notificationService: NotificationService,
               private temperatureDeviceCacheService: TemperatureDeviceCacheService,
-              private humidityDeviceCacheService: HumidityDeviceCacheService) {
+              private temperatureDataCacheService: TemperatureDataCacheService,
+              private humidityDeviceCacheService: HumidityDeviceCacheService,
+              private humidityDataCacheService: HumidityDataCacheService) {
   }
 
   ngOnInit() {
@@ -48,80 +43,39 @@ export class SingleOfTypeComponent implements OnInit {
       this.title = 'Feuchtigkeit (einzeln)';
       this.label = 'Feuchtigkeit';
       this.units = '%rel';
-      this.genericCacheService = this.humidityDeviceCacheService;
+      this.deviceCacheService = this.humidityDeviceCacheService;
+      this.dataCacheService = this.humidityDataCacheService;
     } else {
       this.title = 'Temperatur (einzeln)';
       this.label = 'Temperatur';
       this.units = '°C';
-      this.genericCacheService = this.temperatureDeviceCacheService;
+      this.deviceCacheService = this.temperatureDeviceCacheService;
+      this.dataCacheService = this.temperatureDataCacheService;
     }
-    this.configureItemSubscription();
 
-    // listen for route id changes
     this.route.params.subscribe((params: Params) => {
-      this.id = params['id'];
-      this.resubscribe();
+      this.selectedDeviceId = params['id'];
+    });
+
+    this.redirectIfCurrentSelectionIsDeleted();
+  }
+
+  private redirectIfCurrentSelectionIsDeleted() {
+    this.deviceCacheService.getAll().subscribe(devices => {
+      let currentSelectedDevice = devices.find(device => device.id === this.selectedDeviceId);
+      if (currentSelectedDevice === undefined) {
+        this.router.navigate(['..'], {relativeTo: this.route});
+      }
     });
   }
 
-  private configureItemSubscription() {
-    this.genericCacheService.getAll().subscribe(devices => {
-      this.allDevices = devices.sort((a, b) => a.name.localeCompare(b.name));
-      this.resubscribe();
-    }, error => this.notificationService.error(error.toString()));
-  }
-
-  ngOnDestroy() {
-    this.releaseDevice();
-    this.genericCacheService.disconnect();
-  }
-
-  resubscribe() {
-    this.releaseDevice();
-    if (this.allDevices.length > 0 && this.id) {
-      let matchingDevices: IDevice[] = this.allDevices.filter(device => device.id == this.id);
-      if (matchingDevices.length > 0) {
-        this.selectedDevice = matchingDevices[0];
-        this.subscribeDevice();
-      }
-    }
-  }
-
-  subscribeDevice(): void {
-    if (this.selectedDevice) {
-      if (this.deviceType === DeviceType.HUMIDITY) {
-        this.dataService = new GenericDataService<IAnalogData>(this.authHttp, this.socketService, '/api/data/humidity', '/humidity', this.selectedDevice.id);
-      } else {
-        this.dataService = new GenericDataService<IAnalogData>(this.authHttp, this.socketService, '/api/data/temperature', '/temperature', this.selectedDevice.id);
-      }
-      this.dataSubscription = this.dataService.items.subscribe((items: IAnalogData[]) => {
-        let filteredItems: IAnalogData[] = items.filter(ad => ad.timestamp > SingleOfTypeComponent.TODAY);
-        this.deviceDataHistory.next(filteredItems);
-        this.deviceData = items[items.length - 1];
-      });
-      this.dataService.getAll();
-    }
-  }
-
-  releaseDevice(): void {
-    if (this.selectedDevice) {
-      if (this.dataService) {
-        this.dataService.disconnect();
-        this.dataService = null;
-        this.deviceData = null;
-        this.dataSubscription.unsubscribe();
-        this.dataSubscription = null;
-      }
-    }
-  }
-
-  selectDevice(device: IDevice) {
-    this.selectedDevice = device;
+  private selectDevice(deviceId: string) {
+    this.selectedDeviceId = deviceId;
     this.clearMessage();
-    this.router.navigate(['../', device.id], {relativeTo: this.route});
+    this.router.navigate(['../', deviceId], {relativeTo: this.route});
   }
 
-  clearMessage(): void {
+  private clearMessage(): void {
     this.notificationService.clear();
   }
 
