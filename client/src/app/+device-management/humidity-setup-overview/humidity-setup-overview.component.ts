@@ -11,7 +11,7 @@ import {List} from "immutable";
 })
 export class HumiditySetupOverviewComponent implements OnInit {
 
-  private items: Observable<List<IHumidityDevice>> = new ReplaySubject<List<IHumidityDevice>>(1);
+  private items: Observable<IHumidityDevice[]> = new ReplaySubject<IHumidityDevice[]>(1);
 
   constructor(private humidityDeviceCacheService: HumidityDeviceCacheService) {
   }

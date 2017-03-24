@@ -13,7 +13,7 @@ import {IBlindsDevice} from "../../../../../server/entities/device.interface";
 })
 export class BlindsSetupOverviewComponent implements OnInit {
 
-  private items: Observable<List<IBlindsDevice>> = new ReplaySubject<List<IBlindsDevice>>(1);
+  private items: Observable<IBlindsDevice[]> = new ReplaySubject<IBlindsDevice[]>(1);
 
   constructor(private blindsDeviceCacheService: BlindsDeviceCacheService) {
   }

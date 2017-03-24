@@ -71,7 +71,7 @@ export class SingleOfTypeComponent implements OnInit {
 
   private configureItemSubscription() {
     this.genericService.items.subscribe(devices => {
-      this.allDevices = devices.toArray().sort((a, b) => a.name.localeCompare(b.name));
+      this.allDevices = devices.sort((a, b) => a.name.localeCompare(b.name));
       this.resubscribe();
     }, error => this.notificationService.error(error.toString()));
   }

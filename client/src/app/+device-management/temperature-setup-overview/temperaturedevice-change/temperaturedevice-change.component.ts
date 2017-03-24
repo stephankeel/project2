@@ -32,8 +32,8 @@ export class TemperaturedeviceChangeComponent implements OnInit {
     this.unusedPortHandler = new PortHandler(() => this.analogPortService.getUnusedInputPorts());
     this.subscriptions.push(this.route.params.subscribe(params => {
       if (params['id']) {
-        this.temperatureDeviceCacheService.getDataService().subscribe(dataService => {
-          this.temperatureDevice = dataService.getCache(params['id']);
+        this.temperatureDeviceCacheService.getDevice(params['id']).subscribe(device => {
+          this.temperatureDevice = device;
           this.unusedPortHandler.registerPorts([this.temperatureDevice.port]);
           this.title = "Temperaturesensor ändern";
           this.backlink = "../.."
@@ -53,24 +53,22 @@ export class TemperaturedeviceChangeComponent implements OnInit {
   }
 
   submit(temperatureDevice: ITemperatureDevice) {
-    this.temperatureDeviceCacheService.getDataService().subscribe(dataService => {
-      if (this.temperatureDevice.id) {
-        temperatureDevice.id = this.temperatureDevice.id;
-        dataService.getRestService().update(temperatureDevice).subscribe(temperatureDevice => {
-          this.notificationService.info("Temperaturesensor aktualisiert");
-          this.router.navigate(['../..'], {relativeTo: this.route});
-        }, error => {
-          this.notificationService.error(`Aktualisierung vom Temperaturesensor fehlgeschlagen (${JSON.stringify(error)})`);
-        });
-      } else {
-        dataService.getRestService().add(temperatureDevice).subscribe(temperatureDevice => {
-          this.notificationService.info("Neuer Temperaturesensor erstellt");
-          this.router.navigate(['..'], {relativeTo: this.route});
-        }, error => {
-          this.notificationService.error(`Erstellung vom Temperaturesensor fehlgeschlagen (${JSON.stringify(error)})`);
-        });
-      }
-    });
+    if (this.temperatureDevice.id) {
+      temperatureDevice.id = this.temperatureDevice.id;
+      this.temperatureDeviceCacheService.updateDevice(temperatureDevice).subscribe(temperatureDevice => {
+        this.notificationService.info("Temperaturesensor aktualisiert");
+        this.router.navigate(['../..'], {relativeTo: this.route});
+      }, error => {
+        this.notificationService.error(`Aktualisierung vom Temperaturesensor fehlgeschlagen (${JSON.stringify(error)})`);
+      });
+    } else {
+      this.temperatureDeviceCacheService.addDevice(temperatureDevice).subscribe(temperatureDevice => {
+        this.notificationService.info("Neuer Temperaturesensor erstellt");
+        this.router.navigate(['..'], {relativeTo: this.route});
+      }, error => {
+        this.notificationService.error(`Erstellung vom Temperaturesensor fehlgeschlagen (${JSON.stringify(error)})`);
+      });
+    }
   }
 
   cancel() {

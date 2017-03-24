@@ -33,7 +33,7 @@ export class AllBlindsComponent implements OnInit {
     this.cacheServiceSubscription = this.blindsDeviceCacheService.getDataService().subscribe(deviceService => {
       this.deviceServiceSubscription = deviceService.items.subscribe(devices => {
         this.unsubscribeAll();
-        this.devices = devices.toArray().sort((a, b) => a.name.localeCompare(b.name));
+        this.devices = devices.sort((a, b) => a.name.localeCompare(b.name));
         this.subscribeAll();
       }, error => this.notificationService.error(error.toString()));
       deviceService.getAll();
@@ -58,8 +58,9 @@ export class AllBlindsComponent implements OnInit {
   unsubscribeAll(): void {
     this.devices.forEach(device => {
       this.devicesState.delete(device);
-      if (this.dataSubscriptions.has(device)) {
-        this.dataSubscriptions.get(device).unsubscribe();
+      let subscription: Subscription = this.dataSubscriptions.get(device);
+      if (subscription) {
+        subscription.unsubscribe();
         this.dataSubscriptions.delete(device);
       }
     });

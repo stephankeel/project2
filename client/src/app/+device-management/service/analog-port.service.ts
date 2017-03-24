@@ -1,8 +1,7 @@
 import {Injectable} from "@angular/core";
-import {ReplaySubject, Observable, Subscription} from "rxjs";
-import {List} from "immutable";
+import {Observable, ReplaySubject, Subscription} from "rxjs";
 import {ITemperatureDevice} from "../../../../../server/entities/device.interface";
-import {Port, analogInputs} from "../../../../../server/hardware/port-map";
+import {analogInputs, Port} from "../../../../../server/hardware/port-map";
 import {TemperatureDeviceCacheService} from "../../cache/service/temperature-device.cache.service";
 import {HumidityDeviceCacheService} from "../../cache/service/humidity-device.cache.service";
 
@@ -14,8 +13,8 @@ export class AnalogPortService {
   private unusedInputPorts: ReplaySubject<Port[]> = new ReplaySubject<Port[]>(1);
   private itemsTemperatureSub: Subscription;
   private itemsHumiditySub: Subscription;
-  private lastTemperatureItems: List<ITemperatureDevice> = List<ITemperatureDevice>();
-  private lastHumidityItems: List<ITemperatureDevice> = List<ITemperatureDevice>();
+  private lastTemperatureItems: ITemperatureDevice[] = [];
+  private lastHumidityItems: ITemperatureDevice[] = [];
 
   constructor(private temperatureDeviceCacheService: TemperatureDeviceCacheService, private humidityDeviceCacheService: HumidityDeviceCacheService) {
     this.computeUnusedInputPorts();

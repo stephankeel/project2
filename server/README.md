@@ -5,6 +5,7 @@
 
 ## Configure Database
 You may use a mongodb (port 27017) installed locally, on a remote host or by using the mlab mongodb service.
+For security reason, please start the mongo server with option `--noscripting`
 
 Selecting the database is done by command line argument as follows:
 * --db localhost 

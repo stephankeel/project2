@@ -22,8 +22,8 @@ export class TemperaturedeviceDetailsComponent implements OnInit {
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
       if (params['id']) {
-        this.temperatureDeviceCacheService.getDataService().subscribe(dataService => {
-          this.temperatureDevice = dataService.getCache(params['id']);
+        this.temperatureDeviceCacheService.getDevice(params['id']).subscribe(device => {
+          this.temperatureDevice = device;
         });
       }
     });
