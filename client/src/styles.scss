@@ -5,6 +5,10 @@
 @import url('../node_modules/primeng/resources/primeng.min.css');
 @import url('../node_modules/font-awesome/css/font-awesome.min.css');
 
+$button-background-color: rgba(0, 0, 0, 0.20);
+$action_highlight-color: rgba(0, 0, 0, 0.30);
+
+
 .body--no-margin {
   margin: 0;
 }
@@ -22,11 +26,11 @@
 }
 
 .action--button:hover, .app-blinds-button:hover {
-  background-color: rgba(0, 0, 0, 0.20);
+  background-color: $button-background-color
 }
 
 div.device--button:hover {
-  background-color: rgba(0, 0, 0, 0.30);
+  background-color: $action_highlight-color;
 }
 
 .img__icon--big-width {
@@ -102,7 +106,7 @@ div.device--button:hover {
 }
 
 .button--gray {
-  background: #A6BAC5;
+  background: $button-background-color;
 }
 
 button.button--responsive {

@@ -18,7 +18,7 @@ import {TemperaturedeviceDetailsComponent} from "../temperature-setup-overview/t
 
 const routes: Routes = [
   {path: '', redirectTo: 'overview', pathMatch: 'full'},
-  {path: 'overview', canActivate: [AuthGuard], component: DeviceManagementComponent},
+  {path: 'overview', canActivate: [AuthGuard], component: DeviceManagementComponent, data: {setup: true}},
   {path: 'blinds-overview',canActivate: [AuthGuard], component: BlindsSetupOverviewComponent},
   {path: 'blinds-overview/edit/:id',canActivate: [AuthGuard], component: BlindsdeviceChangeComponent},
   {path: 'blinds-overview/detail/:id',canActivate: [AuthGuard], component: BlindsdeviceDetailsComponent},

@@ -1,10 +1,12 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {DeviceOverviewComponent} from "./device-overview/device-overview.component";
+import {MaterialModule} from '@angular/material';
+import {DeviceOverviewComponent} from './device-overview/device-overview.component';
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    MaterialModule,
   ],
   declarations: [
     DeviceOverviewComponent,
