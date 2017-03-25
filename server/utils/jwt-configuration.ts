@@ -21,7 +21,7 @@ export class JwtConfiguration {
     }
     this.signSecret = fs.readFileSync(privateKeyFilename);
     this.verifySecret = fs.readFileSync(publicKeyFilename);
-    this.signOptions.algorithm = 'RS384';
+    this.signOptions = {expiresIn: "1h", algorithm: 'RS256'};
   }
 
   public getSignSecret(): string | Buffer {
