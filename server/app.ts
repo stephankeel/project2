@@ -73,7 +73,7 @@ class Server {
         '-a, --admin password  create admin user with the given password\n' +
         '-d, --db db-location  DB to use. Either of [mlab | IP-address | hostname | locahost],\n' +
         '                      default is localhost\n' +
-        '-p, --production      Use for production');
+        '-p, --production      use for production');
       process.exit(0);
     }
 
