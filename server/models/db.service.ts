@@ -22,7 +22,7 @@ export class DBService {
     if (option) {
       option = option.toLowerCase();
       if (option === 'mlab') {
-        DBService.instance.dbLocation = 'mongodb://admin:hallihallo62@ds050879.mlab.com:50879/homeautomation';
+        DBService.instance.dbLocation = 'mongodb://hsruser:sugus62@ds050879.mlab.com:50879/homeautomation';
       } else {
         DBService.instance.dbLocation = `${option}:${DB_PORT}/homeautomation`;
       }
