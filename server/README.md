@@ -52,7 +52,11 @@ the environment variable NODE_ENV to 'production' or start the server with the o
 * The private.key file must be named '../../ha-key'
 * The public.key file must be named '../../ha-key.pub'
 
-To create this key, you can use ssh-keygen -t rsa -b 2048 -f ../../ha-key. Do not enter a passphrase.
+To create this key, you can use: 
+```
+openssl genpkey -algorithm RSA -out private_key.pem -pkeyopt rsa_keygen_bits:2048
+openssl rsa -pubout -in ../../ha-key -out ../../ha-key.pub
+```
 
 ## Debugging the server in Webstrom
 * Create a 'node.js' Run-Configuraton. 
