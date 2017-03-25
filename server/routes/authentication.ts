@@ -50,7 +50,10 @@ export function getAuthenticationRoute(jwtConfig: JwtConfiguration) {
     });
   });
 
-  authenticationRoute.use('/api', eJwt({secret: jwtConfig.getVerifySecret()}), function (req: express.Request, res: express.Response, next: express.NextFunction) {
+  authenticationRoute.use('/api', eJwt({
+    secret: jwtConfig.getVerifySecret(),
+    algorithms: ['RS256', 'HS256']
+  }), function (req: express.Request, res: express.Response, next: express.NextFunction) {
     if (req.user) {
       LOGGER.debug(`userid: ${req.user.id}, username: ${req.user.username}, type: ${req.user.type}, req.body: ` + JSON.stringify(req.body));
       next();
@@ -73,4 +76,6 @@ declare module '@types/express' {
     user?: IUser;
   }
 }
+
+
 
