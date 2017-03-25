@@ -16,10 +16,10 @@ import {TemperatureDeviceCacheService} from "../../../cache/service/temperature-
 export class TemperaturedeviceChangeComponent implements OnInit {
 
   private subscriptions: Subscription[] = [];
-  private temperatureDevice: ITemperatureDevice = {};
-  private title: string;
+  temperatureDevice: ITemperatureDevice = {};
+  title: string;
   private backlink = "..";
-  private unusedPortHandler: PortHandler;
+  unusedPortHandler: PortHandler;
 
   constructor(private temperatureDeviceCacheService: TemperatureDeviceCacheService,
               private route: ActivatedRoute,

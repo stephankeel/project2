@@ -13,7 +13,7 @@ import {TemperatureDeviceCacheService} from "../../../cache/service/temperature-
 export class TemperaturedeviceDeleteComponent implements OnInit, OnDestroy {
 
   private sub: Subscription;
-  private temperatureDevice: ITemperatureDevice = {};
+  temperatureDevice: ITemperatureDevice = {};
 
   constructor(private temperatureDeviceCacheService: TemperatureDeviceCacheService,
               private route: ActivatedRoute,

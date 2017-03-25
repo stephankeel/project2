@@ -12,7 +12,7 @@ import {UserCacheService} from "../../cache/service/user.cache.service";
   styleUrls: ['users.component.scss']
 })
 export class UsersComponent  {
-  constructor(private userCacheService: UserCacheService, private router: Router, private route: ActivatedRoute, private authenticationService: AuthenticationService) {
+  constructor(public userCacheService: UserCacheService, private router: Router, private route: ActivatedRoute, private authenticationService: AuthenticationService) {
   }
 
   isLoggedInUser(user: IUser) {

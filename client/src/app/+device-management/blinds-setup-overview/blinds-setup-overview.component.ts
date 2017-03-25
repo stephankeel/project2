@@ -14,7 +14,7 @@ import {DigitalPortService} from "../service/digital-port.service";
 })
 export class BlindsSetupOverviewComponent {
 
-  constructor(private blindsDeviceCacheService: BlindsDeviceCacheService,
-              private digitalPortService: DigitalPortService) {
+  constructor(public blindsDeviceCacheService: BlindsDeviceCacheService,
+              public digitalPortService: DigitalPortService) {
   }
 }

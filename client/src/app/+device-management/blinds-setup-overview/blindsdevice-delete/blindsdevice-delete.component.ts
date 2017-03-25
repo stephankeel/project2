@@ -13,7 +13,7 @@ import {NotificationService} from "../../../notification/notification.service";
 export class BlindsdeviceDeleteComponent implements OnInit {
 
   private sub: Subscription;
-  private blind: IBlindsDevice = {};
+  blind: IBlindsDevice = {};
 
   constructor(private blindsCacheService: BlindsDeviceCacheService,
               private route: ActivatedRoute,

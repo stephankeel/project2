@@ -8,7 +8,7 @@ import {AuthenticationService} from "../../remote/authentication.service";
   styleUrls: ['dashboard.component.scss']
 })
 export class DashboardComponent {
-  constructor(private router: Router, private route: ActivatedRoute,private authenticationService: AuthenticationService) {
+  constructor(private router: Router, private route: ActivatedRoute, public authenticationService: AuthenticationService) {
   }
 
   logout() {

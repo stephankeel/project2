@@ -14,9 +14,8 @@ export class AllBlindsComponent {
 
   constructor(private route: ActivatedRoute,
               private router: Router,
-              private blindsDeviceCacheService: BlindsDeviceCacheService,
-              private blindDataCacheService: BlindDataCacheService,
-              private notificationService: NotificationService) {
+              public blindsDeviceCacheService: BlindsDeviceCacheService,
+              public blindDataCacheService: BlindDataCacheService) {
   }
 
   private select(deviceId: string): void {

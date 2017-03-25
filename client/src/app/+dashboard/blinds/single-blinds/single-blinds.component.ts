@@ -14,11 +14,11 @@ import {BlindDataCacheService} from "../../../cache/service/blinds-data.cache.se
 })
 export class SingleBlindsComponent {
 
-  private selectedDeviceId: BlindsDevice;
+  selectedDeviceId: BlindsDevice;
 
   constructor(private route: ActivatedRoute, private router: Router,
-              private blindsDeviceCacheService: BlindsDeviceCacheService,
-              private blindDataCacheService: BlindDataCacheService,
+              public blindsDeviceCacheService: BlindsDeviceCacheService,
+              public blindDataCacheService: BlindDataCacheService,
               private notificationService: NotificationService) {
 
     this.route.params.subscribe((params: Params) => {

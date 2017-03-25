@@ -12,7 +12,7 @@ import {Port, portName} from "../../../../../../server/hardware/port-map";
 })
 export class BlindsdeviceDetailsComponent implements OnInit {
   private sub: Subscription;
-  private blind: IBlindsDevice = {};
+  blind: IBlindsDevice = {};
 
   constructor(private blindsCacheService: BlindsDeviceCacheService,
               private route: ActivatedRoute) {
