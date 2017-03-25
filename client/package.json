@@ -24,6 +24,7 @@
   "homepage": "https://github.com/dleuenbe/project2#readme",
   "private": true,
   "dependencies": {
+    "@angular/animations": "^4.0.0",
     "@angular/common": "^4.0.0",
     "@angular/compiler": "^4.0.0",
     "@angular/core": "^4.0.0",
