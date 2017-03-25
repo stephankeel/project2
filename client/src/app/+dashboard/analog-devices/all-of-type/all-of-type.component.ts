@@ -3,7 +3,7 @@ import {Component, Input, OnInit} from "@angular/core";
 import {Subscription} from "rxjs";
 import {IDevice} from "../../../../../../server/entities/device.interface";
 import {DeviceType} from "../../../misc/device-pool";
-import {IAnalogData} from "../../../../../../server/entities/data.interface";
+import {IAnalogData, IData} from "../../../../../../server/entities/data.interface";
 import {AuthHttp} from "angular2-jwt";
 import {ClientSocketService} from "../../../remote/client-socket.service";
 import {GenericDataService} from "../../../remote/generic-data.service";
@@ -27,8 +27,8 @@ export class AllOfTypeComponent implements OnInit {
   private title: string;
   private units: string;
 
-  private deviceCacheService: GenericeCacheService<any>;
-  private dataCacheService: GenericDataCacheService<any, any>;
+  private deviceCacheService: GenericeCacheService<IDevice>;
+  private dataCacheService: GenericDataCacheService<IData, IDevice>;
 
   constructor(private route: ActivatedRoute, private router: Router,
               private temperatureDeviceCacheService: TemperatureDeviceCacheService,
