@@ -32,7 +32,7 @@ describe('REST API Roundtrip Test of Blinds-Command', function () {
     });
 
     let testBlindsDevice: IBlindsDevice = {
-      name: 'Blinds for testing commands',
+      name: 'Blinds cmd test',
       keyUp: Port.DI_1,
       keyDown: Port.DI_2,
       actorUp: Port.DO_1,
