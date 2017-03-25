@@ -12,7 +12,7 @@ import {AnalogPortService} from "../service/analog-port.service";
 })
 export class TemperatureSetupOverviewComponent {
 
-  constructor(private temperatureDeviceCacheService: TemperatureDeviceCacheService,
-              private analogPortService: AnalogPortService) {
+  constructor(public temperatureDeviceCacheService: TemperatureDeviceCacheService,
+              public analogPortService: AnalogPortService) {
   }
 }

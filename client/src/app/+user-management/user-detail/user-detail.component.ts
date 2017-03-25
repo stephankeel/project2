@@ -13,7 +13,7 @@ import {UserCacheService} from "../../cache/service/user.cache.service";
 export class UserDetailComponent implements OnInit {
 
   private sub: Subscription;
-  private user: IUser = {};
+  user: IUser = {};
 
   constructor(private userCacheService: UserCacheService, private route: ActivatedRoute, private router: Router) {
   }

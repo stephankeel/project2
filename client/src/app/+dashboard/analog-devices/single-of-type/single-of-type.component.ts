@@ -23,15 +23,15 @@ export class SingleOfTypeComponent implements OnInit {
 
   @Input() deviceType: DeviceType;
 
-  private title: string;
-  private units: string;
-  private label: string;
+  title: string;
+  units: string;
+  label: string;
 
   private deviceDataHistorySubscription: Subscription;
   private deviceDataHistory: Subject<IData[]> = new Subject();
-  private deviceCacheService: GenericeCacheService<IDevice>;
-  private dataCacheService: GenericDataCacheService<IData, IDevice>;
-  private selectedDeviceId: string;
+  deviceCacheService: GenericeCacheService<IDevice>;
+  dataCacheService: GenericDataCacheService<IData, IDevice>;
+  selectedDeviceId: string;
 
   constructor(private route: ActivatedRoute, private router: Router,
               private notificationService: NotificationService,

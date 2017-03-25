@@ -7,15 +7,15 @@ import {ActivatedRoute, Router} from "@angular/router";
   styleUrls: ['./line.component.scss']
 })
 export class LineComponent implements OnInit {
-  @Input() private id: string;
-  @Input() private desc: string;
+  @Input() id: string;
+  @Input() desc: string;
 
-  @Input() private disableEdit: boolean;
-  @Input() private hideEdit: boolean;
-  @Input() private disableDetails: boolean;
-  @Input() private hideDetails: boolean;
-  @Input() private disableDelete: boolean;
-  @Input() private hideDelete: boolean;
+  @Input() disableEdit: boolean;
+  @Input() hideEdit: boolean;
+  @Input() disableDetails: boolean;
+  @Input() hideDetails: boolean;
+  @Input() disableDelete: boolean;
+  @Input() hideDelete: boolean;
 
   constructor(private router: Router, private route: ActivatedRoute) {
   }

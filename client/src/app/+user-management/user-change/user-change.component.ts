@@ -15,11 +15,11 @@ import {NotificationService} from "../../notification/notification.service";
 export class UserChangeComponent implements OnInit {
 
   private sub: Subscription;
-  private user: IUser = {type: UserType.STANDARD};
+  user: IUser = {type: UserType.STANDARD};
   private userPasswordHash: string;
   private userType: UserType;
-  private title: string;
-  private userTypes: any[];
+  title: string;
+  userTypes: any[];
 
   constructor(private userCacheService: UserCacheService, private route: ActivatedRoute, private router: Router,
               private authenticationService: AuthenticationService, private notificationService: NotificationService) {

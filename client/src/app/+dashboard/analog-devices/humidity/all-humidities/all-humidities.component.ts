@@ -6,9 +6,9 @@ import {DeviceType} from '../../../../misc/device-pool';
   templateUrl: 'all-humidities.component.html',
   styleUrls: ['all-humidities.component.scss']
 })
-export class AllHumiditiesComponent{
+export class AllHumiditiesComponent {
 
-  private deviceType: DeviceType = DeviceType.HUMIDITY;
+  deviceType: DeviceType = DeviceType.HUMIDITY;
 
   constructor() {
   }

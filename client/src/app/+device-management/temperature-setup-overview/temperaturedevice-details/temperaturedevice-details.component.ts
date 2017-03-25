@@ -13,7 +13,7 @@ import {TemperatureDeviceCacheService} from "../../../cache/service/temperature-
 export class TemperaturedeviceDetailsComponent implements OnInit {
 
   private sub: Subscription;
-  private temperatureDevice: ITemperatureDevice = {};
+  temperatureDevice: ITemperatureDevice = {};
 
   constructor(private temperatureDeviceCacheService: TemperatureDeviceCacheService,
               private route: ActivatedRoute) {

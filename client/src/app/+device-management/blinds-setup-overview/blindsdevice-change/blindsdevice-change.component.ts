@@ -15,11 +15,11 @@ import {PortHandler} from "../../service/port-handler";
 })
 export class BlindsdeviceChangeComponent implements OnInit {
   private subscriptions: Subscription[] = [];
-  private blind: IBlindsDevice = {};
-  private title: string;
+  blind: IBlindsDevice = {};
+  title: string;
   private backlink = "..";
-  private unusedInputPortHandler: PortHandler;
-  private unusedOutputPortHandler: PortHandler;
+  unusedInputPortHandler: PortHandler;
+  unusedOutputPortHandler: PortHandler;
 
   constructor(private blindsCacheService: BlindsDeviceCacheService,
               private route: ActivatedRoute,

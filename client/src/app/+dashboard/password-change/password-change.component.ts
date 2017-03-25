@@ -11,7 +11,10 @@ import {AuthenticationService} from "../../remote/authentication.service";
   styleUrls: ['password-change.component.scss'],
 })
 export class PasswordChangeComponent implements OnInit {
-  private message: string;
+  message: string;
+  currentPassword: string;
+  password: string;
+  confirmPassword: string;
   private restService: GenericRestService<IUser>;
 
   constructor(private authenticationService: AuthenticationService,
@@ -20,7 +23,7 @@ export class PasswordChangeComponent implements OnInit {
               private route: ActivatedRoute) {
   }
 
-  private changePassword(data: any): void {
+  changePassword(data: any): void {
     this.authenticationService.loginCheckonly(this.authenticationService.getLoggedInUsername(), data.currentPassword)
       .subscribe(result => {
         if (result === true) {

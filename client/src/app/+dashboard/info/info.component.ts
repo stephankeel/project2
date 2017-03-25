@@ -10,8 +10,8 @@ import {Info} from "../../remote/info";
 })
 export class InfoComponent implements OnInit {
 
-  private title: string;
-  private infoList: InfoPair[] = [];
+  title: string;
+  infoList: InfoPair[] = [];
 
   constructor(private router: Router, private restService: CommonRestService) {
   }

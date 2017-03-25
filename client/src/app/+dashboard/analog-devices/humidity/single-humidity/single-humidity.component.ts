@@ -8,7 +8,7 @@ import {DeviceType} from '../../../../misc/device-pool';
 })
 export class SingleHumidityComponent {
 
-  private deviceType: DeviceType = DeviceType.HUMIDITY;
+  deviceType: DeviceType = DeviceType.HUMIDITY;
 
   constructor() {
   }

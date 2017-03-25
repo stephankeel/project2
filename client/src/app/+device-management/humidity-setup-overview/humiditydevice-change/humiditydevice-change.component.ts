@@ -16,10 +16,10 @@ import {AnalogPortService} from "../../service/analog-port.service";
 export class HumiditydeviceChangeComponent implements OnInit {
 
   private subscriptions: Subscription[] = [];
-  private humidityDevice: IHumidityDevice = {};
-  private title: string;
+  humidityDevice: IHumidityDevice = {};
+  title: string;
   private backlink = "..";
-  private unusedPortHandler: PortHandler;
+  unusedPortHandler: PortHandler;
 
   constructor(private humidityDeviceCacheService: HumidityDeviceCacheService,
               private route: ActivatedRoute,

@@ -12,7 +12,7 @@ import {AnalogPortService} from "../service/analog-port.service";
 })
 export class HumiditySetupOverviewComponent {
 
-  constructor(private humidityDeviceCacheService: HumidityDeviceCacheService,
-              private analogPortService: AnalogPortService) {
+  constructor(public humidityDeviceCacheService: HumidityDeviceCacheService,
+              public analogPortService: AnalogPortService) {
   }
 }

@@ -7,12 +7,12 @@ import {Router, ActivatedRoute} from "@angular/router";
   styleUrls: ['./list-header.component.scss']
 })
 export class ListHeaderComponent implements OnInit {
-  @Input() private title: string;
-  @Input() private backlink: string;
-  @Input() private showBack: boolean;
-  @Input() private showCreate: boolean;
-  @Input() private disableCreate: boolean;
-  @Input() private showShowAll: boolean;
+  @Input() title: string;
+  @Input() backlink: string;
+  @Input() showBack: boolean;
+  @Input() showCreate: boolean;
+  @Input() disableCreate: boolean;
+  @Input() showShowAll: boolean;
 
   constructor(private router: Router, private route: ActivatedRoute) {
   }

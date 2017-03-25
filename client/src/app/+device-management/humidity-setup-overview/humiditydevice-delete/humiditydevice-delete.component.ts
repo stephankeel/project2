@@ -13,7 +13,7 @@ import {HumidityDeviceCacheService} from "../../../cache/service/humidity-device
 export class HumiditydeviceDeleteComponent implements OnInit {
 
   private sub: Subscription;
-  private humidityDevice: IHumidityDevice = {};
+  humidityDevice: IHumidityDevice = {};
 
   constructor(private humidityDeviceCacheService: HumidityDeviceCacheService,
               private route: ActivatedRoute,

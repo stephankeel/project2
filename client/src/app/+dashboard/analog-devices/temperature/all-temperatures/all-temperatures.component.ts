@@ -8,7 +8,7 @@ import {DeviceType} from '../../../../misc/device-pool';
 })
 export class AllTemperaturesComponent{
 
-  private deviceType: DeviceType = DeviceType.TEMPERATURE;
+  deviceType: DeviceType = DeviceType.TEMPERATURE;
 
   constructor() {
   }

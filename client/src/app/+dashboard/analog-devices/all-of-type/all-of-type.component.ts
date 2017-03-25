@@ -24,11 +24,11 @@ export class AllOfTypeComponent implements OnInit {
 
   @Input() deviceType: DeviceType;
 
-  private title: string;
-  private units: string;
+  title: string;
+  units: string;
 
-  private deviceCacheService: GenericeCacheService<IDevice>;
-  private dataCacheService: GenericDataCacheService<IData, IDevice>;
+  deviceCacheService: GenericeCacheService<IDevice>;
+  dataCacheService: GenericDataCacheService<IData, IDevice>;
 
   constructor(private route: ActivatedRoute, private router: Router,
               private temperatureDeviceCacheService: TemperatureDeviceCacheService,
