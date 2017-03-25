@@ -13,10 +13,11 @@
     <div class="div--margins-05 div--font div--maxwith">
       <section class="input-section--flex">
         <md-input-container class="full-width button-container--small-margins input-container--middle-size">
-          <input mdInput placeholder="Benutzername" name="username" required minlength="4" #usernameControl="ngModel"
+          <input mdInput placeholder="Benutzername" name="username" required minlength="4" maxlength="20"
+                 #usernameControl="ngModel"
                  [ngModel]="user.username">
-          <md-hint *ngIf="!usernameControl.valid" [ngStyle]="{'color': 'red'}" align="start">erforderlich, mind. 4
-            Zeichen lang
+          <md-hint *ngIf="!usernameControl.valid" [ngStyle]="{'color': 'red'}" align="start">zwischen 4 - 20 Zeichen
+            lang
           </md-hint>
         </md-input-container>
         <div class="div--margins-05">
@@ -33,15 +34,19 @@
       </section>
       <section class="input-section--flex">
         <md-input-container class="full-width button-container--small-margins input-container--middle-size">
-          <input mdInput placeholder="Vorname" name="firstname" required #firstnameControl="ngModel"
+          <input mdInput placeholder="Vorname" name="firstname" required minlength="2" maxlength="20"
+                 #firstnameControl="ngModel"
                  [ngModel]="user.firstname">
-          <md-hint *ngIf="!firstnameControl.valid" [ngStyle]="{'color': 'red'}" align="start">erforderlich
+          <md-hint *ngIf="!firstnameControl.valid" [ngStyle]="{'color': 'red'}" align="start">zwischen 2 - 20 Zeichen
+            lang
           </md-hint>
         </md-input-container>
         <md-input-container class="full-width button-container--small-margins input-container--middle-size">
-          <input mdInput placeholder="Nachname" name="lastname" required #lastnameControl="ngModel"
+          <input mdInput placeholder="Nachname" name="lastname" required minlength="2" maxlength="20"
+                 #lastnameControl="ngModel"
                  [ngModel]="user.lastname">
-          <md-hint *ngIf="!lastnameControl.valid" [ngStyle]="{'color': 'red'}" align="start">erforderlich
+          <md-hint *ngIf="!lastnameControl.valid" [ngStyle]="{'color': 'red'}" align="start">zwischen 2 - 20 Zeichen
+            lang
           </md-hint>
         </md-input-container>
       </section>
