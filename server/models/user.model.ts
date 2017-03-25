@@ -15,7 +15,7 @@ let UserSchema = new Schema({
   lastname: {type: String, required: true, minlength: 2, maxlength: 20},
   type: {type: Number, required: true, min: UserType.GUEST, max: UserType.ADMIN},
   username: {type: String, required: true, minlength: 4, maxlength: 20, unique: true},
-  password: {type: String, required: true, minlength: 4}
+  password: {type: String, required: true, minlength: 8}
 }, {
   versionKey: false, // avoids __v, i.e. the version key
 });

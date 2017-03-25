@@ -27,6 +27,7 @@ import {TemperaturedeviceDetailsComponent} from "./temperature-setup-overview/te
 import {TemperaturedeviceDeleteComponent} from "./temperature-setup-overview/temperaturedevice-delete/temperaturedevice-delete.component";
 import {TemperaturedeviceChangeComponent} from "./temperature-setup-overview/temperaturedevice-change/temperaturedevice-change.component";
 import {ValidatorsModule} from "ng2-validators";
+import {MyValidatorsModule} from "../my-validators/my-validators.module";
 import {PipesModule} from "../+dashboard/analog-devices/pipes/pipes.module";
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
@@ -45,7 +46,11 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     FormsModule,
     ReactiveFormsModule,
     ValidatorsModule,
+<<<<<<< HEAD
+    MyValidatorsModule,
+=======
     PipesModule,
+>>>>>>> 2b022c82acc32ac85f6395b4e5b483e8854e927c
   ],
   declarations: [
     DeviceManagementComponent,
