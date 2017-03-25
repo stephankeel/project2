@@ -46,11 +46,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     FormsModule,
     ReactiveFormsModule,
     ValidatorsModule,
-<<<<<<< HEAD
     MyValidatorsModule,
-=======
     PipesModule,
->>>>>>> 2b022c82acc32ac85f6395b4e5b483e8854e927c
   ],
   declarations: [
     DeviceManagementComponent,
