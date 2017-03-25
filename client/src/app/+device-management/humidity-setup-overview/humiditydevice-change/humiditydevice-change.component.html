@@ -15,7 +15,7 @@
         <md-input-container class="full-width button-container--small-margins">
           <input mdInput placeholder="Name" name="name" required minlength="4" maxlength="20" #nameControl="ngModel"
                  [ngModel]="humidityDevice.name">
-          <md-hint *ngIf="!nameControl.valid" [ngStyle]="{'color': 'red'}" align="start">erforderlich, mind. 4
+          <md-hint *ngIf="!nameControl.valid" [ngStyle]="{'color': 'red'}" align="start">zwischen 4 - 20 Zeichen lang
             Zeichen lang
           </md-hint>
         </md-input-container>
@@ -33,9 +33,9 @@
           </div>
         </div>
         <md-input-container class="input-container--middle-size button-container--small-margins">
-          <input mdInput placeholder="Pollingintervall in Sekunden" name="pollingInterval" required
-                 #pollingIntervalControl="ngModel" [ngModel]="humidityDevice.pollingInterval">
-          <md-hint *ngIf="!pollingIntervalControl.valid" [ngStyle]="{'color': 'red'}" align="start">erforderlich
+          <input mdInput placeholder="Pollingintervall in Sekunden" name="pollingInterval" required isInRange
+                 [minValue]="1" #pollingIntervalControl="ngModel" [ngModel]="humidityDevice.pollingInterval">
+          <md-hint *ngIf="!pollingIntervalControl.valid" [ngStyle]="{'color': 'red'}" align="start">Zahl grösser 0
           </md-hint>
         </md-input-container>
       </section>

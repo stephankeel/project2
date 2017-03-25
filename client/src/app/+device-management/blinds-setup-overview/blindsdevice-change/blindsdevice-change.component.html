@@ -15,8 +15,7 @@
         <md-input-container class="full-width button-container--small-margins">
           <input mdInput placeholder="Name" name="name" required minlength="4" maxlength="20" #nameControl="ngModel"
                  [ngModel]="blind.name">
-          <md-hint *ngIf="!nameControl.valid" [ngStyle]="{'color': 'red'}" align="start">erforderlich, mind. 4
-            Zeichen lang
+          <md-hint *ngIf="!nameControl.valid" [ngStyle]="{'color': 'red'}" align="start">zwischen 4 - 20 Zeichen lang
           </md-hint>
         </md-input-container>
       </section>
@@ -58,7 +57,8 @@
         </div>
         <div class="div--margins-05">
           <div class="div--small-margins div--flex-dir-column">
-            <md-select class="fill-remaining-space" placeholder="Ausgang: Rollladen nach unten" name="actorDown" #outputActorUpControl="ngModel"
+            <md-select class="fill-remaining-space" placeholder="Ausgang: Rollladen nach unten" name="actorDown"
+                       #outputActorUpControl="ngModel"
                        [ngModel]="blind.actorDown" required>
               <md-option *ngFor="let port of unusedOutputPortHandler.getUnusedPort() | async" [value]="port">
                 {{getPortName(port)}}
@@ -70,10 +70,10 @@
       </section>
       <section class="input-section--flex">
         <md-input-container class="full-width button-container--small-margins">
-          <input mdInput placeholder="Laufzeit des Rollladen" name="runningSeconds" required
-                 #runningSecondsControl="ngModel"
-                 [ngModel]="blind.runningSeconds">
-          <md-hint *ngIf="!runningSecondsControl.valid" [ngStyle]="{'color': 'red'}" align="start">erforderlich
+          <input mdInput placeholder="Laufzeit des Rollladen" name="runningSeconds" required isInRange [minValue]="10"
+                 [maxValue]="300" #runningSecondsControl="ngModel" [ngModel]="blind.runningSeconds">
+          <md-hint *ngIf="!runningSecondsControl.valid" [ngStyle]="{'color': 'red'}" align="start">Zahl zwischen 10 und
+            300
           </md-hint>
         </md-input-container>
       </section>
