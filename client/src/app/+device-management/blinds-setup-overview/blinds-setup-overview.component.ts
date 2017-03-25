@@ -5,6 +5,7 @@ import {Observable, ReplaySubject} from "rxjs";
 import {AuthenticationService} from "../../remote/authentication.service";
 import {List} from "immutable";
 import {IBlindsDevice} from "../../../../../server/entities/device.interface";
+import {DigitalPortService} from "../service/digital-port.service";
 
 @Component({
   selector: 'app-blinds-setup-overview',
@@ -13,6 +14,7 @@ import {IBlindsDevice} from "../../../../../server/entities/device.interface";
 })
 export class BlindsSetupOverviewComponent {
 
-  constructor(private blindsDeviceCacheService: BlindsDeviceCacheService) {
+  constructor(private blindsDeviceCacheService: BlindsDeviceCacheService,
+              private digitalPortService: DigitalPortService) {
   }
 }

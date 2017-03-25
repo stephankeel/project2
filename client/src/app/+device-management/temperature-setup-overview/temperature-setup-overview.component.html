@@ -1,5 +1,7 @@
 <div class="div--maxwith">
-  <app-list-header [title]="'Temperaturesensorenverwaltung'" [showCreate]="true" [showBack]="true"></app-list-header>
+  <app-list-header [title]="'Temperaturesensorenverwaltung'" [showCreate]="true"
+                   [disableCreate]="analogPortService.getUnusedInputPorts() | async | emptyArray"
+                   [showBack]="true"></app-list-header>
   <div class="div--margins-05 div--maxwith">
     <app-line class="div--flex" *ngFor="let humidity of temperatureDeviceCacheService.getAll() | async"
               [id]="humidity.id"
