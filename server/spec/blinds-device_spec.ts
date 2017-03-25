@@ -91,7 +91,7 @@ describe('REST API Roundtrip Test of Blinds-Device', function () {
   });
 
   describe('Test update of a  blinds-device', function () {
-    let NAME: string = 'Test Blinds-Device 007';
+    let NAME: string = 'Test Blinds-Dev 007';
     let testBlindsDevice: IBlindsDevice = {
       id: testBlindsDeviceId,
       name: NAME,

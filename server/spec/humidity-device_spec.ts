@@ -73,7 +73,7 @@ describe('REST API Roundtrip Test of Humidity-Device', function () {
   });
 
   describe('Test update of a humidity-device', function () {
-    let NAME: string = 'Test Humidity-Device 007';
+    let NAME: string = 'Test Humidity 007';
     let testHumidityDevice: IHumidityDevice = {
       id: testHumidityDeviceId,
       name: NAME,

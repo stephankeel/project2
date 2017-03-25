@@ -73,7 +73,7 @@ describe('REST API Roundtrip Test of Temperature-Device', function () {
   });
 
   describe('Test update of a temperature-device', function () {
-    let NAME: string = 'Test Temperature-Device 007';
+    let NAME: string = 'Test Temp.Dev 007';
     let testTemperatureDevice: ITemperatureDevice = {
       id: testTemperatureDeviceId,
       name: NAME,
