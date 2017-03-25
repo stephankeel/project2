@@ -1,35 +1,35 @@
-import * as express from 'express';
-import * as compression from 'compression';
-import * as bodyParser from 'body-parser';
-import * as createError from 'http-errors';
-import * as log4js from 'log4js';
-import {Logger, getLogger} from './utils/logger';
-import {authenticationRoute} from './routes/authentication';
-import {DBService} from './models/db.service';
-import * as http from 'http';
-import * as path from 'path';
-import * as socketIo from 'socket.io';
+import * as express from "express";
+import * as compression from "compression";
+import * as bodyParser from "body-parser";
+import * as createError from "http-errors";
+import * as log4js from "log4js";
+import {getLogger, Logger} from "./utils/logger";
+import {getAuthenticationRoute} from "./routes/authentication";
+import {DBService} from "./models/db.service";
+import * as http from "http";
+import * as path from "path";
+import * as socketIo from "socket.io";
 import {
   requiresAdmin,
   requiresAdminExceptForGet,
-  requiresStandardOrAdmin,
-  requiresAuthenticatedUser
-} from './routes/authorization';
-import {GenericRouter} from './routes/generic.router';
-import {UserController} from './controllers/user.controller';
-import {TemperatureDeviceController} from './controllers/temperature-device.controller';
-import {GenericDataRouter} from './routes/generic-data.router';
-import {TemperatureDataController} from './controllers/temperature-data.controller';
-import {HumidityDataController} from './controllers/humidity-data.controller';
-import {HumidityDeviceController} from './controllers/humidity-device.controller';
-import {BlindsDeviceController} from './controllers/blinds-device.controller';
-import {BlindsDataController} from './controllers/blinds-data.controller';
-import {BlindsCommandRouter} from './routes/blinds-command.router';
-import {SocketService} from './socket/socket-service';
-import {Engine} from './logic/engine';
-import {Info} from './entities/info';
-import {initAdmin} from './models/user.model';
-
+  requiresAuthenticatedUser,
+  requiresStandardOrAdmin
+} from "./routes/authorization";
+import {GenericRouter} from "./routes/generic.router";
+import {UserController} from "./controllers/user.controller";
+import {TemperatureDeviceController} from "./controllers/temperature-device.controller";
+import {GenericDataRouter} from "./routes/generic-data.router";
+import {TemperatureDataController} from "./controllers/temperature-data.controller";
+import {HumidityDataController} from "./controllers/humidity-data.controller";
+import {HumidityDeviceController} from "./controllers/humidity-device.controller";
+import {BlindsDeviceController} from "./controllers/blinds-device.controller";
+import {BlindsDataController} from "./controllers/blinds-data.controller";
+import {BlindsCommandRouter} from "./routes/blinds-command.router";
+import {SocketService} from "./socket/socket-service";
+import {Engine} from "./logic/engine";
+import {Info} from "./entities/info";
+import {initAdmin} from "./models/user.model";
+import {JwtConfiguration} from "./utils/jwt-configuration";
 
 const LOGGER: Logger = getLogger('Server');
 const VERSION: string = '1.0.0';
@@ -43,8 +43,9 @@ const commandLineArgs = require('command-line-args');
 const optionDefinitions = [
   {name: 'admin', alias: 'a', type: String},
   {name: 'db', alias: 'd', type: String},
-  {name: 'help', alias: 'h', type: Boolean}
-]
+  {name: 'help', alias: 'h', type: Boolean},
+  {name: 'production', alias: 'p', type: Boolean},
+];
 
 class Server {
   public app: express.Express;
@@ -53,8 +54,10 @@ class Server {
   private root: string;
   private port: number;
   private host: string;
+  private env: string;
   private socketService: SocketService;
   private engine: Engine;
+  private jwtConfig: JwtConfiguration;
 
   // Bootstrap the application.
   public static bootstrap(): Server {
@@ -69,7 +72,8 @@ class Server {
         '-h, --help            show this help\n' +
         '-a, --admin password  create admin user with the given password\n' +
         '-d, --db db-location  DB to use. Either of [mlab | IP-address | hostname | locahost],\n' +
-        '                      default is localhost');
+        '                      default is localhost\n' +
+        '-p, --production      use for production');
       process.exit(0);
     }
 
@@ -78,7 +82,7 @@ class Server {
     this.app.use(compression());
 
     // Configure application
-    this.config();
+    this.config(options.production);
 
     // create ClientSocketService
     this.socketService = new SocketService();
@@ -106,10 +110,19 @@ class Server {
     }
   }
 
-  private config(): void {
+  private config(prod: boolean): void {
     this.port = process.env.PORT || 3001;
     this.root = path.join(__dirname);
     this.host = 'localhost';
+    this.env = prod ? 'production' : (process.env.NODE_ENV || 'development');
+
+    this.jwtConfig = new JwtConfiguration(this.env);
+    if (this.env === "production") {
+      this.jwtConfig.initProd('../../ha-key', '../../ha-key.pub');
+      LOGGER.info(`PRODUCTION-MODE, use private/public keys.`);
+    } else {
+      LOGGER.info(`DEVELOPMENT-MODE, use shared secret.`);
+    }
   }
 
   private routes(): void {
@@ -133,7 +146,7 @@ class Server {
       res.send(ABOUT);
     });
 
-    this.app.use(authenticationRoute);
+    this.app.use(getAuthenticationRoute(this.jwtConfig));
     this.app.use('/api/users', requiresAdmin, GenericRouter.create(new UserController(this.socketService)));
 
     // blinds devices
@@ -186,7 +199,7 @@ class Server {
     // Get socket.io handle
     this.io = socketIo(this.server);
     this.io.use(socketioJwt.authorize({
-      secret: 'secret',
+      secret: this.jwtConfig.getVerifySecret(),
       handshake: true
     }));
 

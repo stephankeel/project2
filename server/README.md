@@ -27,13 +27,14 @@ If you have not yet setup a user, then you have to start the server directly, pr
 open terminal
 change to project2/server folder
 gulp build
-node app.js [--help | --db <option> | --admin <password>]
+node app.js [--help | --db <option> | --admin <password> | --production]
 ```
 Command line attributes:
 ```
 -h, --help              shows this help
 -d, --db <option>       see configure database above
--a, --admin <pssword>   creates the user admin, if not yet existing, using the provided password
+-a, --admin <password>  creates the user admin, if not yet existing, using the provided password
+-p, --production        use for production
 ```
 Starting the server with continuous building (requires locally installed mongodb running):
 ```
@@ -42,6 +43,16 @@ change to project2/server folder
 npm start
 ```
 
+## Production Mode
+
+In Production Mode, the server will use a public and a private key for jwt token. 
+Without the keys, he will not start. To start the server in production mode, either set
+the environment variable NODE_ENV to 'production' or start the server with the option '-p'.
+
+* The private.key file must be named '../../ha-key'
+* The public.key file must be named '../../ha-key.pub'
+
+To create this key, you can use ssh-keygen -t rsa -b 2048 -f ../../ha-key. Do not enter a passphrase.
 
 ## Debugging the server in Webstrom
 * Create a 'node.js' Run-Configuraton. 
