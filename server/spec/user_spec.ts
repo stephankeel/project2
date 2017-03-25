@@ -28,7 +28,7 @@ describe('REST API Roundtrip Test of User', function () {
     });
     it('returns status code 200 - successfull authentication', function (done) {
       request.post(LOGIN_URL,
-        loginOptions('admin', '123456'),
+        loginOptions('admin', '12345678'),
         function (error: any, response: RequestResponse, body: any) {
           expect(response.statusCode).toBe(200);
           let authData = JSON.parse(body);
@@ -56,7 +56,7 @@ describe('REST API Roundtrip Test of User', function () {
       lastname: 'Boss',
       type: UserType.STANDARD,
       username: TEST_USERNAME,
-      password: '1234'
+      password: '12345678'
     };
     it('returns status code 201 - user created', function (done) {
       request.post(TEST_URL,
@@ -103,7 +103,7 @@ describe('REST API Roundtrip Test of User', function () {
       lastname: LASTNAME,
       type: UserType.STANDARD,
       username: TEST_USERNAME,
-      password: '1234'
+      password: '12345678'
     };
     it('returns status code 200 - user updated', function (done) {
       request.put(TEST_URL + '/' + testUserId,

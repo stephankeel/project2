@@ -20,7 +20,7 @@ describe('REST API Roundtrip Test of Blinds-Device', function () {
   describe('Test login, adding a blinds-device and duplicate rejection', function () {
     it('returns status code 200 - successfull authentication', function (done) {
       request.post(LOGIN_URL,
-        loginOptions('admin', '123456'),
+        loginOptions('admin', '12345678'),
         function (error: any, response: RequestResponse, body: any) {
           expect(response.statusCode).toBe(200);
           let authData = JSON.parse(body);

@@ -19,7 +19,7 @@ describe('REST API Roundtrip Test of Temperature-Device', function () {
   describe('Test login and creation of a temperature-device', function () {
     it('returns status code 200 - successfull authentication', function (done) {
       request.post(LOGIN_URL,
-        loginOptions('admin', '123456'),
+        loginOptions('admin', '12345678'),
         function (error: any, response: RequestResponse, body: any) {
           expect(response.statusCode).toBe(200);
           let authData = JSON.parse(body);
