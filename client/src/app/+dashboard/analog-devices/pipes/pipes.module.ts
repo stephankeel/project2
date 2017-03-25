@@ -4,8 +4,9 @@ import {ValuePipe} from '../pipes/value.pipe';
 import {TimestampPipe} from '../pipes/timestamp.pipe';
 import {TimestampFormatterPipe} from '../pipes/timestamp-formatter.pipe';
 import {ValueSplitPipe} from '../pipes/value-split.pipe';
-import { NamePipe } from './name.pipe';
+import {NamePipe} from './name.pipe';
 import {NotEmptyPipe} from "./not-empty.pipe";
+import {EmptyArrayPipe} from './empty-array.pipe';
 
 @NgModule({
   imports: [
@@ -18,6 +19,7 @@ import {NotEmptyPipe} from "./not-empty.pipe";
     ValueSplitPipe,
     NamePipe,
     NotEmptyPipe,
+    EmptyArrayPipe,
   ],
   exports: [
     ValuePipe,
@@ -26,9 +28,9 @@ import {NotEmptyPipe} from "./not-empty.pipe";
     ValueSplitPipe,
     NamePipe,
     NotEmptyPipe,
+    EmptyArrayPipe,
   ],
-  providers: [
-  ]
+  providers: []
 })
 export class PipesModule {
 }
