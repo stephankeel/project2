@@ -73,6 +73,3 @@ declare module '@types/express' {
     user?: IUser;
   }
 }
-
-
-
