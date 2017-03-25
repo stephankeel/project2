@@ -13,7 +13,7 @@ describe('User-Model Test', function () {
     });
   });
 
-  it('should have no error about username, if "username" is set to a string with 4 chars', done => {
+  it('should have no error about username, if "username" is set to a string with 8 chars', done => {
     let d = new UserModel({username: "abcd"});
     d.validate((err: any) => {
       expect(err.errors.username).not.toBeDefined();
@@ -29,8 +29,8 @@ describe('User-Model Test', function () {
     });
   });
 
-  it('should have no error about password, if "password" is set to a string with 4 chars', done => {
-    let d = new UserModel({password: "abcd"});
+  it('should have no error about password, if "password" is set to a string with 8 chars', done => {
+    let d = new UserModel({password: "abcdedgh"});
     d.validate((err: any) => {
       expect(err.errors.password).not.toBeDefined();
       done();
@@ -86,7 +86,7 @@ describe('User-Model Test', function () {
   });
 
   it('should be valid if empty', done => {
-    let d = new UserModel({type: 1, username: "abcd", password: "abcd", firstname:"ab", lastname: "cd"});
+    let d = new UserModel({type: 1, username: "abcd", password: "abcdefgh", firstname:"ab", lastname: "cd"});
     d.validate((err: any) => {
       expect(err).toBeNull();
       done();
