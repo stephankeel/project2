@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {CommonRestService} from '../../remote/common-rest.service';
-import {Info} from '../../../../../server/entities/info';
+import {Info} from "../../remote/info";
 
 @Component({
   selector: 'app-info',
