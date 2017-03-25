@@ -18,6 +18,7 @@ import {AuthHttp, AuthConfig} from "angular2-jwt";
 import {ClientSocketService} from "./remote/client-socket.service";
 import {AdminOrStandardGuard} from './auth/admin-or-standard-guard.service';
 import {AdminGuard} from './auth/admin-guard.service';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -40,6 +41,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     FooterModule,
     GrowlModule,
     CacheModule,
+    BrowserAnimationsModule,
   ],
   providers: [
     AuthGuard,

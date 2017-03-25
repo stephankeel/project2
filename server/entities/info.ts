@@ -1,4 +1,4 @@
-import * as OS from 'os';
+import * as OS from "os";
 
 export class Info {
   public readonly cpus: OS.CpuInfo[] = OS.cpus();
