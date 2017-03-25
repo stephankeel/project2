@@ -4,6 +4,8 @@ import {GenericRestService} from "../../remote/generic-rest.service";
 import {IUser} from "../../../../../server/entities/user.interface";
 import {AuthHttp} from "angular2-jwt";
 import {AuthenticationService} from "../../remote/authentication.service";
+import {PasswordChangeRestService} from "../../remote/password-change-rest.service";
+import {NotificationService} from "../../notification/notification.service";
 
 @Component({
   selector: 'app-password-change',
@@ -11,7 +13,6 @@ import {AuthenticationService} from "../../remote/authentication.service";
   styleUrls: ['password-change.component.scss'],
 })
 export class PasswordChangeComponent implements OnInit {
-  message: string;
   currentPassword: string;
   password: string;
   confirmPassword: string;
@@ -20,7 +21,9 @@ export class PasswordChangeComponent implements OnInit {
   constructor(private authenticationService: AuthenticationService,
               private router: Router,
               private http: AuthHttp,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private passwordChangeRestService: PasswordChangeRestService,
+              private notificationService: NotificationService) {
   }
 
   changePassword(data: any): void {
@@ -29,30 +32,22 @@ export class PasswordChangeComponent implements OnInit {
         if (result === true) {
           this.updatePassword(data.password);
         } else {
-          this.message = 'Ungültige Anwort vom Server. Interner Server-Fehler.';
+          this.notificationService.info('Ungültige Anwort vom Server. Interner Server-Fehler.');
         }
       }, error => {
-        this.message = `Aktuelles Passwort nicht korrekt (${error})`;
+        this.notificationService.info(`Aktuelles Passwort nicht korrekt (${error})`);
       });
   }
 
   private updatePassword(password: string) {
-    this.restService.get(this.authenticationService.getLoggedInUserId()).subscribe(
-      user => {
-        user.password = password;
-        this.restService.update(user).subscribe(user => {
-          this.router.navigate(['../password-confirmation'], {relativeTo: this.route});
-        }, error => {
-          this.message = `Fehler beim Passwot ändern (${error})`;
-        });
-      },
-      error => {
-        this.message = `Fehler beim Passwort ändern (${error})`
-      });
+    this.passwordChangeRestService.update(password).subscribe(user => {
+      this.router.navigate(['../password-confirmation'], {relativeTo: this.route});
+    }, error => {
+      this.notificationService.info(`Fehler beim Passwot ändern`);
+    });
   }
 
   ngOnInit() {
     this.restService = new GenericRestService<IUser>(this.http, "/api/users");
   }
-
 }

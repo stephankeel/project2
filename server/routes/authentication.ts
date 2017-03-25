@@ -59,6 +59,25 @@ export function getAuthenticationRoute(jwtConfig: JwtConfiguration) {
     }
   });
 
+  authenticationRoute.put('/api/password-change', function (req: express.Request, res: express.Response, next: express.NextFunction) {
+    let id = req.user.id;
+    UserModel.findById(id, (err: any, user: IUserDocument) => {
+      if (err) {
+        res.status(401).json({error: 'Passwort konnte nicht geändert werden.'});
+      } else {
+        user.password = req.body.password;
+        user.save((err: any, user: IUserDocument) => {
+          if (err) {
+            res.status(401).json({error: 'Passwort konnte nicht geändert werden.'});
+          } else {
+            LOGGER.debug(`password change for user ${req.user.username} successfully`);
+            res.json(true);
+          }
+        });
+      }
+    });
+  });
+
 // Used for REST test
   authenticationRoute.get('/api/authenticated', function (req: express.Request, res: express.Response, next: express.NextFunction) {
     res.json('authentication is valid');
