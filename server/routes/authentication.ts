@@ -12,14 +12,13 @@ import bcrypt = require('bcrypt');
 const LOGGER: Logger = getLogger('authentication');
 
 
-export function getAuthenticationRoute(jwtConfig: JwtConfiguration){
+export function getAuthenticationRoute(jwtConfig: JwtConfiguration) {
   let authenticationRoute = express.Router();
 
   authenticationRoute.post('/api/authenticate', function (req: express.Request, res: express.Response, next: express.NextFunction) {
-    let jsonBody: string = JSON.stringify(req.body);
-    LOGGER.info(`authenticate: ${jsonBody}`);
     let username: String = req.body.username;
     let password: String = req.body.password;
+    LOGGER.info(`authenticate: ${username}`);
     let selector = {'username': username}
     UserModel.find(selector, (err: any, users: IUserDocument[]) => {
       if (err) {
