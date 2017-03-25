@@ -3,12 +3,12 @@ $blindsDeviceHeight: 150px;
 $blindsDeviceBorder: 5px;
 $switchWidth: 600px;
 
-.singleBlindsDiv {
+.app-single-blinds__div {
   display: flex;
   flex-direction: row;
 }
 
-.deviceList {
+.device-list {
   flex-direction: column;
   margin: 0.5em;
 }
@@ -18,7 +18,7 @@ $switchWidth: 600px;
   min-width: 10em;
 }
 
-.appSingleBlinds {
+.single-blinds__div {
   display: flex;
   flex: 1 0;
   flex-direction: row;
@@ -42,7 +42,7 @@ $switchWidth: 600px;
   width: $blindsDeviceWidth;
 }
 
-:host /deep/ app-blinds-buttons .app-blinds-button-div {
+:host /deep/ app-blinds-buttons .app-blinds-button__div {
   flex-direction: column;
   height: $blindsDeviceHeight + 2 * $blindsDeviceBorder;
   width: auto;
