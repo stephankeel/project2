@@ -13,10 +13,11 @@
     <div class="div--margins-05 div--font div--maxwith">
       <section class="input-section--flex">
         <md-input-container class="full-width button-container--small-margins input-container--middle-size">
-          <input mdInput placeholder="Benutzername" name="username" required minlength="4" #usernameControl="ngModel"
+          <input mdInput placeholder="Benutzername" name="username" required minlength="4" maxlength="20"
+                 #usernameControl="ngModel"
                  [ngModel]="user.username">
-          <md-hint *ngIf="!usernameControl.valid" [ngStyle]="{'color': 'red'}" align="start">erforderlich, mind. 4
-            Zeichen lang
+          <md-hint *ngIf="!usernameControl.valid" [ngStyle]="{'color': 'red'}" align="start">zwischen 4 - 20 Zeichen
+            lang
           </md-hint>
         </md-input-container>
         <div class="div--margins-05">
@@ -33,26 +34,39 @@
       </section>
       <section class="input-section--flex">
         <md-input-container class="full-width button-container--small-margins input-container--middle-size">
-          <input mdInput placeholder="Vorname" name="firstname" required #firstnameControl="ngModel"
+          <input mdInput placeholder="Vorname" name="firstname" required minlength="2" maxlength="20"
+                 #firstnameControl="ngModel"
                  [ngModel]="user.firstname">
-          <md-hint *ngIf="!firstnameControl.valid" [ngStyle]="{'color': 'red'}" align="start">erforderlich
+          <md-hint *ngIf="!firstnameControl.valid" [ngStyle]="{'color': 'red'}" align="start">zwischen 2 - 20 Zeichen
+            lang
           </md-hint>
         </md-input-container>
         <md-input-container class="full-width button-container--small-margins input-container--middle-size">
-          <input mdInput placeholder="Nachname" name="lastname" required #lastnameControl="ngModel"
+          <input mdInput placeholder="Nachname" name="lastname" required minlength="2" maxlength="20"
+                 #lastnameControl="ngModel"
                  [ngModel]="user.lastname">
-          <md-hint *ngIf="!lastnameControl.valid" [ngStyle]="{'color': 'red'}" align="start">erforderlich
+          <md-hint *ngIf="!lastnameControl.valid" [ngStyle]="{'color': 'red'}" align="start">zwischen 2 - 20 Zeichen
+            lang
           </md-hint>
         </md-input-container>
       </section>
-      <section class="input-section--flex">
+      <section class="input-section--flex" *ngIf="user.id">
         <md-input-container class="full-width button-container--small-margins">
           <input mdInput placeholder="Passwort" name="password" type="password" #passwordControl="ngModel"
                  [ngModel]="user.password" minlength="8" password [digitCharacter]="1"
-                 [lowercaseCharacter]="1"
-                 [uppercaseCharacter]="1" [disabled]="isLoggedInUser(user)">
-          <md-hint *ngIf="!passwordControl.valid && !isLoggedInUser(user)" [ngStyle]="{'color': 'red'}" align="start">Klein & Gross & Zahl, mind.
-            8 Zeichen
+                 [lowercaseCharacter]="1" [uppercaseCharacter]="1" [disabled]="isLoggedInUser(user)">
+          <md-hint *ngIf="!passwordControl.valid && !isLoggedInUser(user)" [ngStyle]="{'color': 'red'}" align="start">
+            Klein & Gross & Zahl, mind. 8 Zeichen
+          </md-hint>
+        </md-input-container>
+      </section>
+      <section class="input-section--flex" *ngIf="!user.id">
+        <md-input-container class="full-width button-container--small-margins">
+          <input mdInput placeholder="Passwort" name="password" type="password" #passwordControl="ngModel"
+                 [ngModel]="user.password" required minlength="8" password [digitCharacter]="1"
+                 [lowercaseCharacter]="1" [uppercaseCharacter]="1" [disabled]="isLoggedInUser(user)">
+          <md-hint *ngIf="!passwordControl.valid && !isLoggedInUser(user)" [ngStyle]="{'color': 'red'}" align="start">
+            Klein & Gross & Zahl, mind. 8 Zeichen
           </md-hint>
         </md-input-container>
       </section>
