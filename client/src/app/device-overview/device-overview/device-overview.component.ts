@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy} from "@angular/core";
+import {Component, OnInit,} from '@angular/core';
 import {
   DeviceType,
   DevicesInfo,
@@ -6,14 +6,14 @@ import {
   blindsDevicesInfo,
   temperatureDevicesInfo,
   humidityDevicesInfo
-} from "../../misc/device-pool";
-import {Router, ActivatedRoute} from "@angular/router";
-import {GenericService} from "../../remote/generic.service";
-import {IBlindsDevice, IHumidityDevice, ITemperatureDevice} from "../../../../../server/entities/device.interface";
-import {NotificationService} from "../../notification/notification.service";
-import {TemperatureDeviceCacheService} from "../../cache/service/temperature-device.cache.service";
-import {BlindsDeviceCacheService} from "../../cache/service/blinds-device.cache.service";
-import {HumidityDeviceCacheService} from "../../cache/service/humidity-device.cache.service";
+} from '../../misc/device-pool';
+import {Data, Router, ActivatedRoute} from '@angular/router';
+import {GenericService} from '../../remote/generic.service';
+import {IBlindsDevice, IHumidityDevice, ITemperatureDevice} from '../../../../../server/entities/device.interface';
+import {NotificationService} from '../../notification/notification.service';
+import {TemperatureDeviceCacheService} from '../../cache/service/temperature-device.cache.service';
+import {BlindsDeviceCacheService} from '../../cache/service/blinds-device.cache.service';
+import {HumidityDeviceCacheService} from '../../cache/service/humidity-device.cache.service';
 
 @Component({
   selector: 'app-device-overview',
@@ -25,6 +25,7 @@ export class DeviceOverviewComponent implements OnInit {
   blindsDeviceService: GenericService<IBlindsDevice>;
   humidityDeviceService: GenericService<IHumidityDevice>;
   temperatureDeviceService: GenericService<ITemperatureDevice>;
+  setup: boolean;
 
 
   constructor(private router: Router,
@@ -39,6 +40,15 @@ export class DeviceOverviewComponent implements OnInit {
     this.handleBlindsDevices();
     this.handleHumidityDevices();
     this.handleTemperatureDevices();
+
+    this.route.data.subscribe((data: Data) => {
+      let setup = data['setup']; // true in case of device-setup, undefined in case of dashboard
+      if (setup) {
+        this.setup = true;
+      } else {
+        this.setup = false;
+      }
+    });
   }
 
   clickAction(device: DevicesInfo): void {
