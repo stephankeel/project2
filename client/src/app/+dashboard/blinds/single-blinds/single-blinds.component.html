@@ -1,6 +1,6 @@
 <app-list-header [title]="'Rollladen-Steuerung (einzeln)'" [showBack]="true"></app-list-header>
-<div class="singleBlindsDiv">
-  <div class="deviceList">
+<div class="app-single-blinds__div">
+  <div class="device-list">
     <span class="span__gray div--flex selection-list-item"
           *ngFor="let device of blindsDeviceCacheService.getAll() | async"
           [class.selected]="device.id === selectedDeviceId"
@@ -8,10 +8,10 @@
       {{device.name}}
     </span>
   </div>
-  <div class="appSingleBlinds" *ngIf="selectedDeviceId">
-    <app-moving-blinds class="appMovingBlinds"
+  <div class="single-blinds__div" *ngIf="selectedDeviceId">
+    <app-moving-blinds class="app-moving-blinds"
                        [percentageDown]="blindDataCacheService.getLatestData(selectedDeviceId) | async | blindsPercentageDown"
                        [name]="blindsDeviceCacheService.getDevice(selectedDeviceId) | async | name"></app-moving-blinds>
-    <app-blinds-buttons class="appBindsButtons" [deviceId]="selectedDeviceId"></app-blinds-buttons>
+    <app-blinds-buttons class="app-blinds-buttons" [deviceId]="selectedDeviceId"></app-blinds-buttons>
   </div>
 </div>
