@@ -5,36 +5,28 @@
 
 ## Configure Database
 You may use a mongodb (port 27017) installed locally, on a remote host or by using the mlab mongodb service.
-For security reason, please start the mongo server with option `--noscripting`
+
+For security reason, please start the mongodb server with option `--noscripting`.
 
 Selecting the database is done by command line argument as follows:
-* --db localhost 
-* --db hostname or IP-address
-* --db mlab --> will use `mongodb://admin:hallihallo62@ds050879.mlab.com:50879/homeautomation`
+* `--db localhost`, the default option
+* `--db hostname` or `--db IP-address`
+* `--db mlab` will use internet based mongo service `mongodb://admin:hallihallo62@ds050879.mlab.com:50879/homeautomation`
 
 How to install a mongodb, see https://docs.mongodb.com/manual/administration/install-community/
+
+We use following mongodb server start script: `"C:\Program Files\MongoDB\Server\3.4\bin\mongod" --noscripting --dbpath .\data`
+
+**Note**, that you need to create the `data` folder in advance!
                                               
 
-## MongoDB Terminal
-```
-  mongo
-  use homeautomation
-  show collections
-  var schema = db.users.findOne();
-  for (var key in schema) { print (key) ; }`
-```
-
 ## Start the server
-Starting the server with continuous building of the typescript files
+
+If you have not yet setup a user, then you have to start the server directly, providing the `--admin <password>` option to create the initial admin user:
 ```
 open terminal
 change to project2/server folder
-npm start
-```
-Starting the server directly
-```
-open terminal
-change to project2/server folder
+gulp build
 node app.js [--help | --db <option> | --admin <password>]
 ```
 Command line attributes:
@@ -42,6 +34,12 @@ Command line attributes:
 -h, --help              shows this help
 -d, --db <option>       see configure database above
 -a, --admin <pssword>   creates the user admin, if not yet existing, using the provided password
+```
+Starting the server with continuous building (requires locally installed mongodb running):
+```
+open terminal
+change to project2/server folder
+npm start
 ```
 
 
@@ -58,11 +56,13 @@ gulp watch
 ```
 
 ## Testing the REST Interface
-Server and test running in one terminal:
-* Pre-Condition: Built server.
-* Open terminal
-* Change to project2/server folder and execute `gulp test`
 
-Optionally you can run the server and the test in dedicated terminal:
-* Start the server in one terminal
-* Execute `jasmine` or `gulp jasmine` in a 2nd terminal
+Running the unit test:
+* Pre-Condition: Built server
+* Open terminal
+* Change to project2/server folder and execute `gulp unittests`
+
+Running integration tests:
+* Pre-Condition: Built server, empty database
+* Start the server in one terminal with `node app.js --admin 12345678`
+* Start the test in an other terminal: `gulp test`
