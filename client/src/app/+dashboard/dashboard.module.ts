@@ -11,7 +11,7 @@ import {AuthConfig, AuthHttp} from "angular2-jwt";
 import {Http, RequestOptions} from "@angular/http";
 import {PasswordChangeConfirmationComponent} from "./password-change-confirmation/password-change-confirmation.component";
 import {DeviceOverviewModule} from "../device-overview/device-overview.module";
-import {MyValidatorsModule} from "../my-validators/my-validators.module";
+import {MiscValidatorsModule} from "../misc-validators/misc-validators.module";
 import {InfoComponent} from "./info/info.component";
 import {ListSupportModule} from "../list-support/list-support.module";
 import {CommonRestService} from "../remote/common-rest.service";
@@ -26,7 +26,7 @@ import {PasswordChangeRestService} from "../remote/password-change-rest.service"
     FormsModule,
     ValidatorsModule,
     DeviceOverviewModule,
-    MyValidatorsModule,
+    MiscValidatorsModule,
     ListSupportModule,
   ],
   declarations: [

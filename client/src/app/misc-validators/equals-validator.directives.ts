@@ -20,7 +20,7 @@ export class EqualValidator implements Validator {
     return this.reverse === 'true';
   }
 
-  validate(currentControl: AbstractControl): {[key: string]: any} {
+  validate(currentControl: AbstractControl): { [key: string]: any } {
     let currentControlValue = currentControl.value;
 
     let equalsToControl = currentControl.parent.get(this.validateEqual);
