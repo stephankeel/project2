@@ -10,10 +10,7 @@ import {BlindsSetupOverviewComponent} from "./blinds-setup-overview/blinds-setup
 import {TemperatureSetupOverviewComponent} from "./temperature-setup-overview/temperature-setup-overview.component";
 import {HumiditySetupOverviewComponent} from "./humidity-setup-overview/humidity-setup-overview.component";
 import {MaterialModule} from "@angular/material";
-import {BlindListentryFormatterPipe} from "./blinds-setup-overview/blind-listentry-formatter.pipe";
 import {ListSupportModule} from "../list-support/list-support.module";
-import {HumidityListitemFormatterPipe} from "./humidity-setup-overview/humidity-listitem-formatter.pipe";
-import {TemperatureListitemFormatterPipe} from "./temperature-setup-overview/temperature-listitem-formatter.pipe";
 import {BlindsdeviceDetailsComponent} from "./blinds-setup-overview/blindsdevice-details/blindsdevice-details.component";
 import {BlindsdeviceChangeComponent} from "./blinds-setup-overview/blindsdevice-change/blindsdevice-change.component";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
@@ -54,9 +51,6 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     BlindsSetupOverviewComponent,
     TemperatureSetupOverviewComponent,
     HumiditySetupOverviewComponent,
-    BlindListentryFormatterPipe,
-    HumidityListitemFormatterPipe,
-    TemperatureListitemFormatterPipe,
     BlindsdeviceDetailsComponent,
     BlindsdeviceChangeComponent,
     BlindsdeviceDeleteComponent,

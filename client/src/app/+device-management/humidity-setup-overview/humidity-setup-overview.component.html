@@ -4,6 +4,6 @@
                    [showBack]="true"></app-list-header>
   <div class="div--margins-05 div--maxwith">
     <app-line class="div--flex" *ngFor="let humidity of humidityDeviceCacheService.getAll() | async" [id]="humidity.id"
-              [desc]="humidity | humidityListitemFormatter"></app-line>
+              [desc]="humidity | name"></app-line>
   </div>
 </div>
