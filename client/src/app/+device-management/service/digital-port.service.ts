@@ -4,6 +4,7 @@ import {ReplaySubject, Observable, Subscription} from "rxjs";
 import {List} from "immutable";
 import {IBlindsDevice} from "../../../../../server/entities/device.interface";
 import {Port, digitalInputs, digitalOutputs} from "../../../../../server/hardware/port-map";
+import {PortsService} from "./ports.service";
 
 @Injectable()
 export class DigitalPortService {
@@ -13,7 +14,8 @@ export class DigitalPortService {
   private unusedOutputPorts: ReplaySubject<Port[]> = new ReplaySubject<Port[]>(1);
   private itemsSub: Subscription;
 
-  constructor(private blindsDeviceCacheService: BlindsDeviceCacheService) {
+  constructor(private blindsDeviceCacheService: BlindsDeviceCacheService,
+              private portsService: PortsService) {
     this.unusedInputPorts.next(this.computeUnusedInputPorts([]));
     this.unusedOutputPorts.next(this.computeUnusedOutputPorts([]));
     this.init();
@@ -35,11 +37,11 @@ export class DigitalPortService {
   }
 
   private computeUnusedInputPorts(itemList: IBlindsDevice[]): Port[] {
-    return this.computeUnusedPorts(itemList, digitalInputs, item => item.keyDown, item => item.keyUp);
+    return this.computeUnusedPorts(itemList, this.portsService.getDigitalInputs(), item => item.keyDown, item => item.keyUp);
   }
 
   private computeUnusedOutputPorts(itemList: IBlindsDevice[]): Port[] {
-    return this.computeUnusedPorts(itemList, digitalOutputs, item => item.actorDown, item => item.actorUp);
+    return this.computeUnusedPorts(itemList, this.portsService.getDigitalOutputs(), item => item.actorDown, item => item.actorUp);
   }
 
   private computeUnusedPorts(itemList: IBlindsDevice[], availablePorts: Port[], down: (item: IBlindsDevice) => Port, up: (item: IBlindsDevice) => Port): Port[] {
@@ -49,13 +51,5 @@ export class DigitalPortService {
       unusedPorts.delete(down(item));
     });
     return Array.from(unusedPorts);
-  }
-
-  private destroy() {
-    this.unusedInputPorts.complete();
-    this.unusedOutputPorts.complete();
-    if (this.loaded && this.itemsSub) {
-      this.itemsSub.unsubscribe();
-    }
   }
 }

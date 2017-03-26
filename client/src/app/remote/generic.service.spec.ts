@@ -1,8 +1,6 @@
-/* tslint:disable:no-unused-variable */
-
-import {TestBed, async, inject} from '@angular/core/testing';
+import {inject, TestBed} from '@angular/core/testing';
 import {GenericService} from './generic.service';
-import {IUser} from "../../../../server/entities/user.interface";
+import {IUser} from '../../../../server/entities/user.interface';
 
 describe('GenericService', () => {
   beforeEach(() => {

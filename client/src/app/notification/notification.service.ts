@@ -10,9 +10,12 @@ export class NotificationService {
     this.clear();
   }
 
-  clear(msg?: any): void {
+  clear(msg?: Message): void {
     if (msg) {
-      let index: number = this.message.indexOf(msg);
+      let msgFrom = this.message.find(message => {
+        return msg.severity === message.severity && msg.summary === message.summary && msg.detail === message.detail;
+      });
+      let index: number = this.message.indexOf(msgFrom);
       if (index >= 0) {
         this.message.splice(index, 1);
       }
@@ -21,7 +24,7 @@ export class NotificationService {
     }
   }
 
-  private push(msg: any, timeout: number): void {
+  private push(msg: Message, timeout: number): void {
     this.message.push(msg);
     let timer = setTimeout(() => {
       this.clear(msg);
@@ -29,21 +32,21 @@ export class NotificationService {
   }
 
   success(detail: string, summary?: string): void {
-    let msg = {
+    let msg : Message= {
       severity: 'success', summary: summary, detail: this.trim(detail)
     };
     this.push(msg, 5000);
   }
 
   info(detail: string, summary?: string): void {
-    let msg = {
+    let msg : Message= {
       severity: 'info', summary: summary, detail: this.trim(detail)
     };
     this.push(msg, 5000);
   }
 
   warning(detail: string, summary?: string): void {
-    let msg = {
+    let msg : Message = {
       severity: 'warn', summary: summary, detail: this.trim(detail)
     };
     this.push(msg, 10000);
