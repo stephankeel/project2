@@ -40,30 +40,30 @@ export class GenericService<T extends IId> {
 
   public create(item: T) {
     this.restService.add(item).subscribe((item: T) => {
-      this.notificationService.success('Created successfully');
+      this.notificationService.success('Erfolgreich erstellt');
       this.addItem(item);
     }, (err: any) => {
-      this.notificationService.error(err.toString(), 'Creation failed');
+      this.notificationService.error(err.toString(), 'Fehler bei der Erstellung');
       this.items.error(err);
     });
   }
 
   public update(item: T) {
     this.restService.update(item).subscribe((item: T) => {
-      this.notificationService.success('Updated successfully');
+      this.notificationService.success('Erfolgreich aktualisiert');
       this.updateItem(item);
     }, (err: any) => {
-      this.notificationService.error(err.toString(), 'Update failed');
+      this.notificationService.error(err.toString(), 'Fehler beim Aktualisieren');
       this.items.error(err);
     });
   }
 
   public del(id: string) {
     this.restService.del(id).subscribe((id: string) => {
-      this.notificationService.success('Deleted successfully');
+      this.notificationService.success('Erfolgreich gelöscht');
       this.deleteItem(id);
     }, (err: any) => {
-      this.notificationService.error(err.toString(), 'Deletion failed');
+      this.notificationService.error(err.toString(), 'Fehler beim Löschen');
       this.items.error(err);
     });
   }
@@ -75,7 +75,7 @@ export class GenericService<T extends IId> {
       subject.next(items);
       subject.complete();
     }, (err: any) => {
-      this.notificationService.error(`getAll failed with ${err.toString()}`);
+      this.notificationService.error(`getAll Fehlgeschlagen mit '${err.toString()}'`);
       this.items.error(err);
       subject.error(err);
     });

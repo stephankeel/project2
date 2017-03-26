@@ -69,7 +69,7 @@ export class DeviceOverviewComponent implements OnInit {
     this.blindsDeviceCache.getAll().subscribe(devices => {
       blindsDevicesInfo.count = devices.length;
     }, error => {
-      this.notificationService.error(`blindsdevice subscrition failed with ${error.toString()}`);
+      this.notificationService.error(`Abonnierung der Änderungen von Rollladen fehlgeschlagen mit '${error.toString()}'`);
     });
   }
 
@@ -77,7 +77,7 @@ export class DeviceOverviewComponent implements OnInit {
     this.humidityDeviceCache.getAll().subscribe(devices => {
       humidityDevicesInfo.count = devices.length;
     }, error => {
-      this.notificationService.error(`humitidydevice subscrition failed with ${error.toString()}`);
+      this.notificationService.error(`Abonnierung der Änderungen der Feuchtigkeitssensoren fehlgeschlagen mit '${error.toString()}'`);
     });
   }
 
@@ -85,8 +85,7 @@ export class DeviceOverviewComponent implements OnInit {
     this.temperatureDeviceCache.getAll().subscribe(devices => {
       temperatureDevicesInfo.count = devices.length;
     }, error => {
-      this.notificationService.error(`temperaturedevice subscrition failed with ${error.toString()}`);
+      this.notificationService.error(`Abonnierung der Änderungen der Temperatursensoren fehlgeschlagen mit '${error.toString()}'`);
     });
   }
-
 }

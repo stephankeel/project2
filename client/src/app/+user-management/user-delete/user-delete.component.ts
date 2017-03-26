@@ -35,7 +35,7 @@ export class UserDeleteComponent implements OnInit, OnDestroy {
   deleteUser() {
     if (this.user.id) {
       this.userCacheService.delDevice(this.user.id).subscribe(user => {
-        this.notificationService.info(`Benutzer gelöscht.`);
+        this.notificationService.info("Benutzer gelöscht.");
         this.router.navigate(['../..'], {relativeTo: this.route});
       }, error => {
         this.notificationService.error(`Benutzer konnte nicht gelöscht werden (${JSON.stringify(error)})`);
