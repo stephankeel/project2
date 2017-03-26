@@ -4,15 +4,12 @@ import {IAnalogData} from  '../../../../../../server/entities/data.interface'
 @Pipe({
   name: 'value'
 })
-export
-class ValuePipe implements PipeTransform {
+export class ValuePipe implements PipeTransform {
 
   transform(data: IAnalogData): number {
     if (data) {
       return data.value;
-    } else {
-      return null;
     }
+    return null;
   }
-
 }

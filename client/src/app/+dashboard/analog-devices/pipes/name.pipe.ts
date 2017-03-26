@@ -1,5 +1,4 @@
-import {Pipe, PipeTransform} from '@angular/core';
-import {IAnalogData} from "../../../../../../server/entities/data.interface";
+import {Pipe, PipeTransform} from "@angular/core";
 import {IDevice} from "../../../../../../server/entities/device.interface";
 
 @Pipe({

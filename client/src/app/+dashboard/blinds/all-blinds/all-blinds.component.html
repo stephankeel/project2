@@ -1,5 +1,5 @@
 <app-list-header [title]="'Rollladen-Steuerung (alle)'" [showBack]="true" [backlink]="'/dashboard'"></app-list-header>
-<div class="app-all-blinds__div" *ngIf="blindsDeviceCacheService.getAll() | async | notEmpty">
+<div class="app-all-blinds__div" *ngIf="blindsDeviceCacheService.getAll() | async | notEmptyArray">
   <app-blinds-buttons class="app-blinds-buttons"></app-blinds-buttons>
   <div class="all-blinds__div">
     <div class=" action--button" *ngFor="let device of blindsDeviceCacheService.getAll() | async" (click)="select(device.id)">
