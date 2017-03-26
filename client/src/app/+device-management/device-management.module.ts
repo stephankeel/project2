@@ -26,6 +26,7 @@ import {TemperaturedeviceChangeComponent} from "./temperature-setup-overview/tem
 import {ValidatorsModule} from "ng2-validators";
 import {MiscValidatorsModule} from "../misc-validators/misc-validators.module";
 import {PipesModule} from "../+dashboard/analog-devices/pipes/pipes.module";
+import {PortsService} from "./service/ports.service";
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -70,6 +71,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     },
     DigitalPortService,
     AnalogPortService,
+    PortsService,
   ],
 })
 export class DeviceManagementModule {

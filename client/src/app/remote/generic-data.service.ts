@@ -6,10 +6,10 @@ import {ISocketItem} from "../../../../server/entities/socket-item.model";
 import {GenericDataRestService} from "./generic-data-rest.service";
 
 export class GenericDataService<T extends IId> {
-  items: ReplaySubject<Array<T>> = new ReplaySubject<Array<T>>(1);
+  items: ReplaySubject<T[]> = new ReplaySubject<T[]>(1);
   lastItem: ReplaySubject<T> = new ReplaySubject<T>();
   private currentItemIndex: Set<string> = new Set<string>();
-  private currentItems: Array<T> = new Array<T>();
+  private currentItems: T[] = [];
   private dataSubscription: Subscription;
   private restService: GenericDataRestService<T>;
 
@@ -43,7 +43,7 @@ export class GenericDataService<T extends IId> {
   }
 
   private addAll(items: T[]) {
-    this.currentItems = new Array<T>();
+    this.currentItems = [];
     this.currentItemIndex = new Set<string>();
     for (let item of items) {
       this.currentItems.push(item);
