@@ -7,7 +7,9 @@ import {ITemperatureDevice} from "../../../../../server/entities/device.interfac
 export class TemperatureListitemFormatterPipe implements PipeTransform {
 
   transform(temperature: ITemperatureDevice): string {
-    return `${temperature.name}`;
+    if (temperature) {
+      return temperature.name;
+    }
+    return null;
   }
-
 }
