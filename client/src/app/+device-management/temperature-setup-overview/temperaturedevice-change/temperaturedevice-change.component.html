@@ -25,7 +25,7 @@
           <div class="div--small-margins div--flex div--flex-dir-column">
             <md-select placeholder="Eingang" name="port" #portControl="ngModel"
                        [ngModel]="temperatureDevice.port" required>
-              <md-option *ngFor="let port of unusedPortHandler.getUnusedPort() | async" [value]="port">
+              <md-option *ngFor="let port of unusedPortHandler.getAvailablePorts() | async" [value]="port">
                 {{getPortName(port)}}
               </md-option>
             </md-select>

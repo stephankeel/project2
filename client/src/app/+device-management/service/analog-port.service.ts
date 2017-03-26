@@ -4,6 +4,7 @@ import {ITemperatureDevice} from "../../../../../server/entities/device.interfac
 import {analogInputs, Port} from "../../../../../server/hardware/port-map";
 import {TemperatureDeviceCacheService} from "../../cache/service/temperature-device.cache.service";
 import {HumidityDeviceCacheService} from "../../cache/service/humidity-device.cache.service";
+import {PortsService} from "./ports.service";
 
 @Injectable()
 export class AnalogPortService {
@@ -16,7 +17,9 @@ export class AnalogPortService {
   private lastTemperatureItems: ITemperatureDevice[] = [];
   private lastHumidityItems: ITemperatureDevice[] = [];
 
-  constructor(private temperatureDeviceCacheService: TemperatureDeviceCacheService, private humidityDeviceCacheService: HumidityDeviceCacheService) {
+  constructor(private temperatureDeviceCacheService: TemperatureDeviceCacheService,
+              private humidityDeviceCacheService: HumidityDeviceCacheService,
+              private portsService: PortsService) {
     this.computeUnusedInputPorts();
     this.init();
   }
@@ -39,7 +42,7 @@ export class AnalogPortService {
   }
 
   private computeUnusedInputPorts() {
-    return this.computeUnusedPorts(analogInputs);
+    return this.computeUnusedPorts(this.portsService.getAnalogInputs());
   }
 
   private computeUnusedPorts(availablePorts: Port[]) {
@@ -51,15 +54,5 @@ export class AnalogPortService {
       unusedPorts.delete(item.port);
     });
     this.unusedInputPorts.next(Array.from(unusedPorts));
-  }
-
-  private destroy() {
-    this.unusedInputPorts.complete();
-    if (this.temperatureLoaded && this.itemsHumiditySub) {
-      this.itemsHumiditySub.unsubscribe();
-    }
-    if (this.humidityLoaded && this.itemsTemperatureSub) {
-      this.itemsTemperatureSub.unsubscribe();
-    }
   }
 }

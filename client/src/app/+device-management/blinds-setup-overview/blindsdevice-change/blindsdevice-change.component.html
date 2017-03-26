@@ -24,7 +24,7 @@
           <div class="div--small-margins div--flex div--flex-dir-column">
             <md-select placeholder="Eingang: Taster nach oben" name="keyUp" #inputKeyUpControl="ngModel"
                        validateNotEqual=keyDown reverse="true" [ngModel]="blind.keyUp" required>
-              <md-option *ngFor="let port of unusedInputPortHandler.getUnusedPort() | async" [value]="port">
+              <md-option *ngFor="let port of unusedInputPortHandler.getAvailablePorts() | async" [value]="port">
                 {{getPortName(port)}}
               </md-option>
             </md-select>
@@ -35,7 +35,7 @@
           <div class="div--small-margins div--flex div--flex-dir-column ">
             <md-select placeholder="Eingang: Taster nach unten" name="keyDown" #inputKeyDownControl="ngModel"
                        validateNotEqual=keyUp [ngModel]="blind.keyDown" required>
-              <md-option *ngFor="let port of unusedInputPortHandler.getUnusedPort() | async" [value]="port">
+              <md-option *ngFor="let port of unusedInputPortHandler.getAvailablePorts() | async" [value]="port">
                 {{getPortName(port)}}
               </md-option>
             </md-select>
@@ -48,7 +48,7 @@
           <div class="div--small-margins div--flex div--flex-dir-column">
             <md-select placeholder="Ausgang: Rollladen nach oben" name="actorUp" #outputActorUpControl="ngModel"
                        [ngModel]="blind.actorUp" required validateNotEqual=actorDown reverse="true">
-              <md-option *ngFor="let port of unusedOutputPortHandler.getUnusedPort() | async" [value]="port">
+              <md-option *ngFor="let port of unusedOutputPortHandler.getAvailablePorts() | async" [value]="port">
                 {{getPortName(port)}}
               </md-option>
             </md-select>
@@ -59,7 +59,7 @@
           <div class="div--small-margins div--flex-dir-column">
             <md-select class="fill-remaining-space" placeholder="Ausgang: Rollladen nach unten" name="actorDown"
                        #outputActorDownControl="ngModel" [ngModel]="blind.actorDown" required validateNotEqual=actorUp>
-              <md-option *ngFor="let port of unusedOutputPortHandler.getUnusedPort() | async" [value]="port">
+              <md-option *ngFor="let port of unusedOutputPortHandler.getAvailablePorts() | async" [value]="port">
                 {{getPortName(port)}}
               </md-option>
             </md-select>
