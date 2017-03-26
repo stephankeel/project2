@@ -28,6 +28,26 @@ describe('NotificationService', () => {
     expect(setTimeout).toHaveBeenCalledWith(jasmine.any(Function), 5000);
   }));
 
+  it('should clear messages', inject([NotificationService], (service: NotificationService) => {
+    service.info("info1");
+    expect(service.message.length).toEqual(1);
+    service.info("info2");
+    expect(service.message.length).toEqual(2);
+    service.clear();
+    expect(service.message.length).toEqual(0);
+  }));
+
+  it('should clear messages info1', inject([NotificationService], (service: NotificationService) => {
+    service.info("info1");
+    expect(service.message.length).toEqual(1);
+    service.info("info2");
+    expect(service.message.length).toEqual(2);
+    service.clear( {severity: 'info', summary: undefined, detail: "info2"});
+    expect(service.message).toEqual([
+      {severity: 'info', summary: undefined, detail: 'info1'}
+    ]);
+  }));
+
   it('should set info message', inject([NotificationService], (service: NotificationService) => {
     service.info("infoMessage");
     expect(service.message).toEqual([
