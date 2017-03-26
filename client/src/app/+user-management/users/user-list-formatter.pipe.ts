@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import {Pipe, PipeTransform} from '@angular/core';
 import {IUser} from "../../../../../server/entities/user.interface";
 
 @Pipe({
@@ -7,7 +7,9 @@ import {IUser} from "../../../../../server/entities/user.interface";
 export class UserListFormatterPipe implements PipeTransform {
 
   transform(user: IUser): string {
-    return `${user.firstname}  ${user.lastname} (${user.username})`;
+    if (user) {
+      return `${user.firstname} ${user.lastname} (${user.username})`;
+    }
+    return null;
   }
-
 }

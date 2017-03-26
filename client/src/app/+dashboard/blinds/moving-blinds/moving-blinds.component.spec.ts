@@ -1,9 +1,8 @@
-/* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {By} from '@angular/platform-browser';
+import {DebugElement} from '@angular/core';
 
-import { MovingBlindsComponent } from './moving-blinds.component';
+import {MovingBlindsComponent} from './moving-blinds.component';
 
 describe('MovingBlindsComponent', () => {
   let component: MovingBlindsComponent;
@@ -11,9 +10,9 @@ describe('MovingBlindsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MovingBlindsComponent ]
+      declarations: [MovingBlindsComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -24,5 +23,12 @@ describe('MovingBlindsComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('test attributes', () => {
+    component.name = "name1";
+    component.percentageDown = 10;
+    expect(component.name).toEqual("name1");
+    expect(component.percentageDown).toEqual(10);
   });
 });

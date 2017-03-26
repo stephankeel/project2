@@ -12,5 +12,4 @@ export class TimestampPipe implements PipeTransform {
     }
     return null;
   }
-
 }

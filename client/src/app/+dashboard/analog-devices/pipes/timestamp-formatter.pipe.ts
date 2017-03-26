@@ -12,5 +12,4 @@ export class TimestampFormatterPipe implements PipeTransform {
       return 'time missing';
     }
   }
-
 }
