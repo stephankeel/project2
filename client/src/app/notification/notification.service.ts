@@ -1,5 +1,5 @@
-import {Injectable} from '@angular/core';
-import {Message} from 'primeng/primeng';
+import {Injectable} from "@angular/core";
+import {Message} from "primeng/primeng";
 
 @Injectable()
 export class NotificationService {
