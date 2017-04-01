@@ -1,10 +1,11 @@
-import {Injectable} from "@angular/core";
-import {Observable, ReplaySubject, Subscription} from "rxjs";
-import {ITemperatureDevice} from "../../../../../server/entities/device.interface";
-import {analogInputs, Port} from "../../../../../server/hardware/port-map";
-import {TemperatureDeviceCacheService} from "../../cache/service/temperature-device.cache.service";
-import {HumidityDeviceCacheService} from "../../cache/service/humidity-device.cache.service";
-import {PortsService} from "./ports.service";
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs/Observable';
+import {ReplaySubject} from 'rxjs/ReplaySubject';
+import {ITemperatureDevice} from '../../../../../server/entities/device.interface';
+import {Port} from '../../../../../server/hardware/port-map';
+import {TemperatureDeviceCacheService} from '../../cache/service/temperature-device.cache.service';
+import {HumidityDeviceCacheService} from '../../cache/service/humidity-device.cache.service';
+import {PortsService} from './ports.service';
 
 @Injectable()
 export class AnalogPortService {
@@ -12,8 +13,6 @@ export class AnalogPortService {
   private temperatureLoaded: boolean;
   private humidityLoaded: boolean;
   private unusedInputPorts: ReplaySubject<Port[]> = new ReplaySubject<Port[]>(1);
-  private itemsTemperatureSub: Subscription;
-  private itemsHumiditySub: Subscription;
   private lastTemperatureItems: ITemperatureDevice[] = [];
   private lastHumidityItems: ITemperatureDevice[] = [];
 
@@ -46,7 +45,7 @@ export class AnalogPortService {
   }
 
   private computeUnusedPorts(availablePorts: Port[]) {
-    let unusedPorts: Set<Port> = new Set<Port>(availablePorts);
+    const unusedPorts: Set<Port> = new Set<Port>(availablePorts);
     this.lastTemperatureItems.forEach(item => {
       unusedPorts.delete(item.port);
     });

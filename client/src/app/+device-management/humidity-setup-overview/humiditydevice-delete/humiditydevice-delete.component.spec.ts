@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { HumiditydeviceDeleteComponent } from './humiditydevice-delete.component';
+import {HumiditydeviceDeleteComponent} from './humiditydevice-delete.component';
 
 describe('HumiditydeviceDeleteComponent', () => {
   let component: HumiditydeviceDeleteComponent;
@@ -8,9 +8,9 @@ describe('HumiditydeviceDeleteComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ HumiditydeviceDeleteComponent ]
+      declarations: [HumiditydeviceDeleteComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

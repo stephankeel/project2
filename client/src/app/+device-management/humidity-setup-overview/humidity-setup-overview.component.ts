@@ -1,9 +1,6 @@
-import {Component, OnInit} from "@angular/core";
-import {IHumidityDevice} from "../../../../../server/entities/device.interface";
-import {HumidityDeviceCacheService} from "../../cache/service/humidity-device.cache.service";
-import {ReplaySubject, Observable} from "rxjs";
-import {List} from "immutable";
-import {AnalogPortService} from "../service/analog-port.service";
+import {Component} from '@angular/core';
+import {HumidityDeviceCacheService} from '../../cache/service/humidity-device.cache.service';
+import {AnalogPortService} from '../service/analog-port.service';
 
 @Component({
   selector: 'app-humidity-setup-overview',

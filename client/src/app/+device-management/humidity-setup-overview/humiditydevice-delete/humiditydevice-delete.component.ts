@@ -1,9 +1,9 @@
-import {Component, OnInit} from "@angular/core";
-import {ActivatedRoute, Router} from "@angular/router";
-import {IHumidityDevice} from "../../../../../../server/entities/device.interface";
-import {Subscription} from "rxjs";
-import {NotificationService} from "../../../notification/notification.service";
-import {HumidityDeviceCacheService} from "../../../cache/service/humidity-device.cache.service";
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {IHumidityDevice} from '../../../../../../server/entities/device.interface';
+import {Subscription} from 'rxjs/Subscription';
+import {NotificationService} from '../../../notification/notification.service';
+import {HumidityDeviceCacheService} from '../../../cache/service/humidity-device.cache.service';
 
 @Component({
   selector: 'app-humiditydevice-delete',
@@ -37,7 +37,7 @@ export class HumiditydeviceDeleteComponent implements OnInit {
 
   deleteHumidity() {
     if (this.humidityDevice.id) {
-      this.humidityDeviceCacheService.delDevice(this.humidityDevice.id).subscribe(humidityDevice => {
+      this.humidityDeviceCacheService.delDevice(this.humidityDevice.id).subscribe(deleteHumidityDeviceId => {
         this.notificationService.info(`Feuchtigkeitssensor gelöscht.`);
         this.router.navigate(['../..'], {relativeTo: this.route});
       }, error => {

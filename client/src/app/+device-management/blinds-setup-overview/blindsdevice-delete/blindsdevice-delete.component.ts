@@ -1,9 +1,9 @@
-import {Component, OnInit} from "@angular/core";
-import {BlindsDeviceCacheService} from "../../../cache/service/blinds-device.cache.service";
-import {ActivatedRoute, Router} from "@angular/router";
-import {IBlindsDevice} from "../../../../../../server/entities/device.interface";
-import {Subscription} from "rxjs";
-import {NotificationService} from "../../../notification/notification.service";
+import {Component, OnInit} from '@angular/core';
+import {BlindsDeviceCacheService} from '../../../cache/service/blinds-device.cache.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {IBlindsDevice} from '../../../../../../server/entities/device.interface';
+import {Subscription} from 'rxjs/Subscription';
+import {NotificationService} from '../../../notification/notification.service';
 
 @Component({
   selector: 'app-blindsdevice-delete',
@@ -37,7 +37,7 @@ export class BlindsdeviceDeleteComponent implements OnInit {
 
   deleteBlind() {
     if (this.blind.id) {
-      this.blindsCacheService.delDevice(this.blind.id).subscribe(blind => {
+      this.blindsCacheService.delDevice(this.blind.id).subscribe(deletedBlindId => {
         this.notificationService.info(`Rollladen gelöscht.`);
         this.router.navigate(['../..'], {relativeTo: this.route});
       }, error => {

@@ -1,9 +1,9 @@
-import {Component, OnDestroy, OnInit} from "@angular/core";
-import {ActivatedRoute, Router} from "@angular/router";
-import {ITemperatureDevice} from "../../../../../../server/entities/device.interface";
-import {Subscription} from "rxjs";
-import {NotificationService} from "../../../notification/notification.service";
-import {TemperatureDeviceCacheService} from "../../../cache/service/temperature-device.cache.service";
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {ITemperatureDevice} from '../../../../../../server/entities/device.interface';
+import {Subscription} from 'rxjs/Subscription';
+import {NotificationService} from '../../../notification/notification.service';
+import {TemperatureDeviceCacheService} from '../../../cache/service/temperature-device.cache.service';
 
 @Component({
   selector: 'app-temperaturedevice-delete',
@@ -37,7 +37,7 @@ export class TemperaturedeviceDeleteComponent implements OnInit, OnDestroy {
 
   deleteTemperature() {
     if (this.temperatureDevice.id) {
-      this.temperatureDeviceCacheService.delDevice(this.temperatureDevice.id).subscribe(temperatureDevice => {
+      this.temperatureDeviceCacheService.delDevice(this.temperatureDevice.id).subscribe(deletedTemperatureDeviceId => {
         this.notificationService.info(`Temperatursensor gelöscht.`);
         this.router.navigate(['../..'], {relativeTo: this.route});
       }, error => {

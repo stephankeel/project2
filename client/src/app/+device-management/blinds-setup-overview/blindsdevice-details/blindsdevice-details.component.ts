@@ -1,9 +1,9 @@
-import {Component, OnInit} from "@angular/core";
-import {ActivatedRoute} from "@angular/router";
-import {BlindsDeviceCacheService} from "../../../cache/service/blinds-device.cache.service";
-import {IBlindsDevice} from "../../../../../../server/entities/device.interface";
-import {Subscription} from "rxjs";
-import {Port, portName} from "../../../../../../server/hardware/port-map";
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {BlindsDeviceCacheService} from '../../../cache/service/blinds-device.cache.service';
+import {IBlindsDevice} from '../../../../../../server/entities/device.interface';
+import {Subscription} from 'rxjs/Subscription';
+import {Port, portName} from '../../../../../../server/hardware/port-map';
 
 @Component({
   selector: 'app-blindsdevice-details',
