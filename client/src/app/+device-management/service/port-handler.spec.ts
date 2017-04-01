@@ -1,6 +1,6 @@
-import {ReplaySubject} from "rxjs";
-import {Port} from "../../../../../server/hardware/port-map";
-import {PortHandler} from "./port-handler";
+import {ReplaySubject} from 'rxjs/ReplaySubject';
+import {Port} from '../../../../../server/hardware/port-map';
+import {PortHandler} from './port-handler';
 
 let unusedPortObservable: ReplaySubject<Port[]>;
 let portHandler: PortHandler;
@@ -12,7 +12,7 @@ describe('PortsHandler', () => {
   });
 
   it('should available ports empty', () => {
-    let availablePortsObservable = portHandler.getAvailablePorts();
+    const availablePortsObservable = portHandler.getAvailablePorts();
     unusedPortObservable.next([]);
     availablePortsObservable.subscribe(ports => {
       expect(ports).toEqual([]);
@@ -20,7 +20,7 @@ describe('PortsHandler', () => {
   });
 
   it('should available ports equals input', () => {
-    let availablePortsObservable = portHandler.getAvailablePorts();
+    const availablePortsObservable = portHandler.getAvailablePorts();
     unusedPortObservable.next([Port.AI_1]);
     availablePortsObservable.subscribe(ports => {
       expect(ports).toEqual([Port.AI_1]);
@@ -28,7 +28,7 @@ describe('PortsHandler', () => {
   });
 
   it('should available ports equals input ports and registered ports', () => {
-    let availablePortsObservable = portHandler.getAvailablePorts();
+    const availablePortsObservable = portHandler.getAvailablePorts();
     unusedPortObservable.next([Port.AI_1]);
     portHandler.registerPorts([Port.AI_2]);
     availablePortsObservable.subscribe(ports => {
@@ -37,10 +37,10 @@ describe('PortsHandler', () => {
   });
 
   it('should available ports equals input incl registered, input ports change', () => {
-    let availablePortsObservable = portHandler.getAvailablePorts();
+    const availablePortsObservable = portHandler.getAvailablePorts();
     unusedPortObservable.next([Port.AI_1]);
     portHandler.registerPorts([Port.AI_2]);
-    let sub = availablePortsObservable.subscribe(ports => {
+    const sub = availablePortsObservable.subscribe(ports => {
       // is called immediately, because the availablePortsObservable is a ReplaySubject and has already a value and returns this immediately
       expect(ports).toEqual([Port.AI_1, Port.AI_2]);
     });

@@ -1,7 +1,7 @@
 import {TestBed, inject} from '@angular/core/testing';
 
 import {PortsService} from './ports.service';
-import {analogInputs, digitalInputs, digitalOutputs} from "../../../../../server/hardware/port-map";
+import {analogInputs, digitalInputs, digitalOutputs} from '../../../../../server/hardware/port-map';
 
 describe('PortsService', () => {
   beforeEach(() => {
