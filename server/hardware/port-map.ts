@@ -11,7 +11,7 @@ export const digitalOutputs: Port[] = [Port.DO_1, Port.DO_2, Port.DO_3, Port.DO_
 export const analogInputs: Port[] = [Port.AI_1, Port.AI_2, Port.AI_3, Port.AI_4, Port.AI_5, Port.AI_6, Port.AI_7];
 
 export function portName(port: Port): string {
-  let p: {[index: string]: any} = Port;
+  const p: {[index: string]: any} = Port;
   return p[port];
 }
 
