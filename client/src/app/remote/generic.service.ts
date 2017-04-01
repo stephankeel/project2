@@ -1,4 +1,6 @@
-import {Observable, ReplaySubject, Subject, Subscription} from 'rxjs';
+import {Observable} from 'rxjs/Observable';
+import {ReplaySubject} from 'rxjs/ReplaySubject';
+import {Subscription} from 'rxjs/Subscription';
 import {ClientSocketService} from './client-socket.service';
 import {IId} from '../../../../server/entities/id.interface';
 import {AuthHttp} from 'angular2-jwt';
@@ -16,7 +18,7 @@ export class GenericService<T extends IId> {
               private notificationService: NotificationService,
               private restUrl: string, private socketNamespace: string) {
     this.restService = new GenericRestService<T>(authHttp, restUrl);
-    let observable = socketService.get(socketNamespace);
+    const observable = socketService.get(socketNamespace);
     this.dataSubscription = observable.subscribe((item: ISocketItem) => this.processItem(item));
   }
 
@@ -39,9 +41,9 @@ export class GenericService<T extends IId> {
   }
 
   public create(item: T) {
-    this.restService.add(item).subscribe((item: T) => {
+    this.restService.add(item).subscribe((addedItem: T) => {
       this.notificationService.success('Erfolgreich erstellt');
-      this.addItem(item);
+      this.addItem(addedItem);
     }, (err: any) => {
       this.notificationService.error(err.toString(), 'Fehler bei der Erstellung');
       this.items.error(err);
@@ -49,9 +51,9 @@ export class GenericService<T extends IId> {
   }
 
   public update(item: T) {
-    this.restService.update(item).subscribe((item: T) => {
+    this.restService.update(item).subscribe((updatedItem: T) => {
       this.notificationService.success('Erfolgreich aktualisiert');
-      this.updateItem(item);
+      this.updateItem(updatedItem);
     }, (err: any) => {
       this.notificationService.error(err.toString(), 'Fehler beim Aktualisieren');
       this.items.error(err);
@@ -59,9 +61,9 @@ export class GenericService<T extends IId> {
   }
 
   public del(id: string) {
-    this.restService.del(id).subscribe((id: string) => {
+    this.restService.del(id).subscribe((deletedId: string) => {
       this.notificationService.success('Erfolgreich gelöscht');
-      this.deleteItem(id);
+      this.deleteItem(deletedId);
     }, (err: any) => {
       this.notificationService.error(err.toString(), 'Fehler beim Löschen');
       this.items.error(err);
@@ -69,10 +71,10 @@ export class GenericService<T extends IId> {
   }
 
   public getAll(): Observable<T[]> {
-    let subject = new Subject<T[]>();
-    this.restService.getAll().subscribe((items: T[]) => {
-      this.addAll(items);
-      subject.next(items);
+    const subject = new ReplaySubject<T[]>(1);
+    this.restService.getAll().subscribe((addedItems: T[]) => {
+      this.addAll(addedItems);
+      subject.next(addedItems);
       subject.complete();
     }, (err: any) => {
       this.notificationService.error(`getAll Fehlgeschlagen mit '${err.toString()}'`);
@@ -84,7 +86,7 @@ export class GenericService<T extends IId> {
 
   private addAll(items: T[]) {
     this.currentItems = new Map<string, T>();
-    for (let item of items) {
+    for (const item of items) {
       this.currentItems.set(item.id, item);
     }
     this.items.next(Array.from(this.currentItems.values()));
