@@ -1,9 +1,9 @@
-import {Component, OnInit} from "@angular/core";
-import {Router, ActivatedRoute} from "@angular/router";
-import {IUser} from "../../../../../server/entities/user.interface";
-import {Subscription} from "rxjs";
-import {UserType, userTypeAsString} from "../../../../../server/entities/user-type";
-import {UserCacheService} from "../../cache/service/user.cache.service";
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {IUser} from '../../../../../server/entities/user.interface';
+import {Subscription} from 'rxjs/Subscription';
+import {UserType, userTypeAsString} from '../../../../../server/entities/user-type';
+import {UserCacheService} from '../../cache/service/user.cache.service';
 
 @Component({
   selector: 'app-user-detail',

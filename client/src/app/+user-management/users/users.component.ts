@@ -1,10 +1,8 @@
-import {Component, OnInit} from "@angular/core";
-import {IUser} from "../../../../../server/entities/user.interface";
-import {ReplaySubject, Observable} from "rxjs";
-import {List} from "immutable";
-import {Router, ActivatedRoute} from "@angular/router";
-import {AuthenticationService} from "../../remote/authentication.service";
-import {UserCacheService} from "../../cache/service/user.cache.service";
+import {Component} from '@angular/core';
+import {IUser} from '../../../../../server/entities/user.interface';
+import {ActivatedRoute, Router} from '@angular/router';
+import {AuthenticationService} from '../../remote/authentication.service';
+import {UserCacheService} from '../../cache/service/user.cache.service';
 
 @Component({
   selector: 'app-users',
@@ -12,7 +10,10 @@ import {UserCacheService} from "../../cache/service/user.cache.service";
   styleUrls: ['users.component.scss']
 })
 export class UsersComponent  {
-  constructor(public userCacheService: UserCacheService, private router: Router, private route: ActivatedRoute, private authenticationService: AuthenticationService) {
+  constructor(public userCacheService: UserCacheService,
+              private router: Router,
+              private route: ActivatedRoute,
+              private authenticationService: AuthenticationService) {
   }
 
   isLoggedInUser(user: IUser) {
