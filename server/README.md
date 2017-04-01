@@ -33,7 +33,7 @@ Command line attributes:
 ```
 -h, --help              shows this help
 -d, --db <option>       see configure database above
--a, --admin <password>  creates the user admin, if not yet existing, using the provided password
+-a, --admin <password>  creates the user with the username 'admin', if not yet existing, using the provided password
 -p, --production        use for production
 ```
 Starting the server with continuous building (requires locally installed mongodb running):
@@ -54,7 +54,7 @@ the environment variable NODE_ENV to 'production' or start the server with the o
 
 To create this key, you can use: 
 ```
-openssl genpkey -algorithm RSA -out private_key.pem -pkeyopt rsa_keygen_bits:2048
+openssl genpkey -algorithm RSA -out ../../ha-key -pkeyopt rsa_keygen_bits:2048
 openssl rsa -pubout -in ../../ha-key -out ../../ha-key.pub
 ```
 
