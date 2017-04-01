@@ -1,6 +1,6 @@
 import {handleError} from './error-utils';
 import {AuthHttp} from 'angular2-jwt';
-import {Observable} from 'rxjs';
+import {Observable} from 'rxjs/Observable';
 import {Injectable} from '@angular/core';
 
 @Injectable()

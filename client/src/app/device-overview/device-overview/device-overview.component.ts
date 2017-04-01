@@ -42,7 +42,7 @@ export class DeviceOverviewComponent implements OnInit {
     this.handleTemperatureDevices();
 
     this.route.data.subscribe((data: Data) => {
-      let setup = data['setup']; // true in case of device-setup, undefined in case of dashboard
+      const setup = data['setup']; // true in case of device-setup, undefined in case of dashboard
       if (setup) {
         this.setup = true;
       } else {

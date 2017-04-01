@@ -1,5 +1,6 @@
 import {IId} from '../../../../../server/entities/id.interface';
-import {Observable, Subscription} from 'rxjs';
+import {Observable} from 'rxjs/Observable';
+import {Subscription} from 'rxjs/Subscription';
 import {GenericDataService} from '../../remote/generic-data.service';
 import {DeviceDataCache} from './device-data-cache';
 import {GenericeCacheService} from './generic.cache.service';
@@ -21,7 +22,7 @@ export class GenericDataCacheService<T extends IId, U extends IId> {
   }
 
   private cleanupCache(items) {
-    let idSet: Set<string> = this.convertToIdSet(items);
+    const idSet: Set<string> = this.convertToIdSet(items);
     this.deviceMap.forEach((value, key) => {
       if (!idSet.has(key)) {
         this.deviceMap.get(key).unregister();
@@ -30,7 +31,7 @@ export class GenericDataCacheService<T extends IId, U extends IId> {
   }
 
   private convertToIdSet(items): Set<string> {
-    let idSet: Set<string> = new Set<string>();
+    const idSet: Set<string> = new Set<string>();
     items.forEach(item => {
       idSet.add(item.id);
     });

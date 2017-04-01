@@ -12,9 +12,9 @@ export class TemperatureDataCacheService extends GenericDataCacheService<ITemper
 
   constructor(private http: AuthHttp,
               private socketService: ClientSocketService,
-              private temperatureDeviceCacheService: TemperatureDeviceCacheService,) {
+              private temperatureDeviceCacheService: TemperatureDeviceCacheService) {
     super(temperatureDeviceCacheService, id => {
       return new GenericDataService<ITemperatureData>(this.http, this.socketService, '/api/data/temperature', '/temperature', id);
-    })
+    });
   }
 }

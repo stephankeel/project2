@@ -28,7 +28,7 @@ export class SingleBlindsComponent {
 
   private redirectIfCurrentSelectionIsDeleted() {
     this.blindsDeviceCacheService.getAll().subscribe(devices => {
-      let currentSelectedDevice = devices.find(device => device.id === this.selectedDeviceId);
+      const currentSelectedDevice = devices.find(device => device.id === this.selectedDeviceId);
       if (currentSelectedDevice === undefined) {
         this.router.navigate(['..'], {relativeTo: this.route});
       }

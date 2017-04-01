@@ -21,26 +21,28 @@ export class NotEqualValidator implements Validator {
   }
 
   validate(currentControl: AbstractControl): { [key: string]: any } {
-    let currentControlValue = currentControl.value;
-    let notEqualsToControl = currentControl.parent.get(this.validateNotEqual);
+    const currentControlValue = currentControl.value;
+    const notEqualsToControl = currentControl.parent.get(this.validateNotEqual);
 
     if (notEqualsToControl && currentControlValue === notEqualsToControl.value && !this.isReverse) {
       return {
         validateNotEqual: false
-      }
+      };
     }
 
     if (notEqualsToControl && currentControlValue !== notEqualsToControl.value && this.isReverse) {
       // value equal and reverse
       delete notEqualsToControl.errors['validateNotEqual'];
-      if (!Object.keys(notEqualsToControl.errors).length) notEqualsToControl.setErrors(null);
+      if (!Object.keys(notEqualsToControl.errors).length) {
+        notEqualsToControl.setErrors(null);
+      }
     }
 
     // value not equal and reverse
     if (notEqualsToControl && currentControlValue === notEqualsToControl.value && this.isReverse) {
       notEqualsToControl.setErrors({
         validateNotEqual: false
-      })
+      });
     }
     return null;
   }

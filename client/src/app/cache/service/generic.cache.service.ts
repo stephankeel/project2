@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
 import {GenericService} from '../../remote/generic.service';
 import {AuthHttp} from 'angular2-jwt';
-import {Observable, ReplaySubject} from 'rxjs';
+import {Observable} from 'rxjs/Observable';
+import {ReplaySubject} from 'rxjs/ReplaySubject';
 import {IId} from '../../../../../server/entities/id.interface';
 import {ClientSocketService} from '../../remote/client-socket.service';
 import {NotificationService} from '../../notification/notification.service';
@@ -33,13 +34,13 @@ export class GenericeCacheService<T extends IId> {
    */
   public getDevice(deviceId: string): Observable<T> {
     this.ensureAllLoaded();
-    let subject: ReplaySubject<T> = new ReplaySubject<T>(1);
-    let subscription = this.getAll().subscribe(allDevices => {
-      let searchedDevice = allDevices.filter(device => device.id === deviceId);
+    const subject: ReplaySubject<T> = new ReplaySubject<T>(1);
+    const subscription = this.getAll().subscribe(allDevices => {
+      const searchedDevice = allDevices.filter(device => device.id === deviceId);
       if (searchedDevice.length === 1) {
         subject.next(searchedDevice[0]);
       } else {
-        subject.error(`Das gesuchte Device (${deviceId}) existiert nicht!`)
+        subject.error(`Das gesuchte Device (${deviceId}) existiert nicht!`);
       }
       subject.complete();
     });

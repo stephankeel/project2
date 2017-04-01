@@ -21,7 +21,7 @@ export class BlindsButtonsComponent implements OnInit {
   }
 
   keyUpAction(): void {
-    let cmd: IBlindsCommand = {
+    const cmd: IBlindsCommand = {
       id: this.deviceId,
       action: BlindsAction.OPEN
     };
@@ -30,7 +30,7 @@ export class BlindsButtonsComponent implements OnInit {
   }
 
   keyDownAction(): void {
-    let cmd: IBlindsCommand = {
+    const cmd: IBlindsCommand = {
       id: this.deviceId,
       action: BlindsAction.CLOSE
     };
@@ -39,7 +39,7 @@ export class BlindsButtonsComponent implements OnInit {
   }
 
   stopAction(): void {
-    let cmd: IBlindsCommand = {
+    const cmd: IBlindsCommand = {
       id: this.deviceId,
       action: BlindsAction.STOP
     };

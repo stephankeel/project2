@@ -15,6 +15,6 @@ export class BlindDataCacheService extends GenericDataCacheService<IBlindsData, 
               private  blindsDeviceCacheService: BlindsDeviceCacheService) {
     super(blindsDeviceCacheService, id => {
       return new GenericDataService<IBlindsData>(this.http, this.socketService, '/api/data/blinds', '/blinds', id);
-    })
+    });
   }
 }

@@ -1,4 +1,5 @@
-import {ReplaySubject, Subscription} from 'rxjs';
+import {ReplaySubject} from 'rxjs/ReplaySubject';
+import {Subscription} from 'rxjs/Subscription';
 import {ClientSocketService} from './client-socket.service';
 import {IId} from '../../../../server/entities/id.interface';
 import {AuthHttp} from 'angular2-jwt';
@@ -16,7 +17,7 @@ export class GenericDataService<T extends IId> {
   constructor(private authHttp: AuthHttp, private socketService: ClientSocketService,
               private restUrl: string, private socketNamespace: string, private deviceId: string) {
     this.restService = new GenericDataRestService<T>(authHttp, restUrl);
-    let observable = socketService.get(`${socketNamespace}/${deviceId}`);
+    const observable = socketService.get(`${socketNamespace}/${deviceId}`);
     this.dataSubscription = observable.subscribe((item: ISocketItem) => this.processItem(item));
   }
 
@@ -45,7 +46,7 @@ export class GenericDataService<T extends IId> {
   private addAll(items: T[]) {
     this.currentItems = [];
     this.currentItemIndex = new Set<string>();
-    for (let item of items) {
+    for (const item of items) {
       this.currentItems.push(item);
       this.currentItemIndex.add(item.id);
     }

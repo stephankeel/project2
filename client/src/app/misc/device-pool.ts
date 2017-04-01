@@ -33,7 +33,7 @@ export class TemperatureDevice implements ITemperatureDevice {
 }
 
 export abstract class DevicesInfo {
-  count: number = 0;
+  count = 0;
 
   constructor(public type: DeviceType, public displayName: string, public title: string, public css: string, public icon: string) {
   }

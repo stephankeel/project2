@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Observable} from 'rxjs/Observable';
 import * as io from 'socket.io-client';
 import {AuthenticationService} from './authentication.service';
 import {ISocketItem} from '../../../../server/entities/socket-item.model';
@@ -21,7 +21,7 @@ export class ClientSocketService {
    * @returns {any} Observable which follows the "update" signals from socket stream
    */
   get(name: string): Observable<ISocketItem> {
-    let socketUrl = this.host + name;
+    const socketUrl = this.host + name;
     this.socket = io.connect(socketUrl, {
       'query': 'token=' + this.authService.getToken()
     });

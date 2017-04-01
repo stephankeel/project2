@@ -13,7 +13,6 @@ export class LoginComponent implements OnInit {
 
   username: string;
   password: string;
-  loggedOut: boolean = true;
 
   constructor(private authenticationService: AuthenticationService,
               private authGuard: AuthGuard,
@@ -23,7 +22,6 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.authenticationService.logout();
-//    AppComponent.log('Logged-out');
   }
 
   doLogin(): void {
@@ -31,8 +29,7 @@ export class LoginComponent implements OnInit {
     this.authenticationService.login(this.username, this.password)
       .subscribe(result => {
         if (result === true) {
-//          AppComponent.logUser( this.authenticationService);
-          let url = this.authGuard.redirectUrl ? this.authGuard.redirectUrl : '/dashboard';
+          const url = this.authGuard.redirectUrl ? this.authGuard.redirectUrl : '/dashboard';
           this.router.navigate([url]);
         } else {
           this.notificationService.error('Benutzername oder Passwort ist nicht korrekt');

@@ -15,6 +15,6 @@ export class HumidityDataCacheService extends GenericDataCacheService<IHumidityD
               private humidityDeviceCacheService: HumidityDeviceCacheService) {
     super(humidityDeviceCacheService, id => {
       return new GenericDataService<IHumidityData>(this.http, this.socketService, '/api/data/humidity', '/humidity', id);
-    })
+    });
   }
 }

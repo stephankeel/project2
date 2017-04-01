@@ -1,13 +1,13 @@
 import {Injectable} from '@angular/core';
 import {handleError} from './error-utils';
 import {AuthHttp} from 'angular2-jwt';
-import {Observable} from 'rxjs';
+import {Observable} from 'rxjs/Observable';
 import {IBlindsCommand} from '../../../../server/entities/blinds-command.interface';
 
 @Injectable()
 export class BlindsCommandService {
 
-  private readonly REST_URL: string = '/api/command/blinds';
+  private readonly REST_URL = '/api/command/blinds';
 
   constructor(private authHttp: AuthHttp) {
   }

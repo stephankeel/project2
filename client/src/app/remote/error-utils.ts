@@ -1,5 +1,5 @@
 import {Response} from '@angular/http';
-import {Observable} from 'rxjs';
+import {Observable} from 'rxjs/Observable';
 
 export function handleError(error: Response | any) {
   let errMsg: string;

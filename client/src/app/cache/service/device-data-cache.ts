@@ -1,5 +1,5 @@
 import {IId} from '../../../../../server/entities/id.interface';
-import {Observable} from 'rxjs';
+import {Observable} from 'rxjs/Observable';
 import {GenericDataService} from '../../remote/generic-data.service';
 export class DeviceDataCache<T extends IId> {
   private registered: boolean;

@@ -14,7 +14,9 @@ import {HumiditydeviceDetailsComponent} from '../humidity-setup-overview/humidit
 import {HumiditydeviceDeleteComponent} from '../humidity-setup-overview/humiditydevice-delete/humiditydevice-delete.component';
 import {TemperaturedeviceDeleteComponent} from '../temperature-setup-overview/temperaturedevice-delete/temperaturedevice-delete.component';
 import {TemperaturedeviceChangeComponent} from '../temperature-setup-overview/temperaturedevice-change/temperaturedevice-change.component';
-import {TemperaturedeviceDetailsComponent} from '../temperature-setup-overview/temperaturedevice-details/temperaturedevice-details.component';
+import {
+  TemperaturedeviceDetailsComponent
+} from '../temperature-setup-overview/temperaturedevice-details/temperaturedevice-details.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'overview', pathMatch: 'full'},

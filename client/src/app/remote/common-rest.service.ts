@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {handleError} from './error-utils';
 import {AuthHttp} from 'angular2-jwt';
-import {Observable} from 'rxjs';
+import {Observable} from 'rxjs/Observable';
 import {Info} from './info';
 
 @Injectable()
@@ -14,7 +14,7 @@ export class CommonRestService {
     return this.authHttp
       .get('/api/info')
       .map(response => {
-        let info: Info = response.json()
+        const info: Info = response.json();
         return info;
       }).catch(handleError);
   }

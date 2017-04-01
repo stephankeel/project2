@@ -21,7 +21,7 @@ export class AdminGuard implements CanActivate, CanActivateChild {
 
   checkUserTpye(): boolean {
     if (this.authenticationService.loggedIn()) {
-      let userType: UserType = this.authenticationService.getLoggedInUserType();
+      const userType: UserType = this.authenticationService.getLoggedInUserType();
       return userType === UserType.ADMIN;
     }
     return false;
