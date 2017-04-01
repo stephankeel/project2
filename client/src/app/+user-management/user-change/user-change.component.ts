@@ -62,7 +62,7 @@ export class UserChangeComponent implements OnInit {
         this.notificationService.error(`Benutzer konnte nicht modifiziert werden (${JSON.stringify(error)})`);
       });
     } else {
-      this.userCacheService.addDevice(user).subscribe(updatedUser => {
+      this.userCacheService.addDevice(user).subscribe(createdUser => {
         this.notificationService.info('Neuer Benutzer wurde erfolgreich angelegt');
         this.router.navigate(['..'], {relativeTo: this.route});
       }, error => {
