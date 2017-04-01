@@ -1,6 +1,5 @@
 import {Pipe, PipeTransform} from '@angular/core';
 import {IBlindsData} from '../../../../../../server/entities/data.interface';
-import {blindsStateAsString} from '../../../../../../server/entities/blinds-state';
 
 @Pipe({
   name: 'blindsPercentageDown'

@@ -5,9 +5,8 @@ import {Component} from '@angular/core';
   templateUrl: './blinds.component.html',
   styleUrls: ['./blinds.component.scss'],
 })
-export class BlindsComponent{
+export class BlindsComponent {
 
   constructor() {
   }
-
 }
