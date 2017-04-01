@@ -14,9 +14,3 @@ export interface IBlindsData extends IData {
 export interface IAnalogData extends IData {
   value?: number;
 }
-
-export interface IHumidityData extends IAnalogData {
-}
-
-export interface ITemperatureData extends IAnalogData {
-}
