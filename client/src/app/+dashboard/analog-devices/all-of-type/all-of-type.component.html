@@ -2,8 +2,8 @@
 <div class="app-devices--div" *ngIf="deviceCacheService.getAll() | async | notEmptyArray">
   <div class=" action--button" *ngFor="let device of deviceCacheService.getAll() | async" (click)="select(device)">
     <app-analog-view class="app-analog-view" [name]="device.name"
-                     [value]="dataCacheService.getLatestData(device.id) | async | value"
+                     [value]="(dataCacheService.getLatestData(device.id) | async)?.value"
                      [units]="units"
-                     [timestamp]="dataCacheService.getLatestData(device.id) | async | timestamp"></app-analog-view>
+                     [timestamp]="(dataCacheService.getLatestData(device.id) | async)?.timestamp"></app-analog-view>
   </div>
 </div>
