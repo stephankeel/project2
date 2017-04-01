@@ -113,8 +113,8 @@ describe('AllOfTypeComponent', () => {
 
   it('check appListHeader fields', () => {
     const appListHeader = fixture.debugElement.children[0];
-    expect(appListHeader.context.title).toBe("Temperatur-Übersicht");
-    expect(appListHeader.context.backlink).toBe("/dashboard");
+    expect(appListHeader.context.title).toBe('Temperatur-Übersicht');
+    expect(appListHeader.context.backlink).toBe('/dashboard');
     expect(appListHeader.context.showBack).toBeTruthy();
     expect(appListHeader.context.showCreate).toBeUndefined();
     expect(appListHeader.context.disableCreate).toBeUndefined();
@@ -156,6 +156,3 @@ export class AnalogViewComponentMock {
   @Input() units: string;
   @Input() timestamp: number;
 }
-
-
-
