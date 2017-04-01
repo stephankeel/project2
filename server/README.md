@@ -26,7 +26,7 @@ If you have not yet setup a user, then you have to start the server directly, pr
 ```
 open terminal
 change to project2/server folder
-gulp build
+npm run build
 node app.js [--help | --db <option> | --admin <password> | --production]
 ```
 Command line attributes:
@@ -72,12 +72,12 @@ gulp watch
 
 ## Testing the REST Interface
 
-Running the unit test:
+Running the unit test (continously):
 * Pre-Condition: Built server
 * Open terminal
-* Change to project2/server folder and execute `gulp unittests`
+* Change to project2/server folder and execute `npm test`
 
 Running integration tests:
 * Pre-Condition: Built server, empty database
 * Start the server in one terminal with `node app.js --admin 12345678`
-* Start the test in an other terminal: `gulp test`
+* Start the test in an other terminal: `npm run integration-test`

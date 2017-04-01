@@ -9,7 +9,9 @@
   "main": "app.js",
   "scripts": {
     "start": "gulp",
-    "test": "gulp unittests"
+    "build": "gulp build",
+    "test": "gulp unittest",
+    "integration-test": "gulp integration-test"
   },
   "keywords": [],
   "author": "",
