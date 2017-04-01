@@ -19,3 +19,12 @@ gulp.task('npm-install-server', function () {
 gulp.task('npm-install-client', function () {
     spawnSync('npm', ['install'],  {stdio: 'inherit', cwd: 'client', shell: true});
 });
+
+gulp.task('test', ['npm-test-server']);
+gulp.task('npm-test-server', function () {
+    spawnSync('npm', ['test'], {stdio: 'inherit', cwd: 'server', shell: true});
+});
+gulp.task('npm-test-client', function () {
+    spawnSync('npm', ['test'],  {stdio: 'inherit', cwd: 'client', shell: true});
+});
+
