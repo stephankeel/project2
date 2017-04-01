@@ -1,19 +1,14 @@
-import {ActivatedRoute, Router} from "@angular/router";
-import {Component, Input, OnInit} from "@angular/core";
-import {Subscription} from "rxjs";
-import {IDevice} from "../../../../../../server/entities/device.interface";
-import {DeviceType} from "../../../misc/device-pool";
-import {IAnalogData, IData} from "../../../../../../server/entities/data.interface";
-import {AuthHttp} from "angular2-jwt";
-import {ClientSocketService} from "../../../remote/client-socket.service";
-import {GenericDataService} from "../../../remote/generic-data.service";
-import {NotificationService} from "../../../notification/notification.service";
-import {TemperatureDeviceCacheService} from "../../../cache/service/temperature-device.cache.service";
-import {HumidityDeviceCacheService} from "../../../cache/service/humidity-device.cache.service";
-import {GenericeCacheService} from "../../../cache/service/generic.cache.service";
-import {TemperatureDataCacheService} from "../../../cache/service/temperature-data.cache.service";
-import {HumidityDataCacheService} from "../../../cache/service/humidity-data.cache.service";
-import {GenericDataCacheService} from "../../../cache/service/generic-data-cache.service";
+import {ActivatedRoute, Router} from '@angular/router';
+import {Component, Input, OnInit} from '@angular/core';
+import {IDevice} from '../../../../../../server/entities/device.interface';
+import {DeviceType} from '../../../misc/device-pool';
+import {IData} from '../../../../../../server/entities/data.interface';
+import {TemperatureDeviceCacheService} from '../../../cache/service/temperature-device.cache.service';
+import {HumidityDeviceCacheService} from '../../../cache/service/humidity-device.cache.service';
+import {GenericeCacheService} from '../../../cache/service/generic.cache.service';
+import {TemperatureDataCacheService} from '../../../cache/service/temperature-data.cache.service';
+import {HumidityDataCacheService} from '../../../cache/service/humidity-data.cache.service';
+import {GenericDataCacheService} from '../../../cache/service/generic-data-cache.service';
 
 @Component({
   selector: 'app-all-of-type',
@@ -50,8 +45,9 @@ export class AllOfTypeComponent implements OnInit {
       this.dataCacheService = this.temperatureDataCacheService;
     }
   }
+
   private select(device: IDevice): void {
-    let path: string = this.deviceType === DeviceType.HUMIDITY ? '../humidity' : '../temperature';
+    const path: string = this.deviceType === DeviceType.HUMIDITY ? '../humidity' : '../temperature';
     this.router.navigate([path, device.id], {relativeTo: this.route});
   }
 }
