@@ -20,9 +20,7 @@ import {BlindsdeviceDeleteComponent} from './blinds-setup-overview/blindsdevice-
 import {HumiditydeviceChangeComponent} from './humidity-setup-overview/humiditydevice-change/humiditydevice-change.component';
 import {HumiditydeviceDeleteComponent} from './humidity-setup-overview/humiditydevice-delete/humiditydevice-delete.component';
 import {HumiditydeviceDetailsComponent} from './humidity-setup-overview/humiditydevice-details/humiditydevice-details.component';
-import {
-  TemperaturedeviceDetailsComponent
-} from './temperature-setup-overview/temperaturedevice-details/temperaturedevice-details.component';
+import {TemperaturedeviceDetailsComponent} from './temperature-setup-overview/temperaturedevice-details/temperaturedevice-details.component';
 import {TemperaturedeviceDeleteComponent} from './temperature-setup-overview/temperaturedevice-delete/temperaturedevice-delete.component';
 import {TemperaturedeviceChangeComponent} from './temperature-setup-overview/temperaturedevice-change/temperaturedevice-change.component';
 import {ValidatorsModule} from 'ng2-validators';

@@ -1,11 +1,9 @@
-import {ActivatedRoute, Params, Router} from "@angular/router";
-import {Component} from "@angular/core";
-import {Subscription} from "rxjs";
-import {BlindsDevice} from "../../../misc/device-pool";
-import {IBlindsData} from "../../../../../../server/entities/data.interface";
-import {NotificationService} from "../../../notification/notification.service";
-import {BlindsDeviceCacheService} from "../../../cache/service/blinds-device.cache.service";
-import {BlindDataCacheService} from "../../../cache/service/blinds-data.cache.service";
+import {ActivatedRoute, Params, Router} from '@angular/router';
+import {Component} from '@angular/core';
+import {BlindsDevice} from '../../../misc/device-pool';
+import {NotificationService} from '../../../notification/notification.service';
+import {BlindsDeviceCacheService} from '../../../cache/service/blinds-device.cache.service';
+import {BlindDataCacheService} from '../../../cache/service/blinds-data.cache.service';
 
 @Component({
   selector: 'app-single-blinds',

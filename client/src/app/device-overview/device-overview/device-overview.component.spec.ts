@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { DeviceOverviewComponent } from './device-overview.component';
+import {DeviceOverviewComponent} from './device-overview.component';
 
 describe('DeviceOverviewComponent', () => {
   let component: DeviceOverviewComponent;
@@ -8,9 +8,9 @@ describe('DeviceOverviewComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DeviceOverviewComponent ]
+      declarations: [DeviceOverviewComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

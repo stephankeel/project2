@@ -1,11 +1,11 @@
 ﻿import {Injectable} from '@angular/core';
-import {Http, Headers, Response} from '@angular/http';
+import {Headers, Http, Response} from '@angular/http';
 import {Observable} from 'rxjs';
 import 'rxjs/add/operator/map';
-import {tokenNotExpired, JwtHelper} from 'angular2-jwt';
+import {JwtHelper, tokenNotExpired} from 'angular2-jwt';
 
 import {handleError} from './error-utils';
-import {UserType} from "../../../../server/entities/user-type";
+import {UserType} from '../../../../server/entities/user-type';
 
 @Injectable()
 export class AuthenticationService {

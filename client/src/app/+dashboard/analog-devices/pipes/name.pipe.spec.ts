@@ -1,6 +1,5 @@
 import {NamePipe} from './name.pipe';
 import {IDevice} from '../../../../../../server/entities/device.interface';
-import {isUndefined} from 'util';
 
 describe('NamePipe', () => {
   it('create an instance', () => {

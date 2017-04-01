@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {IBlindsCommand} from '../../../../../../server/entities/blinds-command.interface';
 import {BlindsAction} from '../../../../../../server/entities/blinds-action';
 import {BlindsCommandService} from '../../../remote/blinds-command.service';

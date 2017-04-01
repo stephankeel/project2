@@ -1,4 +1,4 @@
-import {TestBed, inject} from '@angular/core/testing';
+import {inject, TestBed} from '@angular/core/testing';
 
 import {DigitalPortService} from './digital-port.service';
 import {ReplaySubject} from 'rxjs/ReplaySubject';

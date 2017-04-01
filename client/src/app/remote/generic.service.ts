@@ -1,10 +1,10 @@
-import {Observable, ReplaySubject, Subject, Subscription} from "rxjs";
-import {ClientSocketService} from "./client-socket.service";
-import {IId} from "../../../../server/entities/id.interface";
-import {AuthHttp} from "angular2-jwt";
-import {ISocketItem} from "../../../../server/entities/socket-item.model";
-import {GenericRestService} from "./generic-rest.service";
-import {NotificationService} from "../notification/notification.service";
+import {Observable, ReplaySubject, Subject, Subscription} from 'rxjs';
+import {ClientSocketService} from './client-socket.service';
+import {IId} from '../../../../server/entities/id.interface';
+import {AuthHttp} from 'angular2-jwt';
+import {ISocketItem} from '../../../../server/entities/socket-item.model';
+import {GenericRestService} from './generic-rest.service';
+import {NotificationService} from '../notification/notification.service';
 
 export class GenericService<T extends IId> {
   items: ReplaySubject<T[]> = new ReplaySubject<T[]>(1);
@@ -29,11 +29,11 @@ export class GenericService<T extends IId> {
   }
 
   private processItem(packet: ISocketItem) {
-    if (packet.action === "create") {
+    if (packet.action === 'create') {
       this.addItem(packet.item);
-    } else if (packet.action === "update") {
+    } else if (packet.action === 'update') {
       this.updateItem(packet.item);
-    } else if (packet.action === "delete") {
+    } else if (packet.action === 'delete') {
       this.deleteItem(packet.item);
     }
   }

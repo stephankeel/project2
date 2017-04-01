@@ -1,5 +1,5 @@
-import {Attribute, Directive, forwardRef} from "@angular/core";
-import {AbstractControl, NG_VALIDATORS, Validator} from "@angular/forms";
+import {Attribute, Directive, forwardRef} from '@angular/core';
+import {AbstractControl, NG_VALIDATORS, Validator} from '@angular/forms';
 
 /**
  * use reserve, to set the error on the NotEqualsTo element and not on the checked element it self.

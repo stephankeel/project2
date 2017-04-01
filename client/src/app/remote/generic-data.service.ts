@@ -1,9 +1,9 @@
-import {ReplaySubject, Subscription} from "rxjs";
-import {ClientSocketService} from "./client-socket.service";
-import {IId} from "../../../../server/entities/id.interface";
-import {AuthHttp} from "angular2-jwt";
-import {ISocketItem} from "../../../../server/entities/socket-item.model";
-import {GenericDataRestService} from "./generic-data-rest.service";
+import {ReplaySubject, Subscription} from 'rxjs';
+import {ClientSocketService} from './client-socket.service';
+import {IId} from '../../../../server/entities/id.interface';
+import {AuthHttp} from 'angular2-jwt';
+import {ISocketItem} from '../../../../server/entities/socket-item.model';
+import {GenericDataRestService} from './generic-data-rest.service';
 
 export class GenericDataService<T extends IId> {
   items: ReplaySubject<T[]> = new ReplaySubject<T[]>(1);
@@ -25,7 +25,7 @@ export class GenericDataService<T extends IId> {
   }
 
   private processItem(packet: ISocketItem) {
-    if (packet.action === "create") {
+    if (packet.action === 'create') {
       this.addItem(packet.item);
     }
   }
@@ -50,7 +50,7 @@ export class GenericDataService<T extends IId> {
       this.currentItemIndex.add(item.id);
     }
     this.items.next(this.currentItems);
-    this.lastItem.next(this.currentItems[this.currentItems.length-1]);
+    this.lastItem.next(this.currentItems[this.currentItems.length - 1]);
   }
 
   private addItem(item: T) {

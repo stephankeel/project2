@@ -1,12 +1,11 @@
-import {GenericDataCacheService} from "./generic-data-cache.service";
-import {ITemperatureData} from "../../../../../server/entities/data.interface";
-import {GenericDataService} from "../../remote/generic-data.service";
-import {AuthHttp} from "angular2-jwt";
-import {ClientSocketService} from "../../remote/client-socket.service";
-import {NotificationService} from "../../notification/notification.service";
-import {TemperatureDeviceCacheService} from "./temperature-device.cache.service";
-import {ITemperatureDevice} from "../../../../../server/entities/device.interface";
-import {Injectable} from "@angular/core";
+import {GenericDataCacheService} from './generic-data-cache.service';
+import {ITemperatureData} from '../../../../../server/entities/data.interface';
+import {GenericDataService} from '../../remote/generic-data.service';
+import {AuthHttp} from 'angular2-jwt';
+import {ClientSocketService} from '../../remote/client-socket.service';
+import {TemperatureDeviceCacheService} from './temperature-device.cache.service';
+import {ITemperatureDevice} from '../../../../../server/entities/device.interface';
+import {Injectable} from '@angular/core';
 
 @Injectable()
 export class TemperatureDataCacheService extends GenericDataCacheService<ITemperatureData, ITemperatureDevice> {

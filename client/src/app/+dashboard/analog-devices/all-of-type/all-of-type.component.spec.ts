@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { AllOfTypeComponent } from './all-of-type.component';
+import {AllOfTypeComponent} from './all-of-type.component';
 
 describe('AllOfTypeComponent', () => {
   let component: AllOfTypeComponent;
@@ -8,9 +8,9 @@ describe('AllOfTypeComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AllOfTypeComponent ]
+      declarations: [AllOfTypeComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

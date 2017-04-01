@@ -1,5 +1,5 @@
 import {Pipe, PipeTransform} from '@angular/core';
-import {IAnalogData} from  '../../../../../../server/entities/data.interface'
+import {IAnalogData} from '../../../../../../server/entities/data.interface';
 
 @Pipe({
   name: 'timestamp'

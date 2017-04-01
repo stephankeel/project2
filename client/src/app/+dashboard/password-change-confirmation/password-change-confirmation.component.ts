@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-password-change-confirmation',
@@ -7,7 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PasswordChangeConfirmationComponent implements OnInit {
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
   }

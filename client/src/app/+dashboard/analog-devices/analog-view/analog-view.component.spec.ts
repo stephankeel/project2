@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { AnalogViewComponent } from './analog-view.component';
+import {AnalogViewComponent} from './analog-view.component';
 
 describe('AnalogViewComponent', () => {
   let component: AnalogViewComponent;
@@ -8,9 +8,9 @@ describe('AnalogViewComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AnalogViewComponent ]
+      declarations: [AnalogViewComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

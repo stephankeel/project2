@@ -1,5 +1,5 @@
-import {Injectable} from "@angular/core";
-import {Message} from "primeng/primeng";
+import {Injectable} from '@angular/core';
+import {Message} from 'primeng/primeng';
 
 @Injectable()
 export class NotificationService {
@@ -32,21 +32,21 @@ export class NotificationService {
   }
 
   success(detail: string, summary?: string): void {
-    let msg : Message= {
+    let msg: Message = {
       severity: 'success', summary: summary, detail: this.trim(detail)
     };
     this.push(msg, 5000);
   }
 
   info(detail: string, summary?: string): void {
-    let msg : Message= {
+    let msg: Message = {
       severity: 'info', summary: summary, detail: this.trim(detail)
     };
     this.push(msg, 5000);
   }
 
   warning(detail: string, summary?: string): void {
-    let msg : Message = {
+    let msg: Message = {
       severity: 'warn', summary: summary, detail: this.trim(detail)
     };
     this.push(msg, 10000);

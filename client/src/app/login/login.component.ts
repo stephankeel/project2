@@ -1,7 +1,7 @@
-import {Component, OnInit} from "@angular/core";
-import {Router} from "@angular/router";
-import {AuthenticationService} from "../remote/authentication.service";
-import {AuthGuard} from "../auth/auth-guard.service";
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {AuthenticationService} from '../remote/authentication.service';
+import {AuthGuard} from '../auth/auth-guard.service';
 import {NotificationService} from '../notification/notification.service';
 
 @Component({

@@ -5,8 +5,8 @@ import {ListSupportModule} from '../../../list-support/list-support.module';
 import {MaterialModule} from '@angular/material';
 import {ChartModule} from 'primeng/primeng';
 import {AllOfTypeComponent} from '../all-of-type/all-of-type.component';
-import {PipesModule} from "../pipes/pipes.module";
-import {AnalogViewModule} from "../analog-view/analog-view.module";
+import {PipesModule} from '../pipes/pipes.module';
+import {AnalogViewModule} from '../analog-view/analog-view.module';
 
 @NgModule({
   imports: [

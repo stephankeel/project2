@@ -1,8 +1,8 @@
-import {IId} from "../../../../../server/entities/id.interface";
-import {Observable, Subscription} from "rxjs";
-import {GenericDataService} from "../../remote/generic-data.service";
-import {DeviceDataCache} from "./device-data-cache";
-import {GenericeCacheService} from "./generic.cache.service";
+import {IId} from '../../../../../server/entities/id.interface';
+import {Observable, Subscription} from 'rxjs';
+import {GenericDataService} from '../../remote/generic-data.service';
+import {DeviceDataCache} from './device-data-cache';
+import {GenericeCacheService} from './generic.cache.service';
 
 /**
  * @param <T> DataType

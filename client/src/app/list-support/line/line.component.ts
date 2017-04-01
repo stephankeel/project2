@@ -1,5 +1,5 @@
-import {Component, OnInit, Input} from "@angular/core";
-import {ActivatedRoute, Router} from "@angular/router";
+import {Component, Input, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-line',

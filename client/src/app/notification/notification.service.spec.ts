@@ -1,7 +1,5 @@
-import {TestBed, async, inject} from '@angular/core/testing';
+import {inject, TestBed} from '@angular/core/testing';
 import {NotificationService} from './notification.service';
-import {setTimeout} from 'timers';
-import {Message} from 'primeng/primeng';
 
 describe('NotificationService', () => {
 

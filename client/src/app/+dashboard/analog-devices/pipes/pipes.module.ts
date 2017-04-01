@@ -5,7 +5,7 @@ import {TimestampPipe} from '../pipes/timestamp.pipe';
 import {TimestampFormatterPipe} from '../pipes/timestamp-formatter.pipe';
 import {ValueSplitPipe} from '../pipes/value-split.pipe';
 import {NamePipe} from './name.pipe';
-import {NotEmptyArrayPipe} from "./not-empty-array.pipe";
+import {NotEmptyArrayPipe} from './not-empty-array.pipe';
 import {EmptyArrayPipe} from './empty-array.pipe';
 
 @NgModule({

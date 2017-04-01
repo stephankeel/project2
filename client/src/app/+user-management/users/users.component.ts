@@ -9,7 +9,7 @@ import {UserCacheService} from '../../cache/service/user.cache.service';
   templateUrl: 'users.component.html',
   styleUrls: ['users.component.scss']
 })
-export class UsersComponent  {
+export class UsersComponent {
   constructor(public userCacheService: UserCacheService,
               private router: Router,
               private route: ActivatedRoute,

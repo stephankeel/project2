@@ -1,13 +1,13 @@
-import {Component, OnInit,} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {
-  DeviceType,
-  DevicesInfo,
-  devicePool,
   blindsDevicesInfo,
-  temperatureDevicesInfo,
-  humidityDevicesInfo
+  devicePool,
+  DevicesInfo,
+  DeviceType,
+  humidityDevicesInfo,
+  temperatureDevicesInfo
 } from '../../misc/device-pool';
-import {Data, Router, ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Data, Router} from '@angular/router';
 import {GenericService} from '../../remote/generic.service';
 import {IBlindsDevice, IHumidityDevice, ITemperatureDevice} from '../../../../../server/entities/device.interface';
 import {NotificationService} from '../../notification/notification.service';

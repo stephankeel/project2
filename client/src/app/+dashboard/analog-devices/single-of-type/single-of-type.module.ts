@@ -4,12 +4,10 @@ import {AuthGuard} from '../../../auth/auth-guard.service';
 import {ListSupportModule} from '../../../list-support/list-support.module';
 import {MaterialModule} from '@angular/material';
 import {ChartModule} from 'primeng/primeng';
-import {ChartViewComponent} from '../chart-view/chart-view.component';
-import {AnalogViewComponent} from '../analog-view/analog-view.component';
 import {SingleOfTypeComponent} from '../single-of-type/single-of-type.component';
-import {ChartViewModule} from "../chart-view/chart-view.module";
-import {AnalogViewModule} from "../analog-view/analog-view.module";
-import {PipesModule} from "../pipes/pipes.module";
+import {ChartViewModule} from '../chart-view/chart-view.module';
+import {AnalogViewModule} from '../analog-view/analog-view.module';
+import {PipesModule} from '../pipes/pipes.module';
 
 @NgModule({
   imports: [

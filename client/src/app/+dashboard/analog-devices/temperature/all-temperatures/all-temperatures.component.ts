@@ -6,7 +6,7 @@ import {DeviceType} from '../../../../misc/device-pool';
   templateUrl: 'all-temperatures.component.html',
   styleUrls: ['all-temperatures.component.scss']
 })
-export class AllTemperaturesComponent{
+export class AllTemperaturesComponent {
 
   deviceType: DeviceType = DeviceType.TEMPERATURE;
 

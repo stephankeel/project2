@@ -1,9 +1,7 @@
 /* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { BlindsButtonsComponent } from './blinds-buttons.component';
+import {BlindsButtonsComponent} from './blinds-buttons.component';
 
 describe('BlindsButtonsComponent', () => {
   let component: BlindsButtonsComponent;
@@ -11,9 +9,9 @@ describe('BlindsButtonsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BlindsButtonsComponent ]
+      declarations: [BlindsButtonsComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

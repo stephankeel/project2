@@ -1,8 +1,7 @@
-import {ActivatedRoute, Router} from "@angular/router";
-import {Component} from "@angular/core";
-import {NotificationService} from "../../../notification/notification.service";
-import {BlindsDeviceCacheService} from "../../../cache/service/blinds-device.cache.service";
-import {BlindDataCacheService} from "../../../cache/service/blinds-data.cache.service";
+import {ActivatedRoute, Router} from '@angular/router';
+import {Component} from '@angular/core';
+import {BlindsDeviceCacheService} from '../../../cache/service/blinds-device.cache.service';
+import {BlindDataCacheService} from '../../../cache/service/blinds-data.cache.service';
 
 
 @Component({

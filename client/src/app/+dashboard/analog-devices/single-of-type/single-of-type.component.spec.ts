@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { SingleOfTypeComponent } from './single-of-type.component';
+import {SingleOfTypeComponent} from './single-of-type.component';
 
 describe('SingleOfTypeComponent', () => {
   let component: SingleOfTypeComponent;
@@ -8,9 +8,9 @@ describe('SingleOfTypeComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SingleOfTypeComponent ]
+      declarations: [SingleOfTypeComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
