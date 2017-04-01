@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { TemperatureSetupOverviewComponent } from './temperature-setup-overview.component';
+import {TemperatureSetupOverviewComponent} from './temperature-setup-overview.component';
 
 describe('TemperatureSetupOverviewComponent', () => {
   let component: TemperatureSetupOverviewComponent;
@@ -8,9 +8,9 @@ describe('TemperatureSetupOverviewComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TemperatureSetupOverviewComponent ]
+      declarations: [TemperatureSetupOverviewComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

@@ -1,14 +1,9 @@
 import {Injectable} from '@angular/core';
-import {
-  CanActivate, Router,
-  ActivatedRouteSnapshot,
-  RouterStateSnapshot,
-  CanActivateChild
-} from '@angular/router';
+import {ActivatedRouteSnapshot, CanActivate, CanActivateChild, Router, RouterStateSnapshot} from '@angular/router';
 
 
-import {AuthenticationService}      from '../remote/authentication.service';
-import {UserType} from "../../../../server/entities/user-type";
+import {AuthenticationService} from '../remote/authentication.service';
+import {UserType} from '../../../../server/entities/user-type';
 
 @Injectable()
 export class AdminOrStandardGuard implements CanActivate, CanActivateChild {
@@ -26,7 +21,7 @@ export class AdminOrStandardGuard implements CanActivate, CanActivateChild {
 
   checkUserTpye(): boolean {
     if (this.authenticationService.loggedIn()) {
-      let userType: UserType = this.authenticationService.getLoggedInUserType();
+      const userType: UserType = this.authenticationService.getLoggedInUserType();
       return userType === UserType.ADMIN || userType === UserType.STANDARD;
     }
     return false;

@@ -1,6 +1,6 @@
-import {IBlindsDevice, IHumidityDevice, ITemperatureDevice} from '../../../../server/entities/device.interface';
-import {DeviceType, DeviceTypeString} from '../../../../server/entities/device-type';
-import {Port, analogInputs, digitalInputs, digitalOutputs} from '../../../../server/hardware/port-map';
+import {IBlindsDevice, IAnalogDevice} from '../../../../server/entities/device.interface';
+import {DeviceType} from '../../../../server/entities/device-type';
+import {Port} from '../../../../server/hardware/port-map';
 
 export {DeviceType} from '../../../../server/entities/device-type';
 export {Port, portName} from  '../../../../server/hardware/port-map';
@@ -16,7 +16,7 @@ export class BlindsDevice implements IBlindsDevice {
   }
 }
 
-export class HumidityDevice implements IHumidityDevice {
+export class HumidityDevice implements IAnalogDevice {
   constructor(public id?: any,
               public name?: string,
               public port?: Port,
@@ -24,7 +24,7 @@ export class HumidityDevice implements IHumidityDevice {
   }
 }
 
-export class TemperatureDevice implements ITemperatureDevice {
+export class TemperatureDevice implements IAnalogDevice {
   constructor(public id?: any,
               public name?: string,
               public port?: Port,
@@ -33,7 +33,8 @@ export class TemperatureDevice implements ITemperatureDevice {
 }
 
 export abstract class DevicesInfo {
-  count: number = 0;
+  count = 0;
+
   constructor(public type: DeviceType, public displayName: string, public title: string, public css: string, public icon: string) {
   }
 }

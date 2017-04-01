@@ -17,9 +17,3 @@ export interface IAnalogDevice extends IDevice {
   port?: Port;
   pollingInterval?: number; // in seconds
 }
-
-export interface IHumidityDevice extends IAnalogDevice {
-}
-
-export interface ITemperatureDevice extends IAnalogDevice {
-}

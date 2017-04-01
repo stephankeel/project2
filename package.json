@@ -7,7 +7,7 @@
     "url": "https://github.com/dleuenbe/project2.git"
   },
   "scripts": {
-    "start": "gulp",
+    "start-prod": "gulp start-prod",
     "install": "gulp install",
     "test": "gulp test"
   },

@@ -1,7 +1,7 @@
 import {handleError} from './error-utils';
 import {AuthHttp} from 'angular2-jwt';
-import {Observable} from "rxjs";
-import {IId} from "../../../../server/entities/id.interface";
+import {Observable} from 'rxjs/Observable';
+import {IId} from '../../../../server/entities/id.interface';
 
 export class GenericRestService<T extends IId> {
 
@@ -36,7 +36,7 @@ export class GenericRestService<T extends IId> {
       .map(response =>
         response.json() as T[]
       )
-      .catch(handleError)
+      .catch(handleError);
   }
 
   get(id: string): Observable<T> {

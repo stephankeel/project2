@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import {Component} from '@angular/core';
 import {Message} from 'primeng/primeng';
 import {NotificationService} from './notification/notification.service';
 

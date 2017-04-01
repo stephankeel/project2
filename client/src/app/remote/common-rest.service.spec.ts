@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 
-import { TestBed, async, inject } from '@angular/core/testing';
-import { CommonRestService } from './common-rest.service';
+import {inject, TestBed} from '@angular/core/testing';
+import {CommonRestService} from './common-rest.service';
 
 describe('CommonRestService', () => {
   beforeEach(() => {

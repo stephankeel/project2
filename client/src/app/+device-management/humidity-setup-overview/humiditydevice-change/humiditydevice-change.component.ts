@@ -1,12 +1,12 @@
-import {Component, OnInit} from "@angular/core";
-import {IBlindsDevice, IHumidityDevice} from "../../../../../../server/entities/device.interface";
-import {Subscription} from "rxjs";
-import {ActivatedRoute, Router} from "@angular/router";
-import {NotificationService} from "../../../notification/notification.service";
-import {portName, Port} from "../../../../../../server/hardware/port-map";
-import {PortHandler} from "../../service/port-handler";
-import {HumidityDeviceCacheService} from "../../../cache/service/humidity-device.cache.service";
-import {AnalogPortService} from "../../service/analog-port.service";
+import {Component, OnInit} from '@angular/core';
+import {IBlindsDevice, IAnalogDevice} from '../../../../../../server/entities/device.interface';
+import {Subscription} from 'rxjs/Subscription';
+import {ActivatedRoute, Router} from '@angular/router';
+import {NotificationService} from '../../../notification/notification.service';
+import {Port, portName} from '../../../../../../server/hardware/port-map';
+import {PortHandler} from '../../service/port-handler';
+import {HumidityDeviceCacheService} from '../../../cache/service/humidity-device.cache.service';
+import {AnalogPortService} from '../../service/analog-port.service';
 
 @Component({
   selector: 'app-humiditydevice-change',
@@ -16,9 +16,9 @@ import {AnalogPortService} from "../../service/analog-port.service";
 export class HumiditydeviceChangeComponent implements OnInit {
 
   private subscriptions: Subscription[] = [];
-  humidityDevice: IHumidityDevice = {};
+  humidityDevice: IAnalogDevice = {};
   title: string;
-  private backlink = "..";
+  private backlink = '..';
   unusedPortHandler: PortHandler;
 
   constructor(private humidityDeviceCacheService: HumidityDeviceCacheService,
@@ -35,11 +35,11 @@ export class HumiditydeviceChangeComponent implements OnInit {
         this.humidityDeviceCacheService.getDevice(params['id']).subscribe(device => {
           this.humidityDevice = device;
           this.unusedPortHandler.registerPorts([this.humidityDevice.port]);
-          this.title = "Feuchtigkeitssensor ändern";
-          this.backlink = "../.."
+          this.title = 'Feuchtigkeitssensor ändern';
+          this.backlink = '../..';
         });
       } else {
-        this.title = "Neuer Feuchtigkeitssensor anlegen";
+        this.title = 'Neuer Feuchtigkeitssensor anlegen';
       }
     }));
   }
@@ -55,15 +55,15 @@ export class HumiditydeviceChangeComponent implements OnInit {
   submit(humidityDevice: IBlindsDevice) {
     if (this.humidityDevice.id) {
       humidityDevice.id = this.humidityDevice.id;
-      this.humidityDeviceCacheService.updateDevice(humidityDevice).subscribe(humidityDevice => {
-        this.notificationService.info("Feuchtigkeitssensor aktualisiert");
+      this.humidityDeviceCacheService.updateDevice(humidityDevice).subscribe(updatedHumidityDevice => {
+        this.notificationService.info('Feuchtigkeitssensor aktualisiert');
         this.router.navigate(['../..'], {relativeTo: this.route});
       }, error => {
         this.notificationService.error(`Aktualisierung vom Feuchtigkeitssensor fehlgeschlagen (${JSON.stringify(error)})`);
       });
     } else {
-      this.humidityDeviceCacheService.addDevice(humidityDevice).subscribe(humidityDevice => {
-        this.notificationService.info("Neuer Feuchtigkeitssensor erstellt");
+      this.humidityDeviceCacheService.addDevice(humidityDevice).subscribe(createdHumidityDevice => {
+        this.notificationService.info('Neuer Feuchtigkeitssensor erstellt');
         this.router.navigate(['..'], {relativeTo: this.route});
       }, error => {
         this.notificationService.error(`Erstellung vom Feuchtigkeitssensor fehlgeschlagen (${JSON.stringify(error)})`);

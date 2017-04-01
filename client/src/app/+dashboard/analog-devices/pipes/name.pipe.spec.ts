@@ -1,6 +1,5 @@
-import {NamePipe} from "./name.pipe";
-import {IDevice} from "../../../../../../server/entities/device.interface";
-import {isUndefined} from "util";
+import {NamePipe} from './name.pipe';
+import {IDevice} from '../../../../../../server/entities/device.interface';
 
 describe('NamePipe', () => {
   it('create an instance', () => {
@@ -9,12 +8,12 @@ describe('NamePipe', () => {
   });
   it('test name attribute of IDevice', () => {
     const pipe = new NamePipe();
-    let device : IDevice = {name: "test"};
-    expect(pipe.transform(device)).toEqual("test");
+    const device: IDevice = {name: 'test'};
+    expect(pipe.transform(device)).toEqual('test');
   });
   it('test empty IDevice', () => {
     const pipe = new NamePipe();
-    let device : IDevice = {};
+    const device: IDevice = {};
     expect(pipe.transform(device)).toBeUndefined();
   });
   it('test null', () => {

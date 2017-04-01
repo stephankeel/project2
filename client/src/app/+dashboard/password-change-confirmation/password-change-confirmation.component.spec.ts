@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { PasswordChangeConfirmationComponent } from './password-change-confirmation.component';
+import {PasswordChangeConfirmationComponent} from './password-change-confirmation.component';
 
 describe('PasswordChangeConfirmationComponent', () => {
   let component: PasswordChangeConfirmationComponent;
@@ -8,9 +8,9 @@ describe('PasswordChangeConfirmationComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PasswordChangeConfirmationComponent ]
+      declarations: [PasswordChangeConfirmationComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

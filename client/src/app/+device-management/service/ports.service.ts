@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {analogInputs, digitalInputs, digitalOutputs, Port} from "../../../../../server/hardware/port-map";
+import {analogInputs, digitalInputs, digitalOutputs, Port} from '../../../../../server/hardware/port-map';
 
 @Injectable()
 export class PortsService {

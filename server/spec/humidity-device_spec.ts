@@ -1,7 +1,7 @@
 import {Logger, getLogger} from '../utils/logger';
 import {RequestResponse} from 'request';
 import {BASE_URL} from './constants';
-import {IHumidityDevice} from '../entities/device.interface';
+import {IAnalogDevice} from '../entities/device.interface';
 import {Port} from '../hardware/port-map';
 import {loginOptions, authBearerOptions} from './httpOptions';
 
@@ -29,7 +29,7 @@ describe('REST API Roundtrip Test of Humidity-Device', function () {
         });
     });
 
-    let testHumidityDevice: IHumidityDevice = {
+    let testHumidityDevice: IAnalogDevice = {
       name: TEST_HUMIDITY_DEVICE,
       port: Port.AI_1,
       pollingInterval: 10
@@ -41,7 +41,7 @@ describe('REST API Roundtrip Test of Humidity-Device', function () {
         function (error: any, response: RequestResponse, body: any) {
           LOGGER.debug(`Humidity-device created (body): ${JSON.stringify(body)}`);
           expect(response.statusCode).toBe(201);
-          let humidityDevice: IHumidityDevice = JSON.parse(body);
+          let humidityDevice: IAnalogDevice = JSON.parse(body);
           LOGGER.debug(`Humidity-device created: ${JSON.stringify(humidityDevice)}`);
           testHumidityDeviceId = humidityDevice.id;
           LOGGER.debug(`testDeviceId: ${testHumidityDeviceId}`);
@@ -64,7 +64,7 @@ describe('REST API Roundtrip Test of Humidity-Device', function () {
         authBearerOptions(adminToken),
         function (error: any, response: RequestResponse, body: any) {
           expect(response.statusCode).toBe(200);
-          let humidityDevice: IHumidityDevice = JSON.parse(body);
+          let humidityDevice: IAnalogDevice = JSON.parse(body);
           LOGGER.debug(`Humidity-device retrieved: ${JSON.stringify(humidityDevice)}`);
           expect(humidityDevice.name).toBe(TEST_HUMIDITY_DEVICE);
           done();
@@ -74,7 +74,7 @@ describe('REST API Roundtrip Test of Humidity-Device', function () {
 
   describe('Test update of a humidity-device', function () {
     let NAME: string = 'Test Humidity 007';
-    let testHumidityDevice: IHumidityDevice = {
+    let testHumidityDevice: IAnalogDevice = {
       id: testHumidityDeviceId,
       name: NAME,
       port: Port.AI_1,
@@ -86,7 +86,7 @@ describe('REST API Roundtrip Test of Humidity-Device', function () {
         authBearerOptions(adminToken, JSON.stringify(testHumidityDevice)),
         function (error: any, response: RequestResponse, body: any) {
           expect(response.statusCode).toBe(200);
-          let humidityDevice: IHumidityDevice = JSON.parse(body);
+          let humidityDevice: IAnalogDevice = JSON.parse(body);
           LOGGER.debug(`Humidity-device updated: ${JSON.stringify(humidityDevice)}`);
           expect(humidityDevice.name).toBe(NAME);
           done();

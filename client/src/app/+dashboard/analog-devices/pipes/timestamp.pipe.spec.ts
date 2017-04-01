@@ -1,6 +1,5 @@
 import {TimestampPipe} from './timestamp.pipe';
-import {IDevice} from "../../../../../../server/entities/device.interface";
-import {IAnalogData} from "../../../../../../server/entities/data.interface";
+import {IAnalogData} from '../../../../../../server/entities/data.interface';
 
 describe('TimestampPipe', () => {
   it('create an instance', () => {
@@ -9,12 +8,12 @@ describe('TimestampPipe', () => {
   });
   it('test timestamp attribute of IAnalogData', () => {
     const pipe = new TimestampPipe();
-    let analogData : IAnalogData = {timestamp: 1};
+    const analogData: IAnalogData = {timestamp: 1};
     expect(pipe.transform(analogData)).toEqual(1);
   });
   it('test empty IAnalogData', () => {
     const pipe = new TimestampPipe();
-    let analogData : IAnalogData = {};
+    const analogData: IAnalogData = {};
     expect(pipe.transform(analogData)).toBeUndefined();
   });
   it('test null', () => {

@@ -1,14 +1,14 @@
-import {Directive, forwardRef, Attribute} from "@angular/core";
-import {Validator, AbstractControl, NG_VALIDATORS} from "@angular/forms";
+import {Attribute, Directive, forwardRef} from '@angular/core';
+import {AbstractControl, NG_VALIDATORS, Validator} from '@angular/forms';
 
 /**
  * use reserve, to set the error on the EqualsTo element and not on the checked element it self.
  */
 @Directive({
-  selector: '[validateEqual][formControlName],[validateEqual][formControl],[validateEqual][ngModel]',
-  providers: [{provide: NG_VALIDATORS, useExisting: forwardRef(() => EqualValidator), multi: true}]
+  selector: '[appValidateEqual][formControlName],[appValidateEqual][formControl],[appValidateEqual][ngModel]',
+  providers: [{provide: NG_VALIDATORS, useExisting: forwardRef(() => EqualValidatorDirective), multi: true}]
 })
-export class EqualValidator implements Validator {
+export class EqualValidatorDirective implements Validator {
   constructor(@Attribute('validateEqual') public validateEqual: string,
               @Attribute('reverse') public reverse: string) {
   }
@@ -21,27 +21,28 @@ export class EqualValidator implements Validator {
   }
 
   validate(currentControl: AbstractControl): { [key: string]: any } {
-    let currentControlValue = currentControl.value;
-
-    let equalsToControl = currentControl.parent.get(this.validateEqual);
+    const currentControlValue = currentControl.value;
+    const equalsToControl = currentControl.parent.get(this.validateEqual);
 
     if (equalsToControl && currentControlValue !== equalsToControl.value && !this.isReverse) {
       return {
         validateEqual: false
-      }
+      };
     }
 
     // value equal and reverse
     if (equalsToControl && currentControlValue === equalsToControl.value && this.isReverse) {
       delete equalsToControl.errors['validateEqual'];
-      if (!Object.keys(equalsToControl.errors).length) equalsToControl.setErrors(null);
+      if (!Object.keys(equalsToControl.errors).length) {
+        equalsToControl.setErrors(null);
+      }
     }
 
     // value not equal and reverse
     if (equalsToControl && currentControlValue !== equalsToControl.value && this.isReverse) {
       equalsToControl.setErrors({
         validateEqual: false
-      })
+      });
     }
     return null;
   }

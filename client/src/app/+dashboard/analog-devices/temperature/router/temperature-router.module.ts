@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {RouterModule, Routes} from '@angular/router';
 import {AuthGuard} from '../../../../auth/auth-guard.service';
 import {TemperatureComponent} from '../temperature.component';
@@ -23,4 +23,5 @@ const routes: Routes = [{
   declarations: [],
 })
 
-export class TemperatureRouterModule { }
+export class TemperatureRouterModule {
+}

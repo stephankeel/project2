@@ -1,6 +1,7 @@
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {Component, Input, OnInit} from '@angular/core';
-import {Subject, Subscription} from 'rxjs';
+import {ReplaySubject} from 'rxjs/ReplaySubject';
+import {Subscription} from 'rxjs/Subscription';
 import {IDevice} from '../../../../../../server/entities/device.interface';
 import {DeviceType} from '../../../misc/device-pool';
 import {IData} from '../../../../../../server/entities/data.interface';
@@ -28,7 +29,7 @@ export class SingleOfTypeComponent implements OnInit {
   label: string;
 
   private deviceDataHistorySubscription: Subscription;
-  private deviceDataHistory: Subject<IData[]> = new Subject();
+  private deviceDataHistory: ReplaySubject<IData[]> = new ReplaySubject<IData[]>(1);
   deviceCacheService: GenericeCacheService<IDevice>;
   dataCacheService: GenericDataCacheService<IData, IDevice>;
   selectedDeviceId: string;
@@ -66,7 +67,7 @@ export class SingleOfTypeComponent implements OnInit {
 
   private redirectIfCurrentSelectionIsDeleted() {
     this.deviceCacheService.getAll().subscribe(devices => {
-      let currentSelectedDevice = devices.find(device => device.id === this.selectedDeviceId);
+      const currentSelectedDevice = devices.find(device => device.id === this.selectedDeviceId);
       if (currentSelectedDevice === undefined) {
         this.router.navigate(['..'], {relativeTo: this.route});
       }
@@ -78,7 +79,7 @@ export class SingleOfTypeComponent implements OnInit {
       this.deviceDataHistorySubscription.unsubscribe();
     }
     this.deviceDataHistorySubscription = this.dataCacheService.getAllData(deviceId).subscribe((data: IData[]) => {
-      let filteredData: IData[] = data.filter(d => d.timestamp > SingleOfTypeComponent.TODAY);
+      const filteredData: IData[] = data.filter(d => d.timestamp > SingleOfTypeComponent.TODAY);
       this.deviceDataHistory.next(filteredData);
     });
   }

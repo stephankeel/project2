@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { TemperaturedeviceDeleteComponent } from './temperaturedevice-delete.component';
+import {TemperaturedeviceDeleteComponent} from './temperaturedevice-delete.component';
 
 describe('TemperaturedeviceDeleteComponent', () => {
   let component: TemperaturedeviceDeleteComponent;
@@ -8,9 +8,9 @@ describe('TemperaturedeviceDeleteComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TemperaturedeviceDeleteComponent ]
+      declarations: [TemperaturedeviceDeleteComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

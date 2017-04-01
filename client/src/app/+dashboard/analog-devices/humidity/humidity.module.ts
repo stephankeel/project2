@@ -8,8 +8,8 @@ import {SingleHumidityComponent} from './single-humidity/single-humidity.compone
 import {ListSupportModule} from '../../../list-support/list-support.module';
 import {MaterialModule} from '@angular/material';
 import {ChartModule} from 'primeng/primeng';
-import {AllOfTypeModule} from "../all-of-type/all-of-type.module";
-import {SingleOfTypeModule} from "../single-of-type/single-of-type.module";
+import {AllOfTypeModule} from '../all-of-type/all-of-type.module';
+import {SingleOfTypeModule} from '../single-of-type/single-of-type.module';
 
 @NgModule({
   imports: [

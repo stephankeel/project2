@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {Router} from "@angular/router";
+import {Router} from '@angular/router';
 import {CommonRestService} from '../../remote/common-rest.service';
-import {Info} from "../../remote/info";
+import {Info} from '../../remote/info';
 
 @Component({
   selector: 'app-info',
@@ -24,16 +24,17 @@ export class InfoComponent implements OnInit {
       this.infoList.push(new InfoPair('CPU Modell', info.cpus[0].model));
       this.infoList.push(new InfoPair('Speicher total', this.formatMemory(info.totalMem)));
       this.infoList.push(new InfoPair('Freier Speicher', this.formatMemory(info.freeMem)));
-    }, (error: any) => {});
+    }, (error: any) => {
+    });
   }
 
   private formatMemory(size: number): string {
     if (size >= Math.pow(10, 9)) {
-      return (size / Math.pow(10, 9)).toFixed(3) + " GB";
+      return (size / Math.pow(10, 9)).toFixed(3) + ' GB';
     } else if (size >= Math.pow(10, 6)) {
-      return (size / Math.pow(10, 6)).toFixed(3) + " MB";
+      return (size / Math.pow(10, 6)).toFixed(3) + ' MB';
     } else {
-      return (size / 1000).toFixed(3) + " KB";
+      return (size / 1000).toFixed(3) + ' KB';
     }
   }
 
@@ -44,5 +45,6 @@ export class InfoComponent implements OnInit {
 }
 
 class InfoPair {
-  constructor(public name: string, public value: string){}
+  constructor(public name: string, public value: string) {
+  }
 }

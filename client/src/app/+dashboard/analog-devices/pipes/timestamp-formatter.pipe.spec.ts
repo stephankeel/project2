@@ -7,12 +7,12 @@ describe('TimestampFormatterPipe', () => {
   });
   it('test value not null', () => {
     const pipe = new TimestampFormatterPipe();
-    const timestamp: number = 100;
+    const timestamp = 100;
     const expectedFormat: string = new Date(timestamp).toLocaleTimeString();
     expect(pipe.transform(timestamp)).toEqual(expectedFormat);
   });
   it('test value null', () => {
     const pipe = new TimestampFormatterPipe();
-    expect(pipe.transform(null)).toEqual("time missing");
+    expect(pipe.transform(null)).toEqual('time missing');
   });
 });

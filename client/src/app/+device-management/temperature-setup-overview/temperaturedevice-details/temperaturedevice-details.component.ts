@@ -1,9 +1,9 @@
-import {Component, OnInit} from "@angular/core";
-import {ActivatedRoute} from "@angular/router";
-import {ITemperatureDevice} from "../../../../../../server/entities/device.interface";
-import {Subscription} from "rxjs";
-import {Port, portName} from "../../../../../../server/hardware/port-map";
-import {TemperatureDeviceCacheService} from "../../../cache/service/temperature-device.cache.service";
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {IAnalogDevice} from '../../../../../../server/entities/device.interface';
+import {Subscription} from 'rxjs/Subscription';
+import {Port, portName} from '../../../../../../server/hardware/port-map';
+import {TemperatureDeviceCacheService} from '../../../cache/service/temperature-device.cache.service';
 
 @Component({
   selector: 'app-temperaturedevice-details',
@@ -13,7 +13,7 @@ import {TemperatureDeviceCacheService} from "../../../cache/service/temperature-
 export class TemperaturedeviceDetailsComponent implements OnInit {
 
   private sub: Subscription;
-  temperatureDevice: ITemperatureDevice = {};
+  temperatureDevice: IAnalogDevice = {};
 
   constructor(private temperatureDeviceCacheService: TemperatureDeviceCacheService,
               private route: ActivatedRoute) {

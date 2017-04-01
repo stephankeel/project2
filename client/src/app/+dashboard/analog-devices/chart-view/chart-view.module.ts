@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {MaterialModule} from '@angular/material';
 import {ChartModule} from 'primeng/primeng';
 import {ChartViewComponent} from '../chart-view/chart-view.component';
-import {PipesModule} from "../pipes/pipes.module";
+import {PipesModule} from '../pipes/pipes.module';
 
 @NgModule({
   imports: [
@@ -18,8 +18,7 @@ import {PipesModule} from "../pipes/pipes.module";
   exports: [
     ChartViewComponent,
   ],
-  providers: [
-  ]
+  providers: []
 })
 export class ChartViewModule {
 }

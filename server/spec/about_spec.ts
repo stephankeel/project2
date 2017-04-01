@@ -1,5 +1,3 @@
-'use strict';
-
 import {RequestResponse} from 'request';
 import {BASE_URL} from './constants';
 

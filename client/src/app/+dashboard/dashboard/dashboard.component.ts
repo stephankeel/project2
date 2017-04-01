@@ -1,6 +1,6 @@
-import {Component} from "@angular/core";
-import {Router, ActivatedRoute} from "@angular/router";
-import {AuthenticationService} from "../../remote/authentication.service";
+import {Component} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {AuthenticationService} from '../../remote/authentication.service';
 
 @Component({
   selector: 'app-dashboard',

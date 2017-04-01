@@ -1,5 +1,5 @@
 import {Pipe, PipeTransform} from '@angular/core';
-import {IUser} from "../../../../../server/entities/user.interface";
+import {IUser} from '../../../../../server/entities/user.interface';
 
 @Pipe({
   name: 'userListFormatter'

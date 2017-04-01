@@ -1,15 +1,15 @@
-import {Component, OnInit,} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {
-  DeviceType,
-  DevicesInfo,
-  devicePool,
   blindsDevicesInfo,
-  temperatureDevicesInfo,
-  humidityDevicesInfo
+  devicePool,
+  DevicesInfo,
+  DeviceType,
+  humidityDevicesInfo,
+  temperatureDevicesInfo
 } from '../../misc/device-pool';
-import {Data, Router, ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Data, Router} from '@angular/router';
 import {GenericService} from '../../remote/generic.service';
-import {IBlindsDevice, IHumidityDevice, ITemperatureDevice} from '../../../../../server/entities/device.interface';
+import {IBlindsDevice, IAnalogDevice} from '../../../../../server/entities/device.interface';
 import {NotificationService} from '../../notification/notification.service';
 import {TemperatureDeviceCacheService} from '../../cache/service/temperature-device.cache.service';
 import {BlindsDeviceCacheService} from '../../cache/service/blinds-device.cache.service';
@@ -23,8 +23,8 @@ import {HumidityDeviceCacheService} from '../../cache/service/humidity-device.ca
 export class DeviceOverviewComponent implements OnInit {
   devicePool: DevicesInfo[] = devicePool;
   blindsDeviceService: GenericService<IBlindsDevice>;
-  humidityDeviceService: GenericService<IHumidityDevice>;
-  temperatureDeviceService: GenericService<ITemperatureDevice>;
+  humidityDeviceService: GenericService<IAnalogDevice>;
+  temperatureDeviceService: GenericService<IAnalogDevice>;
   setup: boolean;
 
 
@@ -42,7 +42,7 @@ export class DeviceOverviewComponent implements OnInit {
     this.handleTemperatureDevices();
 
     this.route.data.subscribe((data: Data) => {
-      let setup = data['setup']; // true in case of device-setup, undefined in case of dashboard
+      const setup = data['setup']; // true in case of device-setup, undefined in case of dashboard
       if (setup) {
         this.setup = true;
       } else {

@@ -1,7 +1,7 @@
 import {Document, Schema, Model, model} from 'mongoose';
-import {ITemperatureData} from '../entities/data.interface';
+import {IAnalogData} from '../entities/data.interface';
 
-export interface ITemperatureDataDocument extends ITemperatureData, Document {
+export interface ITemperatureDataDocument extends IAnalogData, Document {
 }
 
 let TemperatureDataSchema = new Schema({

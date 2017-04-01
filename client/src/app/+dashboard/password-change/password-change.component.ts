@@ -1,11 +1,11 @@
-import {Component, OnInit} from "@angular/core";
-import {Router, ActivatedRoute} from "@angular/router";
-import {GenericRestService} from "../../remote/generic-rest.service";
-import {IUser} from "../../../../../server/entities/user.interface";
-import {AuthHttp} from "angular2-jwt";
-import {AuthenticationService} from "../../remote/authentication.service";
-import {PasswordChangeRestService} from "../../remote/password-change-rest.service";
-import {NotificationService} from "../../notification/notification.service";
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {GenericRestService} from '../../remote/generic-rest.service';
+import {IUser} from '../../../../../server/entities/user.interface';
+import {AuthHttp} from 'angular2-jwt';
+import {AuthenticationService} from '../../remote/authentication.service';
+import {PasswordChangeRestService} from '../../remote/password-change-rest.service';
+import {NotificationService} from '../../notification/notification.service';
 
 @Component({
   selector: 'app-password-change',
@@ -48,6 +48,6 @@ export class PasswordChangeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.restService = new GenericRestService<IUser>(this.http, "/api/users");
+    this.restService = new GenericRestService<IUser>(this.http, '/api/users');
   }
 }

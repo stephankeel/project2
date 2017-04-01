@@ -26,14 +26,14 @@ If you have not yet setup a user, then you have to start the server directly, pr
 ```
 open terminal
 change to project2/server folder
-gulp build
+npm run build
 node app.js [--help | --db <option> | --admin <password> | --production]
 ```
 Command line attributes:
 ```
 -h, --help              shows this help
 -d, --db <option>       see configure database above
--a, --admin <password>  creates the user admin, if not yet existing, using the provided password
+-a, --admin <password>  creates the user with the username 'admin', if not yet existing, using the provided password
 -p, --production        use for production
 ```
 Starting the server with continuous building (requires locally installed mongodb running):
@@ -54,7 +54,7 @@ the environment variable NODE_ENV to 'production' or start the server with the o
 
 To create this key, you can use: 
 ```
-openssl genpkey -algorithm RSA -out private_key.pem -pkeyopt rsa_keygen_bits:2048
+openssl genpkey -algorithm RSA -out ../../ha-key -pkeyopt rsa_keygen_bits:2048
 openssl rsa -pubout -in ../../ha-key -out ../../ha-key.pub
 ```
 
@@ -72,12 +72,12 @@ gulp watch
 
 ## Testing the REST Interface
 
-Running the unit test:
+Running the unit test (continously):
 * Pre-Condition: Built server
 * Open terminal
-* Change to project2/server folder and execute `gulp unittests`
+* Change to project2/server folder and execute `npm test`
 
 Running integration tests:
 * Pre-Condition: Built server, empty database
 * Start the server in one terminal with `node app.js --admin 12345678`
-* Start the test in an other terminal: `gulp test`
+* Start the test in an other terminal: `npm run integration-test`

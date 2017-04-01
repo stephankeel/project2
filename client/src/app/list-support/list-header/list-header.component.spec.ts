@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ListHeaderComponent } from './list-header.component';
+import {ListHeaderComponent} from './list-header.component';
 
 describe('ListHeaderComponent', () => {
   let component: ListHeaderComponent;
@@ -8,9 +8,9 @@ describe('ListHeaderComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ListHeaderComponent ]
+      declarations: [ListHeaderComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

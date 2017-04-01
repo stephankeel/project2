@@ -1,15 +1,15 @@
 ﻿import {Injectable} from '@angular/core';
-import {Http, Headers, Response} from '@angular/http';
-import {Observable} from 'rxjs';
+import {Headers, Http, Response} from '@angular/http';
+import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
-import {tokenNotExpired, JwtHelper} from 'angular2-jwt';
+import {JwtHelper, tokenNotExpired} from 'angular2-jwt';
 
 import {handleError} from './error-utils';
-import {UserType} from "../../../../server/entities/user-type";
+import {UserType} from '../../../../server/entities/user-type';
 
 @Injectable()
 export class AuthenticationService {
-  private static readonly tokenKey: string = 'id_token';
+  private static readonly tokenKey = 'id_token';
   private jwtHelper: JwtHelper = new JwtHelper();
   private headers = new Headers({'Content-Type': 'application/json'});
   private username: string;
@@ -17,7 +17,7 @@ export class AuthenticationService {
   private userType: UserType;
 
   constructor(private http: Http) {
-    let token = localStorage.getItem(AuthenticationService.tokenKey);
+    const token = localStorage.getItem(AuthenticationService.tokenKey);
     if (token) {
       this.decodeToken(token);
       console.log('token restored');
@@ -45,7 +45,7 @@ export class AuthenticationService {
     }), {headers: this.headers})
       .map((response: Response) => {
         // login successful if there's a jwt token in the response
-        let token: string = response.json() && response.json().token as string;
+        const token: string = response.json() && response.json().token as string;
         if (token) {
           processCallback(token);
           return true;
@@ -57,7 +57,7 @@ export class AuthenticationService {
   }
 
   private decodeToken(token: string) {
-    let decodedToken = this.jwtHelper.decodeToken(this.getToken());
+    const decodedToken = this.jwtHelper.decodeToken(this.getToken());
     this.username = decodedToken.username;
     this.userId = decodedToken.id;
     this.userType = decodedToken.type;
@@ -68,7 +68,7 @@ export class AuthenticationService {
   }
 
   loggedIn(): boolean {
-    let isLoggedIn = tokenNotExpired();
+    const isLoggedIn = tokenNotExpired();
     return isLoggedIn;
   }
 

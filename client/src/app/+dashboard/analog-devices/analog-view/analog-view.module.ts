@@ -16,8 +16,7 @@ import {PipesModule} from '../pipes/pipes.module';
   exports: [
     AnalogViewComponent
   ],
-  providers: [
-  ]
+  providers: []
 })
 export class AnalogViewModule {
 }

@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {IBlindsCommand} from '../../../../../../server/entities/blinds-command.interface';
 import {BlindsAction} from '../../../../../../server/entities/blinds-action';
 import {BlindsCommandService} from '../../../remote/blinds-command.service';
@@ -21,7 +21,7 @@ export class BlindsButtonsComponent implements OnInit {
   }
 
   keyUpAction(): void {
-    let cmd: IBlindsCommand = {
+    const cmd: IBlindsCommand = {
       id: this.deviceId,
       action: BlindsAction.OPEN
     };
@@ -30,7 +30,7 @@ export class BlindsButtonsComponent implements OnInit {
   }
 
   keyDownAction(): void {
-    let cmd: IBlindsCommand = {
+    const cmd: IBlindsCommand = {
       id: this.deviceId,
       action: BlindsAction.CLOSE
     };
@@ -39,7 +39,7 @@ export class BlindsButtonsComponent implements OnInit {
   }
 
   stopAction(): void {
-    let cmd: IBlindsCommand = {
+    const cmd: IBlindsCommand = {
       id: this.deviceId,
       action: BlindsAction.STOP
     };

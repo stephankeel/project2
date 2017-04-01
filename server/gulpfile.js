@@ -26,19 +26,12 @@ gulp.task('build', function () {
     .pipe(gulp.dest('./'));
 });
 
-// Just run tests, app must have been started before
-gulp.task('jasmine', function () {
+// Just run integration-tests, app must have been started before (see README.md)
+gulp.task('integration-test', function () {
   return gulp.src('spec/*.js').pipe(jasmine());
 });
 
 // run only unittests, no integration tests
-gulp.task('unittests', function () {
+gulp.task('unittest', function () {
   return gulp.src('spec/models/*.js').pipe(jasmine());
-});
-
-// Start app, run tests and stop app
-gulp.task('test', function () {
-  return runSequence(['run', 'jasmine'], function () {
-    process.exit();
-  });
 });

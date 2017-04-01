@@ -1,7 +1,6 @@
-/* tslint:disable:no-unused-variable */
-import {async, ComponentFixture, TestBed} from "@angular/core/testing";
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {AllBlindsComponent} from "./all-blinds.component";
+import {AllBlindsComponent} from './all-blinds.component';
 
 describe('AllBlindsComponent', () => {
   let component: AllBlindsComponent;
@@ -9,9 +8,9 @@ describe('AllBlindsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AllBlindsComponent ]
+      declarations: [AllBlindsComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

@@ -1,9 +1,9 @@
-import {Component, OnInit, OnDestroy} from "@angular/core";
-import {ActivatedRoute, Router} from "@angular/router";
-import {Subscription} from "rxjs";
-import {IUser} from "../../../../../server/entities/user.interface";
-import {NotificationService} from "../../notification/notification.service";
-import {UserCacheService} from "../../cache/service/user.cache.service";
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Subscription} from 'rxjs/Subscription';
+import {IUser} from '../../../../../server/entities/user.interface';
+import {NotificationService} from '../../notification/notification.service';
+import {UserCacheService} from '../../cache/service/user.cache.service';
 
 @Component({
   selector: 'app-user-delete',
@@ -14,7 +14,10 @@ export class UserDeleteComponent implements OnInit, OnDestroy {
   private sub: Subscription;
   user: IUser = {};
 
-  constructor(private userCacheService: UserCacheService, private route: ActivatedRoute, private router: Router, private notificationService: NotificationService) {
+  constructor(private userCacheService: UserCacheService,
+              private route: ActivatedRoute,
+              private router: Router,
+              private notificationService: NotificationService) {
   }
 
   ngOnInit() {
@@ -34,8 +37,8 @@ export class UserDeleteComponent implements OnInit, OnDestroy {
 
   deleteUser() {
     if (this.user.id) {
-      this.userCacheService.delDevice(this.user.id).subscribe(user => {
-        this.notificationService.info("Benutzer gelöscht.");
+      this.userCacheService.delDevice(this.user.id).subscribe(deletedUserId => {
+        this.notificationService.info('Benutzer gelöscht.');
         this.router.navigate(['../..'], {relativeTo: this.route});
       }, error => {
         this.notificationService.error(`Benutzer konnte nicht gelöscht werden (${JSON.stringify(error)})`);
