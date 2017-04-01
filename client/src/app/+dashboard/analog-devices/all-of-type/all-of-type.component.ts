@@ -2,7 +2,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Component, Input, OnInit} from '@angular/core';
 import {IDevice} from '../../../../../../server/entities/device.interface';
 import {DeviceType} from '../../../misc/device-pool';
-import {IData} from '../../../../../../server/entities/data.interface';
+import {IAnalogData} from '../../../../../../server/entities/data.interface';
 import {TemperatureDeviceCacheService} from '../../../cache/service/temperature-device.cache.service';
 import {HumidityDeviceCacheService} from '../../../cache/service/humidity-device.cache.service';
 import {GenericeCacheService} from '../../../cache/service/generic.cache.service';
@@ -23,7 +23,7 @@ export class AllOfTypeComponent implements OnInit {
   units: string;
 
   deviceCacheService: GenericeCacheService<IDevice>;
-  dataCacheService: GenericDataCacheService<IData, IDevice>;
+  dataCacheService: GenericDataCacheService<IAnalogData, IDevice>;
 
   constructor(private route: ActivatedRoute, private router: Router,
               private temperatureDeviceCacheService: TemperatureDeviceCacheService,
