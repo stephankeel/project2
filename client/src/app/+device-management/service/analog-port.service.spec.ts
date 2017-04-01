@@ -6,16 +6,16 @@ import {TemperatureDeviceCacheService} from '../../cache/service/temperature-dev
 import {ReplaySubject} from 'rxjs/ReplaySubject';
 import {PortsService} from './ports.service';
 import {Port} from '../../../../../server/hardware/port-map';
-import {IHumidityDevice, ITemperatureDevice} from '../../../../../server/entities/device.interface';
+import {IAnalogDevice} from '../../../../../server/entities/device.interface';
 
-let getAllTemperatureDevices: ReplaySubject<ITemperatureDevice[]>;
-let getAllHumidityDevices: ReplaySubject<IHumidityDevice[]>;
+let getAllTemperatureDevices: ReplaySubject<IAnalogDevice[]>;
+let getAllHumidityDevices: ReplaySubject<IAnalogDevice[]>;
 
 describe('AnalogPortService', () => {
 
   beforeEach(() => {
-    getAllTemperatureDevices = new ReplaySubject<ITemperatureDevice[]>();
-    getAllHumidityDevices = new ReplaySubject<IHumidityDevice[]>();
+    getAllTemperatureDevices = new ReplaySubject<IAnalogDevice[]>();
+    getAllHumidityDevices = new ReplaySubject<IAnalogDevice[]>();
 
     TestBed.configureTestingModule({
       providers: [
@@ -70,13 +70,13 @@ describe('AnalogPortService', () => {
 });
 
 class TemperatureDeviceCacheServiceMock {
-  public getAll(): ReplaySubject<ITemperatureDevice[]> {
+  public getAll(): ReplaySubject<IAnalogDevice[]> {
     return getAllTemperatureDevices;
   }
 }
 
 class HumidityDeviceCacheServiceMock {
-  public getAll(): ReplaySubject<IHumidityDevice[]> {
+  public getAll(): ReplaySubject<IAnalogDevice[]> {
     return getAllHumidityDevices;
   }
 }

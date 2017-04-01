@@ -1,8 +1,8 @@
 import {Document, Schema, Model, model} from 'mongoose';
-import {IHumidityDevice} from '../entities/device.interface';
+import {IAnalogDevice} from '../entities/device.interface';
 import {analogInputs} from '../hardware/port-map';
 
-export interface IHumidityDeviceDocument extends IHumidityDevice, Document {
+export interface IHumidityDeviceDocument extends IAnalogDevice, Document {
 }
 
 let HumidityDeviceSchema = new Schema({

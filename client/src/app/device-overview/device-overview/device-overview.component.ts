@@ -9,7 +9,7 @@ import {
 } from '../../misc/device-pool';
 import {ActivatedRoute, Data, Router} from '@angular/router';
 import {GenericService} from '../../remote/generic.service';
-import {IBlindsDevice, IHumidityDevice, ITemperatureDevice} from '../../../../../server/entities/device.interface';
+import {IBlindsDevice, IAnalogDevice} from '../../../../../server/entities/device.interface';
 import {NotificationService} from '../../notification/notification.service';
 import {TemperatureDeviceCacheService} from '../../cache/service/temperature-device.cache.service';
 import {BlindsDeviceCacheService} from '../../cache/service/blinds-device.cache.service';
@@ -23,8 +23,8 @@ import {HumidityDeviceCacheService} from '../../cache/service/humidity-device.ca
 export class DeviceOverviewComponent implements OnInit {
   devicePool: DevicesInfo[] = devicePool;
   blindsDeviceService: GenericService<IBlindsDevice>;
-  humidityDeviceService: GenericService<IHumidityDevice>;
-  temperatureDeviceService: GenericService<ITemperatureDevice>;
+  humidityDeviceService: GenericService<IAnalogDevice>;
+  temperatureDeviceService: GenericService<IAnalogDevice>;
   setup: boolean;
 
 

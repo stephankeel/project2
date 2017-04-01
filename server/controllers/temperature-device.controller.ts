@@ -1,10 +1,10 @@
 import express = require('express');
 import {ITemperatureDeviceDocument, TemperatureDeviceModel} from '../models/temperature-device.model';
-import {ITemperatureDevice} from '../entities/device.interface';
+import {IAnalogDevice} from '../entities/device.interface';
 import {SocketService} from '../socket/socket-service';
 import {GenericDeviceController} from './generic-device.controller';
 
-export class TemperatureDeviceController extends GenericDeviceController<ITemperatureDevice, ITemperatureDeviceDocument> {
+export class TemperatureDeviceController extends GenericDeviceController<IAnalogDevice, ITemperatureDeviceDocument> {
   constructor(socketService: SocketService) {
     super(socketService,
       '/temperature',

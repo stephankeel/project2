@@ -1,11 +1,11 @@
 import {Logger, getLogger} from '../utils/logger';
 import {Document, Schema, Model, model} from 'mongoose';
-import {ITemperatureDevice} from '../entities/device.interface';
+import {IAnalogDevice} from '../entities/device.interface';
 import {analogInputs, Port} from '../hardware/port-map';
 
 const LOGGER: Logger = getLogger('TemperatureDeviceModel');
 
-export interface ITemperatureDeviceDocument extends ITemperatureDevice, Document {
+export interface ITemperatureDeviceDocument extends IAnalogDevice, Document {
 }
 
 let TemperatureDeviceSchema = new Schema({

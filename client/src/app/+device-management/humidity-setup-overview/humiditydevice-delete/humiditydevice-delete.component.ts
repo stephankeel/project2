@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {IHumidityDevice} from '../../../../../../server/entities/device.interface';
+import {IAnalogDevice} from '../../../../../../server/entities/device.interface';
 import {Subscription} from 'rxjs/Subscription';
 import {NotificationService} from '../../../notification/notification.service';
 import {HumidityDeviceCacheService} from '../../../cache/service/humidity-device.cache.service';
@@ -13,7 +13,7 @@ import {HumidityDeviceCacheService} from '../../../cache/service/humidity-device
 export class HumiditydeviceDeleteComponent implements OnInit {
 
   private sub: Subscription;
-  humidityDevice: IHumidityDevice = {};
+  humidityDevice: IAnalogDevice = {};
 
   constructor(private humidityDeviceCacheService: HumidityDeviceCacheService,
               private route: ActivatedRoute,

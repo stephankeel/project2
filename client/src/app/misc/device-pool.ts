@@ -1,4 +1,4 @@
-import {IBlindsDevice, IHumidityDevice, ITemperatureDevice} from '../../../../server/entities/device.interface';
+import {IBlindsDevice, IAnalogDevice} from '../../../../server/entities/device.interface';
 import {DeviceType} from '../../../../server/entities/device-type';
 import {Port} from '../../../../server/hardware/port-map';
 
@@ -16,7 +16,7 @@ export class BlindsDevice implements IBlindsDevice {
   }
 }
 
-export class HumidityDevice implements IHumidityDevice {
+export class HumidityDevice implements IAnalogDevice {
   constructor(public id?: any,
               public name?: string,
               public port?: Port,
@@ -24,7 +24,7 @@ export class HumidityDevice implements IHumidityDevice {
   }
 }
 
-export class TemperatureDevice implements ITemperatureDevice {
+export class TemperatureDevice implements IAnalogDevice {
   constructor(public id?: any,
               public name?: string,
               public port?: Port,

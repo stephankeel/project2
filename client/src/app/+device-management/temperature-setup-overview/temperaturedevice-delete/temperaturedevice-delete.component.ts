@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {ITemperatureDevice} from '../../../../../../server/entities/device.interface';
+import {IAnalogDevice} from '../../../../../../server/entities/device.interface';
 import {Subscription} from 'rxjs/Subscription';
 import {NotificationService} from '../../../notification/notification.service';
 import {TemperatureDeviceCacheService} from '../../../cache/service/temperature-device.cache.service';
@@ -13,7 +13,7 @@ import {TemperatureDeviceCacheService} from '../../../cache/service/temperature-
 export class TemperaturedeviceDeleteComponent implements OnInit, OnDestroy {
 
   private sub: Subscription;
-  temperatureDevice: ITemperatureDevice = {};
+  temperatureDevice: IAnalogDevice = {};
 
   constructor(private temperatureDeviceCacheService: TemperatureDeviceCacheService,
               private route: ActivatedRoute,

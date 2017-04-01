@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {IBlindsDevice, IHumidityDevice} from '../../../../../../server/entities/device.interface';
+import {IBlindsDevice, IAnalogDevice} from '../../../../../../server/entities/device.interface';
 import {Subscription} from 'rxjs/Subscription';
 import {ActivatedRoute, Router} from '@angular/router';
 import {NotificationService} from '../../../notification/notification.service';
@@ -16,7 +16,7 @@ import {AnalogPortService} from '../../service/analog-port.service';
 export class HumiditydeviceChangeComponent implements OnInit {
 
   private subscriptions: Subscription[] = [];
-  humidityDevice: IHumidityDevice = {};
+  humidityDevice: IAnalogDevice = {};
   title: string;
   private backlink = '..';
   unusedPortHandler: PortHandler;

@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ITemperatureDevice} from '../../../../../../server/entities/device.interface';
+import {IAnalogDevice} from '../../../../../../server/entities/device.interface';
 import {Subscription} from 'rxjs/Subscription';
 import {ActivatedRoute, Router} from '@angular/router';
 import {NotificationService} from '../../../notification/notification.service';
@@ -16,7 +16,7 @@ import {TemperatureDeviceCacheService} from '../../../cache/service/temperature-
 export class TemperaturedeviceChangeComponent implements OnInit {
 
   private subscriptions: Subscription[] = [];
-  temperatureDevice: ITemperatureDevice = {};
+  temperatureDevice: IAnalogDevice = {};
   title: string;
   private backlink = '..';
   unusedPortHandler: PortHandler;
@@ -52,7 +52,7 @@ export class TemperaturedeviceChangeComponent implements OnInit {
     this.subscriptions.forEach(sub => sub.unsubscribe);
   }
 
-  submit(temperatureDevice: ITemperatureDevice) {
+  submit(temperatureDevice: IAnalogDevice) {
     if (this.temperatureDevice.id) {
       temperatureDevice.id = this.temperatureDevice.id;
       this.temperatureDeviceCacheService.updateDevice(temperatureDevice).subscribe(updatedTemperatureDevice => {

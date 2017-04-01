@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import {ReplaySubject} from 'rxjs/ReplaySubject';
-import {ITemperatureDevice} from '../../../../../server/entities/device.interface';
+import {IAnalogDevice} from '../../../../../server/entities/device.interface';
 import {Port} from '../../../../../server/hardware/port-map';
 import {TemperatureDeviceCacheService} from '../../cache/service/temperature-device.cache.service';
 import {HumidityDeviceCacheService} from '../../cache/service/humidity-device.cache.service';
@@ -13,8 +13,8 @@ export class AnalogPortService {
   private temperatureLoaded: boolean;
   private humidityLoaded: boolean;
   private unusedInputPorts: ReplaySubject<Port[]> = new ReplaySubject<Port[]>(1);
-  private lastTemperatureItems: ITemperatureDevice[] = [];
-  private lastHumidityItems: ITemperatureDevice[] = [];
+  private lastTemperatureItems: IAnalogDevice[] = [];
+  private lastHumidityItems: IAnalogDevice[] = [];
 
   constructor(private temperatureDeviceCacheService: TemperatureDeviceCacheService,
               private humidityDeviceCacheService: HumidityDeviceCacheService,

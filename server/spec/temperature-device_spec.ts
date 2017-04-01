@@ -1,7 +1,7 @@
 import {Logger, getLogger} from '../utils/logger';
 import {RequestResponse} from 'request';
 import {BASE_URL} from './constants';
-import {ITemperatureDevice} from '../entities/device.interface';
+import {IAnalogDevice} from '../entities/device.interface';
 import {Port} from '../hardware/port-map';
 import {loginOptions, authBearerOptions} from './httpOptions';
 
@@ -29,7 +29,7 @@ describe('REST API Roundtrip Test of Temperature-Device', function () {
         });
     });
 
-    let testTemperatureDevice: ITemperatureDevice = {
+    let testTemperatureDevice: IAnalogDevice = {
       name: TEST_TEMPERATURE_DEVICE,
       port: Port.AI_1,
       pollingInterval: 10
@@ -41,7 +41,7 @@ describe('REST API Roundtrip Test of Temperature-Device', function () {
         function (error: any, response: RequestResponse, body: any) {
           LOGGER.debug(`Temperature-device created (body): ${JSON.stringify(body)}`);
           expect(response.statusCode).toBe(201);
-          let testTemperatureDevice: ITemperatureDevice = JSON.parse(body);
+          let testTemperatureDevice: IAnalogDevice = JSON.parse(body);
           LOGGER.debug(`Temperature-device created: ${JSON.stringify(testTemperatureDevice)}`);
           testTemperatureDeviceId = testTemperatureDevice.id;
           LOGGER.debug(`testDeviceId: ${testTemperatureDeviceId}`);
@@ -64,7 +64,7 @@ describe('REST API Roundtrip Test of Temperature-Device', function () {
         authBearerOptions(adminToken),
         function (error: any, response: RequestResponse, body: any) {
           expect(response.statusCode).toBe(200);
-          let temperatureDevice: ITemperatureDevice = JSON.parse(body);
+          let temperatureDevice: IAnalogDevice = JSON.parse(body);
           LOGGER.debug(`Temperature-device retrieved: ${JSON.stringify(temperatureDevice)}`);
           expect(temperatureDevice.name).toBe(TEST_TEMPERATURE_DEVICE);
           done();
@@ -74,7 +74,7 @@ describe('REST API Roundtrip Test of Temperature-Device', function () {
 
   describe('Test update of a temperature-device', function () {
     let NAME: string = 'Test Temp.Dev 007';
-    let testTemperatureDevice: ITemperatureDevice = {
+    let testTemperatureDevice: IAnalogDevice = {
       id: testTemperatureDeviceId,
       name: NAME,
       port: Port.AI_1,
@@ -86,7 +86,7 @@ describe('REST API Roundtrip Test of Temperature-Device', function () {
         authBearerOptions(adminToken, JSON.stringify(testTemperatureDevice)),
         function (error: any, response: RequestResponse, body: any) {
           expect(response.statusCode).toBe(200);
-          let temperatureDevice: ITemperatureDevice = JSON.parse(body);
+          let temperatureDevice: IAnalogDevice = JSON.parse(body);
           LOGGER.debug(`Temperature-device updated: ${JSON.stringify(temperatureDevice)}`);
           expect(temperatureDevice.name).toBe(NAME);
           done();

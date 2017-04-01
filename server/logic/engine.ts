@@ -8,7 +8,7 @@ import {GenericDataController} from "../controllers/generic.data-controller";
 import {DeviceType, deviceTypeAsString} from '../entities/device-type';
 import {PortsFactory} from '../hardware/ports-factory';
 import {Port} from '../hardware/port-map';
-import {IDevice, IAnalogDevice, ITemperatureDevice, IBlindsDevice} from '../entities/device.interface';
+import {IDevice, IAnalogDevice, IBlindsDevice} from '../entities/device.interface';
 import {BlindsState, blindsStateAsString} from '../entities/blinds-state';
 
 const LOGGER: Logger = getLogger('Engine');
@@ -76,7 +76,7 @@ export class Engine {
     let deviceInfo: DeviceInfo = new DeviceInfo(device, deviceType);
     LOGGER.debug(`addAnalogDevice: ${JSON.stringify(device)}`);
 
-    let analogDevice: IAnalogDevice = device as ITemperatureDevice;
+    let analogDevice: IAnalogDevice = device as IAnalogDevice;
     let ain: AbstractAIN = this.assignAnalogInput(analogDevice.id, analogDevice.port);
     ain.poll(analogDevice.pollingInterval).subscribe((val: number) => {
         let data: IAnalogData = {
