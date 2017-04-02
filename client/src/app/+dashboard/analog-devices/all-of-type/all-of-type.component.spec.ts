@@ -121,7 +121,7 @@ describe('AllOfTypeComponent', () => {
     expect(appListHeader.context.showShowAll).toBeUndefined();
   });
 
-  it('check appListHeader fields', () => {
+  it('check action button component content', () => {
     const firstActionButton = fixture.debugElement.query(By.css('.action--button'));
     expect(firstActionButton.children[0].context.units).toBe('°C');
     expect(firstActionButton.children[0].context.value).toBe(data.value);
