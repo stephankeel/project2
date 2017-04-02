@@ -8,38 +8,38 @@
     <md-toolbar class="toolbar__header">Menu
     </md-toolbar>
     <md-nav-list>
-      <a md-list-item (click)="sidenav.close()" [routerLink]="['']">
+      <a md-list-item (click)="sidenav.close()" routerLink=''>
         <md-icon md-list-icon>home</md-icon>
         <span md-line>Übersicht</span>
         <span md-line class="secondary">Geräteübersicht</span>
       </a>
       <a md-list-item *ngIf="authenticationService.isAdmin()" (click)="sidenav.close()"
-         [routerLink]="['user-management']">
+         routerLink='user-management'>
         <md-icon md-list-icon>people</md-icon>
         <span md-line>Benutzer</span>
         <span md-line class="secondary">Benuterverwaltung</span>
       </a>
       <a md-list-item *ngIf="authenticationService.isAdmin()" (click)="sidenav.close()"
-         [routerLink]="['device-management']">
+         routerLink='device-management'>
         <md-icon md-list-icon>settings</md-icon>
         <span md-line>Geräte</span>
         <span md-line class="secondary">Geräteverwaltung</span>
       </a>
       <div class="menu__separator"></div>
       <a md-list-item *ngIf="authenticationService.loggedIn()" (click)="sidenav.close()"
-         [routerLink]="['password-change']">
+         routerLink='password-change'>
         <md-icon md-list-icon>lock</md-icon>
         <span md-line>Passwort</span>
         <span md-line class="secondary">Passwort ändern</span>
       </a>
       <a md-list-item *ngIf="authenticationService.loggedIn()" (click)="sidenav.close()"
-         [routerLink]="['info']">
+         routerLink='info'>
         <md-icon md-list-icon>info</md-icon>
         <span md-line>Info</span>
         <span md-line class="secondary">Information</span>
       </a>
       <div class="menu__separator"></div>
-      <a md-list-item *ngIf="authenticationService.loggedIn()" (click)="sidenav.close()" (click)="logout()">
+      <a class="link__logout" md-list-item *ngIf="authenticationService.loggedIn()" (click)="sidenav.close()" (click)="logout()">
         <md-icon md-list-icon>clear</md-icon>
         <span md-line>Abmelden</span>
       </a>
