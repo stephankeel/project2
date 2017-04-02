@@ -12,7 +12,6 @@ import {NotificationService} from '../../../notification/notification.service';
 export class BlindsButtonsComponent implements OnInit {
 
   @Input() deviceId?: any;
-  @Output() message: EventEmitter<string> = new EventEmitter<string>();
 
   constructor(private commandService: BlindsCommandService, private notificationService: NotificationService) {
   }
@@ -46,5 +45,4 @@ export class BlindsButtonsComponent implements OnInit {
     this.commandService.command(cmd).subscribe((done: boolean) => {
     }, (err: any) => this.notificationService.error(err.toString()));
   }
-
 }

@@ -1,13 +1,22 @@
 import {async, TestBed} from '@angular/core/testing';
 
 import {AppComponent} from './app.component';
+import {NotificationService} from "./notification/notification.service";
+import {Component, Input} from "@angular/core";
 
 describe('AppComponent', () => {
+  let notificationServiceSpy: NotificationService;
   beforeEach(async(() => {
+    notificationServiceSpy = jasmine.createSpyObj<NotificationService>('NotificationService', ['clear','message']);
     TestBed.configureTestingModule({
       declarations: [
-        AppComponent
+        AppComponent,
+        MockRouterComponent,
+        MockPGrowlComponent,
       ],
+      providers: [
+        {provide: NotificationService, useValue: notificationServiceSpy},
+      ]
     }).compileComponents();
   }));
 
@@ -17,16 +26,33 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   }));
 
-  it(`should have as title 'app works!'`, async(() => {
+  it('should return all messages', async(() => {
+    notificationServiceSpy.message = [];
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('app works!');
+    expect(app.getMessages().length).toBe(0);
   }));
 
-  it('should render title in a h1 tag', async(() => {
+  it('should clear all messages', async(() => {
+    notificationServiceSpy.message = [];
     const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('app works!');
+    const app = fixture.debugElement.componentInstance;
+    app.clearMessage();
+    expect(notificationServiceSpy.clear).toHaveBeenCalledTimes(1);
   }));
 });
+
+@Component({
+  selector: 'router-outlet',
+  template: '',
+})
+class MockRouterComponent {
+}
+@Component({
+  selector: 'p-growl',
+  template: '',
+})
+class MockPGrowlComponent {
+  @Input() life : number;
+  @Input() value: any;
+}

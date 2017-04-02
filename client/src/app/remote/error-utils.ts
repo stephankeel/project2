@@ -1,5 +1,7 @@
 import {Response} from '@angular/http';
-import {Observable} from 'rxjs/Observable';
+// Does not work as expected with rxjs/Observable:
+//    Error: "TypeError: __WEBPACK_IMPORTED_MODULE_1_rxjs_Observable__.Observable.throw is not a function"
+import {Observable} from 'rxjs';
 
 export function handleError(error: Response | any) {
   let errMsg: string;

@@ -5,7 +5,7 @@ import {AbstractControl, NG_VALIDATORS, Validator} from '@angular/forms';
  * use reserve, to set the error on the EqualsTo element and not on the checked element it self.
  */
 @Directive({
-  selector: '[appValidateEqual][formControlName],[appValidateEqual][formControl],[appValidateEqual][ngModel]',
+  selector: '[validateEqual][formControlName],[validateEqual][formControl],[validateEqual][ngModel]',
   providers: [{provide: NG_VALIDATORS, useExisting: forwardRef(() => EqualValidatorDirective), multi: true}]
 })
 export class EqualValidatorDirective implements Validator {

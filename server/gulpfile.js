@@ -7,7 +7,7 @@ var runSequence = require('run-sequence');
 var jasmine = require('gulp-jasmine');
 
 gulp.task('default', function () {
-  runSequence('build', 'unittests', ['watch', 'run']);
+  runSequence('build', 'unittest', ['watch', 'run']);
 });
 
 gulp.task('watch', function () {

@@ -37,11 +37,6 @@ export class InfoComponent implements OnInit {
       return (size / 1000).toFixed(3) + ' KB';
     }
   }
-
-  backClicked(): void {
-    this.router.navigate(['/dashboard']);
-  }
-
 }
 
 class InfoPair {

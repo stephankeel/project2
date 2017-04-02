@@ -5,7 +5,7 @@ import {AbstractControl, NG_VALIDATORS, Validator} from '@angular/forms';
  * use reserve, to set the error on the NotEqualsTo element and not on the checked element it self.
  */
 @Directive({
-  selector: '[appValidateNotEqual][formControlName],[appValidateNotEqual][formControl],[appValidateNotEqual][ngModel]',
+  selector: '[validateNotEqual][formControlName],[validateNotEqual][formControl],[validateNotEqual][ngModel]',
   providers: [{provide: NG_VALIDATORS, useExisting: forwardRef(() => NotEqualValidatorDirective), multi: true}]
 })
 export class NotEqualValidatorDirective implements Validator {
