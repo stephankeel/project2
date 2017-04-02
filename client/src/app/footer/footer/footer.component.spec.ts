@@ -1,7 +1,7 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {FooterComponent} from './footer.component';
-import {AuthenticationService} from "../../remote/authentication.service";
+import {AuthenticationService} from '../../remote/authentication.service';
 
 describe('FooterComponent', () => {
   let component: FooterComponent;

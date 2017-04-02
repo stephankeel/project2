@@ -1,8 +1,8 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {DeviceManagementComponent} from './device-management.component';
-import {Component, Input} from "@angular/core";
-import {ActivatedRoute, Router} from "@angular/router";
+import {Component, Input} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 
 describe('DeviceManagementComponent', () => {
   let component: DeviceManagementComponent;

@@ -1,11 +1,11 @@
 /* tslint:disable:no-unused-variable */
-import {async, ComponentFixture, TestBed} from "@angular/core/testing";
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {InfoComponent} from "./info.component";
-import {ActivatedRoute, Router} from "@angular/router";
-import {Component, Input} from "@angular/core";
-import {CommonRestService} from "../../remote/common-rest.service";
-import {Observable} from "rxjs";
+import {InfoComponent} from './info.component';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Component, Input} from '@angular/core';
+import {CommonRestService} from '../../remote/common-rest.service';
+import {Observable} from 'rxjs/Observable';
 
 describe('InfoComponent', () => {
   let component: InfoComponent;
@@ -19,8 +19,20 @@ describe('InfoComponent', () => {
     routerSpy = jasmine.createSpyObj<Router>('Router', ['navigate']);
     commonRestSpy = jasmine.createSpyObj<CommonRestService>('CommonRestService', ['getInfo']);
     (<jasmine.Spy>commonRestSpy.getInfo).and.returnValue(Observable.create(observer => {
-      observer.next({title: "title", nodeVersion: "1", cpus: [{model: 'cpuModel'}], totalMem: "1000000000", freeMem: "1000000"});
-      observer.next({title: "title", nodeVersion: "1", cpus: [{model: 'cpuModel'}], totalMem: "100", freeMem: "100000"});
+      observer.next({
+        title: 'title',
+        nodeVersion: '1',
+        cpus: [{model: 'cpuModel'}],
+        totalMem: '1000000000',
+        freeMem: '1000000'
+      });
+      observer.next({
+        title: 'title',
+        nodeVersion: '1',
+        cpus: [{model: 'cpuModel'}],
+        totalMem: '100',
+        freeMem: '100000'
+      });
     }));
 
     TestBed.configureTestingModule({

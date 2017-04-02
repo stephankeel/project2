@@ -1,16 +1,16 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {PasswordChangeComponent} from './password-change.component';
-import {ActivatedRoute, Router} from "@angular/router";
-import {Component, Input} from "@angular/core";
-import {MaterialModule} from "@angular/material";
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {ValidatorsModule} from "ng2-validators";
-import {PasswordChangeRestService} from "../../remote/password-change-rest.service";
-import {NotificationService} from "../../notification/notification.service";
-import {AuthenticationService} from "../../remote/authentication.service";
-import {By} from "@angular/platform-browser";
-import {Observable, ReplaySubject} from "rxjs";
+import {ActivatedRoute, Router} from '@angular/router';
+import {Component, Input} from '@angular/core';
+import {MaterialModule} from '@angular/material';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {ValidatorsModule} from 'ng2-validators';
+import {PasswordChangeRestService} from '../../remote/password-change-rest.service';
+import {NotificationService} from '../../notification/notification.service';
+import {AuthenticationService} from '../../remote/authentication.service';
+import {By} from '@angular/platform-browser';
+import {ReplaySubject} from 'rxjs/ReplaySubject';
 
 describe('PasswordChangeComponent', () => {
   let component: PasswordChangeComponent;
@@ -21,8 +21,8 @@ describe('PasswordChangeComponent', () => {
   let notificationServiceSpy: NotificationService;
   let passwordChangeRestServiceSpy: PasswordChangeRestService;
 
-  let loginCheckSubject : ReplaySubject<boolean>;
-  let passwordUpdateSubject : ReplaySubject<boolean>;
+  let loginCheckSubject: ReplaySubject<boolean>;
+  let passwordUpdateSubject: ReplaySubject<boolean>;
 
   beforeEach(async(() => {
 
