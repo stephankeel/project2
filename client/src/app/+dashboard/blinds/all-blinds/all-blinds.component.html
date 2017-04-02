@@ -5,7 +5,7 @@
     <div class=" action--button" *ngFor="let device of blindsDeviceCacheService.getAll() | async"
          (click)="select(device.id)">
       <app-moving-blinds class="app-moving-blinds"
-                         [percentageDown]="blindDataCacheService.getLatestData(device.id) | async | blindsPercentageDown"
+                         [percentageDown]="(blindDataCacheService.getLatestData(device.id) | async)?.percentageDown"
                          [name]="device.name"></app-moving-blinds>
     </div>
   </div>
