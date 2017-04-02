@@ -1,8 +1,8 @@
-import {Component} from "@angular/core";
-import {ActivatedRoute, Router} from "@angular/router";
-import {AuthenticationService} from "../../remote/authentication.service";
-import {PasswordChangeRestService} from "../../remote/password-change-rest.service";
-import {NotificationService} from "../../notification/notification.service";
+import {Component} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {AuthenticationService} from '../../remote/authentication.service';
+import {PasswordChangeRestService} from '../../remote/password-change-rest.service';
+import {NotificationService} from '../../notification/notification.service';
 
 @Component({
   selector: 'app-password-change',

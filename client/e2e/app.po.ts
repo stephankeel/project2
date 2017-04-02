@@ -5,7 +5,7 @@ export class HomeautomationClientPage {
     return browser.get('/');
   }
 
-  getParagraphText() {
-    return element(by.css('app-root h1')).getText();
+  getHeaderTitleText()  {
+    return element(by.css('.header__title')).getText();
   }
 }

@@ -1,13 +1,11 @@
-/* tslint:disable:no-unused-variable */
-import {async, ComponentFixture, TestBed} from "@angular/core/testing";
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {BlindsButtonsComponent} from "./blinds-buttons.component";
-import {NotificationService} from "../../../notification/notification.service";
-import {BlindsCommandService} from "../../../remote/blinds-command.service";
-import {By} from "@angular/platform-browser";
-import {IBlindsCommand} from "../../../../../../server/entities/blinds-command.interface";
-import {BlindsAction} from "../../../../../../server/entities/blinds-action";
-import {ReplaySubject} from "rxjs";
+import {BlindsButtonsComponent} from './blinds-buttons.component';
+import {NotificationService} from '../../../notification/notification.service';
+import {BlindsCommandService} from '../../../remote/blinds-command.service';
+import {By} from '@angular/platform-browser';
+import {BlindsAction} from '../../../../../../server/entities/blinds-action';
+import {ReplaySubject} from 'rxjs/ReplaySubject';
 
 describe('BlindsButtonsComponent', () => {
   let component: BlindsButtonsComponent;

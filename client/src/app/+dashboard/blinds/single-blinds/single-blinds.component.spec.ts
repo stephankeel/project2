@@ -2,18 +2,18 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {SingleBlindsComponent} from './single-blinds.component';
-import {BlindsDeviceCacheService} from "../../../cache/service/blinds-device.cache.service";
-import {BlindDataCacheService} from "../../../cache/service/blinds-data.cache.service";
-import {ActivatedRoute, Params, Router} from "@angular/router";
-import {GenericeCacheService} from "../../../cache/service/generic.cache.service";
-import {GenericDataCacheService} from "../../../cache/service/generic-data-cache.service";
-import {IBlindsData} from "../../../../../../server/entities/data.interface";
-import {IDevice} from "../../../../../../server/entities/device.interface";
-import {ReplaySubject} from "rxjs/ReplaySubject";
-import {BlindsState} from "../../../../../../server/entities/blinds-state";
-import {Component, Input} from "@angular/core";
-import {By} from "@angular/platform-browser";
-import {NotificationService} from "../../../notification/notification.service";
+import {BlindsDeviceCacheService} from '../../../cache/service/blinds-device.cache.service';
+import {BlindDataCacheService} from '../../../cache/service/blinds-data.cache.service';
+import {ActivatedRoute, Params, Router} from '@angular/router';
+import {GenericeCacheService} from '../../../cache/service/generic.cache.service';
+import {GenericDataCacheService} from '../../../cache/service/generic-data-cache.service';
+import {IBlindsData} from '../../../../../../server/entities/data.interface';
+import {IDevice} from '../../../../../../server/entities/device.interface';
+import {ReplaySubject} from 'rxjs/ReplaySubject';
+import {BlindsState} from '../../../../../../server/entities/blinds-state';
+import {Component, Input} from '@angular/core';
+import {By} from '@angular/platform-browser';
+import {NotificationService} from '../../../notification/notification.service';
 
 describe('SingleBlindsComponent', () => {
   let component: SingleBlindsComponent;

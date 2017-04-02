@@ -1,13 +1,13 @@
 import {async, TestBed} from '@angular/core/testing';
 
 import {AppComponent} from './app.component';
-import {NotificationService} from "./notification/notification.service";
-import {Component, Input} from "@angular/core";
+import {NotificationService} from './notification/notification.service';
+import {Component, Input} from '@angular/core';
 
 describe('AppComponent', () => {
   let notificationServiceSpy: NotificationService;
   beforeEach(async(() => {
-    notificationServiceSpy = jasmine.createSpyObj<NotificationService>('NotificationService', ['clear','message']);
+    notificationServiceSpy = jasmine.createSpyObj<NotificationService>('NotificationService', ['clear', 'message']);
     TestBed.configureTestingModule({
       declarations: [
         AppComponent,
@@ -53,6 +53,6 @@ class MockRouterComponent {
   template: '',
 })
 class MockPGrowlComponent {
-  @Input() life : number;
+  @Input() life: number;
   @Input() value: any;
 }

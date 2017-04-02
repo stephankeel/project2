@@ -1,4 +1,4 @@
-import { HomeautomationClientPage } from './app.po';
+import {HomeautomationClientPage} from './app.po';
 
 describe('homeautomation-client App', () => {
   let page: HomeautomationClientPage;
@@ -7,8 +7,10 @@ describe('homeautomation-client App', () => {
     page = new HomeautomationClientPage();
   });
 
-  it('should display message saying app works', () => {
+  it('should display header title', () => {
     page.navigateTo();
-    expect(page.getParagraphText()).toEqual('app works!');
+    page.getHeaderTitleText().then(text => {
+      expect(text).toEqual('HOMEAUTOMATION');
+    });
   });
 });
