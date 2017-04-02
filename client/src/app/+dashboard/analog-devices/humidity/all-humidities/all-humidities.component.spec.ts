@@ -1,6 +1,8 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {AllHumiditiesComponent} from './all-humidities.component';
+import {Component, Input} from '@angular/core';
+import {DeviceType} from '../../../../../../../server/entities/device-type';
 
 describe('AllHumiditiesComponent', () => {
   let component: AllHumiditiesComponent;
@@ -8,7 +10,10 @@ describe('AllHumiditiesComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [AllHumiditiesComponent]
+      declarations: [
+        AllHumiditiesComponent,
+        MockAllOfTypeComponent,
+      ]
     })
       .compileComponents();
   }));
@@ -22,4 +27,18 @@ describe('AllHumiditiesComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should set type to humidity', () => {
+    const allOfTypeComponent = fixture.debugElement.children[0];
+    expect(allOfTypeComponent.context.deviceType).toBe(DeviceType.HUMIDITY);
+  });
+
 });
+
+@Component({
+  selector: 'app-all-of-type',
+  template: '<div></div>',
+})
+class MockAllOfTypeComponent {
+  @Input() deviceType: string;
+}
