@@ -11,9 +11,9 @@
   <div class="app-single-device" *ngIf="selectedDeviceId">
     <md-tab-group class="app-single-device--tab">
       <md-tab label="Aktuell">
-        <app-analog-view class="app-analog-view" [name]="deviceCacheService.getDevice(selectedDeviceId) | async | name"
-                         [value]="dataCacheService.getLatestData(selectedDeviceId) | async | value" [units]="units"
-                         [timestamp]="dataCacheService.getLatestData(selectedDeviceId) | async | timestamp"></app-analog-view>
+        <app-analog-view class="app-analog-view" [name]="(deviceCacheService.getDevice(selectedDeviceId) | async)?.name"
+                         [value]="(dataCacheService.getLatestData(selectedDeviceId) | async)?.value" [units]="units"
+                         [timestamp]="(dataCacheService.getLatestData(selectedDeviceId) | async)?.timestamp"></app-analog-view>
       </md-tab>
       <md-tab label="Diagram">
         <app-chart-view class="app-chart-view" [deviceDataHistory]="deviceDataHistory" [label]="label"></app-chart-view>
