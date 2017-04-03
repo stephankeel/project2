@@ -1,12 +1,15 @@
 # Homeautomation-Project Starter
 
 ## Install instructions
-npm install
+```
+npm install 
+```
+Installs the packages of the client and the server
 
 ## How to start
-Please see
-+ Server: https://github.com/dleuenbe/project2/blob/master/server/README.md
+Please see (build the client first, then start the server)
 + Client: https://github.com/dleuenbe/project2/blob/master/client/README.md
++ Server: https://github.com/dleuenbe/project2/blob/master/server/README.md
 
 ## Description
 This project is build in the context of the CAS Frontend Engineering at the HSR in 2016/2017.
