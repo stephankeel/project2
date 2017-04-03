@@ -39,7 +39,7 @@ Command line attributes:
 Starting the server with continuous building (requires locally installed mongodb running):
 ```
 open terminal
-change to project2/server folder
+change to server folder
 npm start
 ```
 
@@ -67,7 +67,7 @@ openssl rsa -pubout -in ../../ha-key -out ../../ha-key.pub
 ## Just building the server
 continuous building, but not starting the server, i.e. for debugging in Webstorm)
 ```
-gulp watch
+npm run watch
 ```
 
 ## Testing the REST Interface
