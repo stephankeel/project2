@@ -28,3 +28,4 @@ Install **Mardown support** plugin in webstorm to the see a preview of this file
 ## Open Issues
 + Database housekeeping is not yet implemented
 + SSL Certificates for intranet site is are not easy maintainable, because all devices must accept the self-signed certificate, so we don't use ssl.
++ Shrinkwrap does not work in the client, because of unmeet dependencies about angular 4.0
