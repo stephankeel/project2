@@ -15,7 +15,7 @@ Please see (build the client first, then start the server)
 This project is build in the context of the CAS Frontend Engineering at the HSR in 2016/2017.
 
 ## Client
-The client is a angular 4 app, which is build with angular-cli. The output of the "ng build" command is the public folder in the server directory.
+The client is a angular 4 app, which is build with angular-cli. The output of the "npm run build" command is the public folder in the server directory.
 Please read the client's readme for more details, see https://github.com/dleuenbe/project2/blob/master/client/README.md
 
 ## Server
