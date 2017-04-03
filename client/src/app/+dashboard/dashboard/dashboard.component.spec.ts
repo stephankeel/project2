@@ -3,10 +3,10 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {DashboardComponent} from './dashboard.component';
 import {MaterialModule} from '@angular/material';
 import {ActivatedRoute, Params, Router} from '@angular/router';
-import {Component} from '@angular/core';
 import {By} from '@angular/platform-browser';
 import {AuthenticationService} from '../../remote/authentication.service';
 import {ReplaySubject} from 'rxjs/ReplaySubject';
+import {TestingMocksModule} from '../../testing-mocks/testing-mocks.module';
 
 
 describe('DashboardComponent', () => {
@@ -32,11 +32,10 @@ describe('DashboardComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         MaterialModule,
+        TestingMocksModule,
       ],
       declarations: [
         DashboardComponent,
-        MockAppFooterComponent,
-        MockRouterComponent,
       ],
       providers: [
         {provide: Router, useValue: routerSpy},
@@ -69,18 +68,3 @@ describe('DashboardComponent', () => {
     expect(routerSpy.navigate).toHaveBeenCalledWith(['../logout'], {relativeTo: activatedRouteSpy});
   });
 });
-
-@Component({
-  selector: 'app-footer',
-  template: '<div></div>',
-})
-export class MockAppFooterComponent {
-}
-
-
-@Component({
-  selector: 'router-outlet',
-  template: '<div></div>',
-})
-class MockRouterComponent {
-}

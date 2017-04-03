@@ -4,6 +4,7 @@ import {ChartViewComponent} from './chart-view.component';
 import {Component, Input} from '@angular/core';
 import {ReplaySubject} from 'rxjs/ReplaySubject';
 import {IAnalogData} from '../../../../../../server/entities/data.interface';
+import {TestingMocksModule} from '../../../testing-mocks/testing-mocks.module';
 
 describe('ChartViewComponent', () => {
   let component: ChartViewComponent;
@@ -13,9 +14,11 @@ describe('ChartViewComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [
+        TestingMocksModule,
+      ],
       declarations: [
         ChartViewComponent,
-        MockPChartComponent,
       ]
     })
       .compileComponents();
@@ -99,16 +102,4 @@ function createData(count: number): IAnalogData[] {
     result.push({timestamp: i, value: i});
   }
   return result;
-}
-
-@Component({
-  selector: 'p-chart',
-  template: '<div></div>',
-})
-class MockPChartComponent {
-  @Input() type: string;
-  @Input() data: any;
-
-  refresh() {
-  }
 }

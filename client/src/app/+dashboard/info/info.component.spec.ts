@@ -1,11 +1,10 @@
-/* tslint:disable:no-unused-variable */
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {InfoComponent} from './info.component';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Component, Input} from '@angular/core';
 import {CommonRestService} from '../../remote/common-rest.service';
 import {Observable} from 'rxjs/Observable';
+import {TestingMocksModule} from '../../testing-mocks/testing-mocks.module';
 
 describe('InfoComponent', () => {
   let component: InfoComponent;
@@ -36,9 +35,11 @@ describe('InfoComponent', () => {
     }));
 
     TestBed.configureTestingModule({
+      imports: [
+        TestingMocksModule,
+      ],
       declarations: [
         InfoComponent,
-        MockListHeaderComponent,
       ],
       providers: [
         {provide: Router, useValue: routerSpy},
@@ -70,20 +71,3 @@ describe('InfoComponent', () => {
   });
 
 });
-
-@Component({
-  selector: 'app-list-header',
-  template: '<div></div>',
-})
-class MockListHeaderComponent {
-  @Input() title: string;
-  @Input() backlink: string;
-  @Input() showBack: boolean;
-  @Input() showCreate: boolean;
-  @Input() disableCreate: boolean;
-  @Input() showShowAll: boolean;
-
-  constructor(private router: Router, private route: ActivatedRoute) {
-  }
-}
-

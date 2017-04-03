@@ -1,4 +1,3 @@
-/* tslint:disable:no-unused-variable */
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {SingleBlindsComponent} from './single-blinds.component';
@@ -11,9 +10,9 @@ import {IBlindsData} from '../../../../../../server/entities/data.interface';
 import {IDevice} from '../../../../../../server/entities/device.interface';
 import {ReplaySubject} from 'rxjs/ReplaySubject';
 import {BlindsState} from '../../../../../../server/entities/blinds-state';
-import {Component, Input} from '@angular/core';
 import {By} from '@angular/platform-browser';
 import {NotificationService} from '../../../notification/notification.service';
+import {TestingMocksModule} from '../../../testing-mocks/testing-mocks.module';
 
 describe('SingleBlindsComponent', () => {
   let component: SingleBlindsComponent;
@@ -57,11 +56,11 @@ describe('SingleBlindsComponent', () => {
     notificationServiceSpy = jasmine.createSpyObj<NotificationService>('NotificationService', ['clear']);
 
     TestBed.configureTestingModule({
+      imports: [
+        TestingMocksModule,
+      ],
       declarations: [
         SingleBlindsComponent,
-        MockListHeaderComponent,
-        MockAppBlindsButtonsComponent,
-        MockAppMovingBlindsComponent,
       ],
       providers: [
         {provide: BlindsDeviceCacheService, useValue: deviceCacheServiceSpy},
@@ -124,37 +123,3 @@ describe('SingleBlindsComponent', () => {
     expect(routerSpy.navigate).toHaveBeenCalledWith(['..'], {relativeTo: activatedRouteSpy});
   });
 });
-
-@Component({
-  selector: 'app-list-header',
-  template: '<div></div>',
-})
-class MockListHeaderComponent {
-  @Input() title: string;
-  @Input() backlink: string;
-  @Input() showBack: boolean;
-  @Input() showCreate: boolean;
-  @Input() disableCreate: boolean;
-  @Input() showShowAll: boolean;
-
-  constructor(private router: Router, private route: ActivatedRoute) {
-  }
-}
-
-@Component({
-  selector: 'app-blinds-buttons',
-  template: '<div></div>',
-})
-export class MockAppBlindsButtonsComponent {
-  @Input() deviceId: string;
-}
-
-@Component({
-  selector: 'app-moving-blinds',
-  template: '<div></div>',
-})
-class MockAppMovingBlindsComponent {
-  @Input() name: string;
-  @Input() percentageDown: number;
-}
-

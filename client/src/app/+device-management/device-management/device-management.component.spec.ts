@@ -1,8 +1,7 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {DeviceManagementComponent} from './device-management.component';
-import {Component, Input} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import {TestingMocksModule} from '../../testing-mocks/testing-mocks.module';
 
 describe('DeviceManagementComponent', () => {
   let component: DeviceManagementComponent;
@@ -10,10 +9,11 @@ describe('DeviceManagementComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [
+        TestingMocksModule,
+      ],
       declarations: [
         DeviceManagementComponent,
-        MockListHeaderComponent,
-        MockDeviceOverviewComponent,
       ]
     })
       .compileComponents();
@@ -39,23 +39,3 @@ describe('DeviceManagementComponent', () => {
     expect(appListHeader.context.showShowAll).toBeUndefined();
   });
 });
-
-@Component({
-  selector: 'app-list-header',
-  template: '',
-})
-class MockListHeaderComponent {
-  @Input() title: string;
-  @Input() backlink: string;
-  @Input() showBack: boolean;
-  @Input() showCreate: boolean;
-  @Input() disableCreate: boolean;
-  @Input() showShowAll: boolean;
-}
-
-@Component({
-  selector: 'app-device-overview',
-  template: '',
-})
-class MockDeviceOverviewComponent {
-}

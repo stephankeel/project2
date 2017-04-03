@@ -10,11 +10,11 @@ import {IDevice} from '../../../../../../server/entities/device.interface';
 import {GenericeCacheService} from '../../../cache/service/generic.cache.service';
 import {GenericDataCacheService} from '../../../cache/service/generic-data-cache.service';
 import {IAnalogData} from '../../../../../../server/entities/data.interface';
-import {Component, Input} from '@angular/core';
 import {ReplaySubject} from 'rxjs/ReplaySubject';
 import {NotEmptyArrayPipe} from '../pipes/not-empty-array.pipe';
 import {DeviceType} from '../../../../../../server/entities/device-type';
 import {By} from '@angular/platform-browser';
+import {TestingMocksModule} from '../../../testing-mocks/testing-mocks.module';
 
 describe('AllOfTypeComponent', () => {
   let component: AllOfTypeComponent;
@@ -43,10 +43,11 @@ describe('AllOfTypeComponent', () => {
     routerSpy = jasmine.createSpyObj<Router>('Router', ['navigate']);
 
     TestBed.configureTestingModule({
+      imports: [
+        TestingMocksModule,
+      ],
       declarations: [
         AllOfTypeComponent,
-        MockListHeaderComponent,
-        MockAnalogViewComponent,
         NotEmptyArrayPipe,
       ],
       providers: [
@@ -129,30 +130,3 @@ describe('AllOfTypeComponent', () => {
     expect(firstActionButton.children[0].context.timestamp).toBe(data.timestamp);
   });
 });
-
-@Component({
-  selector: 'app-list-header',
-  template: '<div></div>',
-})
-class MockListHeaderComponent {
-  @Input() title: string;
-  @Input() backlink: string;
-  @Input() showBack: boolean;
-  @Input() showCreate: boolean;
-  @Input() disableCreate: boolean;
-  @Input() showShowAll: boolean;
-
-  constructor(private router: Router, private route: ActivatedRoute) {
-  }
-}
-
-@Component({
-  selector: 'app-analog-view',
-  template: '<div></div>',
-})
-export class MockAnalogViewComponent {
-  @Input() name: string;
-  @Input() value: number;
-  @Input() units: string;
-  @Input() timestamp: number;
-}

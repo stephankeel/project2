@@ -2,7 +2,6 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {PasswordChangeComponent} from './password-change.component';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Component, Input} from '@angular/core';
 import {MaterialModule} from '@angular/material';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ValidatorsModule} from 'ng2-validators';
@@ -11,6 +10,7 @@ import {NotificationService} from '../../notification/notification.service';
 import {AuthenticationService} from '../../remote/authentication.service';
 import {By} from '@angular/platform-browser';
 import {ReplaySubject} from 'rxjs/ReplaySubject';
+import {TestingMocksModule} from '../../testing-mocks/testing-mocks.module';
 
 describe('PasswordChangeComponent', () => {
   let component: PasswordChangeComponent;
@@ -42,10 +42,10 @@ describe('PasswordChangeComponent', () => {
         FormsModule,
         ReactiveFormsModule,
         ValidatorsModule,
+        TestingMocksModule,
       ],
       declarations: [
         PasswordChangeComponent,
-        MockListHeaderComponent
       ],
       providers: [
         {provide: AuthenticationService, useValue: authenticationServiceSpy},
@@ -144,19 +144,3 @@ describe('PasswordChangeComponent', () => {
     expect(notificationServiceSpy.info).toHaveBeenCalledTimes(1);
   });
 });
-
-@Component({
-  selector: 'app-list-header',
-  template: '<div></div>',
-})
-class MockListHeaderComponent {
-  @Input() title: string;
-  @Input() backlink: string;
-  @Input() showBack: boolean;
-  @Input() showCreate: boolean;
-  @Input() disableCreate: boolean;
-  @Input() showShowAll: boolean;
-
-  constructor(private router: Router, private route: ActivatedRoute) {
-  }
-}
