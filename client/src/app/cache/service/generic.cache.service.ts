@@ -7,7 +7,6 @@ import {IId} from '../../../../../server/entities/id.interface';
 import {ClientSocketService} from '../../remote/client-socket.service';
 import {NotificationService} from '../../notification/notification.service';
 
-@Injectable()
 export class GenericeCacheService<T extends IId> {
   private dataService: GenericService<T>;
   private loaded: boolean;
