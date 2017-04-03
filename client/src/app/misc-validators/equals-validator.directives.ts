@@ -1,3 +1,4 @@
+/* tslint:disable:directive-selector */
 import {Attribute, Directive, forwardRef} from '@angular/core';
 import {AbstractControl, NG_VALIDATORS, Validator} from '@angular/forms';
 

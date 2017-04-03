@@ -1,3 +1,4 @@
+/* tslint:disable:import-blacklist */
 import {Response} from '@angular/http';
 // Does not work as expected with rxjs/Observable:
 //    Error: "TypeError: __WEBPACK_IMPORTED_MODULE_1_rxjs_Observable__.Observable.throw is not a function"
