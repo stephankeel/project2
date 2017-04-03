@@ -6,7 +6,6 @@ import {AllBlindsComponent} from './all-blinds/all-blinds.component';
 import {SingleBlindsComponent} from './single-blinds/single-blinds.component';
 import {BlindsButtonsComponent} from './blinds-buttons/blinds-buttons.component';
 import {MovingBlindsComponent} from './moving-blinds/moving-blinds.component';
-import {BlindsPercentageDownPipe} from './pipes/blinds-percentage-down.pipe';
 import {AuthGuard} from '../../auth/auth-guard.service';
 import {BlindsComponent} from './blinds.component';
 import {BlindsCommandService} from '../../remote/blinds-command.service';
@@ -27,7 +26,6 @@ import {PipesModule} from '../analog-devices/pipes/pipes.module';
     SingleBlindsComponent,
     BlindsButtonsComponent,
     MovingBlindsComponent,
-    BlindsPercentageDownPipe,
   ],
   providers: [
     AuthGuard,
