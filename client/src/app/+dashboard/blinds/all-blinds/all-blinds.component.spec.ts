@@ -1,7 +1,6 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {AllBlindsComponent} from './all-blinds.component';
-import {Component, Input} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {NotEmptyArrayPipe} from '../../analog-devices/pipes/not-empty-array.pipe';
 import {GenericeCacheService} from '../../../cache/service/generic.cache.service';
@@ -13,6 +12,7 @@ import {IBlindsData} from '../../../../../../server/entities/data.interface';
 import {ReplaySubject} from 'rxjs/ReplaySubject';
 import {BlindsState} from '../../../../../../server/entities/blinds-state';
 import {By} from '@angular/platform-browser';
+import {TestingMocksModule} from '../../../testing-mocks/testing-mocks.module';
 
 describe('AllBlindsComponent', () => {
   let component: AllBlindsComponent;
@@ -42,11 +42,11 @@ describe('AllBlindsComponent', () => {
     (<jasmine.Spy>dataCacheServiceSpy.getLatestData).and.returnValue(getLatestSubject);
 
     TestBed.configureTestingModule({
+      imports: [
+        TestingMocksModule,
+      ],
       declarations: [
         AllBlindsComponent,
-        MockListHeaderComponent,
-        MockAppBlindsButtonsComponent,
-        MockAppMovingBlindsComponent,
         NotEmptyArrayPipe,
       ],
       providers: [
@@ -91,35 +91,3 @@ describe('AllBlindsComponent', () => {
     expect(firstAppMovingBlinds.context.name).toBe(device.name);
   });
 });
-
-@Component({
-  selector: 'app-list-header',
-  template: '<div></div>',
-})
-class MockListHeaderComponent {
-  @Input() title: string;
-  @Input() backlink: string;
-  @Input() showBack: boolean;
-  @Input() showCreate: boolean;
-  @Input() disableCreate: boolean;
-  @Input() showShowAll: boolean;
-
-  constructor(private router: Router, private route: ActivatedRoute) {
-  }
-}
-
-@Component({
-  selector: 'app-blinds-buttons',
-  template: '<div></div>',
-})
-export class MockAppBlindsButtonsComponent {
-}
-
-@Component({
-  selector: 'app-moving-blinds',
-  template: '<div></div>',
-})
-class MockAppMovingBlindsComponent {
-  @Input() name: string;
-  @Input() percentageDown: number;
-}

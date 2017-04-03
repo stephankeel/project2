@@ -1,7 +1,7 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {HumidityComponent} from './humidity.component';
-import {Component, Input} from '@angular/core';
+import {TestingMocksModule} from '../../../testing-mocks/testing-mocks.module';
 
 describe('HumidityComponent', () => {
   let component: HumidityComponent;
@@ -9,9 +9,11 @@ describe('HumidityComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [
+        TestingMocksModule,
+      ],
       declarations: [
         HumidityComponent,
-        MockRouterComponent,
       ]
     })
       .compileComponents();
@@ -33,9 +35,3 @@ describe('HumidityComponent', () => {
   });
 });
 
-@Component({
-  selector: 'router-outlet',
-  template: '<div></div>',
-})
-class MockRouterComponent {
-}

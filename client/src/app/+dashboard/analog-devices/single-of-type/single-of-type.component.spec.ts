@@ -1,7 +1,6 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {SingleOfTypeComponent} from './single-of-type.component';
-import {Component, Input} from '@angular/core';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {TemperatureDeviceCacheService} from '../../../cache/service/temperature-device.cache.service';
 import {TemperatureDataCacheService} from '../../../cache/service/temperature-data.cache.service';
@@ -12,12 +11,12 @@ import {IDevice} from '../../../../../../server/entities/device.interface';
 import {ReplaySubject} from 'rxjs/ReplaySubject';
 import {GenericeCacheService} from '../../../cache/service/generic.cache.service';
 import {GenericDataCacheService} from '../../../cache/service/generic-data-cache.service';
-import {Observable} from 'rxjs/Observable';
 import {DeviceType} from '../../../../../../server/entities/device-type';
 import {MaterialModule} from '@angular/material';
 import {NotificationService} from '../../../notification/notification.service';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {By} from '@angular/platform-browser';
+import {TestingMocksModule} from '../../../testing-mocks/testing-mocks.module';
 
 describe('SingleOfTypeComponent', () => {
   let component: SingleOfTypeComponent;
@@ -65,12 +64,10 @@ describe('SingleOfTypeComponent', () => {
       imports: [
         MaterialModule,
         NoopAnimationsModule,
+        TestingMocksModule,
       ],
       declarations: [
         SingleOfTypeComponent,
-        MockListHeaderComponent,
-        MockAnalogViewComponent,
-        MockChartViewComponent,
       ],
       providers: [
         {provide: TemperatureDeviceCacheService, useValue: deviceCacheServiceSpy},
@@ -128,40 +125,3 @@ describe('SingleOfTypeComponent', () => {
     expect(routerSpy.navigate).toHaveBeenCalledWith(['..'], {relativeTo: activatedRouteSpy});
   });
 });
-
-
-@Component({
-  selector: 'app-list-header',
-  template: '<div></div>',
-})
-class MockListHeaderComponent {
-  @Input() title: string;
-  @Input() backlink: string;
-  @Input() showBack: boolean;
-  @Input() showCreate: boolean;
-  @Input() disableCreate: boolean;
-  @Input() showShowAll: boolean;
-
-  constructor(private router: Router, private route: ActivatedRoute) {
-  }
-}
-
-@Component({
-  selector: 'app-analog-view',
-  template: '<div></div>',
-})
-export class MockAnalogViewComponent {
-  @Input() name: string;
-  @Input() value: number;
-  @Input() units: string;
-  @Input() timestamp: number;
-}
-
-@Component({
-  selector: 'app-chart-view',
-  template: '<div></div>',
-})
-export class MockChartViewComponent {
-  @Input() deviceDataHistory: Observable<IAnalogData[]>;
-  @Input() label: string;
-}

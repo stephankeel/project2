@@ -1,8 +1,8 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {SingleHumidityComponent} from './single-humidity.component';
-import {Component, Input} from '@angular/core';
 import {DeviceType} from '../../../../../../../server/entities/device-type';
+import {TestingMocksModule} from '../../../../testing-mocks/testing-mocks.module';
 
 describe('SingleHumidityComponent', () => {
   let component: SingleHumidityComponent;
@@ -10,9 +10,11 @@ describe('SingleHumidityComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [
+        TestingMocksModule,
+      ],
       declarations: [
         SingleHumidityComponent,
-        MockSingleOfTypeComponent,
       ]
     })
       .compileComponents();
@@ -33,11 +35,3 @@ describe('SingleHumidityComponent', () => {
     expect(singleOfTypeComponent.context.deviceType).toBe(DeviceType.HUMIDITY);
   });
 });
-
-@Component({
-  selector: 'app-single-of-type',
-  template: '<div></div>',
-})
-class MockSingleOfTypeComponent {
-  @Input() deviceType: string;
-}

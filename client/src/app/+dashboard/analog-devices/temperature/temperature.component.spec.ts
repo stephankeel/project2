@@ -1,7 +1,7 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {TemperatureComponent} from './temperature.component';
-import {Component} from '@angular/core';
+import {TestingMocksModule} from '../../../testing-mocks/testing-mocks.module';
 
 describe('TemperatureComponent', () => {
   let component: TemperatureComponent;
@@ -9,9 +9,11 @@ describe('TemperatureComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [
+        TestingMocksModule,
+      ],
       declarations: [
         TemperatureComponent,
-        MockRouterComponent,
       ]
     })
       .compileComponents();
@@ -32,10 +34,3 @@ describe('TemperatureComponent', () => {
     expect(routerOutlet.name).toBe('router-outlet');
   });
 });
-
-@Component({
-  selector: 'router-outlet',
-  template: '<div></div>',
-})
-class MockRouterComponent {
-}

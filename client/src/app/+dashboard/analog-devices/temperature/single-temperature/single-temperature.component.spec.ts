@@ -2,7 +2,7 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {SingleTemperatureComponent} from './single-temperature.component';
 import {DeviceType} from '../../../../../../../server/entities/device-type';
-import {Component, Input} from '@angular/core';
+import {TestingMocksModule} from '../../../../testing-mocks/testing-mocks.module';
 
 describe('SingleTemperatureComponent', () => {
   let component: SingleTemperatureComponent;
@@ -10,9 +10,11 @@ describe('SingleTemperatureComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [
+        TestingMocksModule,
+      ],
       declarations: [
         SingleTemperatureComponent,
-        MockSingleOfTypeComponent,
       ]
     })
       .compileComponents();
@@ -33,11 +35,3 @@ describe('SingleTemperatureComponent', () => {
     expect(singleOfTypeComponent.context.deviceType).toBe(DeviceType.TEMPERATURE);
   });
 });
-
-@Component({
-  selector: 'app-single-of-type',
-  template: '<div></div>',
-})
-class MockSingleOfTypeComponent {
-  @Input() deviceType: string;
-}

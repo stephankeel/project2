@@ -1,7 +1,7 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {BlindsComponent} from './blinds.component';
-import {Component} from '@angular/core';
+import {TestingMocksModule} from '../../testing-mocks/testing-mocks.module';
 
 describe('BlindsComponent', () => {
   let component: BlindsComponent;
@@ -9,9 +9,11 @@ describe('BlindsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [
+        TestingMocksModule,
+      ],
       declarations: [
         BlindsComponent,
-        MockRouterComponent,
       ]
     })
       .compileComponents();
@@ -32,10 +34,3 @@ describe('BlindsComponent', () => {
     expect(routerOutlet.name).toBe('router-outlet');
   });
 });
-
-@Component({
-  selector: 'router-outlet',
-  template: '<div></div>',
-})
-class MockRouterComponent {
-}
