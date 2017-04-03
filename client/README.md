@@ -2,7 +2,7 @@
 
 ## Build
 
-Run `npm build` or `$(npm bin)/ng build` to build the project. The output-folder is `../server/public`.
+Run `npm run build` or `$(npm bin)/ng build` to build the project. The output-folder is `../server/public`.
 To build a prod build is `npm run build-prod`. This will run the command `ng build -aot -prod`.
 
 ## Running unit tests
